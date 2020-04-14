@@ -1,18 +1,21 @@
-import Transformer from '../gameobjects/Transformer';
-import { WebGLRenderer, Scene } from '..';
+import TransformGameObject from '../gameobjects/transformgameobject/TransformGameObject';
+import WebGLRenderer from '../renderer/WebGLRenderer';
+import GameInstance from '../GameInstance';
 
-export default class Camera extends Transformer
+export default class Camera extends TransformGameObject
 {
     matrix: Float32Array;
     renderer: WebGLRenderer;
 
-    constructor (scene: Scene, x: number = 0, y: number = 0)
+    constructor (x: number = 0, y: number = 0)
     {
-        super(scene, x, y);
+        super(x, y);
 
-        this.setType('Camera');
+        this.type = 'Camera';
 
-        this.renderer = scene.game.renderer;
+        const game = GameInstance.get();
+
+        this.renderer = game.renderer;
 
         this.reset();
     }

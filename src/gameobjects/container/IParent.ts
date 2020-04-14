@@ -8,5 +8,4 @@ export default interface IParent
     worldTransform?: Float32Array;
     children: IGameObject[];
     numChildren: number;
-    // getChildren (): IGameObject[];
 }
