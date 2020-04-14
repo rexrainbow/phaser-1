@@ -3,10 +3,11 @@ import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import filesize from 'rollup-plugin-filesize';
-import copy from 'rollup-plugin-copy';
+// import copy from 'rollup-plugin-copy';
 import command from 'rollup-plugin-command';
 import visualizer from 'rollup-plugin-visualizer';
-import replace from 'rollup-plugin-replace';
+// import replace from 'rollup-plugin-replace';
+import fs from 'fs-extra';
 
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
@@ -17,7 +18,14 @@ const DistPackagePlugin = {
     name: 'DistPackagePlugin',
 
     generateBundle () {
-        console.log('WillyJetman');
+
+        const package = fs.readJsonSync('./package.json');
+        const distPackage = fs.readJsonSync('./dist.package.json');
+
+        distPackage.version = package.version;
+
+        fs.writeJsonSync('./dist/package.json', distPackage, { spaces: 4 });
+
     }
 
 };
@@ -86,17 +94,11 @@ export default {
             tsconfig: './tsconfig.json'
         }),
 
-        // replace({
-        //     include: './dist.package.json',
-        //     __VERSION__: '0.10.0',
-        //     delimiters: ['', '']
+        // copy({
+        //     targets: [
+        //         { src: 'dist.package.json', dest: 'dist', rename: 'package.json' }
+        //     ]
         // }),
-
-        copy({
-            targets: [
-                { src: 'dist.package.json', dest: 'dist', rename: 'package.json' }
-            ]
-        }),
 
         visualizer({
             "title": "Phaser 4 Package Stats",
