@@ -65,6 +65,13 @@ export default class GameObject
         return this.bounds;
     }
 
+    setBounds (x: number, y: number, width: number, height: number)
+    {
+        this.bounds.set(x, y, width, height);
+
+        return this;
+    }
+
     update ()
     {
     }

@@ -1,8 +1,6 @@
 import Container from '../container/Container';
-import { Scene, WebGLRenderer } from '../..';
 import Texture from '../../textures/Texture';
 import Frame from '../../textures/Frame';
-import MultiTextureQuadShader from '../../renderer/MultiTextureQuadShader';
 import IContainer from '../container/IContainer';
 import Rectangle from '../../geom/Rectangle';
 import SetTexture from './SetTexture';
@@ -35,8 +33,7 @@ export default class Sprite extends Container
 
         this.type = 'Sprite';
         this.setTexture(texture, frame);
-
-        // this.setBounds(x, y, this.width, this.height);
+        this.setBounds(x, y, this.width, this.height);
     }
 
     getBounds (includeChildren: boolean = false): Rectangle

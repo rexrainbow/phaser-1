@@ -15,7 +15,7 @@ export default function SetFrame (key?: string | number | Frame, ...sprite: ISpr
         entity.frame = frame;
     
         entity.setSize(frame.sourceSizeWidth, frame.sourceSizeHeight);
-        // entity.setBounds(entity.x, entity.y, entity.width, entity.height);
+        entity.setBounds(entity.x, entity.y, entity.width, entity.height);
     
         if (frame.pivot)
         {

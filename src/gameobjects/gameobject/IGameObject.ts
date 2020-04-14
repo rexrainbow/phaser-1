@@ -24,6 +24,7 @@ export default interface IGameObject
     isRenderable (): boolean;
     setDirtyRender (setFrame?: boolean): this;
     setDirtyUpdate (): this;
+    setBounds (x: number, y: number, width: number, height: number): this;
     getBounds (includeChildren?: boolean): Rectangle;
     update (delta: number, time: number): void;
     updateTransform (): this;
