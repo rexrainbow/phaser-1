@@ -21,6 +21,8 @@
     "exclude": [
         "src/input/",
         "src/stats/",
-        "src/gameobjects/spritebuffer/SpriteBuffer.ts"
+        "src/gameobjects/animatedsprite/*",
+        "src/gameobjects/spritebuffer/*",
+        "src/gameobjects/text/*"
     ]
 }
