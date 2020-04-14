@@ -1,0 +1,1 @@
+//# sourceMappingURL=IStaticCamera.js.map

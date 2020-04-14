@@ -1,0 +1,1 @@
+//# sourceMappingURL=ISpriteBuffer.js.map

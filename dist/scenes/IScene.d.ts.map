@@ -1,0 +1,1 @@
+{"version":3,"file":"IScene.d.ts","sourceRoot":"","sources":["../../src/scenes/IScene.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,gBAAgB,CAAC;AACnC,OAAO,UAAU,MAAM,cAAc,CAAC;AAEtC,MAAM,CAAC,OAAO,WAAW,MAAO,SAAQ,UAAU;IAE9C,KAAK,EAAE,KAAK,CAAC;CAChB"}
