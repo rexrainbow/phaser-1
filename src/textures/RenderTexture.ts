@@ -1,5 +1,6 @@
 import Texture from './Texture';
 import ISprite from '../gameobjects/sprite/ISprite';
+import SpriteRenderWebGL from '../gameobjects/sprite/RenderWebGL';
 import WebGLRenderer from '../renderer/WebGLRenderer';
 import Ortho from '../renderer/Ortho';
 import CreateFramebuffer from '../renderer/CreateFramebuffer';
@@ -58,7 +59,7 @@ export default class RenderTexture extends Texture
 
         for (let i: number = 0; i < sprites.length; i++)
         {
-            sprites[i].renderWebGL(renderer, shader, renderer.startActiveTexture);
+            SpriteRenderWebGL(sprites[i], renderer, shader, renderer.startActiveTexture);
         }
 
         return this;
