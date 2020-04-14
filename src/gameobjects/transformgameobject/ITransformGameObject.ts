@@ -14,8 +14,8 @@ export default interface ITransformGameObject extends IGameObject
     originX: number;
     originY: number;
     transformData: Float32Array;
-    localTransform: Float32Array;
-    worldTransform: Float32Array;
+    localTransform?: Float32Array;
+    worldTransform?: Float32Array;
     setPosition (x: number, y?: number): this;
     setRotation (value: number): this;
     setScale (scaleX: number, scaleY?: number): this;
