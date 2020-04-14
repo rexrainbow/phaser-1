@@ -74,11 +74,18 @@ export default {
             tsconfig: './tsconfig.json'
         }),
 
-        replace({
-            include: './dist.package.json',
-            __VERSION__: '0.10.0',
-            delimiters: ['', '']
-        }),
+        {
+            name: 'bob',
+            generateBundle () {
+                console.log('Willy');
+            }
+        },
+
+        // replace({
+        //     include: './dist.package.json',
+        //     __VERSION__: '0.10.0',
+        //     delimiters: ['', '']
+        // }),
 
         copy({
             targets: [
