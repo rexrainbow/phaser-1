@@ -3,16 +3,17 @@ import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import filesize from 'rollup-plugin-filesize';
-// import copy from 'rollup-plugin-copy';
 import command from 'rollup-plugin-command';
 import visualizer from 'rollup-plugin-visualizer';
-// import replace from 'rollup-plugin-replace';
 import fs from 'fs-extra';
 
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
 ];
 
+/**
+ * Custom Roll-up Plugin that copies the package.json version to the dist package.json
+ */
 const DistPackagePlugin = {
 
     name: 'DistPackagePlugin',
@@ -93,12 +94,6 @@ export default {
         typescript({
             tsconfig: './tsconfig.json'
         }),
-
-        // copy({
-        //     targets: [
-        //         { src: 'dist.package.json', dest: 'dist', rename: 'package.json' }
-        //     ]
-        // }),
 
         visualizer({
             "title": "Phaser 4 Package Stats",
