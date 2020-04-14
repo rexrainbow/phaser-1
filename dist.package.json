@@ -1,6 +1,6 @@
 {
     "name": "@phaserjs/phaser",
-    "version": "%VERSION%",
+    "version": "__VERSION__",
     "description": "Phaser 4",
     "publishConfig": {
         "access": "public"

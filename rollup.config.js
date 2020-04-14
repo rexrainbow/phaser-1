@@ -9,7 +9,7 @@ import visualizer from 'rollup-plugin-visualizer';
 import replace from 'rollup-plugin-replace';
 
 const extensions = [
-    '.js', '.jsx', '.ts', '.tsx'
+    '.js', '.jsx', '.ts', '.tsx', '.json'
 ];
 
 export default {
@@ -75,8 +75,8 @@ export default {
         }),
 
         replace({
-            include: 'dist.package.json',
-            '%VERSION%': '0.10.0',
+            include: './dist.package.json',
+            __VERSION__: '0.10.0',
             delimiters: ['', '']
         }),
 
