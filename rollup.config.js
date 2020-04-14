@@ -17,23 +17,23 @@ export default {
 
     output: [
         {
-            file: './dist/Phaser4Nano.esm.js',
+            file: './dist/Phaser4.esm.js',
             format: 'es',
             sourcemap: true
         },
         {
-            file: './dist/Phaser4Nano.js',
+            file: './dist/Phaser4.js',
             format: 'umd',
-            name: 'Phaser4Nano',
+            name: 'Phaser4',
             sourcemap: false,
             plugins: [
                 filesize()
             ]
         },
         {
-            file: './dist/Phaser4Nano.min.js',
+            file: './dist/Phaser4.min.js',
             format: 'umd',
-            name: 'Phaser4Nano',
+            name: 'Phaser4',
             sourcemap: false,
             plugins: [
                 terser(),
@@ -80,7 +80,7 @@ export default {
         }),
 
         visualizer({
-            "title": "Phaser 4 Nano Package Stats",
+            "title": "Phaser 4 Package Stats",
             "sourcemap": false,
             "template": "treemap" // "circlepacking"
         })
