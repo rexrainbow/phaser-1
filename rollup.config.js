@@ -19,10 +19,10 @@ const DistPackagePlugin = {
 
     generateBundle () {
 
-        const package = fs.readJsonSync('./package.json');
+        const devPackage = fs.readJsonSync('./package.json');
         const distPackage = fs.readJsonSync('./dist.package.json');
 
-        distPackage.version = package.version;
+        distPackage.version = devPackage.version;
 
         fs.writeJsonSync('./dist/package.json', distPackage, { spaces: 4 });
 
