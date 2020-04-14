@@ -6,6 +6,7 @@ import filesize from 'rollup-plugin-filesize';
 import command from 'rollup-plugin-command';
 import visualizer from 'rollup-plugin-visualizer';
 import fs from 'fs-extra';
+import copy from 'rollup-plugin-copy';
 
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
@@ -93,6 +94,12 @@ export default {
 
         typescript({
             tsconfig: './tsconfig.json'
+        }),
+
+        copy({
+            targets: [
+                { src: 'README.md', dest: 'dist', rename: 'README.md' }
+            ]
         }),
 
         visualizer({
