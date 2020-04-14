@@ -1,12 +1,17 @@
-import Camera from './Camera';
-import Container from './Container';
-import IContainer from './IContainer';
+import Camera from '../camera/Camera';
 import Scene from '../scenes/Scene';
-import IGameObject from './IGameObject';
 import RectangleToRectangle from '../geom/intersection/RectangleToRectangle';
+import IGameObject from '../gameobjects/gameobject/IGameObject';
+import IContainer from '../gameobjects/container/IContainer';
 
-export default class World extends Container
+export default class World
 {
+    scene: Scene;
+
+    children: IGameObject[];
+
+    camera: Camera;
+
     //  How many Game Objects were made dirty this frame?
     dirtyFrame: number = 0;
 
@@ -20,29 +25,29 @@ export default class World extends Container
     boundsFrame: number = 0;
 
     //  A list of Game Objects that will be rendered in the next pass
-    renderList: IGameObject[];
-
-    camera: Camera;
+    private renderList: IGameObject[];
 
     forceRefresh: boolean = false;
 
     enableCameraCull: boolean = true;
 
-    constructor (scene: Scene, key: string)
+    worldTransform: Float32Array;
+
+    constructor (scene: Scene)
     {
-        super(scene);
+        this.scene = scene;
 
-        this.setType('World');
-        this.setName(key);
-
+        this.children = [];
         this.renderList = [];
 
-        this.camera = new Camera(scene, 0, 0);
+        this.worldTransform = new Float32Array([ 1, 0, 0, 1, 0, 0 ]);
+
+        this.camera = new Camera();
     }
 
-    private scanChildren (root: IContainer, gameFrame: number)
+    private scanChildren (root: IContainer | World, gameFrame: number)
     {
-        const children = root.getChildren();
+        const children = root.children;
 
         for (let i: number = 0; i < children.length; i++)
         {
@@ -75,6 +80,21 @@ export default class World extends Container
         }
     }
 
+    update (delta?: number, time?: number)
+    {
+        const children = this.children;
+
+        for (let i = 0; i < children.length; i++)
+        {
+            let child = children[i];
+
+            if (child && child.willUpdate)
+            {
+                child.update(delta, time);
+            }
+        }
+    }
+
     render (gameFrame: number): number
     {
         this.dirtyFrame = 0;
@@ -101,7 +121,7 @@ export default class World extends Container
         //  everything in place so we can return to this World again
         //  at a later stage
 
-        this.removeChildren();
+        // this.removeChildren();
 
         this.renderList = [];
 
@@ -110,11 +130,14 @@ export default class World extends Container
 
     destroy ()
     {
-        super.destroy();
-
         this.camera.destroy();
 
         this.camera = null;
         this.renderList = null;
+    }
+
+    get numChildren (): number
+    {
+        return this.children.length;
     }
 }
