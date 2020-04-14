@@ -6,6 +6,7 @@ import filesize from 'rollup-plugin-filesize';
 import copy from 'rollup-plugin-copy';
 import command from 'rollup-plugin-command';
 import visualizer from 'rollup-plugin-visualizer';
+import replace from 'rollup-plugin-replace';
 
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
@@ -71,6 +72,12 @@ export default {
 
         typescript({
             tsconfig: './tsconfig.json'
+        }),
+
+        replace({
+            include: 'dist.package.json',
+            '%VERSION%': '0.10.0',
+            delimiters: ['', '']
         }),
 
         copy({

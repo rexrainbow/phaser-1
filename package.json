@@ -1,12 +1,15 @@
 {
     "name": "@phaserjs/phaser",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "Phaser 4 Genesis",
     "scripts": {
         "prepublishOnly": "echo \"Error: Don't run 'npm publish' in root. Use 'npm run dist' instead.\" && exit 1",
         "build": "rollup -c rollup.config.js",
         "watch": "tsc --watch --pretty",
-        "dist": "npm run build && cd dist && npm publish --ignore-scripts"
+        "testdist": "npm version patch && npm run build",
+        "dist": "npm version patch && npm run build && cd dist && npm publish --ignore-scripts",
+        "distminor": "npm version minor && npm run build && cd dist && npm publish --ignore-scripts",
+        "distmajor": "npm version major && npm run build && cd dist && npm publish --ignore-scripts"
     },
     "repository": {
         "type": "git",
@@ -30,6 +33,7 @@
         "rollup-plugin-copy": "^3.3.0",
         "rollup-plugin-filesize": "^7.0.0",
         "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-replace": "^2.2.0",
         "rollup-plugin-terser": "^5.3.0",
         "rollup-plugin-typescript2": "^0.27.0",
         "rollup-plugin-visualizer": "^4.0.4",
