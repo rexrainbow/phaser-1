@@ -9,8 +9,18 @@ import visualizer from 'rollup-plugin-visualizer';
 import replace from 'rollup-plugin-replace';
 
 const extensions = [
-    '.js', '.jsx', '.ts', '.tsx', '.json'
+    '.js', '.jsx', '.ts', '.tsx'
 ];
+
+const DistPackagePlugin = {
+
+    name: 'DistPackagePlugin',
+
+    generateBundle () {
+        console.log('WillyJetman');
+    }
+
+};
 
 export default {
 
@@ -42,7 +52,9 @@ export default {
                 command([
                     `echo "Running tsc ..."`,
                     `tsc`
-                ])
+                ]),
+
+                DistPackagePlugin
             ]
         }
     ],
@@ -73,13 +85,6 @@ export default {
         typescript({
             tsconfig: './tsconfig.json'
         }),
-
-        {
-            name: 'bob',
-            generateBundle () {
-                console.log('Willy');
-            }
-        },
 
         // replace({
         //     include: './dist.package.json',
