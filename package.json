@@ -10,7 +10,9 @@
         "testdist": "npm version patch --no-git-tag-version && npm run build",
         "dist": "npm version patch && npm run build && cd dist && npm publish --ignore-scripts",
         "distminor": "npm version minor && npm run build && cd dist && npm publish --ignore-scripts",
-        "distmajor": "npm version major && npm run build && cd dist && npm publish --ignore-scripts"
+        "distmajor": "npm version major && npm run build && cd dist && npm publish --ignore-scripts",
+        "build-dev": "rollup -c dev.rollup.config.js",
+        "watch-dev": "rollup --watch -c dev.rollup.config.js"
     },
     "repository": {
         "type": "git",

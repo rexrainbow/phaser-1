@@ -22,8 +22,12 @@ You can find all packages under the [@phaserjs](https://www.npmjs.com/settings/p
 
 | script | action |
 | ------ | ------ |
+| `debug` | Build the main Phaser 4 modules, useful for checking for package errors |
 | `build` | Build all of the Phaser 4 modules |
 | `watch` | Build all modules and enter watch mode |
+| `testdist` | Increment version by patch, run a build but **do not** publish to npm |
 | `dist` | Increment version by patch, run a build then publish to npm |
 | `distminor` | Increment version by minor, run a build then publish to npm |
 | `distmajor` | Increment version by major, run a build then publish to npm |
+| `build-dev` | Build the `dev/index.ts` script to run a local test without publishing |
+| `watch-dev` | Build and watch the `dev/index.ts` script |
