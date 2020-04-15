@@ -1,1 +1,0 @@
-{"version":3,"file":"RenderWebGL.d.ts","sourceRoot":"","sources":["../../../src/gameobjects/sprite/RenderWebGL.ts"],"names":[],"mappings":"AAAA,OAAO,OAAO,MAAM,WAAW,CAAC;AAChC,OAAO,aAAa,MAAM,8BAA8B,CAAC;AACzD,OAAO,sBAAsB,MAAM,uCAAuC,CAAC;AAE3E,MAAM,CAAC,OAAO,UAAU,WAAW,CAAE,MAAM,EAAE,OAAO,EAAE,QAAQ,EAAE,aAAa,EAAE,MAAM,EAAE,sBAAsB,EAAE,kBAAkB,EAAE,MAAM,QAiBxI"}
