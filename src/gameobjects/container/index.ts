@@ -11,7 +11,7 @@ import ReparentChildren from './ReparentChildren';
 import SetParent from './SetParent';
 import SwapChildren from './SwapChildren';
 
-export {
+export default {
     AddChild,
     AddChildAt,
     Container,

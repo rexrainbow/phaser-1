@@ -1,12 +1,16 @@
-// import AnimatedSprite from './animatedsprite/AnimatedSprite';
-import Container from './container/Container';
-import GameObject from './gameobject/GameObject';
-import Sprite from './sprite/Sprite';
+import AnimatedSprite from './animatedsprite';
+import Container from './container';
+import GameObject from './gameobject';
+import Sprite from './sprite';
 // import SpriteBuffer from './spritebuffer/SpriteBuffer';
-// import Text from './text/Text';
+import Text from './text';
+import TransformGameObject from './transformgameobject';
 
 export default {
+    AnimatedSprite,
     Container,
     GameObject,
-    Sprite
+    Sprite,
+    Text,
+    TransformGameObject
 }
