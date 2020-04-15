@@ -4,8 +4,9 @@
     "description": "Phaser 4 Genesis",
     "scripts": {
         "prepublishOnly": "echo \"Error: Don't run 'npm publish' in root. Use 'npm run dist' instead.\" && exit 1",
+        "debug": "rollup -c rollup.debug.config.js",
         "build": "rollup -c rollup.config.js",
-        "watch": "tsc --watch --pretty",
+        "watch": "rollup -c rollup.debug.config.js --watch",
         "testdist": "npm version patch --no-git-tag-version && npm run build",
         "dist": "npm version patch --no-git-tag-version && npm run build && cd dist && npm publish --ignore-scripts",
         "distminor": "npm version minor --no-git-tag-version && npm run build && cd dist && npm publish --ignore-scripts",
