@@ -1,9 +1,10 @@
 import GameObject from '../gameobject/GameObject';
+import Matrix2D from '../../math/matrix2d/Matrix2D';
 export default class TransformGameObject extends GameObject {
     private transformBuffer;
     transformData: Float32Array;
-    localTransform: Float32Array;
-    worldTransform: Float32Array;
+    localTransform: Matrix2D;
+    worldTransform: Matrix2D;
     width: number;
     height: number;
     constructor(x?: number, y?: number);

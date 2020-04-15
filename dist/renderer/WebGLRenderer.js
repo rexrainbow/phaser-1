@@ -1,6 +1,6 @@
 import CheckShaderMaxIfStatements from './CheckShaderMaxIfStatements';
 import MultiTextureQuadShader from './MultiTextureQuadShader';
-import Matrix2dEqual from '../math/Matrix2dEqual';
+import Matrix2dEqual from '../math/matrix2d-funcs/ExactEquals';
 import Ortho from './Ortho';
 import GL from './GL';
 import SpriteRenderWebGL from '../gameobjects/sprite/RenderWebGL';

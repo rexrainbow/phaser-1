@@ -4,6 +4,531 @@
     (global = global || self, factory(global.Phaser4 = {}));
 }(this, (function (exports) { 'use strict';
 
+    function canPlayM4A(audioElement = document.createElement('audio')) {
+        return ((audioElement.canPlayType('audio/x-m4a') !== '') || (audioElement.canPlayType('audio/aac') !== ''));
+    }
+
+    function canPlayMP3(audioElement = document.createElement('audio')) {
+        return (audioElement.canPlayType('audio/mpeg; codecs="mp3"') !== '');
+    }
+
+    function canPlayOGG(audioElement = document.createElement('audio')) {
+        return (audioElement.canPlayType('audio/ogg; codecs="vorbis"') !== '');
+    }
+
+    function canPlayOpus(audioElement = document.createElement('audio')) {
+        return ((audioElement.canPlayType('audio/ogg; codecs="opus"') !== '') || (audioElement.canPlayType('audio/webm; codecs="opus"') !== ''));
+    }
+
+    function canPlayWAV(audioElement = document.createElement('audio')) {
+        return (audioElement.canPlayType('audio/wav; codecs="1"') !== '');
+    }
+
+    function canPlayWebM(audioElement = document.createElement('audio')) {
+        return (audioElement.canPlayType('audio/webm; codecs="vorbis"') !== '');
+    }
+
+    function hasAudio() {
+        return (window.hasOwnProperty('Audio'));
+    }
+
+    function hasWebAudio() {
+        return (window.hasOwnProperty('AudioContext') || window.hasOwnProperty('webkitAudioContext'));
+    }
+
+    function GetAudio() {
+        const result = {
+            audioData: hasAudio(),
+            m4a: false,
+            mp3: false,
+            ogg: false,
+            opus: false,
+            wav: false,
+            webAudio: hasWebAudio(),
+            webm: false
+        };
+        if (result.audioData) {
+            const audioElement = document.createElement('audio');
+            // IE9 Running on Windows Server SKU can cause an exception to be thrown
+            try {
+                const canPlay = !!audioElement.canPlayType;
+                if (canPlay) {
+                    result.m4a = canPlayM4A(audioElement);
+                    result.mp3 = canPlayMP3(audioElement);
+                    result.ogg = canPlayOGG(audioElement);
+                    result.opus = canPlayOpus(audioElement);
+                    result.wav = canPlayWAV(audioElement);
+                    result.webm = canPlayWebM(audioElement);
+                }
+            }
+            catch (error) {
+                result.audioData = false;
+            }
+        }
+        return result;
+    }
+
+    //  @namespace Phaser.Device.Audio
+
+    var Audio = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        canPlayM4A: canPlayM4A,
+        canPlayMP3: canPlayMP3,
+        canPlayOGG: canPlayOGG,
+        canPlayOpus: canPlayOpus,
+        canPlayWAV: canPlayWAV,
+        canPlayWebM: canPlayWebM,
+        GetAudio: GetAudio,
+        hasAudio: hasAudio,
+        hasWebAudio: hasWebAudio
+    });
+
+    function isChrome() {
+        const chrome = (/Chrome\/(\d+)/).test(navigator.userAgent);
+        const chromeVersion = (chrome) ? parseInt(RegExp.$1, 10) : 0;
+        return {
+            chrome,
+            chromeVersion
+        };
+    }
+
+    function isEdge() {
+        const edge = (/Edge\/\d+/).test(navigator.userAgent);
+        return {
+            edge
+        };
+    }
+
+    function isFirefox() {
+        const firefox = (/Firefox\D+(\d+)/).test(navigator.userAgent);
+        const firefoxVersion = (firefox) ? parseInt(RegExp.$1, 10) : 0;
+        return {
+            firefox,
+            firefoxVersion
+        };
+    }
+
+    function isiOS() {
+        const ua = navigator.userAgent;
+        const result = {
+            iOS: false,
+            iOSVersion: 0,
+            iPhone: false,
+            iPad: false
+        };
+        if (/iP[ao]d|iPhone/i.test(ua)) {
+            (navigator.appVersion).match(/OS (\d+)/);
+            result.iOS = true;
+            result.iOSVersion = parseInt(RegExp.$1, 10);
+            result.iPhone = (ua.toLowerCase().indexOf('iphone') !== -1);
+            result.iPad = (ua.toLowerCase().indexOf('ipad') !== -1);
+        }
+        return result;
+    }
+
+    function isMobileSafari() {
+        const { iOS } = isiOS();
+        const mobileSafari = ((/AppleWebKit/).test(navigator.userAgent) && iOS);
+        return {
+            mobileSafari
+        };
+    }
+
+    function isMSIE() {
+        const ie = (/MSIE (\d+\.\d+);/).test(navigator.userAgent);
+        const ieVersion = (ie) ? parseInt(RegExp.$1, 10) : 0;
+        return {
+            ie,
+            ieVersion
+        };
+    }
+
+    function isOpera() {
+        const opera = (/Opera/).test(navigator.userAgent);
+        return {
+            opera
+        };
+    }
+
+    function isWindowsPhone() {
+        const ua = navigator.userAgent;
+        return (/Windows Phone/i.test(ua) || (/IEMobile/i).test(ua));
+    }
+
+    function isSafari() {
+        const ua = navigator.userAgent;
+        const safari = ((/Safari/).test(ua) && !isWindowsPhone());
+        const safariVersion = ((/Version\/(\d+)\./).test(ua)) ? parseInt(RegExp.$1, 10) : 0;
+        return {
+            safari,
+            safariVersion
+        };
+    }
+
+    function isSilk() {
+        const silk = (/Silk/).test(navigator.userAgent);
+        return {
+            silk
+        };
+    }
+
+    function isTrident() {
+        const trident = (/Trident\/(\d+\.\d+)(.*)rv:(\d+\.\d+)/).test(navigator.userAgent);
+        const tridentVersion = (trident) ? parseInt(RegExp.$1, 10) : 0;
+        const tridentIEVersion = (trident) ? parseInt(RegExp.$3, 10) : 0;
+        return {
+            trident,
+            tridentVersion,
+            tridentIEVersion
+        };
+    }
+
+    function GetBrowser() {
+        const { chrome, chromeVersion } = isChrome();
+        const { edge } = isEdge();
+        const { firefox, firefoxVersion } = isFirefox();
+        let { ie, ieVersion } = isMSIE();
+        const { mobileSafari } = isMobileSafari();
+        const { opera } = isOpera();
+        const { safari, safariVersion } = isSafari();
+        const { silk } = isSilk();
+        const { trident, tridentVersion, tridentIEVersion } = isTrident();
+        if (trident) {
+            ie = true;
+            ieVersion = tridentIEVersion;
+        }
+        const result = {
+            chrome,
+            chromeVersion,
+            edge,
+            firefox,
+            firefoxVersion,
+            ie,
+            ieVersion,
+            mobileSafari,
+            opera,
+            safari,
+            safariVersion,
+            silk,
+            trident,
+            tridentVersion
+        };
+        return result;
+    }
+
+    //  @namespace Phaser.Device.Browser
+
+    var Browser = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        GetBrowser: GetBrowser,
+        isChrome: isChrome,
+        isEdge: isEdge,
+        isFirefox: isFirefox,
+        isMobileSafari: isMobileSafari,
+        isMSIE: isMSIE,
+        isOpera: isOpera,
+        isSafari: isSafari,
+        isSilk: isSilk,
+        isTrident: isTrident
+    });
+
+    function isAndroid() {
+        return (/Android/.test(navigator.userAgent));
+    }
+
+    function isChromeOS() {
+        return (/CrOS/.test(navigator.userAgent));
+    }
+
+    function isCordova() {
+        return (window.hasOwnProperty('cordova'));
+    }
+
+    function isCrosswalk() {
+        return ((/Crosswalk/).test(navigator.userAgent));
+    }
+
+    function isEjecta() {
+        return (window.hasOwnProperty('ejecta'));
+    }
+
+    function isNode() {
+        return (typeof process !== 'undefined' && typeof process.versions === 'object' && process.versions.hasOwnProperty('node'));
+    }
+
+    function isElectron() {
+        return (isNode() && !!process.versions['electron']);
+    }
+
+    function isKindle() {
+        // This will NOT detect early generations of Kindle Fire, I think there is no reliable way...
+        // E.g. "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us; Silk/1.1.0-80) AppleWebKit/533.16 (KHTML, like Gecko) Version/5.0 Safari/533.16 Silk-Accelerated=true"
+        const ua = navigator.userAgent;
+        return ((/Kindle/.test(ua) || (/\bKF[A-Z][A-Z]+/).test(ua) || (/Silk.*Mobile Safari/).test(ua)));
+    }
+
+    function isLinux() {
+        return (/Linux/.test(navigator.userAgent));
+    }
+
+    function isMacOS() {
+        const ua = navigator.userAgent;
+        return (/Mac OS/.test(ua) && !(/like Mac OS/.test(ua)));
+    }
+
+    function isNodeWebkit() {
+        return (isNode() && !!process.versions['node-webkit']);
+    }
+
+    function isWebApp() {
+        return (navigator.hasOwnProperty('standalone'));
+    }
+
+    function isWindows() {
+        return (/Windows/.test(navigator.userAgent));
+    }
+
+    function GetOS() {
+        const ua = navigator.userAgent;
+        const { iOS, iOSVersion, iPad, iPhone } = isiOS();
+        const result = {
+            android: isAndroid(),
+            chromeOS: isChromeOS(),
+            cordova: isCordova(),
+            crosswalk: isCrosswalk(),
+            desktop: false,
+            ejecta: isEjecta(),
+            electron: isElectron(),
+            iOS,
+            iOSVersion,
+            iPad,
+            iPhone,
+            kindle: isKindle(),
+            linux: isLinux(),
+            macOS: isMacOS(),
+            node: isNode(),
+            nodeWebkit: isNodeWebkit(),
+            pixelRatio: 1,
+            webApp: isWebApp(),
+            windows: isWindows(),
+            windowsPhone: isWindowsPhone()
+        };
+        if (result.windowsPhone) {
+            result.android = false;
+            result.iOS = false;
+            result.macOS = false;
+            result.windows = true;
+        }
+        const silk = (/Silk/).test(ua);
+        if (result.windows || result.macOS || (result.linux && !silk) || result.chromeOS) {
+            result.desktop = true;
+        }
+        //  Windows Phone / Table reset
+        if (result.windowsPhone || ((/Windows NT/i.test(ua)) && (/Touch/i.test(ua)))) {
+            result.desktop = false;
+        }
+        return result;
+    }
+
+    //  @namespace Phaser.Device.OS
+
+    var OS = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        GetOS: GetOS,
+        isAndroid: isAndroid,
+        isChromeOS: isChromeOS,
+        isCordova: isCordova,
+        isCrosswalk: isCrosswalk,
+        isEjecta: isEjecta,
+        isElectron: isElectron,
+        isiOS: isiOS,
+        isKindle: isKindle,
+        isLinux: isLinux,
+        isMacOS: isMacOS,
+        isNode: isNode,
+        isNodeWebkit: isNodeWebkit,
+        isWebApp: isWebApp,
+        isWindows: isWindows,
+        isWindowsPhone: isWindowsPhone
+    });
+
+    function canPlayH264Video(videoElement = document.createElement('video')) {
+        return (videoElement.canPlayType('video/mp4; codecs="avc1.42E01E"') !== '');
+    }
+
+    function canPlayHLSVideo(videoElement = document.createElement('video')) {
+        return (videoElement.canPlayType('application/x-mpegURL; codecs="avc1.42E01E"') !== '');
+    }
+
+    function canPlayOGGVideo(videoElement = document.createElement('video')) {
+        return (videoElement.canPlayType('video/ogg; codecs="theora"') !== '');
+    }
+
+    function canPlayVP9Video(videoElement = document.createElement('video')) {
+        return (videoElement.canPlayType('video/webm; codecs="vp9"') !== '');
+    }
+
+    function canPlayWebMVideo(videoElement = document.createElement('video')) {
+        return (videoElement.canPlayType('video/webm; codecs="vp8, vorbis"') !== '');
+    }
+
+    function GetVideo() {
+        const result = {
+            h264Video: false,
+            hlsVideo: false,
+            mp4Video: false,
+            oggVideo: false,
+            vp9Video: false,
+            webmVideo: false
+        };
+        const videoElement = document.createElement('video');
+        // IE9 Running on Windows Server SKU can cause an exception to be thrown
+        try {
+            const canPlay = !!videoElement.canPlayType;
+            if (canPlay) {
+                result.h264Video = canPlayH264Video(videoElement);
+                result.hlsVideo = canPlayHLSVideo(videoElement);
+                result.oggVideo = canPlayOGGVideo(videoElement);
+                result.vp9Video = canPlayVP9Video(videoElement);
+                result.webmVideo = canPlayWebMVideo(videoElement);
+            }
+        }
+        catch (error) {
+            //  Nothing to do here
+        }
+        //  Duplicate the result for Phaser 3 compatibility
+        result.mp4Video = result.hlsVideo;
+        return result;
+    }
+
+    //  @namespace Phaser.Device.Video
+
+    var Video = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        canPlayH264Video: canPlayH264Video,
+        canPlayHLSVideo: canPlayHLSVideo,
+        canPlayOGGVideo: canPlayOGGVideo,
+        canPlayVP9Video: canPlayVP9Video,
+        canPlayWebMVideo: canPlayWebMVideo,
+        GetVideo: GetVideo
+    });
+
+    //  @namespace Phaser.Device
+    var index = {
+        Audio,
+        Browser,
+        OS,
+        Video
+    };
+
+    var index$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index,
+        canPlayM4A: canPlayM4A,
+        canPlayMP3: canPlayMP3,
+        canPlayOGG: canPlayOGG,
+        canPlayOpus: canPlayOpus,
+        canPlayWAV: canPlayWAV,
+        canPlayWebM: canPlayWebM,
+        GetAudio: GetAudio,
+        hasAudio: hasAudio,
+        hasWebAudio: hasWebAudio,
+        GetBrowser: GetBrowser,
+        isChrome: isChrome,
+        isEdge: isEdge,
+        isFirefox: isFirefox,
+        isMobileSafari: isMobileSafari,
+        isMSIE: isMSIE,
+        isOpera: isOpera,
+        isSafari: isSafari,
+        isSilk: isSilk,
+        isTrident: isTrident,
+        GetOS: GetOS,
+        isAndroid: isAndroid,
+        isChromeOS: isChromeOS,
+        isCordova: isCordova,
+        isCrosswalk: isCrosswalk,
+        isEjecta: isEjecta,
+        isElectron: isElectron,
+        isiOS: isiOS,
+        isKindle: isKindle,
+        isLinux: isLinux,
+        isMacOS: isMacOS,
+        isNode: isNode,
+        isNodeWebkit: isNodeWebkit,
+        isWebApp: isWebApp,
+        isWindows: isWindows,
+        isWindowsPhone: isWindowsPhone,
+        canPlayH264Video: canPlayH264Video,
+        canPlayHLSVideo: canPlayHLSVideo,
+        canPlayOGGVideo: canPlayOGGVideo,
+        canPlayVP9Video: canPlayVP9Video,
+        canPlayWebMVideo: canPlayWebMVideo,
+        GetVideo: GetVideo
+    });
+
+    function AddToDOM(element, parent) {
+        let target;
+        if (parent) {
+            if (typeof parent === 'string') {
+                //  Hopefully an element ID
+                target = document.getElementById(parent);
+            }
+            else if (typeof parent === 'object' && parent.nodeType === 1) {
+                //  Quick test for a HTMLElement
+                target = parent;
+            }
+        }
+        else if (element.parentElement) {
+            return element;
+        }
+        //  Fallback, covers an invalid ID and a non HTMLElement object
+        if (!target) {
+            target = document.body;
+        }
+        target.appendChild(element);
+        return element;
+    }
+
+    function DOMContentLoaded(callback) {
+        const readyState = document.readyState;
+        if (readyState === 'complete' || readyState === 'interactive') {
+            callback();
+            return;
+        }
+        const check = () => {
+            document.removeEventListener('deviceready', check, true);
+            document.removeEventListener('DOMContentLoaded', check, true);
+            window.removeEventListener('load', check, true);
+            callback();
+        };
+        if (!document.body) {
+            window.setTimeout(check, 20);
+        }
+        else if (window.hasOwnProperty('cordova')) {
+            document.addEventListener('deviceready', check, true);
+        }
+        else {
+            document.addEventListener('DOMContentLoaded', check, true);
+            window.addEventListener('load', check, true);
+        }
+    }
+
+    function RemoveFromDOM(element) {
+        if (element.parentNode) {
+            element.parentNode.removeChild(element);
+        }
+    }
+
+    //  @namespace Phaser.DOM
+
+    var index$2 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        AddToDOM: AddToDOM,
+        DOMContentLoaded: DOMContentLoaded,
+        RemoveFromDOM: RemoveFromDOM
+    });
+
     class Rectangle {
         constructor(x = 0, y = 0, width = 0, height = 0) {
             this.set(x, y, width, height);
@@ -110,11 +635,63 @@
         ANGLE: 9
     };
 
+    //  A Matrix2D contains six elements in a short-form of the 3x3 Matrix, with the last column ignored.
+    //  |----|----|----|
+    //  | a  | b  | 0  |
+    //  |----|----|----|
+    //  | c  | d  | 0  |
+    //  |----|----|----|
+    //  | tx | ty | 1  |
+    //  |----|----|----|
+    class Matrix2D {
+        /**
+         * Creates an instance of Matrix2D.
+         *
+         * @param {number} [a=1] - X scale.
+         * @param {number} [b=0] - X skew.
+         * @param {number} [c=0] - Y skew.
+         * @param {number} [d=1] - Y scale.
+         * @param {number} [tx=0] - X translation
+         * @param {number} [ty=0] - Y translation
+         * @memberof Matrix2D
+         */
+        constructor(a = 1, b = 0, c = 0, d = 1, tx = 0, ty = 0) {
+            this.set(a, b, c, d, tx, ty);
+        }
+        set(a = 1, b = 0, c = 0, d = 1, tx = 0, ty = 0) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
+            this.d = d;
+            this.tx = tx;
+            this.ty = ty;
+            return this;
+        }
+        identity() {
+            return this.set();
+        }
+        toArray() {
+            return [this.a, this.b, this.c, this.d, this.tx, this.ty];
+        }
+        fromArray(src) {
+            return this.set(src[0], src[1], src[2], src[3], src[4], src[5]);
+        }
+        [Symbol.iterator]() {
+            const data = this.toArray();
+            return data[Symbol.iterator]();
+        }
+    }
+
+    //  Copy the values from the src Matrix to the target Matrix and return the target Matrix.
+    function Copy(src, target) {
+        return target.set(src.a, src.b, src.c, src.d, src.tx, src.ty);
+    }
+
     class TransformGameObject extends GameObject {
         constructor(x = 0, y = 0) {
             super();
             const byte = Float32Array.BYTES_PER_ELEMENT;
-            const buffer = new ArrayBuffer(22 * byte);
+            const buffer = new ArrayBuffer(9 * byte);
             this.transformBuffer = buffer;
             /**
              * transformData:
@@ -128,40 +705,19 @@
              * 7 = scale y
              * 8 = rotation
              * 9 = angle
-             * localTransform
-             * 10 = local transform a
-             * 11 = local transform b
-             * 12 = local transform c
-             * 13 = local transform d
-             * 14 = local transform tx
-             * 15 = local transform ty
-             * worldTransform
-             * 16 = world transform a
-             * 17 = world transform b
-             * 18 = world transform c
-             * 19 = world transform d
-             * 20 = world transform tx
-             * 21 = world transform ty
              */
             this.transformData = new Float32Array(buffer, 0, 10);
-            this.localTransform = new Float32Array(buffer, byte * 10, 6);
-            this.worldTransform = new Float32Array(buffer, byte * 16, 6);
+            this.localTransform = new Matrix2D();
+            this.worldTransform = new Matrix2D();
             this.transformData.set([x, y, 0.5, 0.5, 0, 0, 1, 1, 0, 0]);
-            this.localTransform.set([1, 0, 0, 1, 0, 0]);
-            this.worldTransform.set([1, 0, 0, 1, 0, 0]);
             this.width = 0;
             this.height = 0;
             this.updateCache();
         }
         updateCache() {
             const transform = this.localTransform;
-            const { rotation, skewX, skewY, scaleX, scaleY } = this;
-            transform.set([
-                Math.cos(rotation + skewY) * scaleX,
-                Math.sin(rotation + skewY) * scaleX,
-                -Math.sin(rotation - skewX) * scaleY,
-                Math.cos(rotation - skewX) * scaleY
-            ]);
+            const { rotation, skewX, skewY, scaleX, scaleY, x, y } = this;
+            transform.set(Math.cos(rotation + skewY) * scaleX, Math.sin(rotation + skewY) * scaleX, -Math.sin(rotation - skewX) * scaleY, Math.cos(rotation - skewX) * scaleY, x, y);
             return this.updateTransform();
         }
         updateTransform() {
@@ -169,22 +725,15 @@
             const parent = this.parent;
             const lt = this.localTransform;
             const wt = this.worldTransform;
-            lt[4] = this.x;
-            lt[5] = this.y;
+            lt.tx = this.x;
+            lt.ty = this.y;
             if (!parent) {
-                wt.set(lt);
+                Copy(lt, wt);
                 return this;
             }
-            const [a, b, c, d, tx, ty] = lt;
-            const [pa, pb, pc, pd, ptx, pty] = parent.worldTransform;
-            wt.set([
-                a * pa + b * pc,
-                a * pb + b * pd,
-                c * pa + d * pc,
-                c * pb + d * pd,
-                tx * pa + ty * pc + ptx,
-                tx * pb + ty * pd + pty
-            ]);
+            const { a, b, c, d, tx, ty } = lt;
+            const { a: pa, b: pb, c: pc, d: pd, tx: ptx, ty: pty } = parent.worldTransform;
+            wt.set(a * pa + b * pc, a * pb + b * pd, c * pa + d * pc, c * pb + d * pd, tx * pa + ty * pc + ptx, tx * pb + ty * pd + pty);
             return this;
         }
         setSize(width, height) {
@@ -790,199 +1339,52 @@
     // import AnimatedSprite from './animatedsprite/AnimatedSprite';
     // import SpriteBuffer from './spritebuffer/SpriteBuffer';
     // import Text from './text/Text';
-    var index = {
+    var index$3 = {
         Container,
         GameObject,
         Sprite
     };
 
-    var index$1 = /*#__PURE__*/Object.freeze({
+    var index$4 = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index
+        'default': index$3
     });
-
-    function AppendMatrix2d(mat1, mat2, out = new Float32Array(6)) {
-        const [a1, b1, c1, d1, tx1, ty1] = mat1;
-        const [a2, b2, c2, d2, tx2, ty2] = mat2;
-        out.set([
-            (a2 * a1) + (b2 * c1),
-            (a2 * b1) + (b2 * d1),
-            (c2 * a1) + (d2 * c1),
-            (c2 * b1) + (d2 * d1),
-            (tx2 * a1) + (ty2 * c1) + tx1,
-            (tx2 * b1) + (ty2 * d1) + ty1
-        ]);
-        return out;
-    }
 
     function Between(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    const easeCache = {
-        linear: (t) => {
-            return t;
-        },
-        inQuad: (t) => {
-            return t * t;
-        },
-        outQuad: (t) => {
-            return t * (2 - t);
-        },
-        inOutQuad: (t) => {
-            return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-        },
-        inCubic: (t) => {
-            return t * t * t;
-        },
-        outCubic: (t) => {
-            return (--t) * t * t + 1;
-        },
-        inOutCubic: (t) => {
-            return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-        },
-        inQuart: (t) => {
-            return t * t * t * t;
-        },
-        outQuart: (t) => {
-            return 1 - (--t) * t * t * t;
-        },
-        inOutQuart: (t) => {
-            return t < .5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
-        },
-        inQuint: (t) => {
-            return t * t * t * t * t;
-        },
-        outQuint: (t) => {
-            return 1 + (--t) * t * t * t * t;
-        },
-        inOutQuint: (t) => {
-            return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t;
-        },
-        inSine: (t) => {
-            return -1 * Math.cos(t / 1 * (Math.PI * 0.5)) + 1;
-        },
-        outSine: (t) => {
-            return Math.sin(t / 1 * (Math.PI * 0.5));
-        },
-        inOutSine: (t) => {
-            return -1 / 2 * (Math.cos(Math.PI * t) - 1);
-        },
-        inExpo: (t) => {
-            return (t == 0) ? 0 : Math.pow(2, 10 * (t - 1));
-        },
-        outExpo: (t) => {
-            return (t == 1) ? 1 : (-Math.pow(2, -10 * t) + 1);
-        },
-        inOutExpo: (t) => {
-            if (t == 0)
-                return 0;
-            if (t == 1)
-                return 1;
-            if ((t /= 1 / 2) < 1)
-                return 1 / 2 * Math.pow(2, 10 * (t - 1));
-            return 1 / 2 * (-Math.pow(2, -10 * --t) + 2);
-        },
-        inCirc: (t) => {
-            return -1 * (Math.sqrt(1 - t * t) - 1);
-        },
-        outCirc: (t) => {
-            return Math.sqrt(1 - (t = t - 1) * t);
-        },
-        inOutCirc: (t) => {
-            if ((t /= 1 / 2) < 1)
-                return -1 / 2 * (Math.sqrt(1 - t * t) - 1);
-            return 1 / 2 * (Math.sqrt(1 - (t -= 2) * t) + 1);
-        },
-        inElastic: (t) => {
-            if (t == 0)
-                return 0;
-            if (t == 1)
-                return 1;
-            let s = 1.70158;
-            let p = 0;
-            let a = 1;
-            if (!p)
-                p = 0.3;
-            {
-                s = p / (2 * Math.PI) * Math.asin(1 / a);
-            }
-            return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t - s) * (2 * Math.PI) / p));
-        },
-        outElastic: (t) => {
-            if (t == 0)
-                return 0;
-            if (t == 1)
-                return 1;
-            let s = 1.70158;
-            let p = 0;
-            let a = 1;
-            if (!p)
-                p = 0.3;
-            {
-                s = p / (2 * Math.PI) * Math.asin(1 / a);
-            }
-            return a * Math.pow(2, -10 * t) * Math.sin((t - s) * (2 * Math.PI) / p) + 1;
-        },
-        inOutElastic: (t) => {
-            if (t == 0)
-                return 0;
-            if ((t /= 1 / 2) == 2)
-                return 1;
-            let s = 1.70158;
-            let p = 0;
-            let a = 1;
-            if (!p)
-                p = (0.3 * 1.5);
-            {
-                s = p / (2 * Math.PI) * Math.asin(1 / a);
-            }
-            if (t < 1)
-                return -.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t - s) * (2 * Math.PI) / p));
-            return a * Math.pow(2, -10 * (t -= 1)) * Math.sin((t - s) * (2 * Math.PI) / p) * 0.5 + 1;
-        },
-        inBack: (t, s = 1.70158) => {
-            return 1 * t * t * ((s + 1) * t - s);
-        },
-        outBack: (t, s = 1.70158) => {
-            return 1 * ((t = t / 1 - 1) * t * ((s + 1) * t + s) + 1);
-        },
-        inOutBack: (t, s = 1.70158) => {
-            if ((t /= 1 / 2) < 1)
-                return 1 / 2 * (t * t * (((s *= (1.525)) + 1) * t - s));
-            return 1 / 2 * ((t -= 2) * t * (((s *= (1.525)) + 1) * t + s) + 2);
-        },
-        inBounce: (t) => {
-            return 1 - easeCache.outBounce(1 - t);
-        },
-        outBounce: (t) => {
-            if ((t /= 1) < (1 / 2.75)) {
-                return (7.5625 * t * t);
-            }
-            else if (t < (2 / 2.75)) {
-                return (7.5625 * (t -= (1.5 / 2.75)) * t + .75);
-            }
-            else if (t < (2.5 / 2.75)) {
-                return (7.5625 * (t -= (2.25 / 2.75)) * t + .9375);
-            }
-            else {
-                return (7.5625 * (t -= (2.625 / 2.75)) * t + .984375);
-            }
-        },
-        inOutBounce: (t) => {
-            if (t < 1 / 2)
-                return easeCache.inBounce(t * 2) * 0.5;
-            return easeCache.outBounce(t * 2 - 1) * 0.5 + 0.5;
-        }
-    };
-    function Ease(progress, easing) {
-        if (easeCache[easing]) {
-            return easeCache[easing](progress);
-        }
-    }
-
     function FloatBetween(min, max) {
         return Math.random() * (max - min) + min;
+    }
+
+    //  Adds the src Matrix to the target Matrix and returns the target.
+    function Add(target, src) {
+        target.a += src.a;
+        target.b += src.b;
+        target.c += src.c;
+        target.d += src.d;
+        target.tx += src.tx;
+        target.ty += src.ty;
+        return target;
+    }
+
+    // Copy the values from src Matrix to the given Canvas Rendering Context.
+    // This will use the Context.transform method.
+    function CopyToContext(src, context) {
+        const { a, b, c, d, tx, ty } = src;
+        context.transform(a, b, c, d, tx, ty);
+        return context;
+    }
+
+    //  Return the determinant for the src Matrix.
+    function Determinant(src) {
+        const { a, b, c, d } = src;
+        return (a * d) - (b * c);
+    }
+
+    function Frobenius(src) {
+        return (Math.hypot(src.a, src.b, src.c, src.d, src.tx, src.ty, 1));
     }
 
     class Vec2 {
@@ -990,10 +1392,10 @@
          * Creates an instance of a Vector2.
          *
          * @param {number} [x=0] - X component
-         * @param {number} [y=x] - Y component
+         * @param {number} [y=0] - Y component
          * @memberof Vec2
          */
-        constructor(x = 0, y = x) {
+        constructor(x = 0, y = 0) {
             this.set(x, y);
         }
         /**
@@ -1009,46 +1411,369 @@
             this.y = y;
             return this;
         }
+        /**
+         * Sets all components of this Vector2 to zero.
+         *
+         * @returns {Vec2}
+         * @memberof Vec2
+         */
+        zero() {
+            return this.set();
+        }
+        /**
+         * Returns a new array containg the Vector2 component values.
+         *
+         * @returns {number[]}
+         * @memberof Vec2
+         */
+        getArray() {
+            return [this.x, this.y];
+        }
+        /**
+         * Sets the values of this Vector2 based on the given array, or array-like object, such as a Float32.
+         *
+         * The source must have 2 elements, starting from index 0 through to index 1.
+         *
+         * @param {number[]} src - The source array to copy the values from.
+         * @returns {Vec2}
+         * @memberof Vec2
+         */
+        fromArray(src) {
+            return this.set(src[0], src[1]);
+        }
+        [Symbol.iterator]() {
+            const data = this.getArray();
+            return data[Symbol.iterator]();
+        }
     }
 
-    function GlobalToLocal(transform, x, y, outPoint = new Vec2()) {
-        const [a, b, c, d, tx, ty] = transform;
+    function GlobalToLocal(mat, x, y, outPoint = new Vec2()) {
+        const { a, b, c, d, tx, ty } = mat;
         const id = 1 / ((a * d) + (c * -b));
         outPoint.x = (d * id * x) + (-c * id * y) + (((ty * c) - (tx * d)) * id);
         outPoint.y = (a * id * y) + (-b * id * x) + (((-ty * a) + (tx * b)) * id);
         return outPoint;
     }
 
-    function LocalToGlobal(transform, x, y, outPoint = new Vec2()) {
-        const [a, b, c, d, tx, ty] = transform;
+    //  Inverts the target Matrix and then returns it
+    function Invert(target) {
+        const { a, b, c, d, tx, ty } = target;
+        let determinant = a * d - b * c;
+        if (determinant) {
+            determinant = 1 / determinant;
+            target.set(d * determinant, -b * determinant, -c * determinant, a * determinant, (c * ty - d * tx) * determinant, (b * tx - a * ty) * determinant);
+        }
+        return target;
+    }
+
+    //  Apply the identity, translate, rotate and scale operations on the target Matrix then returns it.
+    function ITRS(target, x, y, angle, scaleX, scaleY) {
+        if (angle === 0) {
+            return target.set(1, 0, 0, 1, x, y);
+        }
+        else {
+            const sin = Math.sin(angle);
+            const cos = Math.cos(angle);
+            return target.set(cos * scaleX, sin * scaleX, -sin * scaleY, cos * scaleY, x, y);
+        }
+    }
+
+    //  Apply the identity, translate, rotate, scale and skew operations on the target Matrix then returns it.
+    function ITRSS(target, x, y, angle = 0, scaleX = 1, scaleY = 1, skewX = 0, skewY = 0) {
+        if (angle === 0) {
+            return target.set(1, 0, 0, 1, x, y);
+        }
+        else {
+            const sin = Math.sin(angle);
+            const cos = Math.cos(angle);
+            return target.set(cos * scaleX, sin * scaleX, -sin * scaleY, cos * scaleY, x, y);
+        }
+    }
+
+    function LocalToGlobal(mat, x, y, outPoint = new Vec2()) {
+        const { a, b, c, d, tx, ty } = mat;
         outPoint.x = (a * x) + (c * y) + tx;
         outPoint.y = (b * x) + (d * y) + ty;
         return outPoint;
     }
 
-    function Matrix2dEqual(mat1, mat2) {
-        return (mat1[0] === mat2[0] &&
-            mat1[1] === mat2[1] &&
-            mat1[2] === mat2[2] &&
-            mat1[3] === mat2[3] &&
-            mat1[4] === mat2[4] &&
-            mat1[5] === mat2[5]);
+    //  Multiplies the target Matrix by the src Matrix and returns the target.
+    function Multiply(target, src) {
+        const { a: a0, b: b0, c: c0, d: d0, tx: tx0, ty: ty0 } = target;
+        const { a: a1, b: b1, c: c1, d: d1, tx: tx1, ty: ty1 } = src;
+        target.a = a0 * a1 + c0 * b1;
+        target.b = b0 * a1 + d0 * b1;
+        target.c = a0 * c1 + c0 * d1;
+        target.d = b0 * c1 + d0 * d1;
+        target.tx = a0 * tx1 + c0 * ty1 + tx0;
+        target.ty = b0 * tx1 + d0 * ty1 + ty0;
+        return target;
     }
 
-    var index$2 = {
-        AppendMatrix2d,
-        Between,
-        Ease,
-        FloatBetween,
+    //  Multiplies the target Matrix by the given amount, then returns the target Matrix.
+    function MultiplyScalar(target, scale) {
+        target.a *= scale;
+        target.b *= scale;
+        target.c *= scale;
+        target.d *= scale;
+        target.tx *= scale;
+        target.ty *= scale;
+        return target;
+    }
+
+    //  Multiplies the target Matrix by the given amount, then returns the target Matrix.
+    function MultiplyScalarAndAdd(target, src, scale) {
+        const { a, b, c, d, tx, ty } = src;
+        target.a += (a * scale);
+        target.b += (b * scale);
+        target.c += (c * scale);
+        target.d += (d * scale);
+        target.tx += (tx * scale);
+        target.ty += (ty * scale);
+        return target;
+    }
+
+    //  Rotates the target Matrix by the angle (in radians), then returns the target Matrix.
+    function Rotate(target, angle) {
+        const { a, b, c, d, tx, ty } = target;
+        const sin = Math.sin(angle);
+        const cos = Math.cos(angle);
+        return target.set((a * cos) + (c * sin), (b * cos) + (d * sin), (a * -sin) + (c * cos), (b * -sin) + (d * cos), tx, ty);
+    }
+
+    //  Scales the target Matrix by the given amounts, then returns the target Matrix.
+    function Scale(target, scaleX, scaleY) {
+        target.a *= scaleX;
+        target.b *= scaleX;
+        target.c *= scaleY;
+        target.d *= scaleY;
+        return target;
+    }
+
+    // Copy the values from the src Matrix to the given Canvas Rendering Context.
+    // This will use the Context.setTransform method.
+    function SetToContext(src, context) {
+        const { a, b, c, d, tx, ty } = src;
+        context.setTransform(a, b, c, d, tx, ty);
+        return context;
+    }
+
+    //  Skews the target Matrix by the given angles (in radians), then returns the target Matrix
+    function Skew(target, angleX, angleY) {
+        target.b += Math.tan(angleX);
+        target.c += Math.tan(angleY);
+        return target;
+    }
+
+    //  Subtracts the src Matrix from the target Matrix and returns the target.
+    function Subtract(target, src) {
+        const { a, b, c, d, tx, ty } = src;
+        target.a -= a;
+        target.b -= b;
+        target.c -= c;
+        target.d -= d;
+        target.tx -= tx;
+        target.ty -= ty;
+        return target;
+    }
+
+    //  Translates the target Matrix and returns the target
+    function Translate(target, x, y) {
+        const { a, b, c, d, tx, ty } = target;
+        target.tx = (a * x) + (c * y) + tx;
+        target.ty = (b * x) + (d * y) + ty;
+        return target;
+    }
+
+    //  Zeroes the target Matrix and returns the target
+    function Zero(target) {
+        return target.set(0, 0, 0, 0, 0, 0);
+    }
+
+    //  Phaser.Math.Matrix2d
+    var index$5 = {
+        Add,
+        Copy,
+        CopyToContext,
+        Determinant,
+        Frobenius,
         GlobalToLocal,
+        Invert,
+        ITRS,
+        ITRSS,
         LocalToGlobal,
-        Matrix2dEqual,
+        Matrix2D,
+        Multiply,
+        MultiplyScalar,
+        MultiplyScalarAndAdd,
+        Rotate,
+        Scale,
+        SetToContext,
+        Skew,
+        Subtract,
+        Translate,
+        Zero
+    };
+
+    var Matrix2d = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$5
+    });
+
+    //  Adds a to b and returns the values in a new Matrix2D
+    function Add$1(a, b) {
+        return new Matrix2D(a.a + b.a, a.b + b.b, a.c + b.c, a.c + b.c, a.tx + b.tx, a.ty + b.ty);
+    }
+
+    function Append(mat1, mat2, out = new Matrix2D()) {
+        const { a: a1, b: b1, c: c1, d: d1, tx: tx1, ty: ty1 } = mat1;
+        const { a: a2, b: b2, c: c2, d: d2, tx: tx2, ty: ty2 } = mat2;
+        return out.set((a2 * a1) + (b2 * c1), (a2 * b1) + (b2 * d1), (c2 * a1) + (d2 * c1), (c2 * b1) + (d2 * d1), (tx2 * a1) + (ty2 * c1) + tx1, (tx2 * b1) + (ty2 * d1) + ty1);
+    }
+
+    //  Clones the src matrix to a new Matrix2D.
+    function Clone(src) {
+        return new Matrix2D(src.a, src.b, src.c, src.d, src.tx, src.ty);
+    }
+
+    //  Compares the a and b matrix and returns if they are equal, based on the epsilon.
+    function Equals(a, b, epsilon = 0.000001) {
+        const { a: a0, b: b0, c: c0, d: d0, tx: tx0, ty: ty0 } = a;
+        const { a: a1, b: b1, c: c1, d: d1, tx: tx1, ty: ty1 } = b;
+        return (Math.abs(a0 - a1) <= epsilon * Math.max(1, Math.abs(a0), Math.abs(a1)) &&
+            Math.abs(b0 - b1) <= epsilon * Math.max(1, Math.abs(b0), Math.abs(b1)) &&
+            Math.abs(c0 - c1) <= epsilon * Math.max(1, Math.abs(c0), Math.abs(c1)) &&
+            Math.abs(d0 - d1) <= epsilon * Math.max(1, Math.abs(d0), Math.abs(d1)) &&
+            Math.abs(tx0 - tx1) <= epsilon * Math.max(1, Math.abs(tx0), Math.abs(tx1)) &&
+            Math.abs(ty0 - ty1) <= epsilon * Math.max(1, Math.abs(ty0), Math.abs(ty1)));
+    }
+
+    //  Compares the a and b matrix and returns if they are equal.
+    function ExactEquals(a, b) {
+        return (a.a === b.a &&
+            a.b === b.b &&
+            a.c === b.c &&
+            a.d === b.d &&
+            a.tx === b.tx &&
+            a.ty === b.ty);
+    }
+
+    function Rotate$1(src, angle) {
+        const { a, b, c, d } = src;
+        const sin = Math.sin(angle);
+        const cos = Math.cos(angle);
+        return new Matrix2D(a * cos + c * sin, b * cos + d * sin, a * -sin + c * cos, b * -sin + d * cos);
+    }
+
+    function FromRotation(angle) {
+        return Rotate$1(new Matrix2D(), angle);
+    }
+
+    function Scale$1(src, scaleX, scaleY) {
+        return new Matrix2D(src.a * scaleX, src.b * scaleX, src.c * scaleY, src.d * scaleY);
+    }
+
+    function FromScaling(scaleX, scaleY = scaleX) {
+        return Scale$1(new Matrix2D(), scaleX, scaleY);
+    }
+
+    function Translate$1(src, x, y) {
+        const { a, b, c, d, tx, ty } = src;
+        const dtx = a * x + c * y + tx;
+        const dty = b * x + d * y + ty;
+        return new Matrix2D(1, 0, 0, 1, dtx, dty);
+    }
+
+    function FromTranslation(x, y) {
+        return Translate$1(new Matrix2D(), x, y);
+    }
+
+    function Identity() {
+        return new Matrix2D();
+    }
+
+    //  Inverts the src Matrix and returns the result in a new Matrix, or null.
+    function Invert$1(src) {
+        const { a, b, c, d, tx, ty } = src;
+        let determinant = (a * d) - (b * c);
+        if (!determinant) {
+            return null;
+        }
+        determinant = 1 / determinant;
+        return new Matrix2D(d * determinant, -b * determinant, -c * determinant, a * determinant, (c * ty - d * tx) * determinant, (b * tx - a * ty) * determinant);
+    }
+
+    //  Multiplies matrix a by b and returns the result in a new Matrix2D.
+    function Multiply$1(a, b) {
+        const { a: a0, b: b0, c: c0, d: d0, tx: tx0, ty: ty0 } = a;
+        const { a: a1, b: b1, c: c1, d: d1, tx: tx1, ty: ty1 } = b;
+        return new Matrix2D(a0 * a1 + c0 * b1, b0 * a1 + d0 * b1, a0 * c1 + c0 * d1, b0 * c1 + d0 * d1, a0 * tx1 + c0 * ty1 + tx0, b0 * tx1 + d0 * ty1 + ty0);
+    }
+
+    function MultiplyScalar$1(src, scale) {
+        return new Matrix2D(src.a * scale, src.b * scale, src.c * scale, src.d * scale, src.tx * scale, src.ty * scale);
+    }
+
+    function MultiplyScalarAndAdd$1(a, b, scale) {
+        return new Matrix2D(a.a + (b.a * scale), a.b + (b.b * scale), a.c + (b.c * scale), a.d + (b.d * scale), a.tx + (b.tx * scale), a.ty + (b.ty * scale));
+    }
+
+    function Subtract$1(a, b) {
+        return new Matrix2D(a.a - b.a, a.b - b.b, a.c - b.c, a.c - b.c, a.tx - b.tx, a.ty - b.ty);
+    }
+
+    function Zero$1() {
+        return new Matrix2D(0, 0, 0, 0, 0, 0);
+    }
+
+    //  Phaser.Math.Matrix2dFuncs
+    var index$6 = {
+        Add: Add$1,
+        Append,
+        Clone,
+        Equals,
+        ExactEquals,
+        FromRotation,
+        FromScaling,
+        FromTranslation,
+        Identity,
+        Invert: Invert$1,
+        Multiply: Multiply$1,
+        MultiplyScalar: MultiplyScalar$1,
+        MultiplyScalarAndAdd: MultiplyScalarAndAdd$1,
+        Rotate: Rotate$1,
+        Scale: Scale$1,
+        Subtract: Subtract$1,
+        Translate: Translate$1,
+        Zero: Zero$1
+    };
+
+    var Matrix2dFuncs = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$6
+    });
+
+    var index$7 = {
         Vec2
     };
 
-    var index$3 = /*#__PURE__*/Object.freeze({
+    var Vec2$1 = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$2
+        'default': index$7
+    });
+
+    //  Phaser.Math
+    var index$8 = {
+        Between,
+        FloatBetween,
+        Matrix2d,
+        Matrix2dFuncs,
+        Vec2: Vec2$1
+    };
+
+    var index$9 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$8
     });
 
     function AtlasParser(texture, data) {
@@ -1294,7 +2019,7 @@
         }
     }
 
-    var index$4 = {
+    var index$a = {
         AtlasParser,
         CanvasTexture,
         CreateCanvas,
@@ -1307,57 +2032,10 @@
         TextureManager
     };
 
-    var index$5 = /*#__PURE__*/Object.freeze({
+    var index$b = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$4
+        'default': index$a
     });
-
-    function AddToDOM(element, parent) {
-        let target;
-        if (parent) {
-            if (typeof parent === 'string') {
-                //  Hopefully an element ID
-                target = document.getElementById(parent);
-            }
-            else if (typeof parent === 'object' && parent.nodeType === 1) {
-                //  Quick test for a HTMLElement
-                target = parent;
-            }
-        }
-        else if (element.parentElement) {
-            return element;
-        }
-        //  Fallback, covers an invalid ID and a non HTMLElement object
-        if (!target) {
-            target = document.body;
-        }
-        target.appendChild(element);
-        return element;
-    }
-
-    function DOMContentLoaded(callback) {
-        const readyState = document.readyState;
-        if (readyState === 'complete' || readyState === 'interactive') {
-            callback();
-            return;
-        }
-        const check = () => {
-            document.removeEventListener('deviceready', check, true);
-            document.removeEventListener('DOMContentLoaded', check, true);
-            window.removeEventListener('load', check, true);
-            callback();
-        };
-        if (!document.body) {
-            window.setTimeout(check, 20);
-        }
-        else if (window.hasOwnProperty('cordova')) {
-            document.addEventListener('deviceready', check, true);
-        }
-        else {
-            document.addEventListener('DOMContentLoaded', check, true);
-            window.addEventListener('load', check, true);
-        }
-    }
 
     //  From Pixi v5
     const fragTemplate = [
@@ -1774,7 +2452,7 @@ void main (void)
                 let camera = sceneList[c];
                 let list = sceneList[c + 1];
                 //  This only needs rebinding if the camera matrix is different to before
-                if (!prevCamera || !Matrix2dEqual(camera.worldTransform, prevCamera.worldTransform)) {
+                if (!prevCamera || !ExactEquals(camera.worldTransform, prevCamera.worldTransform)) {
                     shader.flush();
                     shader.bind(projectionMatrix, camera.matrix);
                     prevCamera = camera;
@@ -2140,10 +2818,10 @@ void main (void)
             this.dirtyRender = true;
             const lt = this.localTransform;
             const wt = this.worldTransform;
-            lt[4] = 0 - this.x;
-            lt[5] = 0 - this.y;
+            lt.tx = 0 - this.x;
+            lt.ty = 0 - this.y;
             const mat = this.matrix;
-            const [a, b, c, d, tx, ty] = lt;
+            const { a, b, c, d, tx, ty } = lt;
             const viewportW = this.renderer.width * this.originX;
             const viewportH = this.renderer.height * this.originY;
             mat[0] = a;
@@ -2156,9 +2834,7 @@ void main (void)
             mat[12] = worldX;
             mat[13] = worldY;
             //  Store in worldTransform
-            wt.set([
-                a, b, c, d, worldX, worldY
-            ]);
+            wt.set(a, b, c, d, worldX, worldY);
             // mat[12] = viewportW + tx; // combines translation to center of viewport + scrollX
             // mat[13] = viewportH + ty; // combines translation to center of viewport + scrollY
             // this.translate(-viewportW, -viewportH);
@@ -2529,14 +3205,16 @@ void main (void)
         }
     }
 
+    exports.DOM = index$2;
+    exports.Device = index$1;
     exports.EventEmitter = EventEmitter;
     exports.Game = Game;
-    exports.GameObjects = index$1;
+    exports.GameObjects = index$4;
     exports.Loader = Loader;
-    exports.Math = index$3;
+    exports.Math = index$9;
     exports.Scene = Scene;
     exports.StaticScene = StaticScene;
-    exports.Textures = index$5;
+    exports.Textures = index$b;
     exports.WebGLRenderer = WebGLRenderer;
 
     Object.defineProperty(exports, '__esModule', { value: true });

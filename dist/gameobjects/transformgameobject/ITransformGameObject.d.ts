@@ -1,4 +1,5 @@
 import IGameObject from '../gameobject/IGameObject';
+import Matrix2D from '../../math/matrix2d/Matrix2D';
 export default interface ITransformGameObject extends IGameObject {
     x: number;
     y: number;
@@ -12,8 +13,8 @@ export default interface ITransformGameObject extends IGameObject {
     originX: number;
     originY: number;
     transformData: Float32Array;
-    localTransform?: Float32Array;
-    worldTransform?: Float32Array;
+    localTransform?: Matrix2D;
+    worldTransform?: Matrix2D;
     setPosition(x: number, y?: number): this;
     setRotation(value: number): this;
     setScale(scaleX: number, scaleY?: number): this;

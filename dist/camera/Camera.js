@@ -15,10 +15,10 @@ export default class Camera extends TransformGameObject {
         this.dirtyRender = true;
         const lt = this.localTransform;
         const wt = this.worldTransform;
-        lt[4] = 0 - this.x;
-        lt[5] = 0 - this.y;
+        lt.tx = 0 - this.x;
+        lt.ty = 0 - this.y;
         const mat = this.matrix;
-        const [a, b, c, d, tx, ty] = lt;
+        const { a, b, c, d, tx, ty } = lt;
         const viewportW = this.renderer.width * this.originX;
         const viewportH = this.renderer.height * this.originY;
         mat[0] = a;
@@ -31,9 +31,7 @@ export default class Camera extends TransformGameObject {
         mat[12] = worldX;
         mat[13] = worldY;
         //  Store in worldTransform
-        wt.set([
-            a, b, c, d, worldX, worldY
-        ]);
+        wt.set(a, b, c, d, worldX, worldY);
         // mat[12] = viewportW + tx; // combines translation to center of viewport + scrollX
         // mat[13] = viewportH + ty; // combines translation to center of viewport + scrollY
         // this.translate(-viewportW, -viewportH);
