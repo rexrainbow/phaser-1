@@ -20,7 +20,7 @@ export default class TransformGameObject extends GameObject
 
         const byte = Float32Array.BYTES_PER_ELEMENT;
 
-        const buffer = new ArrayBuffer(9 * byte);
+        const buffer = new ArrayBuffer(10 * byte);
 
         this.transformBuffer = buffer;
 
