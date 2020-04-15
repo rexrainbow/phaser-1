@@ -1,4 +1,4 @@
-export default interface ISpriteMultiShader {
+export default interface IShaderConfig {
     batchSize?: number;
     fragmentShader?: string;
     vertexShader?: string;

@@ -1,9 +1,9 @@
 import Texture from './Texture';
 import ISprite from '../gameobjects/sprite/ISprite';
 import SpriteRenderWebGL from '../gameobjects/sprite/RenderWebGL';
-import WebGLRenderer from '../renderer/WebGLRenderer';
-import Ortho from '../renderer/Ortho';
-import CreateFramebuffer from '../renderer/CreateFramebuffer';
+import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
+import Ortho from '../renderer/webgl1/Ortho';
+import CreateFramebuffer from '../renderer/webgl1/CreateFramebuffer';
 
 export default class RenderTexture extends Texture
 {

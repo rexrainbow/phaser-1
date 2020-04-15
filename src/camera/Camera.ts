@@ -1,5 +1,5 @@
 import TransformGameObject from '../gameobjects/transformgameobject/TransformGameObject';
-import WebGLRenderer from '../renderer/WebGLRenderer';
+import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
 import GameInstance from '../GameInstance';
 
 export default class Camera extends TransformGameObject

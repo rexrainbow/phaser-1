@@ -1,13 +1,14 @@
-import CheckShaderMaxIfStatements from './CheckShaderMaxIfStatements';
-import MultiTextureQuadShader from './MultiTextureQuadShader';
-import Texture from '../textures/Texture';
-import Matrix2dEqual from '../math/matrix2d-funcs/ExactEquals';
-import ICamera from '../camera/ICamera';
+import CheckShaderMaxIfStatements from './shaders/CheckShaderMaxIfStatements';
+import MultiTextureQuadShader from './shaders/MultiTextureQuadShader';
+import Texture from '../../textures/Texture';
+import Matrix2dEqual from '../../math/matrix2d-funcs/ExactEquals';
+import ICamera from '../../camera/ICamera';
 import Ortho from './Ortho';
 import GL from './GL';
-import IGameObject from '../gameobjects/gameobject/IGameObject';
-import SpriteRenderWebGL from '../gameobjects/sprite/RenderWebGL';
-import ISprite from '../gameobjects/sprite/ISprite';
+import IGameObject from '../../gameobjects/gameobject/IGameObject';
+import SpriteRenderWebGL from '../../gameobjects/sprite/RenderWebGL';
+import ISprite from '../../gameobjects/sprite/ISprite';
+import IShader from './shaders/IShader';
 
 export default class WebGLRenderer
 {
@@ -25,7 +26,7 @@ export default class WebGLRenderer
 
     clearColor = [ 0, 0, 0, 1 ];
 
-    shader: MultiTextureQuadShader;
+    shader: IShader;
 
     width: number;
     height: number;

@@ -1,5 +1,5 @@
 import { AddToDOM, DOMContentLoaded } from './dom';
-import WebGLRenderer from './renderer/WebGLRenderer';
+import WebGLRenderer from './renderer/webgl1/WebGLRenderer';
 import SceneManager from './scenes/SceneManager';
 import TextureManager from './textures/TextureManager';
 import IGameConfig from './IGameConfig';

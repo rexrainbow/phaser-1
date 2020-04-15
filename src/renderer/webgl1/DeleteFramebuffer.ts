@@ -1,4 +1,4 @@
-import GL from '../renderer/GL';
+import GL from './GL';
 
 export default function DeleteFramebuffer (framebuffer: WebGLFramebuffer)
 {

@@ -1,4 +1,4 @@
-import GL from '../renderer/GL';
+import GL from './GL';
 
 export default function UpdateGLTexture (source: TexImageSource, dstTexture: WebGLTexture, flipY: boolean = false)
 {

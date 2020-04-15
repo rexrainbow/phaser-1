@@ -1,37 +1,46 @@
-import WebGLRenderer from './WebGLRenderer';
-import ISpriteMultiShader from './ISpriteMultiShader';
+import WebGLRenderer from '../WebGLRenderer';
+import IShaderConfig from './IShaderConfig';
 
 const shaderSource = {
 
     fragmentShader: `
 precision highp float;
+
 varying vec2 vTextureCoord;
 varying float vTextureId;
 varying vec4 vTintColor;
+
 uniform sampler2D uTexture[%count%];
+
 void main (void)
 {
     vec4 color;
     %forloop%
+
     gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);
 }`,
     
     vertexShader: `
 precision highp float;
+
 attribute vec2 aVertexPosition;
 attribute vec2 aTextureCoord;
 attribute float aTextureId;
 attribute vec4 aTintColor;
+
 uniform mat4 uProjectionMatrix;
 uniform mat4 uCameraMatrix;
+
 varying vec2 vTextureCoord;
 varying float vTextureId;
 varying vec4 vTintColor;
+
 void main (void)
 {
     vTextureCoord = aTextureCoord;
     vTextureId = aTextureId;
     vTintColor = aTintColor;
+
     gl_Position = uProjectionMatrix * uCameraMatrix * vec4(aVertexPosition, 0.0, 1.0);
 }`
 }
@@ -196,7 +205,7 @@ export default class MultiTextureQuadShader
     //  The number of quads previously flushed
     prevCount: number;
 
-    constructor (renderer: WebGLRenderer, config: ISpriteMultiShader = {})
+    constructor (renderer: WebGLRenderer, config: IShaderConfig = {})
     {
         this.renderer = renderer;
         this.gl = renderer.gl;

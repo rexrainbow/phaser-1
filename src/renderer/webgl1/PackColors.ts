@@ -1,4 +1,4 @@
-import ISprite from '../gameobjects/sprite/ISprite';
+import ISprite from '../../gameobjects/sprite/ISprite';
 import PackColor from './PackColor';
 
 export default function PackColors (sprite: ISprite)

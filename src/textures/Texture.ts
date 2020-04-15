@@ -1,9 +1,9 @@
 import Frame from './Frame';
-import SetGLTextureFilterMode from '../renderer/SetGLTextureFilterMode';
-import DeleteGLTexture from '../renderer/DeleteGLTexture';
-import DeleteFramebuffer from '../renderer/DeleteFramebuffer';
-import CreateGLTexture from '../renderer/CreateGLTexture';
-import UpdateGLTexture from '../renderer/UpdateGLTexture';
+import SetGLTextureFilterMode from '../renderer/webgl1/SetGLTextureFilterMode';
+import DeleteGLTexture from '../renderer/webgl1/DeleteGLTexture';
+import DeleteFramebuffer from '../renderer/webgl1/DeleteFramebuffer';
+import CreateGLTexture from '../renderer/webgl1/CreateGLTexture';
+import UpdateGLTexture from '../renderer/webgl1/UpdateGLTexture';
 
 export default class Texture
 {

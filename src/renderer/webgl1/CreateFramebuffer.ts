@@ -1,4 +1,4 @@
-import GL from '../renderer/GL';
+import GL from './GL';
 import CreateGLTexture from './CreateGLTexture';
 
 export default function CreateFramebuffer (width: number, height: number): [ WebGLTexture, WebGLFramebuffer ]
