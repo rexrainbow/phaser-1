@@ -1,0 +1,1 @@
+{"version":3,"file":"IContainer.d.ts","sourceRoot":"","sources":["../../../src/gameobjects/container/IContainer.ts"],"names":[],"mappings":"AAAA,OAAO,oBAAoB,MAAM,6CAA6C,CAAC;AAC/E,OAAO,OAAO,MAAM,WAAW,CAAC;AAEhC,MAAM,CAAC,OAAO,WAAW,UAAW,SAAQ,oBAAoB,EAAE,OAAO;IAErE,KAAK,EAAE,MAAM,CAAC;CAEjB"}

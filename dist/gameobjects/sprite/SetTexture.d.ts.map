@@ -1,0 +1,1 @@
+{"version":3,"file":"SetTexture.d.ts","sourceRoot":"","sources":["../../../src/gameobjects/sprite/SetTexture.ts"],"names":[],"mappings":"AAAA,OAAO,OAAO,MAAM,WAAW,CAAC;AAChC,OAAO,OAAO,MAAM,wBAAwB,CAAC;AAC7C,OAAO,KAAK,MAAM,sBAAsB,CAAC;AAIzC,MAAM,CAAC,OAAO,UAAU,UAAU,CAAE,GAAG,EAAE,MAAM,GAAG,OAAO,EAAE,KAAK,EAAE,MAAM,GAAG,MAAM,GAAG,KAAK,EAAE,GAAG,MAAM,EAAE,OAAO,EAAE,QA4B9G"}
