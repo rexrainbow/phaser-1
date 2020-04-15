@@ -1,15 +1,15 @@
-import clear from 'rollup-plugin-clear';
-import resolve from 'rollup-plugin-node-resolve';
-// import resolve from '@rollup/plugin-node-resolve';
-//  Fails because: https://github.com/rollup/plugins/issues/287
+// Can't use official plugin because: https://github.com/rollup/plugins/issues/287 >:-(
 // import typescript from '@rollup/plugin-typescript';
+import clear from 'rollup-plugin-clear';
+import resolve from '@rollup/plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import filesize from 'rollup-plugin-filesize';
 import command from 'rollup-plugin-command';
-// import visualizer from 'rollup-plugin-visualizer';
 import fs from 'fs-extra';
 import copy from 'rollup-plugin-copy';
+// Another crashing plugin that used to work (and hopefully will again!):
+// import visualizer from 'rollup-plugin-visualizer';
 
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
@@ -105,6 +105,7 @@ export default {
             ]
         }),
 
+        //  Currently crashing in version 4.0.4, let's hope they fix it
         // visualizer({
         //     "title": "Phaser 4 Package Stats",
         //     "sourcemap": false,
