@@ -1,20 +1,18 @@
 import Sprite from '../sprite/Sprite';
-import { Scene } from '../..';
-import IAnimationData from '../IAnimationData';
-import IAnimationPlayConfig from './IAnimationPlayConfig';
+import IAnimationData from './IAnimationData';
 import Frame from '../../textures/Frame';
-import IContainer from './IContainer';
+import IContainer from '../container/IContainer';
 
 export default class AnimatedSprite extends Sprite
 {
     anims: Map<string, Frame[]>;
     animData: IAnimationData;
 
-    constructor (scene: Scene, x: number, y: number, texture: string, frame?: string | number)
+    constructor (x: number, y: number, texture: string, frame?: string | number)
     {
-        super(scene, x, y, texture, frame);
+        super(x, y, texture, frame);
 
-        this.setType('AnimatedSprite');
+        this.type = 'AnimatedSprite';
 
         this.anims = new Map();
     
@@ -38,108 +36,7 @@ export default class AnimatedSprite extends Sprite
         };
     }
 
-    addAnimation (key: string, frames: string[] | number[])
-    {
-        if (!this.anims.has(key))
-        {
-            this.anims.set(key, this.texture.getFrames(frames));
-        }
-
-        return this;
-    }
-
-    addAnimationFromAtlas (key: string, prefix: string, start: number, end: number, zeroPad: number = 0, suffix: string = '')
-    {
-        if (!this.anims.has(key))
-        {
-            this.anims.set(key, this.texture.getFramesInRange(prefix, start, end, zeroPad, suffix));
-        }
-
-        return this;
-    }
-
-    removeAnimation (key: string)
-    {
-        this.anims.delete(key);
-
-        return this;
-    }
-
-    clearAnimations ()
-    {
-        this.anims.clear();
-
-        return this;
-    }
-
-    //  If animation already playing, calling this does nothing (use restart to restart one)
-    play (key: string, config: IAnimationPlayConfig = {})
-    {
-        const {
-            speed = 24,
-            repeat = 0,
-            yoyo = false,
-            startFrame = 0,
-            delay = 0,
-            repeatDelay = 0,
-            onStart = null,
-            onRepeat = null,
-            onComplete = null,
-            forceRestart = false
-        } = config;
-
-        const data = this.animData;
-
-        if (data.isPlaying)
-        {
-            if (data.currentAnim !== key)
-            {
-                this.stop();
-            }
-            else if (!forceRestart)
-            {
-                //  This animation is already playing? Just return then.
-                return this;
-            }
-        }
-
-        if (this.anims.has(key))
-        {
-            data.currentFrames = this.anims.get(key);
-            data.currentAnim = key;
-            data.frameIndex = startFrame;
-            data.animSpeed = 1000 / speed;
-            data.nextFrameTime = data.animSpeed + delay;
-            data.isPlaying = true;
-            data.playingForward = true;
-            data.yoyo = yoyo;
-            data.repeatCount = repeat;
-            data.delay = delay;
-            data.repeatDelay = repeatDelay;
-            data.onStart = onStart;
-            data.onRepeat = onRepeat;
-            data.onComplete = onComplete;
-
-            //  If there is no start delay, we set the first frame immediately
-            if (delay === 0)
-            {
-                this.setFrame(data.currentFrames[data.frameIndex]);
-
-                if (onStart)
-                {
-                    onStart(this, key);
-                }
-            }
-            else
-            {
-                data.pendingStart = true;
-            }
-        }
-
-        return this;
-    }
-
-    stop ()
+    private stop ()
     {
         const data = this.animData;
 

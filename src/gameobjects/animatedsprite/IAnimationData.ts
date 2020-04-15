@@ -1,5 +1,5 @@
-import Frame from '../textures/Frame';
-import { IAnimationComponent } from './AnimationComponent';
+import Frame from '../../textures/Frame';
+import IAnimatedSprite from './IAnimatedSprite';
 
 export default interface IAnimationData
 {
@@ -15,7 +15,7 @@ export default interface IAnimationData
     playingForward: boolean;
     delay: number;
     repeatDelay: number;
-    onStart?: (sprite: IAnimationComponent, animation: string) => void;
-    onRepeat?: (sprite: IAnimationComponent, animation: string) => void;
-    onComplete?: (sprite: IAnimationComponent, animation: string) => void;
+    onStart?: (sprite: IAnimatedSprite, animation: string) => void;
+    onRepeat?: (sprite: IAnimatedSprite, animation: string) => void;
+    onComplete?: (sprite: IAnimatedSprite, animation: string) => void;
 }

@@ -1,4 +1,4 @@
-import { IAnimationComponent } from './AnimationComponent';
+import IAnimatedSprite from './IAnimatedSprite';
 
 export default interface IAnimationPlayConfig
 {
@@ -9,7 +9,7 @@ export default interface IAnimationPlayConfig
     delay?: number;
     repeatDelay?: number;
     forceRestart?: boolean;
-    onStart?: (sprite: IAnimationComponent, animation: string) => void;
-    onRepeat?: (sprite: IAnimationComponent, animation: string) => void;
-    onComplete?: (sprite: IAnimationComponent, animation: string) => void;
+    onStart?: (sprite: IAnimatedSprite, animation: string) => void;
+    onRepeat?: (sprite: IAnimatedSprite, animation: string) => void;
+    onComplete?: (sprite: IAnimatedSprite, animation: string) => void;
 }
