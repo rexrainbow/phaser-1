@@ -1,13 +1,15 @@
 import GameObject from '../gameobject/GameObject';
 import CONST from './const';
+import Matrix2D from '../../math/matrix2d/Matrix2D';
+import Copy from '../../math/matrix2d/Copy';
 
 export default class TransformGameObject extends GameObject
 {
     private transformBuffer: ArrayBuffer;
 
     transformData: Float32Array;
-    localTransform: Float32Array;
-    worldTransform: Float32Array;
+    localTransform: Matrix2D;
+    worldTransform: Matrix2D;
 
     width: number;
     height: number;
@@ -18,7 +20,7 @@ export default class TransformGameObject extends GameObject
 
         const byte = Float32Array.BYTES_PER_ELEMENT;
 
-        const buffer = new ArrayBuffer(22 * byte);
+        const buffer = new ArrayBuffer(9 * byte);
 
         this.transformBuffer = buffer;
 
@@ -34,28 +36,12 @@ export default class TransformGameObject extends GameObject
          * 7 = scale y
          * 8 = rotation
          * 9 = angle
-         * localTransform
-         * 10 = local transform a
-         * 11 = local transform b
-         * 12 = local transform c
-         * 13 = local transform d
-         * 14 = local transform tx
-         * 15 = local transform ty
-         * worldTransform
-         * 16 = world transform a
-         * 17 = world transform b
-         * 18 = world transform c
-         * 19 = world transform d
-         * 20 = world transform tx
-         * 21 = world transform ty
          */
         this.transformData = new Float32Array(buffer, 0, 10);
-        this.localTransform = new Float32Array(buffer, byte * 10, 6);
-        this.worldTransform = new Float32Array(buffer, byte * 16, 6);
+        this.localTransform = new Matrix2D();
+        this.worldTransform = new Matrix2D();
 
         this.transformData.set([ x, y, 0.5, 0.5, 0, 0, 1, 1, 0, 0 ]);
-        this.localTransform.set([ 1, 0, 0, 1, 0, 0 ]);
-        this.worldTransform.set([ 1, 0, 0, 1, 0, 0 ]);
 
         this.width = 0;
         this.height = 0;
@@ -67,14 +53,16 @@ export default class TransformGameObject extends GameObject
     {
         const transform = this.localTransform;
 
-        const { rotation, skewX, skewY, scaleX, scaleY } = this;
+        const { rotation, skewX, skewY, scaleX, scaleY, x, y } = this;
 
-        transform.set([
+        transform.set(
             Math.cos(rotation + skewY) * scaleX,
             Math.sin(rotation + skewY) * scaleX,
             -Math.sin(rotation - skewX) * scaleY,
-            Math.cos(rotation - skewX) * scaleY
-        ]);
+            Math.cos(rotation - skewX) * scaleY,
+            x,
+            y
+        );
 
         return this.updateTransform();
     }
@@ -88,27 +76,27 @@ export default class TransformGameObject extends GameObject
         const lt = this.localTransform;
         const wt = this.worldTransform;
 
-        lt[4] = this.x;
-        lt[5] = this.y;
+        lt.tx = this.x;
+        lt.ty = this.y;
 
         if (!parent)
         {
-            wt.set(lt);
+            Copy(lt, wt);
 
             return this;
         }
 
-        const [ a, b, c, d, tx, ty ] = lt;
-        const [ pa, pb, pc, pd, ptx, pty ] = parent.worldTransform;
+        const { a, b, c, d, tx, ty } = lt;
+        const { a: pa, b: pb, c: pc, d: pd, tx: ptx, ty: pty } = parent.worldTransform;
 
-        wt.set([
+        wt.set(
             a  * pa + b  * pc,
             a  * pb + b  * pd,
             c  * pa + d  * pc,
             c  * pb + d  * pd,
             tx * pa + ty * pc + ptx,
             tx * pb + ty * pd + pty
-        ]);
+        );
 
         return this;
     }
