@@ -1,5 +1,5 @@
-// import * as Device from './device/';
-// import * as DOM from './dom/';
+import * as Device from './device/';
+import * as DOM from './dom/';
 import * as GameObjects from './gameobjects/';
 import * as Math from './math/';
 import * as Textures from './textures/';
@@ -11,8 +11,8 @@ import Loader from './loader/Loader';
 import WebGLRenderer from './renderer/WebGLRenderer';
 
 export {
-    // Device,
-    // DOM,
+    Device,
+    DOM,
     Game,
     Scene,
     StaticScene,

@@ -1,9 +1,8 @@
 import EventEmitter from '../core/EventEmitter';
-import Vec2 from '../math/Vec2';
-import GlobalToLocal from '../math/GlobalToLocal';
-import AppendMatrix2d from '../math/AppendMatrix2d';
-import { IContainerComponent } from '../components';
-import IGameObject from '../gameobjects/IGameObject';
+import Vec2 from '../math/vec2/Vec2';
+import GlobalToLocal from '../math/matrix2d/GlobalToLocal';
+import AppendMatrix2d from '../math/matrix2d-funcs/Append';
+import IGameObject from '../gameobjects/gameobject/IGameObject';
 import GameInstance from '../GameInstance';
 
 export default class Mouse extends EventEmitter

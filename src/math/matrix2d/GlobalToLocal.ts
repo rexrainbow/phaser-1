@@ -1,8 +1,9 @@
-import Vec2 from './Vec2';
+import IMatrix2D from './IMatrix2D';
+import Vec2 from '../vec2/Vec2';
 
-export default function GlobalToLocal (transform: Float32Array, x: number, y: number, outPoint: Vec2 = new Vec2()): Vec2
+export default function GlobalToLocal (mat: IMatrix2D, x: number, y: number, outPoint: Vec2 = new Vec2()): Vec2
 {
-    const [ a, b, c, d, tx, ty ] = transform;
+    const { a, b, c, d, tx, ty } = mat;
 
     const id: number = 1 / ((a * d) + (c * -b));
 
