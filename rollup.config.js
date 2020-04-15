@@ -101,7 +101,7 @@ export default {
 
         copy({
             targets: [
-                { src: 'README.dist.md', dest: 'dist', rename: 'README.md' }
+                { src: './README.dist.md', dest: 'dist', rename: 'README.md' }
             ]
         }),
 
