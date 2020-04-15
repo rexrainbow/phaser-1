@@ -6,7 +6,7 @@ export default class TransformGameObject extends GameObject {
     constructor(x = 0, y = 0) {
         super();
         const byte = Float32Array.BYTES_PER_ELEMENT;
-        const buffer = new ArrayBuffer(9 * byte);
+        const buffer = new ArrayBuffer(10 * byte);
         this.transformBuffer = buffer;
         /**
          * transformData:
