@@ -8,7 +8,7 @@
         "build": "rollup -c rollup.config.js",
         "watch": "rollup -c rollup.debug.config.js --watch",
         "testdist": "npm version patch --no-git-tag-version && npm run build",
-        "dist": "npm version patch --no-git-tag-version && npm run build && cd dist && npm publish --ignore-scripts",
+        "dist": "npm version patch && npm run build && cd dist && npm publish --ignore-scripts",
         "distminor": "npm version minor --no-git-tag-version && npm run build && cd dist && npm publish --ignore-scripts",
         "distmajor": "npm version major --no-git-tag-version && npm run build && cd dist && npm publish --ignore-scripts"
     },
