@@ -1,0 +1,22 @@
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+
+/**
+ * Force a value within the boundaries by clamping it to the range `min`, `max`.
+ *
+ * @function Phaser.Math.Clamp
+ * @since 3.0.0
+ *
+ * @param {number} value - The value to be clamped.
+ * @param {number} min - The minimum bounds.
+ * @param {number} max - The maximum bounds.
+ *
+ * @return {number} The clamped value.
+ */
+export default function Clamp (value: number, min: number, max: number): number
+{
+    return Math.max(min, Math.min(max, value));
+}
