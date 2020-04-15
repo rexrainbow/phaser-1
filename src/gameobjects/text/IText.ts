@@ -11,6 +11,7 @@ export default interface IText extends ISprite
     verticalAlign: VerticalTextAlignment;
     lineSpacing: number;
     resolution: number;
+    cornerRadius: number;
     font: string;
     fillStyle: string | CanvasGradient | CanvasPattern;
     strokeStyle: string | CanvasGradient | CanvasPattern;
@@ -22,15 +23,6 @@ export default interface IText extends ISprite
     fixedWidth: number;
     fixedHeight: number;
     text: string | string[];
+    updateText (): this;
     setText (value: string | string[]): this;
-    setFont (font: string): this;
-    setFixedSize (width?: number, height?: number): this;
-    setFillStyle (style: string | CanvasGradient | CanvasPattern): this;
-    setStrokeStyle (style: string | CanvasGradient | CanvasPattern, lineWidth?: number): this;
-    setBackgroundStyle (style: string | CanvasGradient | CanvasPattern): this;
-    setTextAlign (align: CanvasTextAlign): this;
-    setTextBaseline (baseline: CanvasTextBaseline): this;
-    setLineWidth (width: number): this;
-    setLineSpacing (spacing: number): this;
-    setLineDash (segments: number[]): this;
 }

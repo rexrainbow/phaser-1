@@ -82,7 +82,7 @@ export default class Text extends Sprite
         //  TODO Shadows
     }
 
-    private updateText (): this
+    updateText (): this
     {
         const canvas = this.canvas;
         const ctx = this.context;
@@ -283,101 +283,6 @@ export default class Text extends Sprite
         }
 
         return this;
-    }
-
-    setFont (font: string): this
-    {
-        this.font = font;
-
-        return this.updateText();
-    }
-
-    setFixedSize (width?: number, height?: number): this
-    {
-        this.fixedWidth = width;
-        this.fixedHeight = height;
-
-        return this.updateText();
-    }
-
-    setFillStyle (style: string | CanvasGradient | CanvasPattern): this
-    {
-        this.fillStyle = style;
-
-        return this.updateText();
-    }
-
-    setStrokeStyle (style: string | CanvasGradient | CanvasPattern, lineWidth?: number): this
-    {
-        this.strokeStyle = style;
-
-        if (lineWidth)
-        {
-            this.lineWidth = lineWidth;
-        }
-
-        return this.updateText();
-    }
-
-    setPadding (left: number, right: number = left, top: number = left, bottom: number = left): this
-    {
-        this.padding = { left, right, top, bottom };
-
-        return this.updateText();
-    }
-
-    setCornerRadius (cornerRadius: number): this
-    {
-        this.cornerRadius = cornerRadius;
-
-        return this.updateText();
-    }
-
-    setBackgroundStyle (style: string | CanvasGradient | CanvasPattern, cornerRadius?: number): this
-    {
-        this.backgroundStyle = style;
-
-        if (cornerRadius)
-        {
-            this.cornerRadius = cornerRadius;
-        }
-
-        return this.updateText();
-    }
-
-    setTextAlign (align: CanvasTextAlign): this
-    {
-        this.textAlign = align;
-
-        return this.updateText();
-    }
-
-    setTextBaseline (baseline: CanvasTextBaseline): this
-    {
-        this.textBaseline = baseline;
-
-        return this.updateText();
-    }
-
-    setLineWidth (width: number): this
-    {
-        this.lineWidth = width;
-
-        return this.updateText();
-    }
-
-    setLineSpacing (spacing: number): this
-    {
-        this.lineSpacing = spacing;
-
-        return this.updateText();
-    }
-
-    setLineDash (segments: number[] = []): this
-    {
-        this.lineDash = segments;
-
-        return this.updateText();
     }
 
     destroy (reparentChildren?: IContainer)
