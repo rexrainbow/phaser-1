@@ -1,10 +1,13 @@
 import clear from 'rollup-plugin-clear';
 import resolve from 'rollup-plugin-node-resolve';
+// import resolve from '@rollup/plugin-node-resolve';
+//  Fails because: https://github.com/rollup/plugins/issues/287
+// import typescript from '@rollup/plugin-typescript';
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import filesize from 'rollup-plugin-filesize';
 import command from 'rollup-plugin-command';
-import visualizer from 'rollup-plugin-visualizer';
+// import visualizer from 'rollup-plugin-visualizer';
 import fs from 'fs-extra';
 import copy from 'rollup-plugin-copy';
 
@@ -84,7 +87,7 @@ export default {
     plugins: [
 
         clear({
-            targets: [ './dist '],
+            targets: [ './dist', './stats.html' ],
             watch: true
         }),
 
@@ -98,15 +101,15 @@ export default {
 
         copy({
             targets: [
-                { src: 'README.md', dest: 'dist', rename: 'README.md' }
+                { src: 'README.dist.md', dest: 'dist', rename: 'README.md' }
             ]
         }),
 
-        visualizer({
-            "title": "Phaser 4 Package Stats",
-            "sourcemap": false,
-            "template": "treemap" // "circlepacking"
-        })
+        // visualizer({
+        //     "title": "Phaser 4 Package Stats",
+        //     "sourcemap": false,
+        //     "template": "treemap" // "circlepacking"
+        // })
 
     ]
 

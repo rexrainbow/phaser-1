@@ -26,6 +26,8 @@
     },
     "homepage": "https://github.com/phaserjs/phaser#readme",
     "devDependencies": {
+        "@rollup/plugin-node-resolve": "^7.1.3",
+        "@rollup/plugin-typescript": "^4.1.1",
         "fs-extra": "^9.0.0",
         "rollup": "^2.6.1",
         "rollup-plugin-banner": "^0.2.1",
@@ -38,6 +40,7 @@
         "rollup-plugin-terser": "^5.3.0",
         "rollup-plugin-typescript2": "^0.27.0",
         "rollup-plugin-visualizer": "^4.0.4",
+        "tslib": "^1.11.1",
         "typedoc": "^0.17.4",
         "typescript": "^3.8.3",
         "uplot": "^1.0.6"
