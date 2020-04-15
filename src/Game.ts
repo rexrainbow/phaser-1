@@ -1,5 +1,4 @@
-import DOMContentLoaded from './core/DOMContentLoaded';
-import AddToDOM from './core/AddToDOM';
+import { AddToDOM, DOMContentLoaded } from './dom';
 import WebGLRenderer from './renderer/WebGLRenderer';
 import SceneManager from './scenes/SceneManager';
 import TextureManager from './textures/TextureManager';
