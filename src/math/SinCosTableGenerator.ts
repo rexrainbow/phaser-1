@@ -8,10 +8,12 @@
  * @typedef {object} Phaser.Types.Math.SinCosTable
  * @since 3.0.0
  *
- * @property {number} sin - The sine value.
- * @property {number} cos - The cosine value.
+ * @property {number[]} sin - The sine values.
+ * @property {number[]} cos - The cosine values.
  * @property {number} length - The length.
  */
+
+type SinCosTable = { sin: number[], cos: number[], length: number };
 
 /**
  * Generate a series of sine and cosine values.
@@ -26,7 +28,7 @@
  *
  * @return {SinCosTable} The generated values.
  */
-export default function SinCosTableGenerator (length: number, sinAmp: number = 1, cosAmp: number = 1, frequency: number = 1)
+export default function SinCosTableGenerator (length: number, sinAmp: number = 1, cosAmp: number = 1, frequency: number = 1): SinCosTable
 {
     frequency *= Math.PI / length;
 
@@ -43,8 +45,8 @@ export default function SinCosTableGenerator (length: number, sinAmp: number = 1
     }
 
     return {
-        sin: sin,
-        cos: cos,
-        length: length
+        sin,
+        cos,
+        length
     };
 }
