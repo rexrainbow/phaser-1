@@ -2873,7 +2873,7 @@ class World {
         this.scene = scene;
         this.children = [];
         this.renderList = [];
-        this.worldTransform = new Float32Array([1, 0, 0, 1, 0, 0]);
+        this.worldTransform = new Matrix2D();
         this.camera = new Camera();
     }
     scanChildren(root, gameFrame) {
@@ -2999,7 +2999,7 @@ class StaticWorld {
         this.scene = scene;
         this.children = [];
         this.renderList = [];
-        this.worldTransform = new Float32Array([1, 0, 0, 1, 0, 0]);
+        this.worldTransform = new Matrix2D();
         this.camera = new StaticCamera(scene);
     }
     scanChildren(root, gameFrame) {

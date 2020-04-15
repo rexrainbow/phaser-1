@@ -3,6 +3,7 @@ import Scene from '../scenes/Scene';
 import RectangleToRectangle from '../geom/intersection/RectangleToRectangle';
 import IGameObject from '../gameobjects/gameobject/IGameObject';
 import IContainer from '../gameobjects/container/IContainer';
+import Matrix2D from '../math/matrix2d/Matrix2D';
 
 export default class World
 {
@@ -31,7 +32,7 @@ export default class World
 
     enableCameraCull: boolean = true;
 
-    worldTransform: Float32Array;
+    worldTransform: Matrix2D;
 
     constructor (scene: Scene)
     {
@@ -40,7 +41,7 @@ export default class World
         this.children = [];
         this.renderList = [];
 
-        this.worldTransform = new Float32Array([ 1, 0, 0, 1, 0, 0 ]);
+        this.worldTransform = new Matrix2D();
 
         this.camera = new Camera();
     }

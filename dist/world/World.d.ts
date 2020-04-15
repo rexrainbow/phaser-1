@@ -1,6 +1,7 @@
 import Camera from '../camera/Camera';
 import Scene from '../scenes/Scene';
 import IGameObject from '../gameobjects/gameobject/IGameObject';
+import Matrix2D from '../math/matrix2d/Matrix2D';
 export default class World {
     scene: Scene;
     children: IGameObject[];
@@ -12,7 +13,7 @@ export default class World {
     private renderList;
     forceRefresh: boolean;
     enableCameraCull: boolean;
-    worldTransform: Float32Array;
+    worldTransform: Matrix2D;
     constructor(scene: Scene);
     private scanChildren;
     private buildRenderList;

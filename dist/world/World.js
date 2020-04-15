@@ -1,5 +1,6 @@
 import Camera from '../camera/Camera';
 import RectangleToRectangle from '../geom/intersection/RectangleToRectangle';
+import Matrix2D from '../math/matrix2d/Matrix2D';
 export default class World {
     constructor(scene) {
         //  How many Game Objects were made dirty this frame?
@@ -15,7 +16,7 @@ export default class World {
         this.scene = scene;
         this.children = [];
         this.renderList = [];
-        this.worldTransform = new Float32Array([1, 0, 0, 1, 0, 0]);
+        this.worldTransform = new Matrix2D();
         this.camera = new Camera();
     }
     scanChildren(root, gameFrame) {

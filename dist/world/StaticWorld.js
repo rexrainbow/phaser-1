@@ -1,4 +1,5 @@
 import StaticCamera from '../camera/StaticCamera';
+import Matrix2D from '../math/matrix2d/Matrix2D';
 //  A Static World is designed specifically to have a bounds of a fixed size
 //  and a camera that doesn't move at all (no scrolling, rotation, etc)
 //  Because it has a fixed size, there is no camera culling enabled.
@@ -15,7 +16,7 @@ export default class StaticWorld {
         this.scene = scene;
         this.children = [];
         this.renderList = [];
-        this.worldTransform = new Float32Array([1, 0, 0, 1, 0, 0]);
+        this.worldTransform = new Matrix2D();
         this.camera = new StaticCamera(scene);
     }
     scanChildren(root, gameFrame) {

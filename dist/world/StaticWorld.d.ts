@@ -1,6 +1,7 @@
 import IGameObject from '../gameobjects/gameobject/IGameObject';
 import StaticCamera from '../camera/StaticCamera';
 import StaticScene from '../scenes/StaticScene';
+import Matrix2D from '../math/matrix2d/Matrix2D';
 export default class StaticWorld {
     scene: StaticScene;
     children: IGameObject[];
@@ -10,7 +11,7 @@ export default class StaticWorld {
     visibleFrame: number;
     private renderList;
     forceRefresh: boolean;
-    worldTransform: Float32Array;
+    worldTransform: Matrix2D;
     constructor(scene: StaticScene);
     private scanChildren;
     private buildRenderList;
