@@ -983,7 +983,24 @@
         }
     }
 
-    function IsPowerOfTwo(width, height) {
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Checks if the given `width` and `height` are a power of two.
+     * Useful for checking texture dimensions.
+     *
+     * @function Phaser.Math.Pow2.IsSize
+     * @since 3.0.0
+     *
+     * @param {number} width - The width.
+     * @param {number} height - The height.
+     *
+     * @return {boolean} `true` if `width` and `height` are a power of two, otherwise `false`.
+     */
+    function IsSizePowerOfTwo(width, height) {
         if (width < 1 || height < 1) {
             return false;
         }
@@ -1007,7 +1024,7 @@
         const mode = (linear) ? gl.LINEAR : gl.NEAREST;
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mode);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, mode);
-        const pot = (source && IsPowerOfTwo(width, height));
+        const pot = (source && IsSizePowerOfTwo(width, height));
         const wrap = (pot && potClamp) ? gl.REPEAT : gl.CLAMP_TO_EDGE;
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
@@ -1350,13 +1367,726 @@
         'default': index$3
     });
 
-    function Between(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Find the angle of a segment from (x1, y1) -> (x2, y2).
+     *
+     * @function Phaser.Math.Angle.Between
+     * @since 3.0.0
+     *
+     * @param {number} x1 - The x coordinate of the first point.
+     * @param {number} y1 - The y coordinate of the first point.
+     * @param {number} x2 - The x coordinate of the second point.
+     * @param {number} y2 - The y coordinate of the second point.
+     *
+     * @return {number} The angle in radians.
+     */
+    function Between(x1, y1, x2, y2) {
+        return Math.atan2(y2 - y1, x2 - x1);
     }
 
-    function FloatBetween(min, max) {
-        return Math.random() * (max - min) + min;
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Find the angle of a segment from (point1.x, point1.y) -> (point2.x, point2.y).
+     *
+     * Calculates the angle of the vector from the first point to the second point.
+     *
+     * @function Phaser.Math.Angle.BetweenPoints
+     * @since 3.0.0
+     *
+     * @param {IVec2} point1 - The first point.
+     * @param {IVec2} point2 - The second point.
+     *
+     * @return {number} The angle in radians.
+     */
+    function BetweenPoints(point1, point2) {
+        return Math.atan2(point2.y - point1.y, point2.x - point1.x);
     }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Find the angle of a segment from (point1.x, point1.y) -> (point2.x, point2.y).
+     *
+     * The difference between this method and {@link Phaser.Math.Angle.BetweenPoints} is that this assumes the y coordinate
+     * travels down the screen.
+     *
+     * @function Phaser.Math.Angle.BetweenPointsY
+     * @since 3.0.0
+     *
+     * @param {IVec2} point1 - The first point.
+     * @param {IVec2} point2 - The second point.
+     *
+     * @return {number} The angle in radians.
+     */
+    function BetweenPointsY(point1, point2) {
+        return Math.atan2(point2.x - point1.x, point2.y - point1.y);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Find the angle of a segment from (x1, y1) -> (x2, y2).
+     *
+     * The difference between this method and {@link Phaser.Math.Angle.Between} is that this assumes the y coordinate
+     * travels down the screen.
+     *
+     * @function Phaser.Math.Angle.BetweenY
+     * @since 3.0.0
+     *
+     * @param {number} x1 - The x coordinate of the first point.
+     * @param {number} y1 - The y coordinate of the first point.
+     * @param {number} x2 - The x coordinate of the second point.
+     * @param {number} y2 - The y coordinate of the second point.
+     *
+     * @return {number} The angle in radians.
+     */
+    function BetweenY(x1, y1, x2, y2) {
+        return Math.atan2(x2 - x1, y2 - y1);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    var MATH_CONST = {
+        /**
+         * The value of PI * 2.
+         *
+         * @name Phaser.Math.PI2
+         * @type {number}
+         * @since 3.0.0
+         */
+        PI2: Math.PI * 2,
+        /**
+         * The value of PI * 0.5.
+         *
+         * @name Phaser.Math.TAU
+         * @type {number}
+         * @since 3.0.0
+         */
+        TAU: Math.PI * 0.5,
+        /**
+         * An epsilon value (1.0e-6)
+         *
+         * @name Phaser.Math.EPSILON
+         * @type {number}
+         * @since 3.0.0
+         */
+        EPSILON: 1.0e-6,
+        /**
+         * For converting degrees to radians (PI / 180)
+         *
+         * @name Phaser.Math.DEG_TO_RAD
+         * @type {number}
+         * @since 3.0.0
+         */
+        DEG_TO_RAD: Math.PI / 180,
+        /**
+         * For converting radians to degrees (180 / PI)
+         *
+         * @name Phaser.Math.RAD_TO_DEG
+         * @type {number}
+         * @since 3.0.0
+         */
+        RAD_TO_DEG: 180 / Math.PI,
+        /**
+         * The minimum safe integer this browser supports.
+         * We use a const for backward compatibility with Internet Explorer.
+         *
+         * @name Phaser.Math.MIN_SAFE_INTEGER
+         * @type {number}
+         * @since 3.21.0
+         */
+        MIN_SAFE_INTEGER: Number.MIN_SAFE_INTEGER || -9007199254740991,
+        /**
+         * The maximum safe integer this browser supports.
+         * We use a const for backward compatibility with Internet Explorer.
+         *
+         * @name Phaser.Math.MAX_SAFE_INTEGER
+         * @type {number}
+         * @since 3.21.0
+         */
+        MAX_SAFE_INTEGER: Number.MAX_SAFE_INTEGER || 9007199254740991
+    };
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Takes an angle in Phasers default clockwise format and converts it so that
+     * 0 is North, 90 is West, 180 is South and 270 is East,
+     * therefore running counter-clockwise instead of clockwise.
+     *
+     * You can pass in the angle from a Game Object using:
+     *
+     * ```javascript
+     * var converted = CounterClockwise(gameobject.rotation);
+     * ```
+     *
+     * All values for this function are in radians.
+     *
+     * @function Phaser.Math.Angle.CounterClockwise
+     * @since 3.16.0
+     *
+     * @param {number} angle - The angle to convert, in radians.
+     *
+     * @return {number} The converted angle, in radians.
+     */
+    function CounterClockwise(angle) {
+        if (angle > Math.PI) {
+            angle -= MATH_CONST.PI2;
+        }
+        return Math.abs((((angle + MATH_CONST.TAU) % MATH_CONST.PI2) - MATH_CONST.PI2) % MATH_CONST.PI2);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Normalize an angle to the [0, 2pi] range.
+     *
+     * @function Phaser.Math.Angle.Normalize
+     * @since 3.0.0
+     *
+     * @param {number} angle - The angle to normalize, in radians.
+     *
+     * @return {number} The normalized angle, in radians.
+     */
+    function Normalize(angle) {
+        angle = angle % (2 * Math.PI);
+        if (angle >= 0) {
+            return angle;
+        }
+        else {
+            return angle + 2 * Math.PI;
+        }
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Reverse the given angle.
+     *
+     * @function Phaser.Math.Angle.Reverse
+     * @since 3.0.0
+     *
+     * @param {number} angle - The angle to reverse, in radians.
+     *
+     * @return {number} The reversed angle, in radians.
+     */
+    function Reverse(angle) {
+        return Normalize(angle + Math.PI);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Rotates `currentAngle` towards `targetAngle`, taking the shortest rotation distance. The `lerp` argument is the amount to rotate by in this call.
+     *
+     * @function Phaser.Math.Angle.RotateTo
+     * @since 3.0.0
+     *
+     * @param {number} currentAngle - The current angle, in radians.
+     * @param {number} targetAngle - The target angle to rotate to, in radians.
+     * @param {number} [lerp=0.05] - The lerp value to add to the current angle.
+     *
+     * @return {number} The adjusted angle.
+     */
+    function RotateTo(currentAngle, targetAngle, lerp = 0.05) {
+        if (currentAngle === targetAngle) {
+            return currentAngle;
+        }
+        if (Math.abs(targetAngle - currentAngle) <= lerp || Math.abs(targetAngle - currentAngle) >= (MATH_CONST.PI2 - lerp)) {
+            currentAngle = targetAngle;
+        }
+        else {
+            if (Math.abs(targetAngle - currentAngle) > Math.PI) {
+                if (targetAngle < currentAngle) {
+                    targetAngle += MATH_CONST.PI2;
+                }
+                else {
+                    targetAngle -= MATH_CONST.PI2;
+                }
+            }
+            if (targetAngle > currentAngle) {
+                currentAngle += lerp;
+            }
+            else if (targetAngle < currentAngle) {
+                currentAngle -= lerp;
+            }
+        }
+        return currentAngle;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Gets the shortest angle between `angle1` and `angle2`.
+     *
+     * Both angles must be in the range -180 to 180, which is the same clamped
+     * range that `sprite.angle` uses, so you can pass in two sprite angles to
+     * this method and get the shortest angle back between the two of them.
+     *
+     * The angle returned will be in the same range. If the returned angle is
+     * greater than 0 then it's a counter-clockwise rotation, if < 0 then it's
+     * a clockwise rotation.
+     *
+     * TODO: Wrap the angles in this function?
+     *
+     * @function Phaser.Math.Angle.ShortestBetween
+     * @since 3.0.0
+     *
+     * @param {number} angle1 - The first angle in the range -180 to 180.
+     * @param {number} angle2 - The second angle in the range -180 to 180.
+     *
+     * @return {number} The shortest angle, in degrees. If greater than zero it's a counter-clockwise rotation.
+     */
+    function ShortestBetween(angle1, angle2) {
+        const difference = angle2 - angle1;
+        if (difference === 0) {
+            return 0;
+        }
+        const times = Math.floor((difference - (-180)) / 360);
+        return difference - (times * 360);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Wrap the given `value` between `min` and `max.
+     *
+     * @function Phaser.Math.Wrap
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to wrap.
+     * @param {number} min - The minimum value.
+     * @param {number} max - The maximum value.
+     *
+     * @return {number} The wrapped value.
+     */
+    function Wrap(value, min, max) {
+        const range = max - min;
+        return (min + ((((value - min) % range) + range) % range));
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Wrap an angle.
+     *
+     * Wraps the angle to a value in the range of -PI to PI.
+     *
+     * @function Phaser.Math.Angle.Wrap
+     * @since 3.0.0
+     *
+     * @param {number} angle - The angle to wrap, in radians.
+     *
+     * @return {number} The wrapped angle, in radians.
+     */
+    function Wrap$1(angle) {
+        return Wrap(angle, -Math.PI, Math.PI);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Wrap an angle in degrees.
+     *
+     * Wraps the angle to a value in the range of -180 to 180.
+     *
+     * @function Phaser.Math.Angle.WrapDegrees
+     * @since 3.0.0
+     *
+     * @param {number} angle - The angle to wrap, in degrees.
+     *
+     * @return {number} The wrapped angle, in degrees.
+     */
+    function WrapDegrees(angle) {
+        return Wrap(angle, -180, 180);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * @namespace Phaser.Math.Angle
+     */
+    var index$5 = {
+        Between,
+        BetweenPoints,
+        BetweenPointsY,
+        BetweenY,
+        CounterClockwise,
+        Normalize,
+        Reverse,
+        RotateTo,
+        ShortestBetween,
+        Wrap: Wrap$1,
+        WrapDegrees
+    };
+
+    var Angle = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$5
+    });
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the distance between two sets of coordinates (points).
+     *
+     * @function Phaser.Math.Distance.Between
+     * @since 3.0.0
+     *
+     * @param {number} x1 - The x coordinate of the first point.
+     * @param {number} y1 - The y coordinate of the first point.
+     * @param {number} x2 - The x coordinate of the second point.
+     * @param {number} y2 - The y coordinate of the second point.
+     *
+     * @return {number} The distance between each point.
+     */
+    function DistanceBetween(x1, y1, x2, y2) {
+        const dx = x1 - x2;
+        const dy = y1 - y2;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * @author       samme
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the distance between two points.
+     *
+     * @function Phaser.Math.Distance.BetweenPoints
+     * @since 3.22.0
+     *
+     * @param {IVec2} a - The first point.
+     * @param {IVec2} b - The second point.
+     *
+     * @return {number} The distance between the points.
+     */
+    function DistanceBetweenPoints(a, b) {
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * @author       samme
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the squared distance between two points.
+     *
+     * @function Phaser.Math.Distance.BetweenPointsSquared
+     * @since 3.22.0
+     *
+     * @param {IVec2} a - The first point.
+     * @param {IVec2} b - The second point.
+     *
+     * @return {number} The squared distance between the points.
+     */
+    function DistanceBetweenPointsSquared(a, b) {
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        return dx * dx + dy * dy;
+    }
+
+    /**
+     * @author       samme
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the Chebyshev distance between two sets of coordinates (points).
+     *
+     * Chebyshev distance (or chessboard distance) is the maximum of the horizontal and vertical distances.
+     * It's the effective distance when movement can be horizontal, vertical, or diagonal.
+     *
+     * @function Phaser.Math.Distance.Chebyshev
+     * @since 3.22.0
+     *
+     * @param {number} x1 - The x coordinate of the first point.
+     * @param {number} y1 - The y coordinate of the first point.
+     * @param {number} x2 - The x coordinate of the second point.
+     * @param {number} y2 - The y coordinate of the second point.
+     *
+     * @return {number} The distance between each point.
+     */
+    function ChebyshevDistance(x1, y1, x2, y2) {
+        return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the distance between two sets of coordinates (points) to the power of `pow`.
+     *
+     * @function Phaser.Math.Distance.Power
+     * @since 3.0.0
+     *
+     * @param {number} x1 - The x coordinate of the first point.
+     * @param {number} y1 - The y coordinate of the first point.
+     * @param {number} x2 - The x coordinate of the second point.
+     * @param {number} y2 - The y coordinate of the second point.
+     * @param {number} [pow=2] - The exponent.
+     *
+     * @return {number} The distance between each point.
+     */
+    function DistancePower(x1, y1, x2, y2, pow = 2) {
+        return Math.sqrt(Math.pow(x2 - x1, pow) + Math.pow(y2 - y1, pow));
+    }
+
+    /**
+     * @author       samme
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the snake distance between two sets of coordinates (points).
+     *
+     * Snake distance (rectilinear distance, Manhattan distance) is the sum of the horizontal and vertical distances.
+     * It's the effective distance when movement is allowed only horizontally or vertically (but not both).
+     *
+     * @function Phaser.Math.Distance.Snake
+     * @since 3.22.0
+     *
+     * @param {number} x1 - The x coordinate of the first point.
+     * @param {number} y1 - The y coordinate of the first point.
+     * @param {number} x2 - The x coordinate of the second point.
+     * @param {number} y2 - The y coordinate of the second point.
+     *
+     * @return {number} The distance between each point.
+     */
+    function SnakeDistance(x1, y1, x2, y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the distance between two sets of coordinates (points), squared.
+     *
+     * @function Phaser.Math.Distance.Squared
+     * @since 3.0.0
+     *
+     * @param {number} x1 - The x coordinate of the first point.
+     * @param {number} y1 - The y coordinate of the first point.
+     * @param {number} x2 - The x coordinate of the second point.
+     * @param {number} y2 - The y coordinate of the second point.
+     *
+     * @return {number} The distance between each point, squared.
+     */
+    function DistanceSquared(x1, y1, x2, y2) {
+        const dx = x1 - x2;
+        const dy = y1 - y2;
+        return dx * dx + dy * dy;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * @namespace Phaser.Math.Distance
+     */
+    var index$6 = {
+        Between: DistanceBetween,
+        BetweenPoints: DistanceBetweenPoints,
+        BetweenPointsSquared: DistanceBetweenPointsSquared,
+        Chebyshev: ChebyshevDistance,
+        Power: DistancePower,
+        Snake: SnakeDistance,
+        Squared: DistanceSquared
+    };
+
+    var Distance = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$6
+    });
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the fuzzy ceiling of the given value.
+     *
+     * @function Phaser.Math.Fuzzy.Ceil
+     * @since 3.0.0
+     *
+     * @param {number} value - The value.
+     * @param {number} [epsilon=0.0001] - The epsilon.
+     *
+     * @return {number} The fuzzy ceiling of the value.
+     */
+    function Ceil(value, epsilon = 0.0001) {
+        return Math.ceil(value - epsilon);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Check whether the given values are fuzzily equal.
+     *
+     * Two numbers are fuzzily equal if their difference is less than `epsilon`.
+     *
+     * @function Phaser.Math.Fuzzy.Equal
+     * @since 3.0.0
+     *
+     * @param {number} a - The first value.
+     * @param {number} b - The second value.
+     * @param {number} [epsilon=0.0001] - The epsilon.
+     *
+     * @return {boolean} `true` if the values are fuzzily equal, otherwise `false`.
+     */
+    function Equal(a, b, epsilon = 0.0001) {
+        return Math.abs(a - b) < epsilon;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the fuzzy floor of the given value.
+     *
+     * @function Phaser.Math.Fuzzy.Floor
+     * @since 3.0.0
+     *
+     * @param {number} value - The value.
+     * @param {number} [epsilon=0.0001] - The epsilon.
+     *
+     * @return {number} The floor of the value.
+     */
+    function Floor(value, epsilon = 0.0001) {
+        return Math.floor(value + epsilon);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Check whether `a` is fuzzily greater than `b`.
+     *
+     * `a` is fuzzily greater than `b` if it is more than `b - epsilon`.
+     *
+     * @function Phaser.Math.Fuzzy.GreaterThan
+     * @since 3.0.0
+     *
+     * @param {number} a - The first value.
+     * @param {number} b - The second value.
+     * @param {number} [epsilon=0.0001] - The epsilon.
+     *
+     * @return {boolean} `true` if `a` is fuzzily greater than than `b`, otherwise `false`.
+     */
+    function GreaterThan(a, b, epsilon = 0.0001) {
+        return a > b - epsilon;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Check whether `a` is fuzzily less than `b`.
+     *
+     * `a` is fuzzily less than `b` if it is less than `b + epsilon`.
+     *
+     * @function Phaser.Math.Fuzzy.LessThan
+     * @since 3.0.0
+     *
+     * @param {number} a - The first value.
+     * @param {number} b - The second value.
+     * @param {number} [epsilon=0.0001] - The epsilon.
+     *
+     * @return {boolean} `true` if `a` is fuzzily less than `b`, otherwise `false`.
+     */
+    function LessThan(a, b, epsilon = 0.0001) {
+        return a < b + epsilon;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * @namespace Phaser.Math.Fuzzy
+     */
+    var index$7 = {
+        Ceil,
+        Equal,
+        Floor,
+        GreaterThan,
+        LessThan
+    };
+
+    var Fuzzy = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$7
+    });
 
     //  Adds the src Matrix to the target Matrix and returns the target.
     function Add(target, src) {
@@ -1591,7 +2321,7 @@
     }
 
     //  Phaser.Math.Matrix2d
-    var index$5 = {
+    var index$8 = {
         Add,
         Copy,
         CopyToContext,
@@ -1617,7 +2347,7 @@
 
     var Matrix2d = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$5
+        'default': index$8
     });
 
     //  Adds a to b and returns the values in a new Matrix2D
@@ -1727,7 +2457,7 @@
     }
 
     //  Phaser.Math.Matrix2dFuncs
-    var index$6 = {
+    var index$9 = {
         Add: Add$1,
         Append,
         Clone,
@@ -1750,30 +2480,209 @@
 
     var Matrix2dFuncs = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$6
+        'default': index$9
     });
 
-    var index$7 = {
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Returns the nearest power of 2 to the given `value`.
+     *
+     * @function Phaser.Math.Pow2.GetNext
+     * @since 3.0.0
+     *
+     * @param {number} value - The value.
+     *
+     * @return {number} The nearest power of 2 to `value`.
+     */
+    function GetPowerOfTwo(value) {
+        var index = Math.log(value) / 0.6931471805599453;
+        return (1 << Math.ceil(index));
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Tests the value and returns `true` if it is a power of two.
+     *
+     * @function Phaser.Math.Pow2.IsValue
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to check if it's a power of two.
+     *
+     * @return {boolean} Returns `true` if `value` is a power of two, otherwise `false`.
+     */
+    function IsValuePowerOfTwo(value) {
+        return (value > 0 && (value & (value - 1)) === 0);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * @namespace Phaser.Math.Pow2
+     */
+    var index$a = {
+        GetNext: GetPowerOfTwo,
+        IsSize: IsSizePowerOfTwo,
+        IsValue: IsValuePowerOfTwo
+    };
+
+    var Pow2 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$a
+    });
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Snap a value to nearest grid slice, using ceil.
+     *
+     * Example: if you have an interval gap of `5` and a position of `12`... you will snap to `15`.
+     * As will `14` snap to `15`... but `16` will snap to `20`.
+     *
+     * @function Phaser.Math.Snap.Ceil
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to snap.
+     * @param {number} gap - The interval gap of the grid.
+     * @param {number} [start=0] - Optional starting offset for gap.
+     * @param {boolean} [divide=false] - If `true` it will divide the snapped value by the gap before returning.
+     *
+     * @return {number} The snapped value.
+     */
+    function SnapCeil(value, gap, start = 0, divide = false) {
+        if (gap === 0) {
+            return value;
+        }
+        value -= start;
+        value = gap * Math.ceil(value / gap);
+        return (divide) ? (start + value) / gap : start + value;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Snap a value to nearest grid slice, using floor.
+     *
+     * Example: if you have an interval gap of `5` and a position of `12`... you will snap to `10`.
+     * As will `14` snap to `10`... but `16` will snap to `15`.
+     *
+     * @function Phaser.Math.Snap.Floor
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to snap.
+     * @param {number} gap - The interval gap of the grid.
+     * @param {number} [start=0] - Optional starting offset for gap.
+     * @param {boolean} [divide=false] - If `true` it will divide the snapped value by the gap before returning.
+     *
+     * @return {number} The snapped value.
+     */
+    function SnapFloor(value, gap, start = 0, divide = false) {
+        if (gap === 0) {
+            return value;
+        }
+        value -= start;
+        value = gap * Math.floor(value / gap);
+        return (divide) ? (start + value) / gap : start + value;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Snap a value to nearest grid slice, using rounding.
+     *
+     * Example: if you have an interval gap of `5` and a position of `12`... you will snap to `10` whereas `14` will snap to `15`.
+     *
+     * @function Phaser.Math.Snap.To
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to snap.
+     * @param {number} gap - The interval gap of the grid.
+     * @param {number} [start=0] - Optional starting offset for gap.
+     * @param {boolean} [divide=false] - If `true` it will divide the snapped value by the gap before returning.
+     *
+     * @return {number} The snapped value.
+     */
+    function SnapTo(value, gap, start = 0, divide = false) {
+        if (gap === 0) {
+            return value;
+        }
+        value -= start;
+        value = gap * Math.round(value / gap);
+        return (divide) ? (start + value) / gap : start + value;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * @namespace Phaser.Math.Snap
+     */
+    var index$b = {
+        Ceil: SnapCeil,
+        Floor: SnapFloor,
+        To: SnapTo
+    };
+
+    var Snap = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$b
+    });
+
+    var index$c = {
         Vec2
     };
 
     var Vec2$1 = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$7
+        'default': index$c
     });
 
+    function Between$1(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function FloatBetween(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
     //  Phaser.Math
-    var index$8 = {
-        Between,
+    var index$d = {
+        Angle,
+        Distance,
+        Fuzzy,
+        Between: Between$1,
         FloatBetween,
         Matrix2d,
         Matrix2dFuncs,
+        Pow2,
+        Snap,
         Vec2: Vec2$1
     };
 
-    var index$9 = /*#__PURE__*/Object.freeze({
+    var index$e = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$8
+        'default': index$d
     });
 
     function AtlasParser(texture, data) {
@@ -2019,7 +2928,7 @@
         }
     }
 
-    var index$a = {
+    var index$f = {
         AtlasParser,
         CanvasTexture,
         CreateCanvas,
@@ -2032,9 +2941,9 @@
         TextureManager
     };
 
-    var index$b = /*#__PURE__*/Object.freeze({
+    var index$g = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$a
+        'default': index$f
     });
 
     //  From Pixi v5
@@ -3211,10 +4120,10 @@ void main (void)
     exports.Game = Game;
     exports.GameObjects = index$4;
     exports.Loader = Loader;
-    exports.Math = index$9;
+    exports.Math = index$e;
     exports.Scene = Scene;
     exports.StaticScene = StaticScene;
-    exports.Textures = index$b;
+    exports.Textures = index$g;
     exports.WebGLRenderer = WebGLRenderer;
 
     Object.defineProperty(exports, '__esModule', { value: true });

@@ -1,5 +1,5 @@
 import GL from '../renderer/GL';
-import IsPowerOfTwo from '../math/IsPowerOfTwo';
+import IsSizePowerOfTwo from '../math/pow2/IsSizePowerOfTwo';
 export default function CreateGLTexture(source, width, height, potClamp = true, linear = true) {
     const gl = GL.get();
     const glTexture = gl.createTexture();
@@ -17,7 +17,7 @@ export default function CreateGLTexture(source, width, height, potClamp = true, 
     const mode = (linear) ? gl.LINEAR : gl.NEAREST;
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mode);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, mode);
-    const pot = (source && IsPowerOfTwo(width, height));
+    const pot = (source && IsSizePowerOfTwo(width, height));
     const wrap = (pot && potClamp) ? gl.REPEAT : gl.CLAMP_TO_EDGE;
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
