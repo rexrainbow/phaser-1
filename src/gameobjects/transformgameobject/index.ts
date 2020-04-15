@@ -6,7 +6,7 @@ import SetSize from './SetSize';
 import SetSkew from './SetSkew';
 import TransformGameObject from './TransformGameObject';
 
-export {
+export default {
     SetOrigin,
     SetPosition,
     SetRotation,
