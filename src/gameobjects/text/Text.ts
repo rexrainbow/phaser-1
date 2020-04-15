@@ -1,9 +1,8 @@
-import Scene from '../../scenes/Scene';
-import IText from './IText';
 import Sprite from '../sprite/Sprite';
 import CreateGLTexture from '../../renderer/CreateGLTexture';
-import IContainer from './IContainer';
+import IContainer from '../container/IContainer';
 import CanvasTexture from '../../textures/CanvasTexture';
+import GameInstance from '../../GameInstance';
 
 export type VerticalTextAlignment = 'ascent' | 'lineheight';
 
@@ -34,13 +33,15 @@ export default class Text extends Sprite
     fixedHeight: number;
     antialias: boolean = false;
 
-    constructor (scene: Scene, x: number, y: number, text: string | string[] = '', font?: string, fillStyle?: string | CanvasGradient | CanvasPattern)
+    constructor (x: number, y: number, text: string | string[] = '', font?: string, fillStyle?: string | CanvasGradient | CanvasPattern)
     {
-        super(scene, x, y, CanvasTexture());
+        super(x, y, CanvasTexture());
 
-        this.setType('Text');
+        this.type = 'Text';
 
-        this.resolution = scene.game.renderer.resolution;
+        const game = GameInstance.get();
+
+        this.resolution = game.renderer.resolution;
 
         this.canvas = this.texture.image as HTMLCanvasElement;
         this.context = this.canvas.getContext('2d');
