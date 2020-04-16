@@ -1,5 +1,5 @@
-import Texture from './Texture';
-import Frame from './Frame';
+import Texture from '../Texture';
+import Frame from '../Frame';
 
 /**
  * Read an integer value from an XML Node.

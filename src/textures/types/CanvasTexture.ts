@@ -1,5 +1,5 @@
-import CreateCanvas from './CreateCanvas';
-import Texture from './Texture';
+import CreateCanvas from '../CreateCanvas';
+import Texture from '../Texture';
 
 export default function CanvasTexture (width: number = 32, height: number = 32): Texture
 {

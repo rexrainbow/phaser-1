@@ -1,5 +1,5 @@
-import CreateCanvas from './CreateCanvas';
-import Texture from './Texture';
+import CreateCanvas from '../CreateCanvas';
+import Texture from '../Texture';
 
 export default function GridTexture (color1: string, color2: string, width: number = 32, height: number = 32, cols: number = 2, rows: number = 2): Texture
 {

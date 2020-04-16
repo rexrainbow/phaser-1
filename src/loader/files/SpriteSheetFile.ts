@@ -3,7 +3,7 @@ import ImageTagLoader from '../ImageTagLoader';
 import IFrameConfig from '../../textures/IFrameConfig';
 import GameInstance from '../../GameInstance';
 import GetURL from '../GetURL';
-import SpriteSheetParser from '../../textures/SpriteSheetParser';
+import SpriteSheetParser from '../../textures/parsers/SpriteSheetParser';
 
 export default function SpriteSheetFile (key: string, url: string, frameConfig: IFrameConfig): File
 {

@@ -1,7 +1,7 @@
 import Sprite from '../sprite/Sprite';
 import CreateGLTexture from '../../renderer/webgl1/CreateGLTexture';
 import IContainer from '../container/IContainer';
-import CanvasTexture from '../../textures/CanvasTexture';
+import CanvasTexture from '../../textures/types/CanvasTexture';
 import GameInstance from '../../GameInstance';
 
 export type VerticalTextAlignment = 'ascent' | 'lineheight';
