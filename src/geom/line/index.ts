@@ -34,7 +34,7 @@ import SetToAngle from './SetToAngle';
 import Slope from './Slope';
 import Width from './Width';
 
-export default {
+export {
     Angle,
     BresenhamPoints,
     CenterOn,

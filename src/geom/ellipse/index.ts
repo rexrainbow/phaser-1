@@ -21,7 +21,7 @@ import Offset from './Offset';
 import OffsetPoint from './OffsetPoint';
 import Random from './Random';
 
-export default {
+export {
     Area,
     Circumference,
     CircumferencePoint,

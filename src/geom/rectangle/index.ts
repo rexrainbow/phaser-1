@@ -46,7 +46,7 @@ import SameDimensions from './SameDimensions';
 import Scale from './Scale';
 import Union from './Union';
 
-export default {
+export {
     Area,
     Ceil,
     CeilAll,

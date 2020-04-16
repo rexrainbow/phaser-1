@@ -31,7 +31,7 @@ import TriangleToCircle from './TriangleToCircle';
 import TriangleToLine from './TriangleToLine';
 import TriangleToTriangle from './TriangleToTriangle';
 
-export default {
+export {
     CircleToCircle,
     CircleToRectangle,
     GetCircleToCircle,

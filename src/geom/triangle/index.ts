@@ -30,7 +30,7 @@ import RotateAroundPoint from './RotateAroundPoint';
 import RotateAroundXY from './RotateAroundXY';
 import Triangle from './Triangle';
 
-export default {
+export {
     Area,
     BuildEquilateral,
     BuildRight,

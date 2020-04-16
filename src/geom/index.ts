@@ -5,7 +5,7 @@ import * as Line from './line';
 import * as Rectangle from './rectangle';
 import * as Triangle from './triangle';
 
-export default {
+export {
     Circle,
     Ellipse,
     Intersects,
