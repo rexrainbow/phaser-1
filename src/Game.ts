@@ -2,7 +2,7 @@ import { AddToDOM, DOMContentLoaded } from './dom';
 import WebGLRenderer from './renderer/webgl1/WebGLRenderer';
 import SceneManager from './scenes/SceneManager';
 import TextureManager from './textures/TextureManager';
-import EventEmitter from './core/EventEmitter';
+import EventEmitter from './events/EventEmitter';
 import GameInstance from './GameInstance';
 import { GetParent } from './config';
 
