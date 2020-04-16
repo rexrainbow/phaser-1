@@ -5,8 +5,12 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var GetLineToCircle = require('./GetLineToCircle');
-var TriangleToCircle = require('./TriangleToCircle');
+import GetLineToCircle from './GetLineToCircle';
+import TriangleToCircle from './TriangleToCircle';
+import ITriangle from '../triangle/ITriangle';
+import ICircle from '../circle/ICircle';
+import Vec2 from '../../math/vec2/Vec2';
+import GetEdges from '../triangle/GetEdges';
 
 /**
  * Checks if a Triangle and a Circle intersect, and returns the intersection points as a Point object array.
@@ -22,15 +26,11 @@ var TriangleToCircle = require('./TriangleToCircle');
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetTriangleToCircle (triangle, circle, out)
+export default function GetTriangleToCircle (triangle: ITriangle, circle: ICircle, out: Vec2[] = []): Vec2[]
 {
-    if (out === undefined) { out = []; }
-
     if (TriangleToCircle(triangle, circle))
     {
-        var lineA = triangle.getLineA();
-        var lineB = triangle.getLineB();
-        var lineC = triangle.getLineC();
+        const [ lineA, lineB, lineC ] = GetEdges(triangle);
 
         GetLineToCircle(lineA, circle, out);
         GetLineToCircle(lineB, circle, out);
@@ -38,6 +38,4 @@ export default function GetTriangleToCircle (triangle, circle, out)
     }
 
     return out;
-};
-
-module.exports = GetTriangleToCircle;
+}

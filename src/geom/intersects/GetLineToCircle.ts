@@ -27,55 +27,56 @@ export default function GetLineToCircle (line: ILine, circle: ICircle, out: Vec2
 {
     if (LineToCircle(line, circle))
     {
-        var lx1 = line.x1;
-        var ly1 = line.y1;
+        const { x1, y1, x2, y2 } = line;
 
-        var lx2 = line.x2;
-        var ly2 = line.y2;
+        const cr = circle.radius;
 
-        var cx = circle.x;
-        var cy = circle.y;
-        var cr = circle.radius;
+        const lDirX = x2 - x1;
+        const lDirY = y2 - y1;
+        const oDirX = x1 - circle.x;
+        const oDirY = y1 - circle.y;
 
-        var lDirX = lx2 - lx1;
-        var lDirY = ly2 - ly1;
-        var oDirX = lx1 - cx;
-        var oDirY = ly1 - cy;
+        const coefficientA = lDirX * lDirX + lDirY * lDirY;
+        const coefficientB = 2 * (lDirX * oDirX + lDirY * oDirY);
+        const coefficientC = oDirX * oDirX + oDirY * oDirY - cr * cr;
 
-        var coefficientA = lDirX * lDirX + lDirY * lDirY;
-        var coefficientB = 2 * (lDirX * oDirX + lDirY * oDirY);
-        var coefficientC = oDirX * oDirX + oDirY * oDirY - cr * cr;
+        const lambda = (coefficientB * coefficientB) - (4 * coefficientA * coefficientC);
 
-        var lambda = (coefficientB * coefficientB) - (4 * coefficientA * coefficientC);
-
-        var x, y;
+        let x: number;
+        let y: number;
 
         if (lambda === 0)
         {
             var root = -coefficientB / (2 * coefficientA);
-            x = lx1 + root * lDirX;
-            y = ly1 + root * lDirY;
+
+            x = x1 + root * lDirX;
+            y = y1 + root * lDirY;
+
             if (root >= 0 && root <= 1)
             {
-                out.push(new Point(x, y));
+                out.push(new Vec2(x, y));
             }
         }
         else if (lambda > 0)
         {
             var root1 = (-coefficientB - Math.sqrt(lambda)) / (2 * coefficientA);
-            x = lx1 + root1 * lDirX;
-            y = ly1 + root1 * lDirY;
+
+            x = x1 + root1 * lDirX;
+            y = y1 + root1 * lDirY;
+
             if (root1 >= 0 && root1 <= 1)
             {
-                out.push(new Point(x, y));
+                out.push(new Vec2(x, y));
             }
 
             var root2 = (-coefficientB + Math.sqrt(lambda)) / (2 * coefficientA);
-            x = lx1 + root2 * lDirX;
-            y = ly1 + root2 * lDirY;
+
+            x = x1 + root2 * lDirX;
+            y = y1 + root2 * lDirY;
+
             if (root2 >= 0 && root2 <= 1)
             {
-                out.push(new Point(x, y));
+                out.push(new Vec2(x, y));
             }
         }
     }

@@ -5,9 +5,12 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Point = require('../point/Point');
-var LineToLine = require('./LineToLine');
-var LineToRectangle = require('./LineToRectangle');
+import LineToLine from './LineToLine';
+import LineToRectangle from './LineToRectangle';
+import ILine from '../line/ILine';
+import IRectangle from '../rectangle/IRectangle';
+import Vec2 from '../../math/vec2/Vec2';
+import GetEdges from '../Rectangle/GetEdges';
 
 /**
  * Checks for intersection between the Line and a Rectangle shape,
@@ -22,33 +25,29 @@ var LineToRectangle = require('./LineToRectangle');
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetLineToRectangle (line, rect, out)
+export default function GetLineToRectangle (line: ILine, rect: IRectangle, out: Vec2[] = []): Vec2[]
 {
-    if (out === undefined) { out = []; }
-
     if (LineToRectangle(line, rect))
     {
-        var lineA = rect.getLineA();
-        var lineB = rect.getLineB();
-        var lineC = rect.getLineC();
-        var lineD = rect.getLineD();
+        const [ lineA, lineB, lineC, lineD ] = GetEdges(rect);
 
-        var output = [ new Point(), new Point(), new Point(), new Point() ];
+        const points = [ new Vec2(), new Vec2(), new Vec2(), new Vec2() ];
 
-        var result = [
-            LineToLine(lineA, line, output[0]),
-            LineToLine(lineB, line, output[1]),
-            LineToLine(lineC, line, output[2]),
-            LineToLine(lineD, line, output[3])
+        const results = [
+            LineToLine(lineA, line, points[0]),
+            LineToLine(lineB, line, points[1]),
+            LineToLine(lineC, line, points[2]),
+            LineToLine(lineD, line, points[3])
         ];
 
-        for (var i = 0; i < 4; i++)
+        for (let i = 0; i < results.length; i++)
         {
-            if (result[i]) { out.push(output[i]); }
+            if (results[i])
+            {
+                out.push(points[i]);
+            }
         }
     }
 
     return out;
-};
-
-module.exports = GetLineToRectangle;
+}

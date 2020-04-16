@@ -5,9 +5,12 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Point = require('../point/Point');
-var TriangleToLine = require('./TriangleToLine');
-var LineToLine = require('./LineToLine');
+import TriangleToLine from './TriangleToLine';
+import LineToLine from './LineToLine';
+import ITriangle from '../triangle/ITriangle';
+import ILine from '../line/ILine';
+import Vec2 from '../../math/vec2/Vec2';
+import GetEdges from '../triangle/GetEdges';
 
 /**
  * Checks if a Triangle and a Line intersect, and returns the intersection points as a Point object array.
@@ -23,31 +26,28 @@ var LineToLine = require('./LineToLine');
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetTriangleToLine (triangle, line, out)
+export default function GetTriangleToLine (triangle: ITriangle, line: ILine, out: Vec2[] = []): Vec2[]
 {
-    if (out === undefined) { out = []; }
-
     if (TriangleToLine(triangle, line))
     {
-        var lineA = triangle.getLineA();
-        var lineB = triangle.getLineB();
-        var lineC = triangle.getLineC();
+        const [ lineA, lineB, lineC ] = GetEdges(triangle);
+        
+        const points = [ new Vec2(), new Vec2(), new Vec2() ];
 
-        var output = [ new Point(), new Point(), new Point() ];
-
-        var result = [
-            LineToLine(lineA, line, output[0]),
-            LineToLine(lineB, line, output[1]),
-            LineToLine(lineC, line, output[2])
+        const results = [
+            LineToLine(lineA, line, points[0]),
+            LineToLine(lineB, line, points[1]),
+            LineToLine(lineC, line, points[2])
         ];
 
-        for (var i = 0; i < 3; i++)
+        for (let i = 0; i < results.length; i++)
         {
-            if (result[i]) { out.push(output[i]); }
+            if (results[i])
+            {
+                out.push(points[i]);
+            }
         }
     }
 
     return out;
-};
-
-module.exports = GetTriangleToLine;
+}

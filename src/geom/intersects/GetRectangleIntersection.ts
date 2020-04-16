@@ -4,8 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Rectangle = require('../rectangle/Rectangle');
-var RectangleToRectangle = require('./RectangleToRectangle');
+import Rectangle from '../rectangle/Rectangle';
+import RectangleToRectangle from './RectangleToRectangle';
+import IRectangle from '../rectangle/IRectangle';
 
 /**
  * Checks if two Rectangle shapes intersect and returns the area of this intersection as Rectangle object.
@@ -25,19 +26,18 @@ var RectangleToRectangle = require('./RectangleToRectangle');
  *
  * @return {Phaser.Geom.Rectangle} A rectangle object with intersection data.
  */
-export default function GetRectangleIntersection (rectA, rectB, output)
+export default function GetRectangleIntersection (rectA: IRectangle, rectB: IRectangle, out: Rectangle = new Rectangle()): Rectangle
 {
-    if (output === undefined) { output = new Rectangle(); }
-
     if (RectangleToRectangle(rectA, rectB))
     {
-        output.x = Math.max(rectA.x, rectB.x);
-        output.y = Math.max(rectA.y, rectB.y);
-        output.width = Math.min(rectA.right, rectB.right) - output.x;
-        output.height = Math.min(rectA.bottom, rectB.bottom) - output.y;
+        const x = Math.max(rectA.x, rectB.x);
+        const y = Math.max(rectA.y, rectB.y);
+
+        return out.set(
+            x,
+            y,
+            Math.min(rectA.right, rectB.right) - x,
+            Math.min(rectA.bottom, rectB.bottom) - y
+        );
     }
-
-    return output;
-};
-
-module.exports = GetRectangleIntersection;
+}
