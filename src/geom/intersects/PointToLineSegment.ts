@@ -4,7 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var PointToLine = require('./PointToLine');
+import PointToLine from './PointToLine';
+import IVec2 from '../../math/vec2/IVec2';
+import ILine from '../line/ILine';
 
 /**
  * Checks if a Point is located on the given line segment.
@@ -17,19 +19,20 @@ var PointToLine = require('./PointToLine');
  *
  * @return {boolean} `true` if the Point is on the given line segment, otherwise `false`.
  */
-export default function PointToLineSegment (point, line)
+export default function PointToLineSegment (point: IVec2, line: ILine): boolean
 {
     if (!PointToLine(point, line))
     {
         return false;
     }
 
-    var xMin = Math.min(line.x1, line.x2);
-    var xMax = Math.max(line.x1, line.x2);
-    var yMin = Math.min(line.y1, line.y2);
-    var yMax = Math.max(line.y1, line.y2);
+    const { x1, y1, x2, y2 } = line;
+    const { x, y } = point;
 
-    return ((point.x >= xMin && point.x <= xMax) && (point.y >= yMin && point.y <= yMax));
-};
+    const xMin = Math.min(x1, x2);
+    const xMax = Math.max(x1, x2);
+    const yMin = Math.min(y1, y2);
+    const yMax = Math.max(y1, y2);
 
-module.exports = PointToLineSegment;
+    return ((x >= xMin && x <= xMax) && (y >= yMin && y <= yMax));
+}

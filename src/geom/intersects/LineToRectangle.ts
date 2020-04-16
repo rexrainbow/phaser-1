@@ -4,6 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
+import ILine from '../line/ILine';
+import IRectangle from '../rectangle/IRectangle';
+
 /**
  * Checks for intersection between the Line and a Rectangle shape, or a rectangle-like
  * object, with public `x`, `y`, `right` and `bottom` properties, such as a Sprite or Body.
@@ -23,73 +26,63 @@
  *
  * @return {boolean} `true` if the Line and the Rectangle intersect, `false` otherwise.
  */
-export default function LineToRectangle (line, rect)
+export default function LineToRectangle (line: ILine, rect: IRectangle): boolean
 {
-    var x1 = line.x1;
-    var y1 = line.y1;
+    const { x1, y1, x2, y2 } = line;
+    const { x, y, right, bottom } = rect;
 
-    var x2 = line.x2;
-    var y2 = line.y2;
-
-    var bx1 = rect.x;
-    var by1 = rect.y;
-    var bx2 = rect.right;
-    var by2 = rect.bottom;
-
-    var t = 0;
+    let t = 0;
 
     //  If the start or end of the line is inside the rect then we assume
     //  collision, as rects are solid for our use-case.
 
-    if ((x1 >= bx1 && x1 <= bx2 && y1 >= by1 && y1 <= by2) ||
-        (x2 >= bx1 && x2 <= bx2 && y2 >= by1 && y2 <= by2))
+    if ((x1 >= x && x1 <= right && y1 >= y && y1 <= bottom) ||
+        (x2 >= x && x2 <= right && y2 >= y && y2 <= bottom))
     {
         return true;
     }
 
-    if (x1 < bx1 && x2 >= bx1)
+    if (x1 < x && x2 >= x)
     {
         //  Left edge
-        t = y1 + (y2 - y1) * (bx1 - x1) / (x2 - x1);
+        t = y1 + (y2 - y1) * (x - x1) / (x2 - x1);
 
-        if (t > by1 && t <= by2)
+        if (t > y && t <= bottom)
         {
             return true;
         }
     }
-    else if (x1 > bx2 && x2 <= bx2)
+    else if (x1 > right && x2 <= right)
     {
         //  Right edge
-        t = y1 + (y2 - y1) * (bx2 - x1) / (x2 - x1);
+        t = y1 + (y2 - y1) * (right - x1) / (x2 - x1);
 
-        if (t >= by1 && t <= by2)
+        if (t >= y && t <= bottom)
         {
             return true;
         }
     }
 
-    if (y1 < by1 && y2 >= by1)
+    if (y1 < y && y2 >= y)
     {
         //  Top edge
-        t = x1 + (x2 - x1) * (by1 - y1) / (y2 - y1);
+        t = x1 + (x2 - x1) * (y - y1) / (y2 - y1);
 
-        if (t >= bx1 && t <= bx2)
+        if (t >= x && t <= right)
         {
             return true;
         }
     }
-    else if (y1 > by2 && y2 <= by2)
+    else if (y1 > bottom && y2 <= bottom)
     {
         //  Bottom edge
-        t = x1 + (x2 - x1) * (by2 - y1) / (y2 - y1);
+        t = x1 + (x2 - x1) * (bottom - y1) / (y2 - y1);
 
-        if (t >= bx1 && t <= bx2)
+        if (t >= x && t <= right)
         {
             return true;
         }
     }
 
     return false;
-};
-
-module.exports = LineToRectangle;
+}

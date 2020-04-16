@@ -5,8 +5,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Point = require('../point/Point');
-var LineToCircle = require('./LineToCircle');
+import LineToCircle from './LineToCircle';
+import ILine from '../line/ILine';
+import ICircle from '../circle/ICircle';
+import Vec2 from '../../math/vec2/Vec2';
 
 /**
  * Checks for intersection between the line segment and circle,
@@ -21,10 +23,8 @@ var LineToCircle = require('./LineToCircle');
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetLineToCircle (line, circle, out)
+export default function GetLineToCircle (line: ILine, circle: ICircle, out: Vec2[] = []): Vec2[]
 {
-    if (out === undefined) { out = []; }
-
     if (LineToCircle(line, circle))
     {
         var lx1 = line.x1;
@@ -81,6 +81,4 @@ export default function GetLineToCircle (line, circle, out)
     }
 
     return out;
-};
-
-module.exports = GetLineToCircle;
+}

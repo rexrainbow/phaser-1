@@ -5,8 +5,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Point = require('../point/Point');
-var CircleToCircle = require('./CircleToCircle');
+import CircleToCircle from './CircleToCircle';
+import ICircle from '../circle/ICircle';
+import Vec2 from '../../math/vec2/Vec2';
 
 /**
  * Checks if two Circles intersect and returns the intersection points as a Point object array.
@@ -20,21 +21,23 @@ var CircleToCircle = require('./CircleToCircle');
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetCircleToCircle (circleA, circleB, out)
+export default function GetCircleToCircle (circleA: ICircle, circleB: ICircle, out: Vec2[] = []): Vec2[]
 {
-    if (out === undefined) { out = []; }
-
     if (CircleToCircle(circleA, circleB))
     {
-        var x0 = circleA.x;
-        var y0 = circleA.y;
-        var r0 = circleA.radius;
+        const x0 = circleA.x;
+        const y0 = circleA.y;
+        const r0 = circleA.radius;
 
-        var x1 = circleB.x;
-        var y1 = circleB.y;
-        var r1 = circleB.radius;
+        const x1 = circleB.x;
+        const y1 = circleB.y;
+        const r1 = circleB.radius;
 
-        var coefficientA, coefficientB, coefficientC, lambda, x;
+        let coefficientA: number;
+        let coefficientB: number;
+        let coefficientC: number;
+        let lambda: number;
+        let x: number;
 
         if (y0 === y1)
         {
@@ -48,18 +51,18 @@ export default function GetCircleToCircle (circleA, circleB, out)
 
             if (lambda === 0)
             {
-                out.push(new Point(x, (-coefficientB / (2 * coefficientA))));
+                out.push(new Vec2(x, (-coefficientB / (2 * coefficientA))));
             }
             else if (lambda > 0)
             {
-                out.push(new Point(x, (-coefficientB + Math.sqrt(lambda)) / (2 * coefficientA)));
-                out.push(new Point(x, (-coefficientB - Math.sqrt(lambda)) / (2 * coefficientA)));
+                out.push(new Vec2(x, (-coefficientB + Math.sqrt(lambda)) / (2 * coefficientA)));
+                out.push(new Vec2(x, (-coefficientB - Math.sqrt(lambda)) / (2 * coefficientA)));
             }
         }
         else
         {
-            var v1 = (x0 - x1) / (y0 - y1);
-            var n = (r1 * r1 - r0 * r0 - x1 * x1 + x0 * x0 - y1 * y1 + y0 * y0) / (2 * (y0 - y1));
+            const v1 = (x0 - x1) / (y0 - y1);
+            const n = (r1 * r1 - r0 * r0 - x1 * x1 + x0 * x0 - y1 * y1 + y0 * y0) / (2 * (y0 - y1));
 
             coefficientA = (v1 * v1) + 1;
             coefficientB = (2 * y0 * v1) - (2 * n * v1) - (2 * x0);
@@ -70,19 +73,18 @@ export default function GetCircleToCircle (circleA, circleB, out)
             if (lambda === 0)
             {
                 x = (-coefficientB / (2 * coefficientA));
-                out.push(new Point(x, (n - (x * v1))));
+                out.push(new Vec2(x, (n - (x * v1))));
             }
             else if (lambda > 0)
             {
                 x = (-coefficientB + Math.sqrt(lambda)) / (2 * coefficientA);
-                out.push(new Point(x, (n - (x * v1))));
+                out.push(new Vec2(x, (n - (x * v1))));
+
                 x = (-coefficientB - Math.sqrt(lambda)) / (2 * coefficientA);
-                out.push(new Point(x, (n - (x * v1))));
+                out.push(new Vec2(x, (n - (x * v1))));
             }
         }
     }
 
     return out;
-};
-
-module.exports = GetCircleToCircle;
+}

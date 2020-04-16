@@ -4,10 +4,14 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var LineToLine = require('./LineToLine');
-var Contains = require('../rectangle/Contains');
-var ContainsArray = require('../triangle/ContainsArray');
-var Decompose = require('../rectangle/Decompose');
+import LineToLine from './LineToLine';
+import Contains from '../rectangle/Contains';
+import ContainsArray from '../triangle/ContainsArray';
+import Decompose from '../rectangle/Decompose';
+import IRectangle from '../rectangle/IRectangle';
+import ITriangle from '../triangle/ITriangle';
+import GetTriangleEdges from '../triangle/GetEdges';
+import GetRectangleEdges from '../Rectangle/GetEdges';
 
 /**
  * Checks for intersection between Rectangle shape and Triangle shape.
@@ -20,22 +24,20 @@ var Decompose = require('../rectangle/Decompose');
  *
  * @return {boolean} A value of `true` if objects intersect; otherwise `false`.
  */
-export default function RectangleToTriangle (rect, triangle)
+export default function RectangleToTriangle (rect: IRectangle, triangle: ITriangle): boolean
 {
     //  First the cheapest ones:
 
     if (
         triangle.left > rect.right ||
-        triangle.right < rect.left ||
+        triangle.right < rect.x ||
         triangle.top > rect.bottom ||
-        triangle.bottom < rect.top)
+        triangle.bottom < rect.y)
     {
         return false;
     }
 
-    var triA = triangle.getLineA();
-    var triB = triangle.getLineB();
-    var triC = triangle.getLineC();
+    const [ triA, triB, triC ] = GetTriangleEdges(triangle);
 
     //  Are any of the triangle points within the rectangle?
 
@@ -56,11 +58,8 @@ export default function RectangleToTriangle (rect, triangle)
 
     //  Cheap tests over, now to see if any of the lines intersect ...
 
-    var rectA = rect.getLineA();
-    var rectB = rect.getLineB();
-    var rectC = rect.getLineC();
-    var rectD = rect.getLineD();
-
+    const [ rectA, rectB, rectC, rectD ] = GetRectangleEdges(rect);
+    
     if (LineToLine(triA, rectA) || LineToLine(triA, rectB) || LineToLine(triA, rectC) || LineToLine(triA, rectD))
     {
         return true;
@@ -78,10 +77,7 @@ export default function RectangleToTriangle (rect, triangle)
 
     //  None of the lines intersect, so are any rectangle points within the triangle?
 
-    var points = Decompose(rect);
-    var within = ContainsArray(triangle, points, true);
+    const within = ContainsArray(triangle, Decompose(rect), true);
 
     return (within.length > 0);
-};
-
-module.exports = RectangleToTriangle;
+}

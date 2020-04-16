@@ -5,8 +5,12 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var GetLineToCircle = require('./GetLineToCircle');
-var CircleToRectangle = require('./CircleToRectangle');
+import GetLineToCircle from './GetLineToCircle';
+import CircleToRectangle from './CircleToRectangle';
+import ICircle from '../circle/ICircle';
+import IRectangle from '../Rectangle/IRectangle';
+import Vec2 from '../../math/vec2/Vec2';
+import GetEdges from '../Rectangle/GetEdges';
 
 /**
  * Checks for intersection between a circle and a rectangle,
@@ -21,24 +25,17 @@ var CircleToRectangle = require('./CircleToRectangle');
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetCircleToRectangle (circle, rect, out)
+export default function GetCircleToRectangle (circle: ICircle, rect: IRectangle, out: Vec2[] = []): Vec2[]
 {
-    if (out === undefined) { out = []; }
-
     if (CircleToRectangle(circle, rect))
     {
-        var lineA = rect.getLineA();
-        var lineB = rect.getLineB();
-        var lineC = rect.getLineC();
-        var lineD = rect.getLineD();
+        const [ line1, line2, line3, line4 ] = GetEdges(rect);
 
-        GetLineToCircle(lineA, circle, out);
-        GetLineToCircle(lineB, circle, out);
-        GetLineToCircle(lineC, circle, out);
-        GetLineToCircle(lineD, circle, out);
+        GetLineToCircle(line1, circle, out);
+        GetLineToCircle(line2, circle, out);
+        GetLineToCircle(line3, circle, out);
+        GetLineToCircle(line4, circle, out);
     }
 
     return out;
-};
-
-module.exports = GetCircleToRectangle;
+}

@@ -4,8 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var LineToCircle = require('./LineToCircle');
-var Contains = require('../triangle/Contains');
+import LineToCircle from './LineToCircle';
+import Contains from '../triangle/Contains';
+import ITriangle from '../triangle/ITriangle';
+import ICircle from '../circle/ICircle';
+import GetEdges from '../triangle/GetEdges';
 
 /**
  * Checks if a Triangle and a Circle intersect.
@@ -20,7 +23,7 @@ var Contains = require('../triangle/Contains');
  *
  * @return {boolean} `true` if the Triangle and the `Circle` intersect, otherwise `false`.
  */
-export default function TriangleToCircle (triangle, circle)
+export default function TriangleToCircle (triangle: ITriangle, circle: ICircle): boolean
 {
     //  First the cheapest ones:
 
@@ -38,22 +41,11 @@ export default function TriangleToCircle (triangle, circle)
         return true;
     }
 
-    if (LineToCircle(triangle.getLineA(), circle))
-    {
-        return true;
-    }
+    const [ line1, line2, line3 ] = GetEdges(triangle);
 
-    if (LineToCircle(triangle.getLineB(), circle))
-    {
-        return true;
-    }
-
-    if (LineToCircle(triangle.getLineC(), circle))
-    {
-        return true;
-    }
-
-    return false;
-};
-
-module.exports = TriangleToCircle;
+    return (
+        LineToCircle(line1, circle) ||
+        LineToCircle(line2, circle) ||
+        LineToCircle(line3, circle)
+    );
+}

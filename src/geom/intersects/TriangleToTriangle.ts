@@ -4,9 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var ContainsArray = require('../triangle/ContainsArray');
-var Decompose = require('../triangle/Decompose');
-var LineToLine = require('./LineToLine');
+import ContainsArray from '../triangle/ContainsArray';
+import Decompose from '../triangle/Decompose';
+import LineToLine from './LineToLine';
+import ITriangle from '../triangle/ITriangle';
+import GetEdges from '../triangle/GetEdges';
 
 /**
  * Checks if two Triangles intersect.
@@ -21,10 +23,9 @@ var LineToLine = require('./LineToLine');
  *
  * @return {boolean} `true` if the Triangles intersect, otherwise `false`.
  */
-export default function TriangleToTriangle (triangleA, triangleB)
+export default function TriangleToTriangle (triangleA: ITriangle, triangleB: ITriangle): boolean
 {
     //  First the cheapest ones:
-
     if (
         triangleA.left > triangleB.right ||
         triangleA.right < triangleB.left ||
@@ -34,51 +35,37 @@ export default function TriangleToTriangle (triangleA, triangleB)
         return false;
     }
 
-    var lineAA = triangleA.getLineA();
-    var lineAB = triangleA.getLineB();
-    var lineAC = triangleA.getLineC();
-
-    var lineBA = triangleB.getLineA();
-    var lineBB = triangleB.getLineB();
-    var lineBC = triangleB.getLineC();
+    const [ lineAA, lineAB, lineAC ] = GetEdges(triangleA);
+    const [ lineBA, lineBB, lineBC ] = GetEdges(triangleB);
 
     //  Now check the lines against each line of TriangleB
-    if (LineToLine(lineAA, lineBA) || LineToLine(lineAA, lineBB) || LineToLine(lineAA, lineBC))
-    {
-        return true;
-    }
-
-    if (LineToLine(lineAB, lineBA) || LineToLine(lineAB, lineBB) || LineToLine(lineAB, lineBC))
-    {
-        return true;
-    }
-
-    if (LineToLine(lineAC, lineBA) || LineToLine(lineAC, lineBB) || LineToLine(lineAC, lineBC))
+    if (
+        LineToLine(lineAA, lineBA) ||
+        LineToLine(lineAA, lineBB) ||
+        LineToLine(lineAA, lineBC) ||
+        LineToLine(lineAB, lineBA) ||
+        LineToLine(lineAB, lineBB) ||
+        LineToLine(lineAB, lineBC) ||
+        LineToLine(lineAC, lineBA) ||
+        LineToLine(lineAC, lineBB) ||
+        LineToLine(lineAC, lineBC)
+    )
     {
         return true;
     }
 
     //  Nope, so check to see if any of the points of triangleA are within triangleB
 
-    var points = Decompose(triangleA);
-    var within = ContainsArray(triangleB, points, true);
+    const withinA = ContainsArray(triangleB, Decompose(triangleA), true);
 
-    if (within.length > 0)
+    if (withinA.length > 0)
     {
         return true;
     }
 
     //  Finally check to see if any of the points of triangleB are within triangleA
 
-    points = Decompose(triangleB);
-    within = ContainsArray(triangleA, points, true);
+    const withinB = ContainsArray(triangleA, Decompose(triangleB), true);
 
-    if (within.length > 0)
-    {
-        return true;
-    }
-
-    return false;
-};
-
-module.exports = TriangleToTriangle;
+    return (withinB.length > 0);
+}

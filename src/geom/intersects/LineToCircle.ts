@@ -4,10 +4,13 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Contains = require('../circle/Contains');
-var Point = require('../point/Point');
+import Contains from '../circle/Contains';
+import Vec2 from '../../math/vec2/Vec2';
+import ILine from '../line/ILine';
+import IVec2 from '../../math/vec2/IVec2';
+import ICircle from '../circle/ICircle';
 
-var tmp = new Point();
+let tmp: Vec2 = new Vec2();
 
 /**
  * Checks for intersection between the line segment and circle.
@@ -23,56 +26,56 @@ var tmp = new Point();
  *
  * @return {boolean} `true` if the two objects intersect, otherwise `false`.
  */
-export default function LineToCircle (line, circle, nearest)
+export default function LineToCircle (line: ILine, circle: ICircle, nearest?: IVec2): boolean
 {
-    if (nearest === undefined) { nearest = tmp; }
-
-    if (Contains(circle, line.x1, line.y1))
+    if (!nearest)
     {
-        nearest.x = line.x1;
-        nearest.y = line.y1;
+        nearest = tmp;
+    }
+
+    const { x1, y1, x2, y2 } = line;
+
+    if (Contains(circle, x1, y1))
+    {
+        nearest.set(x1, y1);
 
         return true;
     }
 
-    if (Contains(circle, line.x2, line.y2))
+    if (Contains(circle, x2, y2))
     {
-        nearest.x = line.x2;
-        nearest.y = line.y2;
+        nearest.set(x2, y2);
 
         return true;
     }
 
-    var dx = line.x2 - line.x1;
-    var dy = line.y2 - line.y1;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
 
-    var lcx = circle.x - line.x1;
-    var lcy = circle.y - line.y1;
+    const lcx = circle.x - x1;
+    const lcy = circle.y - y1;
 
     //  project lc onto d, resulting in vector p
-    var dLen2 = (dx * dx) + (dy * dy);
-    var px = dx;
-    var py = dy;
+    const dLen2 = (dx * dx) + (dy * dy);
+    let px = dx;
+    let py = dy;
 
     if (dLen2 > 0)
     {
-        var dp = ((lcx * dx) + (lcy * dy)) / dLen2;
+        const dp = ((lcx * dx) + (lcy * dy)) / dLen2;
 
         px *= dp;
         py *= dp;
     }
 
-    nearest.x = line.x1 + px;
-    nearest.y = line.y1 + py;
+    nearest.set(x1 + px, y1 + py);
     
     //  len2 of p
-    var pLen2 = (px * px) + (py * py);
+    const pLen2 = (px * px) + (py * py);
     
     return (
         pLen2 <= dLen2 &&
         ((px * dx) + (py * dy)) >= 0 &&
         Contains(circle, nearest.x, nearest.y)
     );
-};
-
-module.exports = LineToCircle;
+}
