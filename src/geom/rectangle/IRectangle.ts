@@ -6,6 +6,6 @@ export default interface IRectangle
     height: number;
     right: number;
     bottom: number;
-    set (x: number, y: number, width: number, height: number): this;
+    set (x?: number, y?: number, width?: number, height?: number): this;
     contains (x: number, y: number): boolean;
 }

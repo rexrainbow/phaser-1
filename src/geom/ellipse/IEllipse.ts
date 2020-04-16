@@ -8,7 +8,7 @@ export default interface IEllipse
     right: number;
     top: number;
     bottom: number;
-    set (x: number, y: number, width: number, height: number): this;
+    set (x?: number, y?: number, width?: number, height?: number): this;
     contains (x: number, y: number): boolean;
     getMinorRadius (): number;
     getMajorRadius (): number;

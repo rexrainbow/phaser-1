@@ -8,6 +8,6 @@ export default interface ICircle
     right: number;
     top: number;
     bottom: number;
-    set (x: number, y: number, radius: number): this;
+    set (x?: number, y?: number, radius?: number): this;
     contains (x: number, y: number): boolean;
 }
