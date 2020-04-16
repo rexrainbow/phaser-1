@@ -2,7 +2,7 @@ import Container from '../container/Container';
 import Texture from '../../textures/Texture';
 import Frame from '../../textures/Frame';
 import IContainer from '../container/IContainer';
-import Rectangle from '../../geom/Rectangle';
+import Rectangle from '../../geom/rectangle/Rectangle';
 import SetTexture from './SetTexture';
 import SetFrame from './SetFrame';
 
