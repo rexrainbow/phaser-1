@@ -9,20 +9,12 @@ import IGameObject from '../../gameobjects/gameobject/IGameObject';
 import SpriteRenderWebGL from '../../gameobjects/sprite/RenderWebGL';
 import ISprite from '../../gameobjects/sprite/ISprite';
 import IShader from './shaders/IShader';
+import { GetWidth, GetHeight, GetResolution, GetBackgroundColor, GetWebGLContext } from '../../config';
 
 export default class WebGLRenderer
 {
     canvas: HTMLCanvasElement;
     gl: WebGLRenderingContext;
-
-    contextOptions: WebGLContextAttributes = {
-        alpha: false,
-        antialias: false,
-        premultipliedAlpha: false,
-        stencil: false,
-        preserveDrawingBuffer: false,
-        desynchronized: false
-    };
 
     clearColor = [ 0, 0, 0, 1 ];
 
@@ -49,11 +41,13 @@ export default class WebGLRenderer
     contextLost: boolean = false;
     elementIndexExtension: OES_element_index_uint;
 
-    constructor (width: number, height: number, resolution: number)
+    constructor ()
     {
-        this.width = width;
-        this.height = height;
-        this.resolution = resolution;
+        this.width = GetWidth();
+        this.height = GetHeight();
+        this.resolution = GetResolution();
+
+        this.setBackgroundColor(GetBackgroundColor());
 
         const canvas = document.createElement('canvas');
 
@@ -69,7 +63,7 @@ export default class WebGLRenderer
 
     initContext ()
     {
-        const gl = this.canvas.getContext('webgl', this.contextOptions);
+        const gl = this.canvas.getContext('webgl', GetWebGLContext());
 
         GL.set(gl);
 

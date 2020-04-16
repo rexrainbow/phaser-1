@@ -3,6 +3,8 @@ import IBaseScene from './IBaseScene';
 import ISceneConfig from './ISceneConfig';
 import GetConfigValue from './GetConfigValue';
 import IBaseSceneConstructor from './IBaseSceneConstructor';
+import { GetScenes } from '../config';
+import GameInstance from '../GameInstance';
 
 export default class SceneManager
 {
@@ -26,17 +28,21 @@ export default class SceneManager
 
     renderList: any[];
     
-    constructor (game: Game)
+    constructor ()
     {
-        this.game = game;
+        this.game = GameInstance.get();
 
         this.scenes = new Map();
 
         this.renderList = [];
+
+        this.game.once('boot', () => this.boot());
     }
 
-    boot (scenes: any[] | IBaseScene[])
+    boot ()
     {
+        const scenes = GetScenes();
+
         scenes.forEach(scene => {
 
             this.add(scene);
