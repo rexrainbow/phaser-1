@@ -5,7 +5,7 @@
  */
 
 import IEllipse from './IEllipse';
-import Ellipse from '../Ellipse';
+import Ellipse from './Ellipse';
 
 /**
  * Creates a new Ellipse instance based on the values contained in the given source.
