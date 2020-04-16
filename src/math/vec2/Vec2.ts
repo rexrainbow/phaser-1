@@ -28,31 +28,12 @@ export default class Vec2
         this.set(x, y);
     }
 
-    /**
-     * Sets the components of this Vector2.
-     * 
-     * @param {number} [x=0] - X component
-     * @param {number} [y=0] - Y component
-     * @returns {Vec2}
-     * @memberof Vec2
-     */
-    set (x: number = 0, y: number = 0): Vec2
+    set (x: number = 0, y: number = 0)
     {
         this.x = x;
         this.y = y;
 
         return this;
-    }
-
-    /**
-     * Sets all components of this Vector2 to zero.
-     *
-     * @returns {Vec2}
-     * @memberof Vec2
-     */
-    zero (): Vec2
-    {
-        return this.set();
     }
 
     /**
