@@ -4,6 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
+import Contains from './Contains';
+
 export default class Rectangle
 {
     x: number;
@@ -24,6 +26,11 @@ export default class Rectangle
         this.height = height;
 
         return this;
+    }
+
+    contains (x: number, y: number): boolean
+    {
+        return Contains(this, x, y);
     }
 
     set right (value: number)
@@ -58,17 +65,5 @@ export default class Rectangle
     get bottom (): number
     {
         return this.y + this.height;
-    }
-
-    contains (px: number, py: number): boolean
-    {
-        const { x, y, width, height } = this;
-
-        if (width <= 0 || height <= 0)
-        {
-            return false;
-        }
-    
-        return (x <= px && x + width >= px && y <= py && y + height >= py);
     }
 }

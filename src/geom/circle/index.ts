@@ -18,7 +18,7 @@ import GetBounds from './GetBounds';
 import GetPoint from './GetPoint';
 import GetPoints from './GetPoints';
 import Offset from './Offset';
-import OffsetVec2 from './OffsetVec2';
+import OffsetPoint from './OffsetPoint';
 import Random from './Random';
 
 export default {
@@ -36,6 +36,6 @@ export default {
     GetPoint,
     GetPoints,
     Offset,
-    OffsetVec2,
+    OffsetPoint,
     Random
 }

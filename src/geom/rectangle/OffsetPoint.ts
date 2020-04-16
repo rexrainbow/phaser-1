@@ -5,7 +5,7 @@
  */
 
 import IRectangle from './IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
+import IVec2 from '../../math/vec2/IVec2';
 
 /**
  * Nudges (translates) the top-left corner of a Rectangle by the coordinates of a point (translation vector).
@@ -20,10 +20,10 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {Phaser.Geom.Rectangle} The adjusted Rectangle.
  */
-export default function OffsetVec2 (rect: IRectangle, vec2: Vec2): IRectangle
+export default function OffsetPoint (rect: IRectangle, point: IVec2): IRectangle
 {
-    rect.x += vec2.x;
-    rect.y += vec2.y;
+    rect.x += point.x;
+    rect.y += point.y;
 
     return rect;
 }

@@ -12,7 +12,7 @@ import CenterX from './CenterX';
 import CenterY from './CenterY';
 import Clone from './Clone';
 import Contains from './Contains';
-import ContainsVec2 from './ContainsVec2';
+import ContainsPoint from './ContainsPoint';
 import ContainsRect from './ContainsRect';
 import CopyFrom from './CopyFrom';
 import Decompose from './Decompose';
@@ -34,7 +34,7 @@ import MergePoints from './MergePoints';
 import MergeRect from './MergeRect';
 import MergeXY from './MergeXY';
 import Offset from './Offset';
-import OffsetVec2 from './OffsetVec2';
+import OffsetPoint from './OffsetPoint';
 import Overlaps from './Overlaps';
 import Perimeter from './Perimeter';
 import PerimeterPoint from './PerimeterPoint';
@@ -54,7 +54,7 @@ export default {
     CenterY,
     Clone,
     Contains,
-    ContainsVec2,
+    ContainsPoint,
     ContainsRect,
     CopyFrom,
     Decompose,
@@ -76,7 +76,7 @@ export default {
     MergeRect,
     MergeXY,
     Offset,
-    OffsetVec2,
+    OffsetPoint,
     Overlaps,
     Perimeter,
     PerimeterPoint,

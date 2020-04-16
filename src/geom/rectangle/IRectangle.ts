@@ -7,5 +7,5 @@ export default interface IRectangle
     right: number;
     bottom: number;
     set (x: number, y: number, width: number, height: number): this;
-    contains (px: number, py: number): boolean;
+    contains (x: number, y: number): boolean;
 }

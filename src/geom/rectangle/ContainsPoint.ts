@@ -11,7 +11,7 @@ import IVec2 from '../../math/vec2/IVec2';
 /**
  * Determines whether the specified point is contained within the rectangular region defined by this Rectangle object.
  *
- * @function Phaser.Geom.Rectangle.ContainsVec2
+ * @function Phaser.Geom.Rectangle.ContainsPoint
  * @since 3.0.0
  *
  * @param {Phaser.Geom.Rectangle} rect - The Rectangle object.
@@ -19,7 +19,7 @@ import IVec2 from '../../math/vec2/IVec2';
  *
  * @return {boolean} A value of true if the Rectangle object contains the specified point, otherwise false.
  */
-export default function ContainsVec2 (rect: IRectangle, vec2: IVec2): boolean
+export default function ContainsPoint (rect: IRectangle, point: IVec2): boolean
 {
-    return Contains(rect, vec2.x, vec2.y);
+    return Contains(rect, point.x, point.y);
 }

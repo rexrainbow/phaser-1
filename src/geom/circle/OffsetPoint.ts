@@ -20,10 +20,10 @@ import IVec2 from '../../math/vec2/IVec2';
  *
  * @return {Phaser.Geom.Circle} The Circle that was offset.
  */
-export default function OffsetVec2 (circle: ICircle, vec2: IVec2): ICircle
+export default function OffsetPoint (circle: ICircle, point: IVec2): ICircle
 {
-    circle.x += vec2.x;
-    circle.y += vec2.y;
+    circle.x += point.x;
+    circle.y += point.y;
 
     return circle;
 }
