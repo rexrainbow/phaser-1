@@ -1,6 +1,6 @@
 import Circle from './Circle';
 import Ellipse from './Ellipse';
-import Rectangle from './Rectangle';
+import * as Rectangle from './Rectangle';
 
 export default {
     Circle,

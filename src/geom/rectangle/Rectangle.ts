@@ -1,3 +1,9 @@
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+
 export default class Rectangle
 {
     x: number;
@@ -10,7 +16,7 @@ export default class Rectangle
         this.set(x, y, width, height);
     }
 
-    set (x: number = 0, y: number = 0, width: number = 0, height: number = 0): Rectangle
+    set (x: number = 0, y: number = 0, width: number = 0, height: number = 0)
     {
         this.x = x;
         this.y = y;
