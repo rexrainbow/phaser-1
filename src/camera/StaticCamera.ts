@@ -1,5 +1,5 @@
 import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
-import Rectangle from '../geom/Rectangle';
+import Rectangle from '../geom/rectangle/Rectangle';
 import IBaseScene from '../scenes/IBaseScene';
 
 export default class StaticCamera
