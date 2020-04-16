@@ -24,6 +24,7 @@ import FloorAll from './FloorAll';
 import FromPoints from './FromPoints';
 import GetAspectRatio from './GetAspectRatio';
 import GetCenter from './GetCenter';
+import GetEdges from './GetEdges';
 import GetPoint from './GetPoint';
 import GetPoints from './GetPoints';
 import GetSize from './GetSize';
@@ -66,6 +67,7 @@ export default {
     FromPoints,
     GetAspectRatio,
     GetCenter,
+    GetEdges,
     GetPoint,
     GetPoints,
     GetSize,
