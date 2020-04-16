@@ -1,6 +1,23 @@
 (function () {
     'use strict';
 
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Attempts to get the target DOM element based on the given value, which can be either
+     * a string, in which case it will be looked-up by ID, or an element node. If nothing
+     * can be found it will return a reference to the document.body.
+     *
+     * @function Phaser.DOM.GetElement
+     * @since 4.0.0
+     *
+     * @param {(string | HTMLElement)} [target] - The DOM element to look-up.
+     *
+     * @returns {HTMLElement} The HTML Element that was found.
+     */
     function GetElement(target) {
         let element;
         if (target) {
@@ -399,16 +416,6 @@ void main (void)
     let _width = 800;
     let _height = 600;
     let _resolution = 1;
-    function Size(width = 800, height = 600, resolution = 1) {
-        if (resolution === 0) {
-            resolution = window.devicePixelRatio;
-        }
-        return () => {
-            _width = width;
-            _height = height;
-            _resolution = resolution;
-        };
-    }
     function GetWidth() {
         return _width;
     }
@@ -1219,6 +1226,35 @@ void main (void)
         }
     }
 
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Checks if a given point is inside a Rectangle's bounds.
+     *
+     * @function Phaser.Geom.Rectangle.Contains
+     * @since 3.0.0
+     *
+     * @param {Phaser.Geom.Rectangle} rect - The Rectangle to check.
+     * @param {number} x - The X coordinate of the point to check.
+     * @param {number} y - The Y coordinate of the point to check.
+     *
+     * @return {boolean} `true` if the point is within the Rectangle's bounds, otherwise `false`.
+     */
+    function Contains(rect, x, y) {
+        if (rect.width <= 0 || rect.height <= 0) {
+            return false;
+        }
+        return (rect.x <= x && rect.x + rect.width >= x && rect.y <= y && rect.y + rect.height >= y);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
     class Rectangle {
         constructor(x = 0, y = 0, width = 0, height = 0) {
             this.set(x, y, width, height);
@@ -1229,6 +1265,9 @@ void main (void)
             this.width = width;
             this.height = height;
             return this;
+        }
+        contains(x, y) {
+            return Contains(this, x, y);
         }
         set right(value) {
             if (value <= this.x) {
@@ -1251,13 +1290,6 @@ void main (void)
         }
         get bottom() {
             return this.y + this.height;
-        }
-        contains(px, py) {
-            const { x, y, width, height } = this;
-            if (width <= 0 || height <= 0) {
-                return false;
-            }
-            return (x <= px && x + width >= px && y <= py && y + height >= py);
         }
     }
 
@@ -1430,18 +1462,690 @@ void main (void)
         }
     }
 
+    class Vec2 {
+        /**
+         * Creates an instance of a Vector2.
+         *
+         * @param {number} [x=0] - X component
+         * @param {number} [y=0] - Y component
+         * @memberof Vec2
+         */
+        constructor(x = 0, y = 0) {
+            this.set(x, y);
+        }
+        set(x = 0, y = 0) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+        /**
+         * Returns a new array containg the Vector2 component values.
+         *
+         * @returns {number[]}
+         * @memberof Vec2
+         */
+        getArray() {
+            return [this.x, this.y];
+        }
+        /**
+         * Sets the values of this Vector2 based on the given array, or array-like object, such as a Float32.
+         *
+         * The source must have 2 elements, starting from index 0 through to index 1.
+         *
+         * @param {number[]} src - The source array to copy the values from.
+         * @returns {Vec2}
+         * @memberof Vec2
+         */
+        fromArray(src) {
+            return this.set(src[0], src[1]);
+        }
+        [Symbol.iterator]() {
+            const data = this.getArray();
+            return data[Symbol.iterator]();
+        }
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculates the perimeter of a Rectangle.
+     *
+     * @function Phaser.Geom.Rectangle.Perimeter
+     * @since 3.0.0
+     *
+     * @param {Phaser.Geom.Rectangle} rect - The Rectangle to use.
+     *
+     * @return {number} The perimeter of the Rectangle, equal to `(width * 2) + (height * 2)`.
+     */
+    function Perimeter(rect) {
+        return 2 * (rect.width + rect.height);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Returns an array of points from the perimeter of the Rectangle, where each point is spaced out based
+     * on either the `step` value, or the `quantity`.
+     *
+     * @function Phaser.Geom.Rectangle.MarchingAnts
+     * @since 3.0.0
+     *
+     * @generic {Phaser.Geom.Point[]} O - [out,$return]
+     *
+     * @param {Phaser.Geom.Rectangle} rect - The Rectangle to get the perimeter points from.
+     * @param {number} [step] - The distance between each point of the perimeter. Set to `null` if you wish to use the `quantity` parameter instead.
+     * @param {integer} [quantity] - The total number of points to return. The step is then calculated based on the length of the Rectangle, divided by this value.
+     * @param {(array|Phaser.Geom.Point[])} [out] - An array in which the perimeter points will be stored. If not given, a new array instance is created.
+     *
+     * @return {(array|Phaser.Geom.Point[])} An array containing the perimeter points from the Rectangle.
+     */
+    function MarchingAnts(rect, step, quantity, out = []) {
+        if (!step && !quantity) {
+            //  Bail out
+            return out;
+        }
+        //  If step is a falsey value (false, null, 0, undefined, etc) then we calculate
+        //  it based on the quantity instead, otherwise we always use the step value
+        if (!step) {
+            step = Perimeter(rect) / quantity;
+        }
+        else {
+            quantity = Math.round(Perimeter(rect) / step);
+        }
+        let x = rect.x;
+        let y = rect.y;
+        let face = 0;
+        //  Loop across each face of the rectangle
+        for (let i = 0; i < quantity; i++) {
+            out.push(new Vec2(x, y));
+            switch (face) {
+                //  Top face
+                case 0:
+                    x += step;
+                    if (x >= rect.right) {
+                        face = 1;
+                        y += (x - rect.right);
+                        x = rect.right;
+                    }
+                    break;
+                //  Right face
+                case 1:
+                    y += step;
+                    if (y >= rect.bottom) {
+                        face = 2;
+                        x -= (y - rect.bottom);
+                        y = rect.bottom;
+                    }
+                    break;
+                //  Bottom face
+                case 2:
+                    x -= step;
+                    if (x <= rect.x) {
+                        face = 3;
+                        y -= (rect.x - x);
+                        x = rect.x;
+                    }
+                    break;
+                //  Left face
+                case 3:
+                    y -= step;
+                    if (y <= rect.y) {
+                        face = 0;
+                        y = rect.y;
+                    }
+                    break;
+            }
+        }
+        return out;
+    }
+
+    function SolidColorTexture(color = 'rgba(0,0,0,0)', width = 32, height = 32) {
+        const ctx = CreateCanvas(width, height);
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, width, height);
+        return new Texture(ctx.canvas);
+    }
+
+    //  The Base Game Object which all Scene entites extend
+    class GameObject {
+        constructor() {
+            this.name = '';
+            this.type = 'GameObject';
+            this.willRender = true;
+            this.willUpdate = true;
+            this.dirtyRender = true;
+            this.dirtyUpdate = true;
+            this.dirtyFrame = 0;
+            this.isParent = false;
+            this.visible = true;
+            this.inputEnabled = false;
+            this.inputEnabledChildren = true;
+            this.fixBounds = false;
+            this.bounds = new Rectangle();
+        }
+        isRenderable() {
+            return (this.visible && this.willRender);
+        }
+        setDirtyRender(setFrame = true) {
+            this.dirtyRender = true;
+            const scene = this.scene;
+            if (setFrame && scene) {
+                this.dirtyFrame = scene.game.frame;
+            }
+            return this;
+        }
+        setDirtyUpdate() {
+            this.dirtyUpdate = true;
+            return this;
+        }
+        getBounds(includeChildren = false) {
+            return this.bounds;
+        }
+        setBounds(x, y, width, height) {
+            this.bounds.set(x, y, width, height);
+            return this;
+        }
+        update() {
+        }
+        updateTransform() {
+            return this;
+        }
+        render() {
+        }
+        destroy(reparentChildren) {
+            this.scene = null;
+        }
+    }
+
+    var CONST = {
+        POSITION_X: 0,
+        POSITION_Y: 1,
+        ORIGIN_X: 2,
+        ORIGIN_Y: 3,
+        SKEW_X: 4,
+        SKEW_Y: 5,
+        SCALE_X: 6,
+        SCALE_Y: 7,
+        ROTATION: 8,
+        ANGLE: 9
+    };
+
+    //  Copy the values from the src Matrix to the target Matrix and return the target Matrix.
+    function Copy(src, target) {
+        return target.set(src.a, src.b, src.c, src.d, src.tx, src.ty);
+    }
+
+    class TransformGameObject extends GameObject {
+        constructor(x = 0, y = 0) {
+            super();
+            const byte = Float32Array.BYTES_PER_ELEMENT;
+            const buffer = new ArrayBuffer(10 * byte);
+            this.transformBuffer = buffer;
+            /**
+             * transformData:
+             * 0 = position x
+             * 1 = position y
+             * 2 = origin x
+             * 3 = origin y
+             * 4 = skew x
+             * 5 = skew y
+             * 6 = scale x
+             * 7 = scale y
+             * 8 = rotation
+             * 9 = angle
+             */
+            this.transformData = new Float32Array(buffer, 0, 10);
+            this.localTransform = new Matrix2D();
+            this.worldTransform = new Matrix2D();
+            this.transformData.set([x, y, 0.5, 0.5, 0, 0, 1, 1, 0, 0]);
+            this.width = 0;
+            this.height = 0;
+            this.updateCache();
+        }
+        updateCache() {
+            const transform = this.localTransform;
+            const { rotation, skewX, skewY, scaleX, scaleY, x, y } = this;
+            transform.set(Math.cos(rotation + skewY) * scaleX, Math.sin(rotation + skewY) * scaleX, -Math.sin(rotation - skewX) * scaleY, Math.cos(rotation - skewX) * scaleY, x, y);
+            return this.updateTransform();
+        }
+        updateTransform() {
+            this.setDirtyRender();
+            const parent = this.parent;
+            const lt = this.localTransform;
+            const wt = this.worldTransform;
+            lt.tx = this.x;
+            lt.ty = this.y;
+            if (!parent) {
+                Copy(lt, wt);
+                return this;
+            }
+            const { a, b, c, d, tx, ty } = lt;
+            const { a: pa, b: pb, c: pc, d: pd, tx: ptx, ty: pty } = parent.worldTransform;
+            wt.set(a * pa + b * pc, a * pb + b * pd, c * pa + d * pc, c * pb + d * pd, tx * pa + ty * pc + ptx, tx * pb + ty * pd + pty);
+            return this;
+        }
+        setSize(width, height) {
+            this.width = width;
+            this.height = height;
+            return this;
+        }
+        setOrigin(originX, originY = originX) {
+            const data = this.transformData;
+            data[CONST.ORIGIN_X] = originX;
+            data[CONST.ORIGIN_Y] = originY;
+            return this;
+        }
+        setPosition(x, y = x) {
+            const data = this.transformData;
+            data[CONST.POSITION_X] = x;
+            data[CONST.POSITION_Y] = y;
+            return this.updateTransform();
+        }
+        setRotation(rotation) {
+            const data = this.transformData;
+            if (rotation !== data[CONST.ROTATION]) {
+                data[CONST.ROTATION] = rotation;
+                this.updateCache();
+            }
+            return this;
+        }
+        setScale(scaleX, scaleY = scaleX) {
+            const data = this.transformData;
+            data[CONST.SCALE_X] = scaleX;
+            data[CONST.SCALE_Y] = scaleY;
+            return this.updateCache();
+        }
+        setSkew(skewX, skewY = skewX) {
+            const data = this.transformData;
+            data[CONST.SKEW_X] = skewX;
+            data[CONST.SKEW_Y] = skewY;
+            return this.updateCache();
+        }
+        destroy() {
+            super.destroy();
+            this.localTransform = null;
+            this.worldTransform = null;
+            this.transformBuffer = null;
+            this.transformData = null;
+        }
+        set x(value) {
+            this.transformData[CONST.POSITION_X] = value;
+            this.updateTransform();
+        }
+        get x() {
+            return this.transformData[CONST.POSITION_X];
+        }
+        set y(value) {
+            this.transformData[CONST.POSITION_Y] = value;
+            this.updateTransform();
+        }
+        get y() {
+            return this.transformData[CONST.POSITION_Y];
+        }
+        get originX() {
+            return this.transformData[CONST.ORIGIN_X];
+        }
+        set originX(value) {
+            this.transformData[CONST.ORIGIN_X] = value;
+        }
+        get originY() {
+            return this.transformData[CONST.ORIGIN_Y];
+        }
+        set originY(value) {
+            this.transformData[CONST.ORIGIN_Y] = value;
+        }
+        set skewX(value) {
+            const data = this.transformData;
+            if (value !== data[CONST.SKEW_X]) {
+                data[CONST.SKEW_X] = value;
+                this.updateCache();
+            }
+        }
+        get skewX() {
+            return this.transformData[CONST.SKEW_X];
+        }
+        set skewY(value) {
+            const data = this.transformData;
+            if (value !== data[CONST.SKEW_Y]) {
+                data[CONST.SKEW_Y] = value;
+                this.updateCache();
+            }
+        }
+        get skewY() {
+            return this.transformData[CONST.SKEW_Y];
+        }
+        set scaleX(value) {
+            const data = this.transformData;
+            if (value !== data[CONST.SCALE_X]) {
+                data[CONST.SCALE_X] = value;
+                this.updateCache();
+            }
+        }
+        get scaleX() {
+            return this.transformData[CONST.SCALE_X];
+        }
+        set scaleY(value) {
+            const data = this.transformData;
+            if (value !== data[CONST.SCALE_Y]) {
+                data[CONST.SCALE_Y] = value;
+                this.updateCache();
+            }
+        }
+        get scaleY() {
+            return this.transformData[CONST.SCALE_Y];
+        }
+        set rotation(value) {
+            const data = this.transformData;
+            if (value !== data[CONST.ROTATION]) {
+                data[CONST.ROTATION] = value;
+                this.updateCache();
+            }
+        }
+        get rotation() {
+            return this.transformData[CONST.ROTATION];
+        }
+    }
+
+    class Container extends TransformGameObject {
+        constructor(x = 0, y = 0) {
+            super(x, y);
+            this._alpha = 1;
+            this.children = [];
+            this.isParent = true;
+            this.type = 'Container';
+        }
+        update(delta, time) {
+            const children = this.children;
+            for (let i = 0; i < children.length; i++) {
+                let child = children[i];
+                if (child && child.willUpdate) {
+                    child.update(delta, time);
+                }
+            }
+        }
+        destroy(reparentChildren) {
+            // if (reparentChildren)
+            // {
+            //     this.reparentChildren(reparentChildren);
+            // }
+            // else
+            // {
+            //     this.destroyChildren();
+            // }
+            this.children = null;
+            super.destroy();
+        }
+        get numChildren() {
+            return this.children.length;
+        }
+        get alpha() {
+            return this._alpha;
+        }
+        set alpha(value) {
+            if (value !== this._alpha) {
+                this._alpha = value;
+                this.setDirtyRender();
+            }
+        }
+    }
+
+    function SetFrame(key, ...sprite) {
+        sprite.forEach(entity => {
+            let frame = entity.texture.get(key);
+            if (frame === entity.frame) {
+                return;
+            }
+            entity.frame = frame;
+            entity.setSize(frame.sourceSizeWidth, frame.sourceSizeHeight);
+            entity.setBounds(entity.x, entity.y, entity.width, entity.height);
+            if (frame.pivot) {
+                entity.setOrigin(frame.pivot.x, frame.pivot.y);
+            }
+            let data = entity.vertexData;
+            //  This rarely changes, so we'll set it here, rather than every game step:
+            data[2] = frame.u0;
+            data[3] = frame.v0;
+            data[8] = frame.u0;
+            data[9] = frame.v1;
+            data[14] = frame.u1;
+            data[15] = frame.v1;
+            data[20] = frame.u1;
+            data[21] = frame.v0;
+            entity.setDirtyRender();
+            entity.hasTexture = true;
+        });
+    }
+
+    function SetTexture(key, frame, ...sprite) {
+        sprite.forEach(entity => {
+            if (!key) {
+                return;
+            }
+            if (key instanceof Texture) {
+                entity.texture = key;
+            }
+            else {
+                entity.texture = GameInstance.get().textures.get(key);
+            }
+            if (!entity.texture) {
+                console.warn('Invalid Texture key: ' + key);
+            }
+            else {
+                if (!entity.texture.glTexture) {
+                    entity.texture.createGL();
+                }
+                SetFrame(frame, entity);
+            }
+        });
+    }
+
+    class Sprite extends Container {
+        constructor(x, y, texture, frame) {
+            super(x, y);
+            this.hasTexture = false;
+            this._tint = 0xffffff;
+            this._prevTextureID = -1;
+            this.vertexData = new Float32Array(24).fill(0);
+            this.vertexColor = new Uint32Array(4).fill(4294967295);
+            this.vertexAlpha = new Float32Array(4).fill(1);
+            this.vertexTint = new Uint32Array(4).fill(0xffffff);
+            this.type = 'Sprite';
+            this.setTexture(texture, frame);
+            this.setBounds(x, y, this.width, this.height);
+        }
+        getBounds(includeChildren = false) {
+            if (this.dirtyRender) {
+                this.updateVertices();
+            }
+            super.getBounds(includeChildren);
+            return this.bounds;
+        }
+        setTexture(key, frame) {
+            SetTexture(key, frame, this);
+            return this;
+        }
+        setFrame(key) {
+            SetFrame(key, this);
+            return this;
+        }
+        isRenderable() {
+            return (this.visible && this.willRender && this.hasTexture && this.alpha > 0);
+        }
+        updateVertices() {
+            const data = this.vertexData;
+            this.dirtyRender = false;
+            const frame = this.frame;
+            const originX = this.originX;
+            const originY = this.originY;
+            let w0;
+            let w1;
+            let h0;
+            let h1;
+            const [a, b, c, d, tx, ty] = this.worldTransform;
+            if (frame.trimmed) {
+                w1 = frame.spriteSourceSizeX - (originX * frame.sourceSizeWidth);
+                w0 = w1 + frame.spriteSourceSizeWidth;
+                h1 = frame.spriteSourceSizeY - (originY * frame.sourceSizeHeight);
+                h0 = h1 + frame.spriteSourceSizeHeight;
+            }
+            else {
+                w1 = -originX * frame.sourceSizeWidth;
+                w0 = w1 + frame.sourceSizeWidth;
+                h1 = -originY * frame.sourceSizeHeight;
+                h0 = h1 + frame.sourceSizeHeight;
+            }
+            const x0 = (w1 * a) + (h1 * c) + tx;
+            const y0 = (w1 * b) + (h1 * d) + ty;
+            const x1 = (w1 * a) + (h0 * c) + tx;
+            const y1 = (w1 * b) + (h0 * d) + ty;
+            const x2 = (w0 * a) + (h0 * c) + tx;
+            const y2 = (w0 * b) + (h0 * d) + ty;
+            const x3 = (w0 * a) + (h1 * c) + tx;
+            const y3 = (w0 * b) + (h1 * d) + ty;
+            //  top left
+            data[0] = x0;
+            data[1] = y0;
+            //  bottom left
+            data[6] = x1;
+            data[7] = y1;
+            //  bottom right
+            data[12] = x2;
+            data[13] = y2;
+            //  top right
+            data[18] = x3;
+            data[19] = y3;
+            const bounds = this.bounds;
+            bounds.x = Math.min(x0, x1, x2, x3);
+            bounds.y = Math.min(y0, y1, y2, y3);
+            bounds.right = Math.max(x0, x1, x2, x3);
+            bounds.bottom = Math.max(y0, y1, y2, y3);
+        }
+        uploadBuffers(F32, U32, offset, setTexture = true) {
+            //  Skip all of this if not dirty
+            if (this.dirtyRender) {
+                this.updateVertices();
+            }
+            const data = this.vertexData;
+            const textureIndex = this.texture.glIndex;
+            //  Do we have a different texture ID?
+            if (setTexture && textureIndex !== this._prevTextureID) {
+                this._prevTextureID = textureIndex;
+                data[4] = textureIndex;
+                data[10] = textureIndex;
+                data[16] = textureIndex;
+                data[22] = textureIndex;
+            }
+            //  Copy the data to the array buffer
+            F32.set(data, offset);
+            const color = this.vertexColor;
+            //  Copy the vertex colors to the Uint32 view (as the data copy above overwrites them)
+            U32[offset + 5] = color[0];
+            U32[offset + 11] = color[2];
+            U32[offset + 17] = color[3];
+            U32[offset + 23] = color[1];
+        }
+        destroy(reparentChildren) {
+            super.destroy(reparentChildren);
+            this.texture = null;
+            this.frame = null;
+            this.hasTexture = false;
+            this.vertexData = null;
+            this.vertexColor = null;
+            this.vertexAlpha = null;
+            this.vertexTint = null;
+        }
+        get tint() {
+            return this._tint;
+        }
+        set tint(value) {
+            this._tint = value;
+            // this.setTint(value);
+        }
+    }
+    /*
+        vertexData array structure:
+
+        0 = topLeft.x
+        1 = topLeft.y
+        2 = frame.u0
+        3 = frame.v0
+        4 = textureIndex
+        5 = topLeft.packedColor
+
+        6 = bottomLeft.x
+        7 = bottomLeft.y
+        8 = frame.u0
+        9 = frame.v1
+        10 = textureIndex
+        11 = bottomLeft.packedColor
+
+        12 = bottomRight.x
+        13 = bottomRight.y
+        14 = frame.u1
+        15 = frame.v1
+        16 = textureIndex
+        17 = bottomRight.packedColor
+
+        18 = topRight.x
+        19 = topRight.y
+        20 = frame.u1
+        21 = frame.v0
+        22 = textureIndex
+        23 = topRight.packedColor
+    */
+
+    function RemoveChild(parent, ...child) {
+        const children = parent.children;
+        child.forEach(entity => {
+            let index = children.indexOf(entity);
+            if (index > -1) {
+                children.splice(index, 1);
+                entity.parent = null;
+            }
+        });
+    }
+
+    function SetParent(parent, ...child) {
+        child.forEach(entity => {
+            if (entity.parent) {
+                RemoveChild(entity.parent, entity);
+            }
+            entity.scene = parent.scene;
+            entity.parent = parent;
+        });
+    }
+
+    function AddChild(parent, ...child) {
+        child.forEach(entity => {
+            SetParent(parent, entity);
+            parent.children.push(entity);
+            entity.updateTransform();
+        });
+    }
+
     class Demo extends StaticScene {
         constructor() {
             super();
-            console.log('Settings');
+            const block = SolidColorTexture('#ff0000', 8, 8);
+            const rect = new Rectangle(100, 100, 300, 200);
+            const points = MarchingAnts(rect, 32);
+            points.forEach(point => {
+                AddChild(this.world, new Sprite(point.x, point.y, block));
+            });
         }
     }
-    function test02 () {
-        new Game(Size(800, 600), Parent('gameParent'), BackgroundColor(0x3d783d), Scenes(Demo));
+    function test03 () {
+        new Game(Parent('gameParent'), BackgroundColor(0x2d2d2d), Scenes(Demo));
     }
 
     // import test01 from './test01';
-    test02();
+    test03();
 
 }());
 //# sourceMappingURL=index.js.map

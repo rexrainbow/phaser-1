@@ -7,8 +7,6 @@ class Demo extends StaticScene
     constructor ()
     {
         super();
-
-        console.log('Settings');
     }
 }
 
@@ -17,7 +15,7 @@ export default function ()
     new Game(
         Size(800, 600),
         Parent('gameParent'),
-        BackgroundColor(0x3d783d),
+        BackgroundColor(0x2d2d2d),
         Scenes(Demo)
     );
 }

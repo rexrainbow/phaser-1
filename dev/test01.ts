@@ -3,6 +3,7 @@ import StaticScene from '../src/scenes/StaticScene';
 import AddChild from '../src/gameobjects/container/AddChild';
 import PixelTexture from '../src/textures/types/PixelTexture';
 import Sprite from '../src/gameobjects/sprite/Sprite';
+import { Parent, Size, Scenes, BackgroundColor } from '../src/config';
 
 class Demo extends StaticScene
 {
@@ -43,11 +44,10 @@ class Demo extends StaticScene
 
 export default function ()
 {
-    new Game({
-        width: 800,
-        height: 600,
-        backgroundColor: 0x330033,
-        parent: 'gameParent',
-        scene: Demo
-    });
+    new Game(
+        Size(800, 600),
+        Parent('gameParent'),
+        BackgroundColor(0x3d783d),
+        Scenes(Demo)
+    );
 }
