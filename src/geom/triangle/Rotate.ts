@@ -4,8 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var RotateAroundXY = require('./RotateAroundXY');
-var InCenter = require('./InCenter');
+import RotateAroundXY from './RotateAroundXY';
+import InCenter from './InCenter';
+import ITriangle from './ITriangle';
 
 /**
  * Rotates a Triangle about its incenter, which is the point at which its three angle bisectors meet.
@@ -20,11 +21,9 @@ var InCenter = require('./InCenter');
  *
  * @return {Phaser.Geom.Triangle} The rotated Triangle.
  */
-export default function Rotate (triangle, angle)
+export default function Rotate (triangle: ITriangle, angle: number): ITriangle
 {
-    var point = InCenter(triangle);
+    const point = InCenter(triangle);
 
     return RotateAroundXY(triangle, point.x, point.y, angle);
-};
-
-module.exports = Rotate;
+}

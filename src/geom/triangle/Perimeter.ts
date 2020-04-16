@@ -4,7 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Length = require('../line/Length');
+import Length from '../line/Length';
+import ITriangle from './ITriangle';
+import GetEdges from './GetEdges';
 
 /**
  * Gets the length of the perimeter of the given triangle.
@@ -17,13 +19,9 @@ var Length = require('../line/Length');
  *
  * @return {number} The length of the Triangle.
  */
-export default function Perimeter (triangle)
+export default function Perimeter (triangle: ITriangle): number
 {
-    var line1 = triangle.getLineA();
-    var line2 = triangle.getLineB();
-    var line3 = triangle.getLineC();
+    const [ line1, line2, line3 ] = GetEdges(triangle);
 
     return (Length(line1) + Length(line2) + Length(line3));
-};
-
-module.exports = Perimeter;
+}

@@ -4,15 +4,20 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-//  http://www.blackpawn.com/texts/pointinpoly/
-
-//  points is an array of Point-like objects with public x/y properties
-//  returns an array containing all points that are within the triangle, or an empty array if none
-//  if 'returnFirst' is true it will return after the first point within the triangle is found
+import ITriangle from './ITriangle';
+import Vec2 from '../../math/vec2/Vec2';
+import IVec2 from '../../math/vec2/IVec2';
+import Contains from './Contains';
 
 /**
  * Filters an array of point-like objects to only those contained within a triangle.
  * If `returnFirst` is true, will return an array containing only the first point in the provided array that is within the triangle (or an empty array if there are no such points).
+ * 
+ * http://www.blackpawn.com/texts/pointinpoly/
+ * 
+ * points is an array of Point-like objects with public x/y properties
+ * returns an array containing all points that are within the triangle, or an empty array if none
+ * if 'returnFirst' is true it will return after the first point within the triangle is found
  *
  * @function Phaser.Geom.Triangle.ContainsArray
  * @since 3.0.0
@@ -24,58 +29,30 @@
  *
  * @return {Phaser.Geom.Point[]} An array containing all the points from `points` that are within the triangle, if an array was provided as `out`, points will be appended to that array and it will also be returned here.
  */
-export default function ContainsArray (triangle, points, returnFirst, out)
+export default function ContainsArray (triangle: ITriangle, points: IVec2[], returnFirst: boolean = false, out: Vec2[] = []): Vec2[]
 {
-    if (returnFirst === undefined) { returnFirst = false; }
-    if (out === undefined) { out = []; }
+    let skip: boolean = false;
 
-    var v0x = triangle.x3 - triangle.x1;
-    var v0y = triangle.y3 - triangle.y1;
+    points.forEach(point => {
 
-    var v1x = triangle.x2 - triangle.x1;
-    var v1y = triangle.y2 - triangle.y1;
-
-    var dot00 = (v0x * v0x) + (v0y * v0y);
-    var dot01 = (v0x * v1x) + (v0y * v1y);
-    var dot11 = (v1x * v1x) + (v1y * v1y);
-
-    // Compute barycentric coordinates
-    var b = ((dot00 * dot11) - (dot01 * dot01));
-    var inv = (b === 0) ? 0 : (1 / b);
-
-    var u;
-    var v;
-    var v2x;
-    var v2y;
-    var dot02;
-    var dot12;
-
-    var x1 = triangle.x1;
-    var y1 = triangle.y1;
-
-    for (var i = 0; i < points.length; i++)
-    {
-        v2x = points[i].x - x1;
-        v2y = points[i].y - y1;
-
-        dot02 = (v0x * v2x) + (v0y * v2y);
-        dot12 = (v1x * v2x) + (v1y * v2y);
-
-        u = ((dot11 * dot02) - (dot01 * dot12)) * inv;
-        v = ((dot00 * dot12) - (dot01 * dot02)) * inv;
-    
-        if (u >= 0 && v >= 0 && (u + v < 1))
+        if (skip)
         {
-            out.push({ x: points[i].x, y: points[i].y });
+            return;
+        }
+
+        const { x, y } = point;
+
+        if (Contains(triangle, x, y))
+        {
+            out.push(new Vec2(x, y));
 
             if (returnFirst)
             {
-                break;
+                skip = true;
             }
         }
-    }
+
+    });
 
     return out;
-};
-
-module.exports = ContainsArray;
+}

@@ -4,8 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Point = require('../point/Point');
-var Length = require('../line/Length');
+import Length from '../line/Length';
+import ITriangle from './ITriangle';
+import Vec2 from '../../math/vec2/Vec2';
+import GetEdges from './GetEdges';
 
 /**
  * Returns a Point from around the perimeter of a Triangle.
@@ -21,30 +23,26 @@ var Length = require('../line/Length');
  *
  * @return {(Phaser.Geom.Point|object)} A Point object containing the given position from the perimeter of the triangle.
  */
-export default function GetPoint (triangle, position, out)
+export default function GetPoint (triangle: ITriangle, position: number, out: Vec2 = new Vec2()): Vec2
 {
-    if (out === undefined) { out = new Point(); }
-
-    var line1 = triangle.getLineA();
-    var line2 = triangle.getLineB();
-    var line3 = triangle.getLineC();
+    const [ line1, line2, line3 ] = GetEdges(triangle);
 
     if (position <= 0 || position >= 1)
     {
-        out.x = line1.x1;
-        out.y = line1.y1;
-
-        return out;
+        return out.set(
+            line1.x1,
+            line1.y1
+        );
     }
 
-    var length1 = Length(line1);
-    var length2 = Length(line2);
-    var length3 = Length(line3);
+    const length1 = Length(line1);
+    const length2 = Length(line2);
+    const length3 = Length(line3);
 
-    var perimeter = length1 + length2 + length3;
+    const perimeter = length1 + length2 + length3;
 
-    var p = perimeter * position;
-    var localPosition = 0;
+    let p = perimeter * position;
+    let localPosition = 0;
 
     //  Which line is it on?
 
@@ -53,8 +51,12 @@ export default function GetPoint (triangle, position, out)
         //  Line 1
         localPosition = p / length1;
 
-        out.x = line1.x1 + (line1.x2 - line1.x1) * localPosition;
-        out.y = line1.y1 + (line1.y2 - line1.y1) * localPosition;
+        const { x1, y1, x2, y2 } = line1;
+
+        return out.set(
+            x1 + (x2 - x1) * localPosition,
+            y1 + (y2 - y1) * localPosition
+        );
     }
     else if (p > length1 + length2)
     {
@@ -62,8 +64,12 @@ export default function GetPoint (triangle, position, out)
         p -= length1 + length2;
         localPosition = p / length3;
 
-        out.x = line3.x1 + (line3.x2 - line3.x1) * localPosition;
-        out.y = line3.y1 + (line3.y2 - line3.y1) * localPosition;
+        const { x1, y1, x2, y2 } = line3;
+
+        return out.set(
+            x1 + (x2 - x1) * localPosition,
+            y1 + (y2 - y1) * localPosition
+        );
     }
     else
     {
@@ -71,11 +77,11 @@ export default function GetPoint (triangle, position, out)
         p -= length1;
         localPosition = p / length2;
 
-        out.x = line2.x1 + (line2.x2 - line2.x1) * localPosition;
-        out.y = line2.y1 + (line2.y2 - line2.y1) * localPosition;
+        const { x1, y1, x2, y2 } = line2;
+
+        return out.set(
+            x1 + (x2 - x1) * localPosition,
+            y1 + (y2 - y1) * localPosition
+        );
     }
-
-    return out;
-};
-
-module.exports = GetPoint;
+}

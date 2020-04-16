@@ -4,7 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Triangle = require('./Triangle');
+import ITriangle from './ITriangle';
+import Triangle from './Triangle';
+
 
 /**
  * Clones a Triangle object.
@@ -16,9 +18,9 @@ var Triangle = require('./Triangle');
  *
  * @return {Phaser.Geom.Triangle} A new Triangle identical to the given one but separate from it.
  */
-export default function Clone (source)
+export default function Clone (source: ITriangle): Triangle
 {
-    return new Triangle(source.x1, source.y1, source.x2, source.y2, source.x3, source.y3);
-};
+    const { x1, y1, x2, y2, x3, y3 } = source;
 
-module.exports = Clone;
+    return new Triangle(x1, y1, x2, y2, x3, y3);
+}

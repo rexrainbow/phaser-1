@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-// The 2D area of a triangle. The area value is always non-negative.
+import ITriangle from './ITriangle';
 
 /**
- * Returns the area of a Triangle.
+ * Returns the 2D area of a triangle. The area value is always non-negative.
  *
  * @function Phaser.Geom.Triangle.Area
  * @since 3.0.0
@@ -16,18 +16,9 @@
  *
  * @return {number} The area of the Triangle, always non-negative.
  */
-export default function Area (triangle)
+export default function Area (triangle: ITriangle): number
 {
-    var x1 = triangle.x1;
-    var y1 = triangle.y1;
-
-    var x2 = triangle.x2;
-    var y2 = triangle.y2;
-
-    var x3 = triangle.x3;
-    var y3 = triangle.y3;
+    const { x1, y1, x2, y2, x3, y3 } = triangle;
 
     return Math.abs(((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) / 2);
-};
-
-module.exports = Area;
+}

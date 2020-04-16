@@ -4,31 +4,56 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Triangle = require('./Triangle');
+import Area from './Area';
+import BuildEquilateral from './BuildEquilateral';
+import BuildRight from './BuildRight';
+import CenterOn from './CenterOn';
+import Centroid from './Centroid';
+import CircumCenter from './CircumCenter';
+import CircumCircle from './CircumCircle';
+import Clone from './Clone';
+import Contains from './Contains';
+import ContainsArray from './ContainsArray';
+import ContainsPoint from './ContainsPoint';
+import CopyFrom from './CopyFrom';
+import Decompose from './Decompose';
+import Equals from './Equals';
+import GetEdges from './GetEdges';
+import GetPoint from './GetPoint';
+import GetPoints from './GetPoints';
+import InCenter from './InCenter';
+import Perimeter from './Perimeter';
+import Offset from './Offset';
+import Random from './Random';
+import Rotate from './Rotate';
+import RotateAroundPoint from './RotateAroundPoint';
+import RotateAroundXY from './RotateAroundXY';
+import Triangle from './Triangle';
 
-Triangle.Area = require('./Area');
-Triangle.BuildEquilateral = require('./BuildEquilateral');
-Triangle.BuildFromPolygon = require('./BuildFromPolygon');
-Triangle.BuildRight = require('./BuildRight');
-Triangle.CenterOn = require('./CenterOn');
-Triangle.Centroid = require('./Centroid');
-Triangle.CircumCenter = require('./CircumCenter');
-Triangle.CircumCircle = require('./CircumCircle');
-Triangle.Clone = require('./Clone');
-Triangle.Contains = require('./Contains');
-Triangle.ContainsArray = require('./ContainsArray');
-Triangle.ContainsPoint = require('./ContainsPoint');
-Triangle.CopyFrom = require('./CopyFrom');
-Triangle.Decompose = require('./Decompose');
-Triangle.Equals = require('./Equals');
-Triangle.GetPoint = require('./GetPoint');
-Triangle.GetPoints = require('./GetPoints');
-Triangle.InCenter = require('./InCenter');
-Triangle.Perimeter = require('./Perimeter');
-Triangle.Offset = require('./Offset');
-Triangle.Random = require('./Random');
-Triangle.Rotate = require('./Rotate');
-Triangle.RotateAroundPoint = require('./RotateAroundPoint');
-Triangle.RotateAroundXY = require('./RotateAroundXY');
-
-module.exports = Triangle;
+export default {
+    Area,
+    BuildEquilateral,
+    BuildRight,
+    CenterOn,
+    Centroid,
+    CircumCenter,
+    CircumCircle,
+    Clone,
+    Contains,
+    ContainsArray,
+    ContainsPoint,
+    CopyFrom,
+    Decompose,
+    Equals,
+    GetEdges,
+    GetPoint,
+    GetPoints,
+    InCenter,
+    Perimeter,
+    Offset,
+    Random,
+    Rotate,
+    RotateAroundPoint,
+    RotateAroundXY,
+    Triangle
+}

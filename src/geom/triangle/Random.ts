@@ -4,7 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Point = require('../point/Point');
+import ITriangle from './ITriangle';
+import Vec2 from '../../math/vec2/Vec2';
 
 /**
  * Returns a random Point from within the area of the given Triangle.
@@ -19,20 +20,20 @@ var Point = require('../point/Point');
  *
  * @return {Phaser.Geom.Point} A Point object holding the coordinates of a random position within the Triangle.
  */
-export default function Random (triangle, out)
+export default function Random (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
 {
-    if (out === undefined) { out = new Point(); }
+    const { x1, y1, x2, y2, x3, y3 } = triangle;
 
     //  Basis vectors
-    var ux = triangle.x2 - triangle.x1;
-    var uy = triangle.y2 - triangle.y1;
+    const ux = x2 - x1;
+    const uy = y2 - y1;
 
-    var vx = triangle.x3 - triangle.x1;
-    var vy = triangle.y3 - triangle.y1;
+    const vx = x3 - x1;
+    const vy = y3 - y1;
 
     //  Random point within the unit square
-    var r = Math.random();
-    var s = Math.random();
+    let r = Math.random();
+    let s = Math.random();
 
     //  Point outside the triangle? Remap it.
     if (r + s >= 1)
@@ -41,10 +42,8 @@ export default function Random (triangle, out)
         s = 1 - s;
     }
 
-    out.x = triangle.x1 + ((ux * r) + (vx * s));
-    out.y = triangle.y1 + ((uy * r) + (vy * s));
-
-    return out;
-};
-
-module.exports = Random;
+    return out.set(
+        x1 + ((ux * r) + (vx * s)),
+        y1 + ((uy * r) + (vy * s))
+    );
+}

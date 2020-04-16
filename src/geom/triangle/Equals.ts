@@ -4,6 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
+import ITriangle from './ITriangle';
+
 /**
  * Returns true if two triangles have the same coordinates.
  *
@@ -15,7 +17,7 @@
  *
  * @return {boolean} `true` if the two given triangles have the exact same coordinates, otherwise `false`.
  */
-export default function Equals (triangle, toCompare)
+export default function Equals (triangle: ITriangle, toCompare: ITriangle): boolean
 {
     return (
         triangle.x1 === toCompare.x1 &&
@@ -25,6 +27,4 @@ export default function Equals (triangle, toCompare)
         triangle.x3 === toCompare.x3 &&
         triangle.y3 === toCompare.y3
     );
-};
-
-module.exports = Equals;
+}

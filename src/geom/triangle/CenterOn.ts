@@ -4,8 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Centroid = require('./Centroid');
-var Offset = require('./Offset');
+import Centroid from './Centroid';
+import Offset from './Offset';
+import ITriangle from './ITriangle';
+import Vec2 from '../../math/vec2/Vec2';
 
 /**
  * @callback CenterFunction
@@ -14,6 +16,8 @@ var Offset = require('./Offset');
  *
  * @return {Phaser.Math.Vector2} The center point of the Triangle according to the function.
  */
+
+type CenterFunction = (triangle: ITriangle) => Vec2;
 
 /**
  * Positions the Triangle so that it is centered on the given coordinates.
@@ -30,18 +34,14 @@ var Offset = require('./Offset');
  *
  * @return {Phaser.Geom.Triangle} The Triangle that was centered.
  */
-export default function CenterOn (triangle, x, y, centerFunc)
+export default function CenterOn (triangle: ITriangle, x: number, y: number, centerFunc: CenterFunction = Centroid): ITriangle
 {
-    if (centerFunc === undefined) { centerFunc = Centroid; }
-
     //  Get the center of the triangle
-    var center = centerFunc(triangle);
+    const center = centerFunc(triangle);
 
     //  Difference
-    var diffX = x - center.x;
-    var diffY = y - center.y;
+    const diffX = x - center.x;
+    const diffY = y - center.y;
 
     return Offset(triangle, diffX, diffY);
-};
-
-module.exports = CenterOn;
+}

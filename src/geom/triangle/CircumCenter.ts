@@ -4,12 +4,14 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Vector2 = require('../../math/Vector2');
+import ITriangle from './ITriangle';
+import Vec2 from '../../math/vec2/Vec2';
 
-//  Adapted from http://bjornharrtell.github.io/jsts/doc/api/jsts_geom_Triangle.js.html
 
 /**
  * Computes the determinant of a 2x2 matrix. Uses standard double-precision arithmetic, so is susceptible to round-off error.
+ * 
+ * Adapted from http://bjornharrtell.github.io/jsts/doc/api/jsts_geom_Triangle.js.html
  *
  * @function det
  * @private
@@ -22,7 +24,7 @@ var Vector2 = require('../../math/Vector2');
  *
  * @return {number} the determinant.
  */
-function det (m00, m01, m10, m11)
+function det (m00: number, m01: number, m10: number, m11: number): number
 {
     return (m00 * m11) - (m01 * m10);
 }
@@ -44,27 +46,23 @@ function det (m00, m01, m10, m11)
  *
  * @return {Phaser.Math.Vector2} A Vector2 object holding the coordinates of the circumcenter of the Triangle.
  */
-export default function CircumCenter (triangle, out)
+export default function CircumCenter (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
 {
-    if (out === undefined) { out = new Vector2(); }
+    const cx = triangle.x3;
+    const cy = triangle.y3;
 
-    var cx = triangle.x3;
-    var cy = triangle.y3;
+    const ax = triangle.x1 - cx;
+    const ay = triangle.y1 - cy;
 
-    var ax = triangle.x1 - cx;
-    var ay = triangle.y1 - cy;
+    const bx = triangle.x2 - cx;
+    const by = triangle.y2 - cy;
 
-    var bx = triangle.x2 - cx;
-    var by = triangle.y2 - cy;
+    const denom = 2 * det(ax, ay, bx, by);
+    const numx = det(ay, ax * ax + ay * ay, by, bx * bx + by * by);
+    const numy = det(ax, ax * ax + ay * ay, bx, bx * bx + by * by);
 
-    var denom = 2 * det(ax, ay, bx, by);
-    var numx = det(ay, ax * ax + ay * ay, by, bx * bx + by * by);
-    var numy = det(ax, ax * ax + ay * ay, bx, bx * bx + by * by);
-
-    out.x = cx - numx / denom;
-    out.y = cy + numy / denom;
-
-    return out;
-};
-
-module.exports = CircumCenter;
+    return out.set(
+        cx - numx / denom,
+        cy + numy / denom
+    );
+}

@@ -4,22 +4,23 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Point = require('../point/Point');
+import ITriangle from './ITriangle';
+import Vec2 from '../../math/vec2/Vec2';
 
-// The three angle bisectors of a triangle meet in one point called the incenter.
-// It is the center of the incircle, the circle inscribed in the triangle.
 
-function getLength (x1, y1, x2, y2)
+function getLength (x1: number, y1: number, x2: number, y2: number): number
 {
-    var x = x1 - x2;
-    var y = y1 - y2;
-    var magnitude = (x * x) + (y * y);
+    const x = x1 - x2;
+    const y = y1 - y2;
+    const magnitude = (x * x) + (y * y);
 
     return Math.sqrt(magnitude);
 }
 
 /**
- * Calculates the position of the incenter of a Triangle object. This is the point where its three angle bisectors meet and it's also the center of the incircle, which is the circle inscribed in the triangle.
+ * Calculates the position of the incenter of a Triangle object.
+ * This is the point where its three angle bisectors meet and it's also the center
+ * of the incircle, which is the circle inscribed in the triangle.
  *
  * @function Phaser.Geom.Triangle.InCenter
  * @since 3.0.0
@@ -31,29 +32,18 @@ function getLength (x1, y1, x2, y2)
  *
  * @return {Phaser.Geom.Point} Point (x, y) of the center pixel of the triangle.
  */
-export default function InCenter (triangle, out)
+export default function InCenter (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
 {
-    if (out === undefined) { out = new Point(); }
+    const { x1, y1, x2, y2, x3, y3 } = triangle;
 
-    var x1 = triangle.x1;
-    var y1 = triangle.y1;
+    const d1 = getLength(x3, y3, x2, y2);
+    const d2 = getLength(x1, y1, x3, y3);
+    const d3 = getLength(x2, y2, x1, y1);
 
-    var x2 = triangle.x2;
-    var y2 = triangle.y2;
+    const p = d1 + d2 + d3;
 
-    var x3 = triangle.x3;
-    var y3 = triangle.y3;
-
-    var d1 = getLength(x3, y3, x2, y2);
-    var d2 = getLength(x1, y1, x3, y3);
-    var d3 = getLength(x2, y2, x1, y1);
-
-    var p = d1 + d2 + d3;
-
-    out.x = (x1 * d1 + x2 * d2 + x3 * d3) / p;
-    out.y = (y1 * d1 + y2 * d2 + y3 * d3) / p;
-
-    return out;
-};
-
-module.exports = InCenter;
+    return out.set(
+        (x1 * d1 + x2 * d2 + x3 * d3) / p,
+        (y1 * d1 + y2 * d2 + y3 * d3) / p
+    );
+}

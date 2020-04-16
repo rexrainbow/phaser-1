@@ -4,7 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var RotateAroundXY = require('./RotateAroundXY');
+import RotateAroundXY from './RotateAroundXY';
+import ITriangle from './ITriangle';
+import IVec2 from '../../math/vec2/IVec2';
 
 /**
  * Rotates a Triangle at a certain angle about a given Point or object with public `x` and `y` properties.
@@ -20,9 +22,7 @@ var RotateAroundXY = require('./RotateAroundXY');
  *
  * @return {Phaser.Geom.Triangle} The rotated Triangle.
  */
-export default function RotateAroundPoint (triangle, point, angle)
+export default function RotateAroundPoint (triangle: ITriangle, point: IVec2, angle: number): ITriangle
 {
     return RotateAroundXY(triangle, point.x, point.y, angle);
-};
-
-module.exports = RotateAroundPoint;
+}

@@ -4,6 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
+import ITriangle from './ITriangle';
+
 /**
  * Rotates an entire Triangle at a given angle about a specific point.
  *
@@ -19,30 +21,19 @@
  *
  * @return {Phaser.Geom.Triangle} The rotated Triangle.
  */
-export default function RotateAroundXY (triangle, x, y, angle)
+export default function RotateAroundXY (triangle: ITriangle, x: number, y: number, angle: number): ITriangle
 {
-    var c = Math.cos(angle);
-    var s = Math.sin(angle);
+    const { x1, y1, x2, y2, x3, y3 } = triangle;
 
-    var tx = triangle.x1 - x;
-    var ty = triangle.y1 - y;
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
 
-    triangle.x1 = tx * c - ty * s + x;
-    triangle.y1 = tx * s + ty * c + y;
-
-    tx = triangle.x2 - x;
-    ty = triangle.y2 - y;
-
-    triangle.x2 = tx * c - ty * s + x;
-    triangle.y2 = tx * s + ty * c + y;
-
-    tx = triangle.x3 - x;
-    ty = triangle.y3 - y;
-
-    triangle.x3 = tx * c - ty * s + x;
-    triangle.y3 = tx * s + ty * c + y;
-
-    return triangle;
-};
-
-module.exports = RotateAroundXY;
+    return triangle.set(
+        (x1 - x) * c - (y1 - y) * s + x,
+        (x1 - x) * s + (y1 - y) * c + y,
+        (x2 - x) * c - (y2 - y) * s + x,
+        (x2 - x) * s + (y2 - y) * c + y,
+        (x3 - x) * c - (y3 - y) * s + x,
+        (x3 - x) * s + (y3 - y) * c + y
+    );
+}

@@ -4,6 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
+import ITriangle from './ITriangle';
+
 /**
  * Moves each point (vertex) of a Triangle by a given offset, thus moving the entire Triangle by that offset.
  *
@@ -18,7 +20,7 @@
  *
  * @return {Phaser.Geom.Triangle} The modified Triangle.
  */
-export default function Offset (triangle, x, y)
+export default function Offset (triangle: ITriangle, x: number, y: number): ITriangle
 {
     triangle.x1 += x;
     triangle.y1 += y;
@@ -30,6 +32,4 @@ export default function Offset (triangle, x, y)
     triangle.y3 += y;
 
     return triangle;
-};
-
-module.exports = Offset;
+}

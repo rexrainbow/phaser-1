@@ -4,8 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var Length = require('../line/Length');
-var Point = require('../point/Point');
+import Length from '../line/Length';
+import ITriangle from './ITriangle';
+import Vec2 from '../../math/vec2/Vec2';
+import GetEdges from './GetEdges';
 
 /**
  * Returns an array of evenly spaced points on the perimeter of a Triangle.
@@ -22,19 +24,15 @@ var Point = require('../point/Point');
  *
  * @return {(array|Phaser.Geom.Point[])} The modified `out` array, or a new array if none was provided.
  */
-export default function GetPoints (triangle, quantity, stepRate, out)
+export default function GetPoints (triangle: ITriangle, quantity: number, stepRate: number, out: Vec2[] = []): Vec2[]
 {
-    if (out === undefined) { out = []; }
+    const [ line1, line2, line3 ] = GetEdges(triangle);
 
-    var line1 = triangle.getLineA();
-    var line2 = triangle.getLineB();
-    var line3 = triangle.getLineC();
+    const length1 = Length(line1);
+    const length2 = Length(line2);
+    const length3 = Length(line3);
 
-    var length1 = Length(line1);
-    var length2 = Length(line2);
-    var length3 = Length(line3);
-
-    var perimeter = length1 + length2 + length3;
+    const perimeter = length1 + length2 + length3;
 
     //  If quantity is a falsey value (false, null, 0, undefined, etc) then we calculate it based on the stepRate instead.
     if (!quantity)
@@ -42,46 +40,53 @@ export default function GetPoints (triangle, quantity, stepRate, out)
         quantity = perimeter / stepRate;
     }
 
-    for (var i = 0; i < quantity; i++)
+    for (let i = 0; i < quantity; i++)
     {
-        var p = perimeter * (i / quantity);
-        var localPosition = 0;
-
-        var point = new Point();
-
-        //  Which line is it on?
+        let p = perimeter * (i / quantity);
+        let localPosition = 0;
+        let point: Vec2;
 
         if (p < length1)
         {
             //  Line 1
             localPosition = p / length1;
-
-            point.x = line1.x1 + (line1.x2 - line1.x1) * localPosition;
-            point.y = line1.y1 + (line1.y2 - line1.y1) * localPosition;
+    
+            const { x1, y1, x2, y2 } = line1;
+    
+            point = new Vec2(
+                x1 + (x2 - x1) * localPosition,
+                y1 + (y2 - y1) * localPosition
+            );
         }
         else if (p > length1 + length2)
         {
             //  Line 3
             p -= length1 + length2;
             localPosition = p / length3;
-
-            point.x = line3.x1 + (line3.x2 - line3.x1) * localPosition;
-            point.y = line3.y1 + (line3.y2 - line3.y1) * localPosition;
+    
+            const { x1, y1, x2, y2 } = line3;
+    
+            point = new Vec2(
+                x1 + (x2 - x1) * localPosition,
+                y1 + (y2 - y1) * localPosition
+            );
         }
         else
         {
             //  Line 2
             p -= length1;
             localPosition = p / length2;
-
-            point.x = line2.x1 + (line2.x2 - line2.x1) * localPosition;
-            point.y = line2.y1 + (line2.y2 - line2.y1) * localPosition;
+    
+            const { x1, y1, x2, y2 } = line2;
+    
+            point = new Vec2(
+                x1 + (x2 - x1) * localPosition,
+                y1 + (y2 - y1) * localPosition
+            );
         }
 
         out.push(point);
     }
 
     return out;
-};
-
-module.exports = GetPoints;
+}
