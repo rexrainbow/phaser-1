@@ -31,8 +31,8 @@ import Texture from '../Texture';
  * @property {Phaser.Types.Create.GenerateTextureCallback} [postRender] - A callback to send the canvas to after the texture has been drawn.
  */
 
-export type PixelGridConfig = {
-    data: [string, number][],
+export type PixelTextureConfig = {
+    data: string[],
     canvas?: HTMLCanvasElement,
     palette?: any,
     pixelWidth?: number,
@@ -81,7 +81,7 @@ export type PixelGridConfig = {
  *
  * @return {Texture} An HTMLCanvasElement which contains the generated texture drawn to it.
  */
-export default function PixelGridTexture (config: PixelGridConfig): Texture
+export default function PixelTexture (config: PixelTextureConfig): Texture
 {
     let {
         data = [],
