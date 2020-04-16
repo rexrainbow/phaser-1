@@ -1,4 +1,4 @@
-import PackColors from '../../renderer/PackColors';
+import PackColors from '../../renderer/webgl1/PackColors';
 export default function SetQuadTint(topLeft, topRight, bottomLeft, bottomRight, ...sprite) {
     sprite.forEach(entity => {
         let tint = entity.vertexTint;

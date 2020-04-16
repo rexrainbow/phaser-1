@@ -8,6 +8,6 @@ import Scene from './scenes/Scene';
 import StaticScene from './scenes/StaticScene';
 import EventEmitter from './core/EventEmitter';
 import Loader from './loader/Loader';
-import WebGLRenderer from './renderer/WebGLRenderer';
+import WebGLRenderer from './renderer/webgl1/WebGLRenderer';
 export { Device, DOM, Game, Scene, StaticScene, EventEmitter, GameObjects, Loader, Math, WebGLRenderer, Textures };
 //# sourceMappingURL=index.js.map

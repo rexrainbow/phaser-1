@@ -1,4 +1,4 @@
-import PackColors from '../../renderer/PackColors';
+import PackColors from '../../renderer/webgl1/PackColors';
 export default function SetQuadAlpha(topLeft, topRight, bottomLeft, bottomRight, ...sprite) {
     sprite.forEach(entity => {
         let alpha = entity.vertexAlpha;

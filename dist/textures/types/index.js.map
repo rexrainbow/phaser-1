@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../src/textures/types/index.ts"],"names":[],"mappings":"AAAA,OAAO,aAAa,MAAM,iBAAiB,CAAC;AAC5C,OAAO,WAAW,MAAM,eAAe,CAAC;AACxC,OAAO,YAAY,MAAM,gBAAgB,CAAC;AAC1C,OAAO,aAAa,MAAM,iBAAiB,CAAC;AAC5C,OAAO,iBAAiB,MAAM,qBAAqB,CAAC;AAEpD,eAAe;IACX,aAAa;IACb,WAAW;IACX,YAAY;IACZ,aAAa;IACb,iBAAiB;CACpB,CAAA"}

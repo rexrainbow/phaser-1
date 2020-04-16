@@ -529,6 +529,23 @@
         RemoveFromDOM: RemoveFromDOM
     });
 
+    function AddAnimation(key, frames, ...sprite) {
+        sprite.forEach(entity => {
+            if (!entity.anims.has(key)) {
+                entity.anims.set(key, entity.texture.getFrames(frames));
+            }
+        });
+    }
+
+    function AddAnimationFromAtlas(config, ...sprite) {
+        const { key, prefix = '', start = 0, end, zeroPad = 0, suffix = '' } = config;
+        sprite.forEach(entity => {
+            if (!entity.anims.has(key)) {
+                entity.anims.set(key, entity.texture.getFramesInRange(prefix, start, end, zeroPad, suffix));
+            }
+        });
+    }
+
     class Rectangle {
         constructor(x = 0, y = 0, width = 0, height = 0) {
             this.set(x, y, width, height);
@@ -1193,6 +1210,9 @@
                 console.warn('Invalid Texture key: ' + key);
             }
             else {
+                if (!entity.texture.glTexture) {
+                    entity.texture.createGL();
+                }
                 SetFrame(frame, entity);
             }
         });
@@ -1353,13 +1373,815 @@
         23 = topRight.packedColor
     */
 
-    // import AnimatedSprite from './animatedsprite/AnimatedSprite';
-    // import SpriteBuffer from './spritebuffer/SpriteBuffer';
-    // import Text from './text/Text';
-    var index$3 = {
+    class AnimatedSprite extends Sprite {
+        constructor(x, y, texture, frame) {
+            super(x, y, texture, frame);
+            this.type = 'AnimatedSprite';
+            this.anims = new Map();
+            //  Holds all the data for the current animation only
+            this.animData = {
+                currentAnim: '',
+                currentFrames: [],
+                frameIndex: 0,
+                animSpeed: 0,
+                nextFrameTime: 0,
+                repeatCount: 0,
+                isPlaying: false,
+                yoyo: false,
+                pendingStart: false,
+                playingForward: true,
+                delay: 0,
+                repeatDelay: 0,
+                onStart: null,
+                onRepeat: null,
+                onComplete: null
+            };
+        }
+        stop() {
+            const data = this.animData;
+            data.isPlaying = false;
+            data.currentAnim = '';
+            if (data.onComplete) {
+                data.onComplete(this, data.currentAnim);
+            }
+            return this;
+        }
+        nextFrame() {
+            const data = this.animData;
+            data.frameIndex++;
+            //  There are no more frames, do we yoyo or repeat or end?
+            if (data.frameIndex === data.currentFrames.length) {
+                if (data.yoyo) {
+                    data.frameIndex--;
+                    data.playingForward = false;
+                }
+                else if (data.repeatCount === -1 || data.repeatCount > 0) {
+                    data.frameIndex = 0;
+                    if (data.repeatCount !== -1) {
+                        data.repeatCount--;
+                    }
+                    if (data.onRepeat) {
+                        data.onRepeat(this, data.currentAnim);
+                    }
+                    data.nextFrameTime += data.repeatDelay;
+                }
+                else {
+                    data.frameIndex--;
+                    return this.stop();
+                }
+            }
+            this.setFrame(data.currentFrames[data.frameIndex]);
+            data.nextFrameTime += data.animSpeed;
+            return this;
+        }
+        prevFrame() {
+            const data = this.animData;
+            data.frameIndex--;
+            //  There are no more frames, do we repeat or end?
+            if (data.frameIndex === -1) {
+                if (data.repeatCount === -1 || data.repeatCount > 0) {
+                    data.frameIndex = 0;
+                    data.playingForward = true;
+                    if (data.repeatCount !== -1) {
+                        data.repeatCount--;
+                    }
+                    if (data.onRepeat) {
+                        data.onRepeat(this, data.currentAnim);
+                    }
+                    data.nextFrameTime += data.repeatDelay;
+                }
+                else {
+                    data.frameIndex = 0;
+                    return this.stop();
+                }
+            }
+            this.setFrame(data.currentFrames[data.frameIndex]);
+            data.nextFrameTime += data.animSpeed;
+            return this;
+        }
+        update(delta, now) {
+            super.update(delta, now);
+            const data = this.animData;
+            if (!data.isPlaying) {
+                return;
+            }
+            data.nextFrameTime -= delta * 1000;
+            //  Clamp to zero, otherwise a huge delta could cause animation playback issues
+            data.nextFrameTime = Math.max(data.nextFrameTime, 0);
+            //  It's time for a new frame
+            if (data.nextFrameTime === 0) {
+                //  Is this the start of our animation?
+                if (data.pendingStart) {
+                    if (data.onStart) {
+                        data.onStart(this, data.currentAnim);
+                    }
+                    data.pendingStart = false;
+                    data.nextFrameTime = data.animSpeed;
+                }
+                else if (data.playingForward) {
+                    this.nextFrame();
+                }
+                else {
+                    this.prevFrame();
+                }
+            }
+        }
+        get isPlaying() {
+            return this.animData.isPlaying;
+        }
+        get isPlayingForward() {
+            return (this.animData.isPlaying && this.animData.playingForward);
+        }
+        get currentAnimation() {
+            return this.animData.currentAnim;
+        }
+        destroy(reparentChildren) {
+            super.destroy(reparentChildren);
+            this.anims.clear();
+            this.animData = null;
+        }
+    }
+
+    function ClearAnimations(...sprite) {
+        sprite.forEach(entity => {
+            entity.anims.clear();
+        });
+    }
+
+    function Play(key, config = {}, ...sprite) {
+        const { speed = 24, repeat = 0, yoyo = false, startFrame = 0, delay = 0, repeatDelay = 0, onStart = null, onRepeat = null, onComplete = null, forceRestart = false } = config;
+        sprite.forEach(entity => {
+            const data = entity.animData;
+            if (data.isPlaying) {
+                if (data.currentAnim !== key) {
+                    //  Stop
+                    data.isPlaying = false;
+                    data.currentAnim = '';
+                    if (data.onComplete) {
+                        data.onComplete(entity, data.currentAnim);
+                    }
+                }
+                else if (!forceRestart) {
+                    //  This animation is already playing? Just return then.
+                    return;
+                }
+            }
+            if (entity.anims.has(key)) {
+                data.currentFrames = entity.anims.get(key);
+                data.currentAnim = key;
+                data.frameIndex = startFrame;
+                data.animSpeed = 1000 / speed;
+                data.nextFrameTime = data.animSpeed + delay;
+                data.isPlaying = true;
+                data.playingForward = true;
+                data.yoyo = yoyo;
+                data.repeatCount = repeat;
+                data.delay = delay;
+                data.repeatDelay = repeatDelay;
+                data.onStart = onStart;
+                data.onRepeat = onRepeat;
+                data.onComplete = onComplete;
+                //  If there is no start delay, we set the first frame immediately
+                if (delay === 0) {
+                    entity.setFrame(data.currentFrames[data.frameIndex]);
+                    if (onStart) {
+                        onStart(entity, key);
+                    }
+                }
+                else {
+                    data.pendingStart = true;
+                }
+            }
+        });
+    }
+
+    function RemoveAnimation(key, ...sprite) {
+        sprite.forEach(entity => {
+            entity.anims.delete(key);
+        });
+    }
+
+    function Stop(...sprite) {
+        sprite.forEach(entity => {
+            const data = entity.animData;
+            data.isPlaying = false;
+            data.currentAnim = '';
+            if (data.onComplete) {
+                data.onComplete(entity, data.currentAnim);
+            }
+        });
+    }
+
+    var AnimatedSprite$1 = {
+        AddAnimation,
+        AddAnimationFromAtlas,
+        AnimatedSprite,
+        ClearAnimations,
+        Play,
+        RemoveAnimation,
+        Stop
+    };
+
+    function RemoveChild(parent, ...child) {
+        const children = parent.children;
+        child.forEach(entity => {
+            let index = children.indexOf(entity);
+            if (index > -1) {
+                children.splice(index, 1);
+                entity.parent = null;
+            }
+        });
+    }
+
+    function SetParent(parent, ...child) {
+        child.forEach(entity => {
+            if (entity.parent) {
+                RemoveChild(entity.parent, entity);
+            }
+            entity.scene = parent.scene;
+            entity.parent = parent;
+        });
+    }
+
+    function AddChild(parent, ...child) {
+        child.forEach(entity => {
+            SetParent(parent, entity);
+            parent.children.push(entity);
+            entity.updateTransform();
+        });
+    }
+
+    function AddChildAt(parent, index, ...child) {
+        const children = parent.children;
+        if (index >= 0 && index <= children.length) {
+            child.reverse().forEach(entity => {
+                SetParent(parent, entity);
+                children.splice(index, 0, entity);
+                entity.updateTransform();
+            });
+        }
+    }
+
+    function RemoveChildren(parent, beginIndex = 0, endIndex) {
+        const children = parent.children;
+        if (endIndex === undefined) {
+            endIndex = children.length;
+        }
+        const range = endIndex - beginIndex;
+        if (range > 0 && range <= endIndex) {
+            const removed = children.splice(beginIndex, range);
+            removed.forEach(child => {
+                child.parent = null;
+            });
+            return removed;
+        }
+        else {
+            return [];
+        }
+    }
+
+    function DestroyChildren(parent, beginIndex = 0, endIndex) {
+        const removed = RemoveChildren(parent, beginIndex, endIndex);
+        removed.forEach(child => {
+            child.destroy();
+        });
+    }
+
+    function GetChildAt(parent, index) {
+        const children = parent.children;
+        if (index < 0 || index > children.length) {
+            throw new Error('Index out of bounds: ' + index);
+        }
+        return children[index];
+    }
+
+    function GetChildIndex(parent, child) {
+        return parent.children.indexOf(child);
+    }
+
+    function RemoveChildAt(parent, ...index) {
+        const children = parent.children;
+        const removed = [];
+        //  Sort into numeric order
+        index.sort((a, b) => a - b);
+        //  Work through the array in reverse
+        index.reverse().forEach(entity => {
+            let child = GetChildAt(parent, entity);
+            if (child) {
+                children.splice(entity, 1);
+                child.parent = null;
+                removed.push(child);
+            }
+        });
+        return removed;
+    }
+
+    function ReparentChildren(parent, newParent, beginIndex = 0, endIndex) {
+        const moved = RemoveChildren(parent, beginIndex, endIndex);
+        moved.forEach(child => {
+            SetParent(newParent, child);
+        });
+        return moved;
+    }
+
+    function SwapChildren(child1, child2) {
+        if (child1.parent === child2.parent) {
+            const children = child1.parent.children;
+            const index1 = GetChildIndex(child1.parent, child1);
+            const index2 = GetChildIndex(child2.parent, child2);
+            if (index1 !== index2) {
+                children[index1] = child2;
+                children[index2] = child1;
+            }
+        }
+    }
+
+    var Container$1 = {
+        AddChild,
+        AddChildAt,
         Container,
+        DestroyChildren,
+        GetChildAt,
+        GetChildIndex,
+        RemoveChild,
+        RemoveChildAt,
+        RemoveChildren,
+        ReparentChildren,
+        SetParent,
+        SwapChildren
+    };
+
+    function SetBounds(x, y, width, height, ...child) {
+        child.forEach(entity => {
+            entity.bounds.set(x, y, width, height);
+        });
+    }
+
+    function SetName(name, ...child) {
+        child.forEach(entity => {
+            entity.name = name;
+        });
+    }
+
+    function SetScene(scene, ...child) {
+        child.forEach(entity => {
+            entity.scene = scene;
+        });
+    }
+
+    function SetType(type, ...child) {
+        child.forEach(entity => {
+            entity.type = type;
+        });
+    }
+
+    function SetVisible(visible, ...child) {
+        child.forEach(entity => {
+            entity.visible = visible;
+        });
+    }
+
+    var GameObject$1 = {
         GameObject,
+        SetBounds,
+        SetName,
+        SetScene,
+        SetType,
+        SetVisible
+    };
+
+    function PackColor(rgb, alpha) {
+        let ua = ((alpha * 255) | 0) & 0xFF;
+        return ((ua << 24) | rgb) >>> 0;
+    }
+
+    function PackColors(sprite) {
+        const alpha = sprite.vertexAlpha;
+        const tint = sprite.vertexTint;
+        const color = sprite.vertexColor;
+        //  In lots of cases, this *never* changes, so cache it here:
+        color[0] = PackColor(tint[0], alpha[0]);
+        color[1] = PackColor(tint[1], alpha[1]);
+        color[2] = PackColor(tint[2], alpha[2]);
+        color[3] = PackColor(tint[3], alpha[3]);
+        return sprite.setDirtyRender();
+    }
+
+    function SetQuadAlpha(topLeft, topRight, bottomLeft, bottomRight, ...sprite) {
+        sprite.forEach(entity => {
+            let alpha = entity.vertexAlpha;
+            alpha[0] = topLeft;
+            alpha[1] = topRight;
+            alpha[2] = bottomLeft;
+            alpha[3] = bottomRight;
+            PackColors(entity);
+        });
+    }
+
+    function SetQuadTint(topLeft, topRight, bottomLeft, bottomRight, ...sprite) {
+        sprite.forEach(entity => {
+            let tint = entity.vertexTint;
+            tint[0] = topLeft;
+            tint[1] = topRight;
+            tint[2] = bottomLeft;
+            tint[3] = bottomRight;
+            PackColors(entity);
+        });
+    }
+
+    var Sprite$1 = {
+        SetFrame,
+        SetQuadAlpha,
+        SetQuadTint,
+        SetTexture,
         Sprite
+    };
+
+    function SetBackgroundStyle(style, cornerRadius, ...text) {
+        text.forEach(entity => {
+            entity.backgroundStyle = style;
+            if (cornerRadius !== null) {
+                entity.cornerRadius = cornerRadius;
+            }
+            entity.updateText();
+        });
+    }
+
+    function SetCornerRadius(cornerRadius, ...text) {
+        text.forEach(entity => {
+            entity.cornerRadius = cornerRadius;
+            entity.updateText();
+        });
+    }
+
+    function SetFillStyle(style, ...text) {
+        text.forEach(entity => {
+            entity.fillStyle = style;
+            entity.updateText();
+        });
+    }
+
+    function SetFixedSize(width, height, ...text) {
+        text.forEach(entity => {
+            entity.fixedWidth = width;
+            entity.fixedHeight = height;
+            entity.updateText();
+        });
+    }
+
+    function SetFont(font, ...text) {
+        text.forEach(entity => {
+            entity.font = font;
+            entity.updateText();
+        });
+    }
+
+    function SetLineDash(segments, ...text) {
+        text.forEach(entity => {
+            entity.lineDash = segments;
+            entity.updateText();
+        });
+    }
+
+    function SetLineSpacing(spacing, ...text) {
+        text.forEach(entity => {
+            entity.lineSpacing = spacing;
+            entity.updateText();
+        });
+    }
+
+    function SetLineWidth(width, ...text) {
+        text.forEach(entity => {
+            entity.lineWidth = width;
+            entity.updateText();
+        });
+    }
+
+    function SetPadding(left, right, top, bottom, ...text) {
+        text.forEach(entity => {
+            const padding = entity.padding;
+            padding.left = left;
+            padding.right = right;
+            padding.top = top;
+            padding.bottom = bottom;
+            entity.updateText();
+        });
+    }
+
+    function SetStrokeStyle(style, lineWidth, ...text) {
+        text.forEach(entity => {
+            entity.strokeStyle = style;
+            if (lineWidth) {
+                entity.lineWidth = lineWidth;
+            }
+            entity.updateText();
+        });
+    }
+
+    function SetText(value, ...text) {
+        text.forEach(entity => {
+            entity.setText(value);
+        });
+    }
+
+    function SetTextAlign(align, ...text) {
+        text.forEach(entity => {
+            entity.textAlign = align;
+            entity.updateText();
+        });
+    }
+
+    function SetTextBaseline(baseline, ...text) {
+        text.forEach(entity => {
+            entity.textBaseline = baseline;
+            entity.updateText();
+        });
+    }
+
+    function CreateCanvas(width, height) {
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        return canvas.getContext('2d');
+    }
+
+    function CanvasTexture(width = 32, height = 32) {
+        const ctx = CreateCanvas(width, height);
+        return new Texture(ctx.canvas);
+    }
+
+    class Text extends Sprite {
+        constructor(x, y, text = '', font, fillStyle) {
+            super(x, y, CanvasTexture());
+            this.splitRegExp = /(?:\r\n|\r|\n)/;
+            this.padding = { left: 0, right: 0, top: 0, bottom: 0 };
+            this.verticalAlign = 'ascent';
+            this.lineSpacing = 0;
+            this.font = '16px monospace';
+            this.fillStyle = '#fff';
+            this.strokeStyle = '';
+            this.backgroundStyle = '';
+            this.cornerRadius = 0;
+            this.textAlign = 'left';
+            this.textBaseline = 'alphabetic';
+            this.lineWidth = 0;
+            this.lineDash = [];
+            this.antialias = false;
+            this.type = 'Text';
+            const game = GameInstance.get();
+            this.resolution = game.renderer.resolution;
+            this.canvas = this.texture.image;
+            this.context = this.canvas.getContext('2d');
+            this.texture.glTexture = CreateGLTexture(this.canvas, 32, 32, false, this.antialias);
+            if (font) {
+                this.font = font;
+            }
+            if (fillStyle) {
+                this.fillStyle = fillStyle;
+            }
+            this.setText(text);
+        }
+        syncContext(canvas, ctx) {
+            if (this.preRenderCallback) {
+                this.preRenderCallback(canvas, ctx);
+            }
+            ctx.font = this.font;
+            ctx.textBaseline = this.textBaseline;
+            ctx.textAlign = this.textAlign;
+            ctx.fillStyle = this.fillStyle;
+            ctx.strokeStyle = this.strokeStyle;
+            ctx.lineWidth = this.lineWidth;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.setLineDash(this.lineDash);
+            ctx.imageSmoothingEnabled = this.antialias;
+            //  TODO Shadows
+        }
+        updateText() {
+            const canvas = this.canvas;
+            const ctx = this.context;
+            const resolution = this.resolution;
+            let lines = this._text.split(this.splitRegExp);
+            const padding = this.padding;
+            const fillStyle = this.fillStyle;
+            const strokeStyle = this.strokeStyle;
+            const strokeWidth = this.lineWidth;
+            const lineSpacing = this.lineSpacing;
+            const strokeWidthHalf = (strokeWidth > 0) ? strokeWidth / 2 : 0;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            this.syncContext(canvas, ctx);
+            //  Use specifically for measureText
+            ctx.textAlign = 'start';
+            //  Measure each line and add them together (note: measure text excludes stroke style!)
+            let maxWidth = 0;
+            let maxHeight = 0;
+            let y = 0;
+            const lineMetrics = [];
+            const vAlignAscent = (this.verticalAlign === 'ascent');
+            //  Work out an average line height for this font
+            let metrics = ctx.measureText('|MÉq');
+            const averageLineHeight = Math.ceil(Math.abs(metrics.actualBoundingBoxAscent) + Math.abs(metrics.actualBoundingBoxDescent)) + strokeWidth;
+            for (let i = 0; i < lines.length; i++) {
+                let metrics = ctx.measureText(lines[i]);
+                let left = metrics.actualBoundingBoxLeft;
+                let right = metrics.actualBoundingBoxRight;
+                let ascent = metrics.actualBoundingBoxAscent;
+                let descent = metrics.actualBoundingBoxDescent;
+                //  Zero for a carriage-return, but we still need to add in the space
+                if ((!ascent && !descent) || lines[i] === '') {
+                    ascent = averageLineHeight;
+                    descent = 0;
+                }
+                let lineWidth = Math.ceil(Math.abs(left) + Math.abs(right)) + strokeWidth;
+                let lineHeight = Math.ceil(Math.abs(ascent) + Math.abs(descent)) + strokeWidth;
+                if (vAlignAscent) {
+                    y += ascent + strokeWidthHalf;
+                    if (i > 0) {
+                        y += lineSpacing + strokeWidthHalf;
+                    }
+                    maxHeight = y + descent + strokeWidthHalf;
+                }
+                else {
+                    y = maxHeight + ((lineHeight - descent) - strokeWidthHalf);
+                    maxHeight += lineHeight;
+                    if (i < lines.length - 1) {
+                        maxHeight += lineSpacing;
+                    }
+                }
+                maxWidth = Math.max(maxWidth, lineWidth);
+                lineMetrics.push({ lineWidth, lineHeight, ascent, descent, left, right, y });
+            }
+            //  Account for lineSpacing + padding
+            maxWidth += padding.left + padding.right;
+            maxHeight += padding.top + padding.bottom;
+            const displayWidth = (this.fixedWidth) ? this.fixedWidth : maxWidth;
+            const displayHeight = (this.fixedHeight) ? this.fixedHeight : maxHeight;
+            const canvasWidth = Math.ceil(displayWidth * resolution);
+            const canvasHeight = Math.ceil(displayHeight * resolution);
+            if (canvas.width !== canvasWidth || canvas.height !== canvasHeight) {
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+                this.texture.setSize(displayWidth, displayHeight);
+                this.setSize(displayWidth, displayHeight);
+            }
+            ctx.save();
+            ctx.scale(resolution, resolution);
+            this.syncContext(canvas, ctx);
+            const backgroundStyle = this.backgroundStyle;
+            if (backgroundStyle) {
+                ctx.save();
+                ctx.fillStyle = backgroundStyle;
+                ctx.strokeStyle = backgroundStyle;
+                const cornerRadius = this.cornerRadius;
+                const halfRadius = (cornerRadius > 0) ? cornerRadius / 2 : 0;
+                if (cornerRadius) {
+                    ctx.lineWidth = cornerRadius;
+                    ctx.strokeRect(halfRadius, halfRadius, displayWidth - cornerRadius, displayHeight - cornerRadius);
+                }
+                ctx.fillRect(halfRadius, halfRadius, displayWidth - cornerRadius, displayHeight - cornerRadius);
+                ctx.restore();
+            }
+            //  Text Alignment
+            const textAlign = this.textAlign;
+            const isCenter = (textAlign === 'center');
+            const isRight = (textAlign === 'right' || textAlign === 'end');
+            const yOffset = ((displayHeight - maxHeight) / 2) + padding.top;
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                let metrics = lineMetrics[i];
+                let tx = padding.left + metrics.left + strokeWidthHalf;
+                let ty = yOffset + metrics.y;
+                if (isCenter) {
+                    tx = displayWidth / 2;
+                }
+                else if (isRight) {
+                    tx = displayWidth - strokeWidthHalf;
+                }
+                if (strokeStyle) {
+                    ctx.strokeText(line, tx, ty);
+                }
+                if (fillStyle) {
+                    ctx.fillText(line, tx, ty);
+                }
+            }
+            ctx.restore();
+            this.texture.updateGL();
+            this.setDirtyRender(true);
+            return this;
+        }
+        get text() {
+            return this._text;
+        }
+        set text(value) {
+            this.setText(value);
+        }
+        setText(value = '') {
+            if (Array.isArray(value)) {
+                value = value.join('\n');
+            }
+            if (value !== this._text) {
+                this._text = value.toString();
+                this.updateText();
+            }
+            return this;
+        }
+        destroy(reparentChildren) {
+            this.texture.destroy();
+            this.fillStyle = null;
+            this.strokeStyle = null;
+            this.backgroundStyle = null;
+            this.canvas = null;
+            this.context = null;
+            super.destroy(reparentChildren);
+        }
+    }
+
+    var Text$1 = {
+        SetBackgroundStyle,
+        SetCornerRadius,
+        SetFillStyle,
+        SetFixedSize,
+        SetFont,
+        SetLineDash,
+        SetLineSpacing,
+        SetLineWidth,
+        SetPadding,
+        SetStrokeStyle,
+        SetText,
+        SetTextAlign,
+        SetTextBaseline,
+        Text
+    };
+
+    function SetOrigin(originX, originY, ...child) {
+        child.forEach(entity => {
+            let data = entity.transformData;
+            data[CONST.ORIGIN_X] = originX;
+            data[CONST.ORIGIN_Y] = originY;
+        });
+    }
+
+    function SetPosition(x, y, ...child) {
+        child.forEach(entity => {
+            let data = entity.transformData;
+            data[CONST.POSITION_X] = x;
+            data[CONST.POSITION_Y] = y;
+            entity.updateTransform();
+        });
+    }
+
+    function SetRotation(rotation, ...child) {
+        child.forEach(entity => {
+            let data = entity.transformData;
+            if (rotation !== data[CONST.ROTATION]) {
+                data[CONST.ROTATION] = rotation;
+                entity.updateCache();
+            }
+        });
+    }
+
+    function SetScale(scaleX, scaleY, ...child) {
+        child.forEach(entity => {
+            let data = entity.transformData;
+            data[CONST.SCALE_X] = scaleX;
+            data[CONST.SCALE_Y] = scaleY;
+            entity.updateTransform();
+        });
+    }
+
+    function SetSize(width, height, ...child) {
+        child.forEach(entity => {
+            entity.width = width;
+            entity.height = height;
+        });
+    }
+
+    function SetSkew(skewX, skewY, ...child) {
+        child.forEach(entity => {
+            let data = entity.transformData;
+            data[CONST.SKEW_X] = skewX;
+            data[CONST.SKEW_Y] = skewY;
+            entity.updateCache();
+        });
+    }
+
+    var TransformGameObject$1 = {
+        SetOrigin,
+        SetPosition,
+        SetRotation,
+        SetScale,
+        SetSize,
+        SetSkew,
+        TransformGameObject
+    };
+
+    var index$3 = {
+        AnimatedSprite: AnimatedSprite$1,
+        Container: Container$1,
+        GameObject: GameObject$1,
+        Sprite: Sprite$1,
+        Text: Text$1,
+        TransformGameObject: TransformGameObject$1
     };
 
     var index$4 = /*#__PURE__*/Object.freeze({
@@ -1464,7 +2286,7 @@
      * @copyright    2020 Photon Storm Ltd.
      * @license      {@link https://opensource.org/licenses/MIT|MIT License}
      */
-    var MATH_CONST = {
+    var CONST$1 = {
         /**
          * The value of PI * 2.
          *
@@ -1552,9 +2374,9 @@
      */
     function CounterClockwise(angle) {
         if (angle > Math.PI) {
-            angle -= MATH_CONST.PI2;
+            angle -= CONST$1.PI2;
         }
-        return Math.abs((((angle + MATH_CONST.TAU) % MATH_CONST.PI2) - MATH_CONST.PI2) % MATH_CONST.PI2);
+        return Math.abs((((angle + CONST$1.TAU) % CONST$1.PI2) - CONST$1.PI2) % CONST$1.PI2);
     }
 
     /**
@@ -1622,16 +2444,16 @@
         if (currentAngle === targetAngle) {
             return currentAngle;
         }
-        if (Math.abs(targetAngle - currentAngle) <= lerp || Math.abs(targetAngle - currentAngle) >= (MATH_CONST.PI2 - lerp)) {
+        if (Math.abs(targetAngle - currentAngle) <= lerp || Math.abs(targetAngle - currentAngle) >= (CONST$1.PI2 - lerp)) {
             currentAngle = targetAngle;
         }
         else {
             if (Math.abs(targetAngle - currentAngle) > Math.PI) {
                 if (targetAngle < currentAngle) {
-                    targetAngle += MATH_CONST.PI2;
+                    targetAngle += CONST$1.PI2;
                 }
                 else {
-                    targetAngle -= MATH_CONST.PI2;
+                    targetAngle -= CONST$1.PI2;
                 }
             }
             if (targetAngle > currentAngle) {
@@ -2088,6 +2910,416 @@
         'default': index$7
     });
 
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculates the factorial of a given number for integer values greater than 0.
+     *
+     * @function Phaser.Math.Factorial
+     * @since 3.0.0
+     *
+     * @param {number} value - A positive integer to calculate the factorial of.
+     *
+     * @return {number} The factorial of the given number.
+     */
+    function Factorial(value) {
+        if (value === 0) {
+            return 1;
+        }
+        let res = value;
+        while (--value) {
+            res *= value;
+        }
+        return res;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculates the Bernstein basis from the three factorial coefficients.
+     *
+     * @function Phaser.Math.Bernstein
+     * @since 3.0.0
+     *
+     * @param {number} n - The first value.
+     * @param {number} i - The second value.
+     *
+     * @return {number} The Bernstein basis of Factorial(n) / Factorial(i) / Factorial(n - i)
+     */
+    function Bernstein(n, i) {
+        return Factorial(n) / Factorial(i) / Factorial(n - i);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A bezier interpolation method.
+     *
+     * @function Phaser.Math.Interpolation.Bezier
+     * @since 3.0.0
+     *
+     * @param {number[]} v - The input array of values to interpolate between.
+     * @param {number} k - The percentage of interpolation, between 0 and 1.
+     *
+     * @return {number} The interpolated value.
+     */
+    function BezierInterpolation(v, k) {
+        let b = 0;
+        const n = v.length - 1;
+        for (let i = 0; i <= n; i++) {
+            b += Math.pow(1 - k, n - i) * Math.pow(k, i) * v[i] * Bernstein(n, i);
+        }
+        return b;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculates a Catmull-Rom value from the given points, based on an alpha of 0.5.
+     *
+     * @function Phaser.Math.CatmullRom
+     * @since 3.0.0
+     *
+     * @param {number} t - The amount to interpolate by.
+     * @param {number} p0 - The first control point.
+     * @param {number} p1 - The second control point.
+     * @param {number} p2 - The third control point.
+     * @param {number} p3 - The fourth control point.
+     *
+     * @return {number} The Catmull-Rom value.
+     */
+    function CatmullRom(t, p0, p1, p2, p3) {
+        const v0 = (p2 - p0) * 0.5;
+        const v1 = (p3 - p1) * 0.5;
+        const t2 = t * t;
+        const t3 = t * t2;
+        return (2 * p1 - 2 * p2 + v0 + v1) * t3 + (-3 * p1 + 3 * p2 - 2 * v0 - v1) * t2 + v0 * t + p1;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A Catmull-Rom interpolation method.
+     *
+     * @function Phaser.Math.Interpolation.CatmullRom
+     * @since 3.0.0
+     *
+     * @param {number[]} v - The input array of values to interpolate between.
+     * @param {number} k - The percentage of interpolation, between 0 and 1.
+     *
+     * @return {number} The interpolated value.
+     */
+    function CatmullRomInterpolation(v, k) {
+        const m = v.length - 1;
+        let f = m * k;
+        let i = Math.floor(f);
+        if (v[0] === v[m]) {
+            if (k < 0) {
+                i = Math.floor(f = m * (1 + k));
+            }
+            return CatmullRom(f - i, v[(i - 1 + m) % m], v[i], v[(i + 1) % m], v[(i + 2) % m]);
+        }
+        else {
+            if (k < 0) {
+                return v[0] - (CatmullRom(-f, v[0], v[0], v[1], v[1]) - v[0]);
+            }
+            if (k > 1) {
+                return v[m] - (CatmullRom(f - m, v[m], v[m], v[m - 1], v[m - 1]) - v[m]);
+            }
+            return CatmullRom(f - i, v[i ? i - 1 : 0], v[i], v[m < i + 1 ? m : i + 1], v[m < i + 2 ? m : i + 2]);
+        }
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * @ignore
+     */
+    function P0(t, p) {
+        const k = 1 - t;
+        return k * k * k * p;
+    }
+    /**
+     * @ignore
+     */
+    function P1(t, p) {
+        const k = 1 - t;
+        return 3 * k * k * t * p;
+    }
+    /**
+     * @ignore
+     */
+    function P2(t, p) {
+        return 3 * (1 - t) * t * t * p;
+    }
+    /**
+     * @ignore
+     */
+    function P3(t, p) {
+        return t * t * t * p;
+    }
+    /**
+     * A cubic bezier interpolation method.
+     *
+     * https://medium.com/@adrian_cooney/bezier-interpolation-13b68563313a
+     *
+     * @function Phaser.Math.Interpolation.CubicBezier
+     * @since 3.0.0
+     *
+     * @param {number} t - The percentage of interpolation, between 0 and 1.
+     * @param {number} p0 - The start point.
+     * @param {number} p1 - The first control point.
+     * @param {number} p2 - The second control point.
+     * @param {number} p3 - The end point.
+     *
+     * @return {number} The interpolated value.
+     */
+    function CubicBezierInterpolation(t, p0, p1, p2, p3) {
+        return P0(t, p0) + P1(t, p1) + P2(t, p2) + P3(t, p3);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculates a linear (interpolation) value over t.
+     *
+     * @function Phaser.Math.Linear
+     * @since 3.0.0
+     *
+     * @param {number} p0 - The first point.
+     * @param {number} p1 - The second point.
+     * @param {number} t - The percentage between p0 and p1 to return, represented as a number between 0 and 1.
+     *
+     * @return {number} The step t% of the way between p0 and p1.
+     */
+    function Linear(p0, p1, t) {
+        return (p1 - p0) * t + p0;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A linear interpolation method.
+     *
+     * @function Phaser.Math.Interpolation.Linear
+     * @since 3.0.0
+     * @see {@link https://en.wikipedia.org/wiki/Linear_interpolation}
+     *
+     * @param {number[]} v - The input array of values to interpolate between.
+     * @param {!number} k - The percentage of interpolation, between 0 and 1.
+     *
+     * @return {!number} The interpolated value.
+     */
+    function LinearInterpolation(v, k) {
+        const m = v.length - 1;
+        const f = m * k;
+        const i = Math.floor(f);
+        if (k < 0) {
+            return Linear(v[0], v[1], f);
+        }
+        else if (k > 1) {
+            return Linear(v[m], v[m - 1], m - f);
+        }
+        else {
+            return Linear(v[i], v[(i + 1 > m) ? m : i + 1], f - i);
+        }
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * @ignore
+     */
+    function P0$1(t, p) {
+        const k = 1 - t;
+        return k * k * p;
+    }
+    /**
+     * @ignore
+     */
+    function P1$1(t, p) {
+        return 2 * (1 - t) * t * p;
+    }
+    /**
+     * @ignore
+     */
+    function P2$1(t, p) {
+        return t * t * p;
+    }
+    // https://github.com/mrdoob/three.js/blob/master/src/extras/core/Interpolations.js
+    /**
+     * A quadratic bezier interpolation method.
+     *
+     * @function Phaser.Math.Interpolation.QuadraticBezier
+     * @since 3.2.0
+     *
+     * @param {number} t - The percentage of interpolation, between 0 and 1.
+     * @param {number} p0 - The start point.
+     * @param {number} p1 - The control point.
+     * @param {number} p2 - The end point.
+     *
+     * @return {number} The interpolated value.
+     */
+    function QuadraticBezierInterpolation(t, p0, p1, p2) {
+        return P0$1(t, p0) + P1$1(t, p1) + P2$1(t, p2);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate a smooth interpolation percentage of `x` between `min` and `max`.
+     *
+     * The function receives the number `x` as an argument and returns 0 if `x` is less than or equal to the left edge,
+     * 1 if `x` is greater than or equal to the right edge, and smoothly interpolates, using a Hermite polynomial,
+     * between 0 and 1 otherwise.
+     *
+     * @function Phaser.Math.SmoothStep
+     * @since 3.0.0
+     * @see {@link https://en.wikipedia.org/wiki/Smoothstep}
+     *
+     * @param {number} x - The input value.
+     * @param {number} min - The minimum value, also known as the 'left edge', assumed smaller than the 'right edge'.
+     * @param {number} max - The maximum value, also known as the 'right edge', assumed greater than the 'left edge'.
+     *
+     * @return {number} The percentage of interpolation, between 0 and 1.
+     */
+    function SmoothStep(x, min, max) {
+        if (x <= min) {
+            return 0;
+        }
+        if (x >= max) {
+            return 1;
+        }
+        x = (x - min) / (max - min);
+        return x * x * (3 - 2 * x);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A Smooth Step interpolation method.
+     *
+     * @function Phaser.Math.Interpolation.SmoothStep
+     * @since 3.9.0
+     * @see {@link https://en.wikipedia.org/wiki/Smoothstep}
+     *
+     * @param {number} t - The percentage of interpolation, between 0 and 1.
+     * @param {number} min - The minimum value, also known as the 'left edge', assumed smaller than the 'right edge'.
+     * @param {number} max - The maximum value, also known as the 'right edge', assumed greater than the 'left edge'.
+     *
+     * @return {number} The interpolated value.
+     */
+    function SmoothStepInterpolation(t, min, max) {
+        return min + (max - min) * SmoothStep(t, 0, 1);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate a smoother interpolation percentage of `x` between `min` and `max`.
+     *
+     * The function receives the number `x` as an argument and returns 0 if `x` is less than or equal to the left edge,
+     * 1 if `x` is greater than or equal to the right edge, and smoothly interpolates, using a Hermite polynomial,
+     * between 0 and 1 otherwise.
+     *
+     * Produces an even smoother interpolation than {@link Phaser.Math.SmoothStep}.
+     *
+     * @function Phaser.Math.SmootherStep
+     * @since 3.0.0
+     * @see {@link https://en.wikipedia.org/wiki/Smoothstep#Variations}
+     *
+     * @param {number} x - The input value.
+     * @param {number} min - The minimum value, also known as the 'left edge', assumed smaller than the 'right edge'.
+     * @param {number} max - The maximum value, also known as the 'right edge', assumed greater than the 'left edge'.
+     *
+     * @return {number} The percentage of interpolation, between 0 and 1.
+     */
+    function SmootherStep(x, min, max) {
+        x = Math.max(0, Math.min(1, (x - min) / (max - min)));
+        return x * x * x * (x * (x * 6 - 15) + 10);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A Smoother Step interpolation method.
+     *
+     * @function Phaser.Math.Interpolation.SmootherStep
+     * @since 3.9.0
+     * @see {@link https://en.wikipedia.org/wiki/Smoothstep#Variations}
+     *
+     * @param {number} t - The percentage of interpolation, between 0 and 1.
+     * @param {number} min - The minimum value, also known as the 'left edge', assumed smaller than the 'right edge'.
+     * @param {number} max - The maximum value, also known as the 'right edge', assumed greater than the 'left edge'.
+     *
+     * @return {number} The interpolated value.
+     */
+    function SmootherStepInterpolation(t, min, max) {
+        return min + (max - min) * SmootherStep(t, 0, 1);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * @namespace Phaser.Math.Interpolation
+     */
+    var index$8 = {
+        Bezier: BezierInterpolation,
+        CatmullRom: CatmullRomInterpolation,
+        CubicBezier: CubicBezierInterpolation,
+        Linear: LinearInterpolation,
+        QuadraticBezier: QuadraticBezierInterpolation,
+        SmoothStep: SmoothStepInterpolation,
+        SmootherStep: SmootherStepInterpolation
+    };
+
+    var Interpolation = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$8
+    });
+
     //  Adds the src Matrix to the target Matrix and returns the target.
     function Add(target, src) {
         target.a += src.a;
@@ -2321,7 +3553,7 @@
     }
 
     //  Phaser.Math.Matrix2d
-    var index$8 = {
+    var index$9 = {
         Add,
         Copy,
         CopyToContext,
@@ -2347,7 +3579,7 @@
 
     var Matrix2d = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$8
+        'default': index$9
     });
 
     //  Adds a to b and returns the values in a new Matrix2D
@@ -2457,7 +3689,7 @@
     }
 
     //  Phaser.Math.Matrix2dFuncs
-    var index$9 = {
+    var index$a = {
         Add: Add$1,
         Append,
         Clone,
@@ -2480,7 +3712,7 @@
 
     var Matrix2dFuncs = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$9
+        'default': index$a
     });
 
     /**
@@ -2530,7 +3762,7 @@
     /**
      * @namespace Phaser.Math.Pow2
      */
-    var index$a = {
+    var index$b = {
         GetNext: GetPowerOfTwo,
         IsSize: IsSizePowerOfTwo,
         IsValue: IsValuePowerOfTwo
@@ -2538,7 +3770,7 @@
 
     var Pow2 = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$a
+        'default': index$b
     });
 
     /**
@@ -2638,7 +3870,7 @@
     /**
      * @namespace Phaser.Math.Snap
      */
-    var index$b = {
+    var index$c = {
         Ceil: SnapCeil,
         Floor: SnapFloor,
         To: SnapTo
@@ -2646,43 +3878,720 @@
 
     var Snap = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$b
+        'default': index$c
     });
 
-    var index$c = {
+    var index$d = {
         Vec2
     };
 
     var Vec2$1 = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$c
+        'default': index$d
     });
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate the mean average of the given values.
+     *
+     * @function Phaser.Math.Average
+     * @since 3.0.0
+     *
+     * @param {number[]} values - The values to average.
+     *
+     * @return {number} The average value.
+     */
+    function Average(values) {
+        let sum = 0;
+        for (let i = 0; i < values.length; i++) {
+            sum += (+values[i]);
+        }
+        return sum / values.length;
+    }
 
     function Between$1(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Ceils to some place comparative to a `base`, default is 10 for decimal place.
+     *
+     * The `place` is represented by the power applied to `base` to get that place.
+     *
+     * @function Phaser.Math.CeilTo
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to round.
+     * @param {number} [place=0] - The place to round to.
+     * @param {number} [base=10] - The base to round in. Default is 10 for decimal.
+     *
+     * @return {number} The rounded value.
+     */
+    function CeilTo(value, place = 0, base = 10) {
+        const p = Math.pow(base, -place);
+        return Math.ceil(value * p) / p;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Force a value within the boundaries by clamping it to the range `min`, `max`.
+     *
+     * @function Phaser.Math.Clamp
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to be clamped.
+     * @param {number} min - The minimum bounds.
+     * @param {number} max - The maximum bounds.
+     *
+     * @return {number} The clamped value.
+     */
+    function Clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Convert the given angle from degrees, to the equivalent angle in radians.
+     *
+     * @function Phaser.Math.DegToRad
+     * @since 3.0.0
+     *
+     * @param {number} degrees - The angle (in degrees) to convert to radians.
+     *
+     * @return {number} The given angle converted to radians.
+     */
+    function DegToRad(degrees) {
+        return degrees * CONST$1.DEG_TO_RAD;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculates the positive difference of two given numbers.
+     *
+     * @function Phaser.Math.Difference
+     * @since 3.0.0
+     *
+     * @param {number} a - The first number in the calculation.
+     * @param {number} b - The second number in the calculation.
+     *
+     * @return {number} The positive difference of the two given numbers.
+     */
+    function Difference(a, b) {
+        return Math.abs(a - b);
     }
 
     function FloatBetween(min, max) {
         return Math.random() * (max - min) + min;
     }
 
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Floors to some place comparative to a `base`, default is 10 for decimal place.
+     *
+     * The `place` is represented by the power applied to `base` to get that place.
+     *
+     * @function Phaser.Math.FloorTo
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to round.
+     * @param {number} [place=0] - The place to round to.
+     * @param {number} [base=10] - The base to round in. Default is 10 for decimal.
+     *
+     * @return {number} The rounded value.
+     */
+    function FloorTo(value, place = 0, base = 10) {
+        const p = Math.pow(base, -place);
+        return Math.floor(value * p) / p;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Return a value based on the range between `min` and `max` and the percentage given.
+     *
+     * @function Phaser.Math.FromPercent
+     * @since 3.0.0
+     *
+     * @param {number} percent - A value between 0 and 1 representing the percentage.
+     * @param {number} min - The minimum value.
+     * @param {number} [max] - The maximum value.
+     *
+     * @return {number} The value that is `percent` percent between `min` and `max`.
+     */
+    function FromPercent(percent, min, max) {
+        percent = Clamp(percent, 0, 1);
+        return (max - min) * percent;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Calculate a per-ms speed from a distance and time (given in seconds).
+     *
+     * @function Phaser.Math.GetSpeed
+     * @since 3.0.0
+     *
+     * @param {number} distance - The distance.
+     * @param {number} time - The time, in seconds.
+     *
+     * @return {number} The speed, in distance per ms.
+     */
+    function GetSpeed(distance, time) {
+        return (distance / time) / 1000;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Add an `amount` to a `value`, limiting the maximum result to `max`.
+     *
+     * @function Phaser.Math.MaxAdd
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to add to.
+     * @param {number} amount - The amount to add.
+     * @param {number} max - The maximum value to return.
+     *
+     * @return {number} The resulting value.
+     */
+    function MaxAdd(value, amount, max) {
+        return Math.min(value + amount, max);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Subtract an `amount` from `value`, limiting the minimum result to `min`.
+     *
+     * @function Phaser.Math.MinSub
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to subtract from.
+     * @param {number} amount - The amount to subtract.
+     * @param {number} min - The minimum value to return.
+     *
+     * @return {number} The resulting value.
+     */
+    function MinSub(value, amount, min) {
+        return Math.max(value - amount, min);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Work out what percentage `value` is of the range between `min` and `max`.
+     * If `max` isn't given then it will return the percentage of `value` to `min`.
+     *
+     * You can optionally specify an `upperMax` value, which is a mid-way point in the range that represents 100%, after which the % starts to go down to zero again.
+     *
+     * @function Phaser.Math.Percent
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to determine the percentage of.
+     * @param {number} min - The minimum value.
+     * @param {number} [max] - The maximum value.
+     * @param {number} [upperMax] - The mid-way point in the range that represents 100%.
+     *
+     * @return {number} A value between 0 and 1 representing the percentage.
+     */
+    function Percent(value, min, max, upperMax) {
+        if (max === undefined) {
+            max = min + 1;
+        }
+        let percentage = (value - min) / (max - min);
+        if (percentage > 1) {
+            if (upperMax !== undefined) {
+                percentage = ((upperMax - value)) / (upperMax - max);
+                if (percentage < 0) {
+                    percentage = 0;
+                }
+            }
+            else {
+                percentage = 1;
+            }
+        }
+        else if (percentage < 0) {
+            percentage = 0;
+        }
+        return percentage;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Convert the given angle in radians, to the equivalent angle in degrees.
+     *
+     * @function Phaser.Math.RadToDeg
+     * @since 3.0.0
+     *
+     * @param {number} radians - The angle in radians to convert ot degrees.
+     *
+     * @return {number} The given angle converted to degrees.
+     */
+    function RadToDeg(radians) {
+        return radians * CONST$1.RAD_TO_DEG;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Round a given number so it is further away from zero. That is, positive numbers are rounded up, and negative numbers are rounded down.
+     *
+     * @function Phaser.Math.RoundAwayFromZero
+     * @since 3.0.0
+     *
+     * @param {number} value - The number to round.
+     *
+     * @return {number} The rounded number, rounded away from zero.
+     */
+    function RoundAwayFromZero(value) {
+        // "Opposite" of truncate.
+        return (value > 0) ? Math.ceil(value) : Math.floor(value);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Round a value to the given precision.
+     *
+     * For example:
+     *
+     * ```javascript
+     * RoundTo(123.456, 0) = 123
+     * RoundTo(123.456, 1) = 120
+     * RoundTo(123.456, 2) = 100
+     * ```
+     *
+     * To round the decimal, i.e. to round to precision, pass in a negative `place`:
+     *
+     * ```javascript
+     * RoundTo(123.456789, 0) = 123
+     * RoundTo(123.456789, -1) = 123.5
+     * RoundTo(123.456789, -2) = 123.46
+     * RoundTo(123.456789, -3) = 123.457
+     * ```
+     *
+     * @function Phaser.Math.RoundTo
+     * @since 3.0.0
+     *
+     * @param {number} value - The value to round.
+     * @param {number} [place=0] - The place to round to. Positive to round the units, negative to round the decimal.
+     * @param {number} [base=10] - The base to round in. Default is 10 for decimal.
+     *
+     * @return {number} The rounded value.
+     */
+    function RoundTo(value, place = 0, base = 10) {
+        const p = Math.pow(base, -place);
+        return Math.round(value * p) / p;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Generate a series of sine and cosine values.
+     *
+     * @function Phaser.Math.SinCosTableGenerator
+     * @since 3.0.0
+     *
+     * @param {number} length - The number of values to generate.
+     * @param {number} [sinAmp=1] - The sine value amplitude.
+     * @param {number} [cosAmp=1] - The cosine value amplitude.
+     * @param {number} [frequency=1] - The frequency of the values.
+     *
+     * @return {SinCosTable} The generated values.
+     */
+    function SinCosTableGenerator(length, sinAmp = 1, cosAmp = 1, frequency = 1) {
+        frequency *= Math.PI / length;
+        const cos = [];
+        const sin = [];
+        for (let c = 0; c < length; c++) {
+            cosAmp -= sinAmp * frequency;
+            sinAmp += cosAmp * frequency;
+            cos[c] = cosAmp;
+            sin[c] = sinAmp;
+        }
+        return {
+            sin,
+            cos,
+            length
+        };
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Returns a Vector2 containing the x and y position of the given index in a `width` x `height` sized grid.
+     *
+     * For example, in a 6 x 4 grid, index 16 would equal x: 4 y: 2.
+     *
+     * If the given index is out of range an empty Vector2 is returned.
+     *
+     * @function Phaser.Math.ToXY
+     * @since 3.19.0
+     *
+     * @param {number} index - The position within the grid to get the x/y value for.
+     * @param {number} width - The width of the grid.
+     * @param {number} height - The height of the grid.
+     * @param {Vec2} [out] - An optional Vector2 to store the result in. If not given, a new Vector2 instance will be created.
+     *
+     * @return {Vec2} A Vector2 where the x and y properties contain the given grid index.
+     */
+    function ToXY(index, width, height, out = new Vec2()) {
+        let x = 0;
+        let y = 0;
+        const total = width * height;
+        if (index > 0 && index <= total) {
+            if (index > width - 1) {
+                y = Math.floor(index / width);
+                x = index - (y * width);
+            }
+            else {
+                x = index;
+            }
+            out.set(x, y);
+        }
+        return out;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Takes the `x` and `y` coordinates and transforms them into the same space as
+     * defined by the position, rotation and scale values.
+     *
+     * @function Phaser.Math.TransformXY
+     * @since 3.0.0
+     *
+     * @param {number} x - The x coordinate to be transformed.
+     * @param {number} y - The y coordinate to be transformed.
+     * @param {number} positionX - Horizontal position of the transform point.
+     * @param {number} positionY - Vertical position of the transform point.
+     * @param {number} rotation - Rotation of the transform point, in radians.
+     * @param {number} scaleX - Horizontal scale of the transform point.
+     * @param {number} scaleY - Vertical scale of the transform point.
+     * @param {Vec2} [output] - The output vector, point or object for the translated coordinates.
+     *
+     * @return {Vec2} The translated point.
+     */
+    function TransformXY(x, y, positionX, positionY, rotation, scaleX, scaleY, output = new Vec2()) {
+        const radianSin = Math.sin(rotation);
+        const radianCos = Math.cos(rotation);
+        // Rotate and Scale
+        const a = radianCos * scaleX;
+        const b = radianSin * scaleX;
+        const c = -radianSin * scaleY;
+        const d = radianCos * scaleY;
+        //  Invert
+        const id = 1 / ((a * d) + (c * -b));
+        output.x = (d * id * x) + (-c * id * y) + (((positionY * c) - (positionX * d)) * id);
+        output.y = (a * id * y) + (-b * id * x) + (((-positionY * a) + (positionX * b)) * id);
+        return output;
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Checks if the two values are within the given `tolerance` of each other.
+     *
+     * @function Phaser.Math.Within
+     * @since 3.0.0
+     *
+     * @param {number} a - The first value to use in the calculation.
+     * @param {number} b - The second value to use in the calculation.
+     * @param {number} tolerance - The tolerance. Anything equal to or less than this value is considered as being within range.
+     *
+     * @return {boolean} Returns `true` if `a` is less than or equal to the tolerance of `b`.
+     */
+    function Within(a, b, tolerance) {
+        return (Math.abs(a - b) <= tolerance);
+    }
+
     //  Phaser.Math
-    var index$d = {
+    var index$e = {
         Angle,
         Distance,
         Fuzzy,
-        Between: Between$1,
-        FloatBetween,
+        Interpolation,
         Matrix2d,
         Matrix2dFuncs,
         Pow2,
         Snap,
-        Vec2: Vec2$1
+        Vec2: Vec2$1,
+        Average,
+        Bernstein,
+        Between: Between$1,
+        CatmullRom,
+        CeilTo,
+        Clamp,
+        CONST: CONST$1,
+        DegToRad,
+        Difference,
+        Factorial,
+        FloatBetween,
+        FloorTo,
+        FromPercent,
+        GetSpeed,
+        Linear,
+        MaxAdd,
+        MinSub,
+        Percent,
+        RadToDeg,
+        RoundAwayFromZero,
+        RoundTo,
+        SinCosTableGenerator,
+        SmootherStep,
+        SmoothStep,
+        ToXY,
+        TransformXY,
+        Within,
+        Wrap
     };
 
-    var index$e = /*#__PURE__*/Object.freeze({
+    var index$f = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$d
+        'default': index$e
+    });
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A 16 color palette by [Arne](http://androidarts.com/palette/16pal.htm)
+     *
+     * @name Phaser.Create.Palettes.ARNE16
+     * @since 3.0.0
+     *
+     * @type {Phaser.Types.Create.Palette}
+     */
+    var Arne16 = {
+        0: '#000',
+        1: '#9D9D9D',
+        2: '#FFF',
+        3: '#BE2633',
+        4: '#E06F8B',
+        5: '#493C2B',
+        6: '#A46422',
+        7: '#EB8931',
+        8: '#F7E26B',
+        9: '#2F484E',
+        A: '#44891A',
+        B: '#A3CE27',
+        C: '#1B2632',
+        D: '#005784',
+        E: '#31A2F2',
+        F: '#B2DCEF'
+    };
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A 16 color palette inspired by the Commodore 64.
+     *
+     * @name Phaser.Create.Palettes.C64
+     * @since 3.0.0
+     *
+     * @type {Phaser.Types.Create.Palette}
+     */
+    var C64 = {
+        0: '#000',
+        1: '#fff',
+        2: '#8b4131',
+        3: '#7bbdc5',
+        4: '#8b41ac',
+        5: '#6aac41',
+        6: '#3931a4',
+        7: '#d5de73',
+        8: '#945a20',
+        9: '#5a4100',
+        A: '#bd736a',
+        B: '#525252',
+        C: '#838383',
+        D: '#acee8b',
+        E: '#7b73de',
+        F: '#acacac'
+    };
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A 16 color CGA inspired palette by [Arne](http://androidarts.com/palette/16pal.htm)
+     *
+     * @name Phaser.Create.Palettes.CGA
+     * @since 3.0.0
+     *
+     * @type {Phaser.Types.Create.Palette}
+     */
+    var CGA = {
+        0: '#000',
+        1: '#2234d1',
+        2: '#0c7e45',
+        3: '#44aacc',
+        4: '#8a3622',
+        5: '#5c2e78',
+        6: '#aa5c3d',
+        7: '#b5b5b5',
+        8: '#5e606e',
+        9: '#4c81fb',
+        A: '#6cd947',
+        B: '#7be2f9',
+        C: '#eb8a60',
+        D: '#e23d69',
+        E: '#ffd93f',
+        F: '#fff'
+    };
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A 16 color JMP palette by [Arne](http://androidarts.com/palette/16pal.htm)
+     *
+     * @name Phaser.Create.Palettes.JMP
+     * @since 3.0.0
+     *
+     * @type {Phaser.Types.Create.Palette}
+     */
+    var JMP = {
+        0: '#000',
+        1: '#191028',
+        2: '#46af45',
+        3: '#a1d685',
+        4: '#453e78',
+        5: '#7664fe',
+        6: '#833129',
+        7: '#9ec2e8',
+        8: '#dc534b',
+        9: '#e18d79',
+        A: '#d6b97b',
+        B: '#e9d8a1',
+        C: '#216c4b',
+        D: '#d365c8',
+        E: '#afaab9',
+        F: '#f5f4eb'
+    };
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * A 16 color palette inspired by Japanese computers like the MSX.
+     *
+     * @name Phaser.Create.Palettes.MSX
+     * @since 3.0.0
+     *
+     * @type {Phaser.Types.Create.Palette}
+     */
+    var MSX = {
+        0: '#000',
+        1: '#191028',
+        2: '#46af45',
+        3: '#a1d685',
+        4: '#453e78',
+        5: '#7664fe',
+        6: '#833129',
+        7: '#9ec2e8',
+        8: '#dc534b',
+        9: '#e18d79',
+        A: '#d6b97b',
+        B: '#e9d8a1',
+        C: '#216c4b',
+        D: '#d365c8',
+        E: '#afaab9',
+        F: '#fff'
+    };
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * @namespace Phaser.Create.Palettes
+     */
+    var index$g = {
+        ARNE16: Arne16,
+        C64,
+        CGA,
+        JMP,
+        MSX
+    };
+
+    var Palettes = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$g
     });
 
     function AtlasParser(texture, data) {
@@ -2723,17 +4632,159 @@
         }
     }
 
-    function CreateCanvas(width, height) {
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        return canvas.getContext('2d');
+    /**
+     * Read an integer value from an XML Node.
+     *
+     * @function getValue
+     * @since 3.0.0
+     * @private
+     *
+     * @param {Node} node - The XML Node.
+     * @param {string} attribute - The attribute to read.
+     *
+     * @return {integer} The parsed value.
+     */
+    function getValue(node, attribute) {
+        return parseInt(node.getAttribute(attribute), 10);
+    }
+    function BitmapTextParser(texture, xml, frame) {
+        const xSpacing = 0;
+        const ySpacing = 0;
+        const info = xml.getElementsByTagName('info')[0];
+        const common = xml.getElementsByTagName('common')[0];
+        const data = {
+            font: info.getAttribute('face'),
+            size: getValue(info, 'size'),
+            lineHeight: getValue(common, 'lineHeight') + ySpacing,
+            chars: {}
+        };
+        const letters = xml.getElementsByTagName('char');
+        // var adjustForTrim = (frame !== undefined && frame.trimmed);
+        // if (adjustForTrim)
+        // {
+        //     var top = frame.height;
+        //     var left = frame.width;
+        // }
+        for (let i = 0; i < letters.length; i++) {
+            let node = letters[i];
+            let charCode = getValue(node, 'id');
+            let x = getValue(node, 'x');
+            let y = getValue(node, 'y');
+            let width = getValue(node, 'width');
+            let height = getValue(node, 'height');
+            //  Handle frame trim issues
+            // if (adjustForTrim)
+            // {
+            //     if (gx < left)
+            //     {
+            //         left = gx;
+            //     }
+            //     if (gy < top)
+            //     {
+            //         top = gy;
+            //     }
+            // }
+            data.chars[charCode] =
+                {
+                    x,
+                    y,
+                    width,
+                    height,
+                    // centerX: Math.floor(width / 2),
+                    // centerY: Math.floor(height / 2),
+                    xOffset: getValue(node, 'xoffset'),
+                    yOffset: getValue(node, 'yoffset'),
+                    xAdvance: getValue(node, 'xadvance') + xSpacing,
+                    // data: {},
+                    kerning: {}
+                };
+            texture.add(charCode, x, y, width, height);
+        }
+        /*
+        if (adjustForTrim && top !== 0 && left !== 0)
+        {
+            //  Now we know the top and left coordinates of the glyphs in the original data
+            //  so we can work out how much to adjust the glyphs by
+
+            for (var code in data.chars)
+            {
+                var glyph = data.chars[code];
+
+                glyph.x -= frame.x;
+                glyph.y -= frame.y;
+            }
+        }
+        */
+        const kernings = xml.getElementsByTagName('kerning');
+        for (let i = 0; i < kernings.length; i++) {
+            let kern = kernings[i];
+            let first = getValue(kern, 'first');
+            let second = getValue(kern, 'second');
+            let amount = getValue(kern, 'amount');
+            data.chars[second].kerning[first] = amount;
+        }
+        return data;
     }
 
-    function CanvasTexture(width = 32, height = 32) {
-        const ctx = CreateCanvas(width, height);
-        return new Texture(ctx.canvas);
+    function SpriteSheetParser (texture, x, y, width, height, frameConfig) {
+        let { frameWidth = null, frameHeight = null, startFrame = 0, endFrame = -1, margin = 0, spacing = 0 } = frameConfig;
+        if (!frameHeight) {
+            frameHeight = frameWidth;
+        }
+        //  If missing we can't proceed
+        if (frameWidth === null) {
+            throw new Error('SpriteSheetParser: Invalid frameWidth');
+        }
+        const row = Math.floor((width - margin + spacing) / (frameWidth + spacing));
+        const column = Math.floor((height - margin + spacing) / (frameHeight + spacing));
+        let total = row * column;
+        if (total === 0) {
+            console.warn('SpriteSheetParser: Frame config will result in zero frames');
+        }
+        if (startFrame > total || startFrame < -total) {
+            startFrame = 0;
+        }
+        if (startFrame < 0) {
+            //  Allow negative skipframes.
+            startFrame = total + startFrame;
+        }
+        if (endFrame !== -1) {
+            total = startFrame + (endFrame + 1);
+        }
+        let fx = margin;
+        let fy = margin;
+        let ax = 0;
+        let ay = 0;
+        for (let i = 0; i < total; i++) {
+            ax = 0;
+            ay = 0;
+            let w = fx + frameWidth;
+            let h = fy + frameHeight;
+            if (w > width) {
+                ax = w - width;
+            }
+            if (h > height) {
+                ay = h - height;
+            }
+            texture.add(i, x + fx, y + fy, frameWidth - ax, frameHeight - ay);
+            fx += frameWidth + spacing;
+            if (fx + frameWidth > width) {
+                fx = margin;
+                fy += frameHeight + spacing;
+            }
+        }
     }
+
+    var index$h = {
+        AtlasParser,
+        BitmapTextParser,
+        SpriteSheetParser
+    };
+
+    var Parsers = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$h
+    });
 
     function GridTexture(color1, color2, width = 32, height = 32, cols = 2, rows = 2) {
         const ctx = CreateCanvas(width, height);
@@ -2748,6 +4799,88 @@
             }
         }
         return new Texture(ctx.canvas);
+    }
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
+    /**
+     * Generates a texture based on the given Create configuration object.
+     *
+     * The texture is drawn using a fixed-size indexed palette of 16 colors, where the hex value in the
+     * data cells map to a single color. For example, if the texture config looked like this:
+     *
+     * ```javascript
+     * var star = [
+     *   '.....828.....',
+     *   '....72227....',
+     *   '....82228....',
+     *   '...7222227...',
+     *   '2222222222222',
+     *   '8222222222228',
+     *   '.72222222227.',
+     *   '..787777787..',
+     *   '..877777778..',
+     *   '.78778887787.',
+     *   '.27887.78872.',
+     *   '.787.....787.'
+     * ];
+     *
+     * this.textures.generate('star', { data: star, pixelWidth: 4 });
+     * ```
+     *
+     * Then it would generate a texture that is 52 x 48 pixels in size, because each cell of the data array
+     * represents 1 pixel multiplied by the `pixelWidth` value. The cell values, such as `8`, maps to color
+     * number 8 in the palette. If a cell contains a period character `.` then it is transparent.
+     *
+     * The default palette is Arne16, but you can specify your own using the `palette` property.
+     *
+     * @function Phaser.Create.GenerateTexture
+     * @since 3.0.0
+     *
+     * @param {Phaser.Types.Create.GenerateTextureConfig} config - The Generate Texture Configuration object.
+     *
+     * @return {Texture} An HTMLCanvasElement which contains the generated texture drawn to it.
+     */
+    function PixelTexture(config) {
+        let { data = [], canvas = null, palette = Arne16, pixelWidth = 1, pixelHeight = 1, resizeCanvas = true, clearCanvas = true, preRender = null, postRender = null } = config;
+        const width = Math.floor(Math.abs(data[0].length * pixelWidth));
+        const height = Math.floor(Math.abs(data.length * pixelHeight));
+        if (!canvas) {
+            canvas = CreateCanvas(width, height).canvas;
+            resizeCanvas = false;
+            clearCanvas = false;
+        }
+        if (resizeCanvas) {
+            canvas.width = width;
+            canvas.height = height;
+        }
+        const ctx = canvas.getContext('2d');
+        if (clearCanvas) {
+            ctx.clearRect(0, 0, width, height);
+        }
+        //  preRender Callback?
+        if (preRender) {
+            preRender(canvas, ctx);
+        }
+        //  Draw it
+        for (let y = 0; y < data.length; y++) {
+            const row = data[y];
+            for (let x = 0; x < row.length; x++) {
+                const d = row[x];
+                if (d !== '.' && d !== ' ') {
+                    ctx.fillStyle = palette[d];
+                    ctx.fillRect(x * pixelWidth, y * pixelHeight, pixelWidth, pixelHeight);
+                }
+            }
+        }
+        //  postRender Callback?
+        if (postRender) {
+            postRender(canvas, ctx);
+        }
+        return new Texture(canvas);
     }
 
     function RenderWebGL(sprite, renderer, shader, startActiveTexture) {
@@ -2834,54 +4967,18 @@
         return new Texture(ctx.canvas);
     }
 
-    function SpriteSheetParser (texture, x, y, width, height, frameConfig) {
-        let { frameWidth = null, frameHeight = null, startFrame = 0, endFrame = -1, margin = 0, spacing = 0 } = frameConfig;
-        if (!frameHeight) {
-            frameHeight = frameWidth;
-        }
-        //  If missing we can't proceed
-        if (frameWidth === null) {
-            throw new Error('SpriteSheetParser: Invalid frameWidth');
-        }
-        const row = Math.floor((width - margin + spacing) / (frameWidth + spacing));
-        const column = Math.floor((height - margin + spacing) / (frameHeight + spacing));
-        let total = row * column;
-        if (total === 0) {
-            console.warn('SpriteSheetParser: Frame config will result in zero frames');
-        }
-        if (startFrame > total || startFrame < -total) {
-            startFrame = 0;
-        }
-        if (startFrame < 0) {
-            //  Allow negative skipframes.
-            startFrame = total + startFrame;
-        }
-        if (endFrame !== -1) {
-            total = startFrame + (endFrame + 1);
-        }
-        let fx = margin;
-        let fy = margin;
-        let ax = 0;
-        let ay = 0;
-        for (let i = 0; i < total; i++) {
-            ax = 0;
-            ay = 0;
-            let w = fx + frameWidth;
-            let h = fy + frameHeight;
-            if (w > width) {
-                ax = w - width;
-            }
-            if (h > height) {
-                ay = h - height;
-            }
-            texture.add(i, x + fx, y + fy, frameWidth - ax, frameHeight - ay);
-            fx += frameWidth + spacing;
-            if (fx + frameWidth > width) {
-                fx = margin;
-                fy += frameHeight + spacing;
-            }
-        }
-    }
+    var index$i = {
+        CanvasTexture,
+        GridTexture,
+        PixelTexture,
+        RenderTexture,
+        SolidColorTexture
+    };
+
+    var Types = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        'default': index$i
+    });
 
     class TextureManager {
         constructor() {
@@ -2928,22 +5025,19 @@
         }
     }
 
-    var index$f = {
-        AtlasParser,
-        CanvasTexture,
+    var index$j = {
         CreateCanvas,
         Frame,
-        GridTexture,
-        RenderTexture,
-        SolidColorTexture,
-        SpriteSheetParser,
+        Palettes,
+        Parsers,
+        Types,
         Texture,
         TextureManager
     };
 
-    var index$g = /*#__PURE__*/Object.freeze({
+    var index$k = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        'default': index$f
+        'default': index$j
     });
 
     //  From Pixi v5
@@ -2967,7 +5061,7 @@
         }
         return src;
     }
-    function CheckShaderMaxIfStatements (maxIfs, gl) {
+    function CheckShaderMaxIfStatements(maxIfs, gl) {
         const shader = gl.createShader(gl.FRAGMENT_SHADER);
         while (true) {
             const fragmentSrc = fragTemplate.replace(/%forloop%/gi, generateSrc(maxIfs));
@@ -2987,32 +5081,41 @@
     const shaderSource = {
         fragmentShader: `
 precision highp float;
+
 varying vec2 vTextureCoord;
 varying float vTextureId;
 varying vec4 vTintColor;
+
 uniform sampler2D uTexture[%count%];
+
 void main (void)
 {
     vec4 color;
     %forloop%
+
     gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);
 }`,
         vertexShader: `
 precision highp float;
+
 attribute vec2 aVertexPosition;
 attribute vec2 aTextureCoord;
 attribute float aTextureId;
 attribute vec4 aTintColor;
+
 uniform mat4 uProjectionMatrix;
 uniform mat4 uCameraMatrix;
+
 varying vec2 vTextureCoord;
 varying float vTextureId;
 varying vec4 vTintColor;
+
 void main (void)
 {
     vTextureCoord = aTextureCoord;
     vTextureId = aTextureId;
     vTintColor = aTintColor;
+
     gl_Position = uProjectionMatrix * uCameraMatrix * vec4(aVertexPosition, 0.0, 1.0);
 }`
     };
@@ -4120,10 +6223,10 @@ void main (void)
     exports.Game = Game;
     exports.GameObjects = index$4;
     exports.Loader = Loader;
-    exports.Math = index$e;
+    exports.Math = index$f;
     exports.Scene = Scene;
     exports.StaticScene = StaticScene;
-    exports.Textures = index$g;
+    exports.Textures = index$k;
     exports.WebGLRenderer = WebGLRenderer;
 
     Object.defineProperty(exports, '__esModule', { value: true });

@@ -2,7 +2,7 @@ import File from '../File';
 import XMLFile from './XMLFile';
 import ImageFile from './ImageFile';
 import GameInstance from '../../GameInstance';
-import BitmapTextParser from '../../textures/BitmapTextParser';
+import BitmapTextParser from '../../textures/parsers/BitmapTextParser';
 import GetURL from '../GetURL';
 export default function BitmapTextFile(key, textureURL, fontDataURL) {
     const xml = XMLFile(key, fontDataURL);

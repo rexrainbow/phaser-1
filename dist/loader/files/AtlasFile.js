@@ -2,7 +2,7 @@ import File from '../File';
 import JSONFile from './JSONFile';
 import ImageFile from './ImageFile';
 import GameInstance from '../../GameInstance';
-import AtlasParser from '../../textures/AtlasParser';
+import AtlasParser from '../../textures/parsers/AtlasParser';
 import GetURL from '../GetURL';
 export default function AtlasFile(key, textureURL, atlasURL) {
     const json = JSONFile(key, atlasURL);

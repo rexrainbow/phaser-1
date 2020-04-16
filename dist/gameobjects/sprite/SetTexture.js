@@ -16,6 +16,9 @@ export default function SetTexture(key, frame, ...sprite) {
             console.warn('Invalid Texture key: ' + key);
         }
         else {
+            if (!entity.texture.glTexture) {
+                entity.texture.createGL();
+            }
             SetFrame(frame, entity);
         }
     });

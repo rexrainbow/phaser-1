@@ -1,22 +1,16 @@
-import AtlasParser from './AtlasParser';
-import CanvasTexture from './CanvasTexture';
+import * as Palettes from './palettes';
+import * as Parsers from './parsers';
+import * as Types from './types';
 import CreateCanvas from './CreateCanvas';
 import Frame from './Frame';
-import GridTexture from './GridTexture';
-import RenderTexture from './RenderTexture';
-import SolidColorTexture from './SolidColorTexture';
-import SpriteSheetParser from './SpriteSheetParser';
 import Texture from './Texture';
 import TextureManager from './TextureManager';
 export default {
-    AtlasParser,
-    CanvasTexture,
     CreateCanvas,
     Frame,
-    GridTexture,
-    RenderTexture,
-    SolidColorTexture,
-    SpriteSheetParser,
+    Palettes,
+    Parsers,
+    Types,
     Texture,
     TextureManager
 };

@@ -2,7 +2,7 @@ import File from '../File';
 import ImageTagLoader from '../ImageTagLoader';
 import GameInstance from '../../GameInstance';
 import GetURL from '../GetURL';
-import SpriteSheetParser from '../../textures/SpriteSheetParser';
+import SpriteSheetParser from '../../textures/parsers/SpriteSheetParser';
 export default function SpriteSheetFile(key, url, frameConfig) {
     const file = new File(key, url);
     file.load = () => {

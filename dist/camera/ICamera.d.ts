@@ -1,4 +1,4 @@
-import WebGLRenderer from '../renderer/WebGLRenderer';
+import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
 import Rectangle from '../geom/Rectangle';
 import ITransformGameObject from '../gameobjects/transformgameobject/ITransformGameObject';
 export default interface ICamera extends ITransformGameObject {

@@ -1,5 +1,5 @@
 import TransformGameObject from '../gameobjects/transformgameobject/TransformGameObject';
-import WebGLRenderer from '../renderer/WebGLRenderer';
+import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
 export default class Camera extends TransformGameObject {
     matrix: Float32Array;
     renderer: WebGLRenderer;
