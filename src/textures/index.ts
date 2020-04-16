@@ -6,7 +6,7 @@ import Frame from './Frame';
 import Texture from './Texture';
 import TextureManager from './TextureManager';
 
-export default {
+export {
     CreateCanvas,
     Frame,
     Palettes,

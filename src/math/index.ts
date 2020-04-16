@@ -38,7 +38,7 @@ import Wrap from './Wrap';
 
 //  Phaser.Math
 
-export default {
+export {
     Angle,
     Distance,
     Fuzzy,

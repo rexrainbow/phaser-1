@@ -14,7 +14,7 @@ import MSX from './MSX';
  * @namespace Phaser.Create.Palettes
  */
 
-export default {
+export {
     ARNE16,
     C64,
     CGA,

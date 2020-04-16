@@ -4,7 +4,7 @@ import PixelTexture from './PixelTexture';
 import RenderTexture from './RenderTexture';
 import SolidColorTexture from './SolidColorTexture';
 
-export default {
+export {
     CanvasTexture,
     GridTexture,
     PixelTexture,
