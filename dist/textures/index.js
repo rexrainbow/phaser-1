@@ -5,13 +5,5 @@ import CreateCanvas from './CreateCanvas';
 import Frame from './Frame';
 import Texture from './Texture';
 import TextureManager from './TextureManager';
-export default {
-    CreateCanvas,
-    Frame,
-    Palettes,
-    Parsers,
-    Types,
-    Texture,
-    TextureManager
-};
+export { CreateCanvas, Frame, Palettes, Parsers, Types, Texture, TextureManager };
 //# sourceMappingURL=index.js.map

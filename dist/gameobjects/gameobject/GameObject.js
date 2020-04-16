@@ -1,4 +1,4 @@
-import Rectangle from '../../geom/Rectangle';
+import Rectangle from '../../geom/rectangle/Rectangle';
 //  The Base Game Object which all Scene entites extend
 export default class GameObject {
     constructor() {

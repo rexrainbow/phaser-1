@@ -1,6 +1,8 @@
 import GetConfigValue from './GetConfigValue';
+import { GetScenes } from '../config';
+import GameInstance from '../GameInstance';
 export default class SceneManager {
-    constructor(game) {
+    constructor() {
         this.sceneIndex = 0;
         //  Flush the cache
         this.flush = false;
@@ -10,11 +12,13 @@ export default class SceneManager {
         this.dirtyFrame = 0;
         //  How many Game Objects were processed this frame across all Scenes?
         this.totalFrame = 0;
-        this.game = game;
+        this.game = GameInstance.get();
         this.scenes = new Map();
         this.renderList = [];
+        this.game.once('boot', () => this.boot());
     }
-    boot(scenes) {
+    boot() {
+        const scenes = GetScenes();
         scenes.forEach(scene => {
             this.add(scene);
         });

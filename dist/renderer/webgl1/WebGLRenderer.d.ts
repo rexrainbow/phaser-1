@@ -3,7 +3,6 @@ import IShader from './shaders/IShader';
 export default class WebGLRenderer {
     canvas: HTMLCanvasElement;
     gl: WebGLRenderingContext;
-    contextOptions: WebGLContextAttributes;
     clearColor: number[];
     shader: IShader;
     width: number;
@@ -22,7 +21,7 @@ export default class WebGLRenderer {
     autoResize: boolean;
     contextLost: boolean;
     elementIndexExtension: OES_element_index_uint;
-    constructor(width: number, height: number, resolution: number);
+    constructor();
     initContext(): void;
     resize(width: number, height: number, resolution?: number): void;
     onContextLost(event: any): void;

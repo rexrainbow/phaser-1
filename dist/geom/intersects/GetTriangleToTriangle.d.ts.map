@@ -1,0 +1,1 @@
+{"version":3,"file":"GetTriangleToTriangle.d.ts","sourceRoot":"","sources":["../../../src/geom/intersects/GetTriangleToTriangle.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AAIH,OAAO,SAAS,MAAM,uBAAuB,CAAC;AAC9C,OAAO,IAAI,MAAM,sBAAsB,CAAC;AAGxC;;;;;;;;;;;;;GAaG;AACH,MAAM,CAAC,OAAO,UAAU,qBAAqB,CAAE,SAAS,EAAE,SAAS,EAAE,SAAS,EAAE,SAAS,EAAE,GAAG,GAAE,IAAI,EAAO,GAAG,IAAI,EAAE,CAYnH"}

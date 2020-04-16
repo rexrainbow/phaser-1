@@ -11,8 +11,8 @@ export default class SceneManager {
     dirtyFrame: number;
     totalFrame: number;
     renderList: any[];
-    constructor(game: Game);
-    boot(scenes: any[] | IBaseScene[]): void;
+    constructor();
+    boot(): void;
     add(scene: IBaseSceneConstructor): void;
     init(scene: IBaseScene, config?: string | ISceneConfig): void;
     update(delta: number, now: number): void;

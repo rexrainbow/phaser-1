@@ -1,0 +1,1 @@
+//# sourceMappingURL=ITriangle.js.map

@@ -11,11 +11,5 @@ import MSX from './MSX';
 /**
  * @namespace Phaser.Create.Palettes
  */
-export default {
-    ARNE16,
-    C64,
-    CGA,
-    JMP,
-    MSX
-};
+export { ARNE16, C64, CGA, JMP, MSX };
 //# sourceMappingURL=index.js.map

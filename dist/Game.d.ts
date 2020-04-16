@@ -1,11 +1,9 @@
 import WebGLRenderer from './renderer/webgl1/WebGLRenderer';
 import SceneManager from './scenes/SceneManager';
 import TextureManager from './textures/TextureManager';
-import IGameConfig from './IGameConfig';
-import EventEmitter from './core/EventEmitter';
+import EventEmitter from './events/EventEmitter';
 export default class Game extends EventEmitter {
     VERSION: string;
-    config: IGameConfig;
     isPaused: boolean;
     isBooted: boolean;
     scenes: SceneManager;
@@ -20,7 +18,9 @@ export default class Game extends EventEmitter {
     lifetime: number;
     elapsed: number;
     frame: number;
-    constructor(config?: IGameConfig);
+    constructor(...settings: {
+        (): void;
+    }[]);
     pause(): void;
     resume(): void;
     boot(): void;

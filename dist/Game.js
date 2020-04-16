@@ -2,10 +2,11 @@ import { AddToDOM, DOMContentLoaded } from './dom';
 import WebGLRenderer from './renderer/webgl1/WebGLRenderer';
 import SceneManager from './scenes/SceneManager';
 import TextureManager from './textures/TextureManager';
-import EventEmitter from './core/EventEmitter';
+import EventEmitter from './events/EventEmitter';
 import GameInstance from './GameInstance';
+import { GetParent } from './config';
 export default class Game extends EventEmitter {
-    constructor(config) {
+    constructor(...settings) {
         super();
         this.VERSION = '4.0.0-beta1';
         this.isPaused = false;
@@ -14,8 +15,9 @@ export default class Game extends EventEmitter {
         this.elapsed = 0;
         //  The current game frame
         this.frame = 0;
-        const { width = 800, height = 600, resolution = 1, backgroundColor = 0x00000, parent = document.body, scene = null } = config;
-        this.config = { width, height, resolution, backgroundColor, parent, scene };
+        settings.forEach(setting => {
+            setting();
+        });
         this.cache = {
             json: new Map(),
             csv: new Map(),
@@ -34,17 +36,18 @@ export default class Game extends EventEmitter {
         this.emit('resume');
     }
     boot() {
-        const config = this.config;
         this.isBooted = true;
         this.lastTick = Date.now();
-        const renderer = new WebGLRenderer(config.width, config.height, config.resolution);
-        renderer.setBackgroundColor(config.backgroundColor);
-        AddToDOM(renderer.canvas, config.parent);
+        const renderer = new WebGLRenderer();
+        //  Only add to the DOM if they either didn't set a Parent, or expressly set it to be non-null
+        //  Otherwise we'll let them add the canvas to the DOM themselves
+        if (GetParent()) {
+            AddToDOM(renderer.canvas, GetParent());
+        }
         this.renderer = renderer;
         this.textures = new TextureManager();
-        this.scenes = new SceneManager(this);
+        this.scenes = new SceneManager();
         this.banner(this.VERSION);
-        this.scenes.boot([].concat(config.scene));
         //  Visibility API
         document.addEventListener('visibilitychange', () => {
             this.emit('visibilitychange', document.hidden);

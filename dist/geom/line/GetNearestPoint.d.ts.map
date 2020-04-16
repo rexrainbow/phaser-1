@@ -1,0 +1,1 @@
+{"version":3,"file":"GetNearestPoint.d.ts","sourceRoot":"","sources":["../../../src/geom/line/GetNearestPoint.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AAEH,OAAO,KAAK,MAAM,SAAS,CAAC;AAC5B,OAAO,KAAK,MAAM,uBAAuB,CAAC;AAC1C,OAAO,IAAI,MAAM,sBAAsB,CAAC;AAExC;;;;;;;;;;;;;GAaG;AACH,MAAM,CAAC,OAAO,UAAU,eAAe,CAAE,IAAI,EAAE,KAAK,EAAE,KAAK,EAAE,KAAK,EAAE,GAAG,GAAE,IAAiB,GAAG,IAAI,CAiBhG"}

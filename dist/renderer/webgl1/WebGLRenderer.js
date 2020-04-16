@@ -4,16 +4,9 @@ import Matrix2dEqual from '../../math/matrix2d-funcs/ExactEquals';
 import Ortho from './Ortho';
 import GL from './GL';
 import SpriteRenderWebGL from '../../gameobjects/sprite/RenderWebGL';
+import { GetWidth, GetHeight, GetResolution, GetBackgroundColor, GetWebGLContext } from '../../config';
 export default class WebGLRenderer {
-    constructor(width, height, resolution) {
-        this.contextOptions = {
-            alpha: false,
-            antialias: false,
-            premultipliedAlpha: false,
-            stencil: false,
-            preserveDrawingBuffer: false,
-            desynchronized: false
-        };
+    constructor() {
         this.clearColor = [0, 0, 0, 1];
         this.flushTotal = 0;
         this.maxTextures = 0;
@@ -24,9 +17,10 @@ export default class WebGLRenderer {
         this.optimizeRedraw = true;
         this.autoResize = true;
         this.contextLost = false;
-        this.width = width;
-        this.height = height;
-        this.resolution = resolution;
+        this.width = GetWidth();
+        this.height = GetHeight();
+        this.resolution = GetResolution();
+        this.setBackgroundColor(GetBackgroundColor());
         const canvas = document.createElement('canvas');
         canvas.addEventListener('webglcontextlost', (event) => this.onContextLost(event), false);
         canvas.addEventListener('webglcontextrestored', () => this.onContextRestored(), false);
@@ -35,7 +29,7 @@ export default class WebGLRenderer {
         this.shader = new MultiTextureQuadShader(this);
     }
     initContext() {
-        const gl = this.canvas.getContext('webgl', this.contextOptions);
+        const gl = this.canvas.getContext('webgl', GetWebGLContext());
         GL.set(gl);
         this.gl = gl;
         this.elementIndexExtension = gl.getExtension('OES_element_index_uint');

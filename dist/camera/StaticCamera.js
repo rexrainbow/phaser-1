@@ -1,4 +1,4 @@
-import Rectangle from '../geom/Rectangle';
+import Rectangle from '../geom/rectangle/Rectangle';
 export default class StaticCamera {
     constructor(scene) {
         this.scene = scene;

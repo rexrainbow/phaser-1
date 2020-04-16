@@ -1,4 +1,4 @@
-import EventEmitter from '../core/EventEmitter';
+import EventEmitter from '../events/EventEmitter';
 export default class Loader extends EventEmitter {
     constructor() {
         super();

@@ -1,5 +1,5 @@
 import Camera from '../camera/Camera';
-import RectangleToRectangle from '../geom/intersection/RectangleToRectangle';
+import RectangleToRectangle from '../geom/intersects/RectangleToRectangle';
 import Matrix2D from '../math/matrix2d/Matrix2D';
 export default class World {
     constructor(scene) {

@@ -1,0 +1,1 @@
+{"version":3,"file":"GetPoints.d.ts","sourceRoot":"","sources":["../../../src/geom/triangle/GetPoints.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAGH,OAAO,SAAS,MAAM,aAAa,CAAC;AACpC,OAAO,IAAI,MAAM,sBAAsB,CAAC;AAGxC;;;;;;;;;;;;;;GAcG;AACH,MAAM,CAAC,OAAO,UAAU,SAAS,CAAE,QAAQ,EAAE,SAAS,EAAE,QAAQ,EAAE,MAAM,EAAE,QAAQ,EAAE,MAAM,EAAE,GAAG,GAAE,IAAI,EAAO,GAAG,IAAI,EAAE,CAiEpH"}

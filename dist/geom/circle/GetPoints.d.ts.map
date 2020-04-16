@@ -1,0 +1,1 @@
+{"version":3,"file":"GetPoints.d.ts","sourceRoot":"","sources":["../../../src/geom/circle/GetPoints.ts"],"names":[],"mappings":"AAAA;;;;GAIG;AAEH,OAAO,OAAO,MAAM,WAAW,CAAC;AAKhC,OAAO,IAAI,MAAM,sBAAsB,CAAC;AAExC;;;;;;;;;;;;;GAaG;AACH,MAAM,CAAC,OAAO,UAAU,SAAS,CAAE,MAAM,EAAE,OAAO,EAAE,IAAI,EAAE,MAAM,EAAE,QAAQ,GAAE,MAAU,EAAE,GAAG,GAAE,IAAI,EAAO,GAAG,IAAI,EAAE,CAgBhH"}

@@ -461,25 +461,43 @@ var index$1 = /*#__PURE__*/Object.freeze({
     GetVideo: GetVideo
 });
 
-function AddToDOM(element, parent) {
-    let target;
-    if (parent) {
-        if (typeof parent === 'string') {
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+/**
+ * Attempts to get the target DOM element based on the given value, which can be either
+ * a string, in which case it will be looked-up by ID, or an element node. If nothing
+ * can be found it will return a reference to the document.body.
+ *
+ * @function Phaser.DOM.GetElement
+ * @since 4.0.0
+ *
+ * @param {(string | HTMLElement)} [target] - The DOM element to look-up.
+ *
+ * @returns {HTMLElement} The HTML Element that was found.
+ */
+function GetElement(target) {
+    let element;
+    if (target) {
+        if (typeof target === 'string') {
             //  Hopefully an element ID
-            target = document.getElementById(parent);
+            element = document.getElementById(target);
         }
-        else if (typeof parent === 'object' && parent.nodeType === 1) {
+        else if (typeof target === 'object' && target.nodeType === 1) {
             //  Quick test for a HTMLElement
-            target = parent;
+            element = target;
         }
     }
-    else if (element.parentElement) {
-        return element;
+    if (!element) {
+        element = document.body;
     }
-    //  Fallback, covers an invalid ID and a non HTMLElement object
-    if (!target) {
-        target = document.body;
-    }
+    return element;
+}
+
+function AddToDOM(element, parent) {
+    const target = GetElement(parent);
     target.appendChild(element);
     return element;
 }
@@ -508,19 +526,178 @@ function DOMContentLoaded(callback) {
     }
 }
 
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+/**
+ * Takes the given data string and parses it as XML using the native DOMParser interface.
+ * The parsed XML object is returned, or `null` if there was an error while parsing the data.
+ *
+ * @function Phaser.DOM.ParseXML
+ * @since 3.0.0
+ *
+ * @param {string} data - The XML source stored in a string.
+ *
+ * @return {?XMLDocument} The parsed XML data, or `null` if the data could not be parsed.
+ */
+function ParseXML(data) {
+    let xml;
+    try {
+        const parser = new DOMParser();
+        xml = parser.parseFromString(data, 'text/xml');
+        if (!xml || !xml.documentElement || xml.getElementsByTagName('parsererror').length) {
+            return null;
+        }
+        else {
+            return xml;
+        }
+    }
+    catch (error) {
+        return null;
+    }
+}
+
 function RemoveFromDOM(element) {
     if (element.parentNode) {
         element.parentNode.removeChild(element);
     }
 }
 
-//  @namespace Phaser.DOM
-
 var index$2 = /*#__PURE__*/Object.freeze({
     __proto__: null,
     AddToDOM: AddToDOM,
     DOMContentLoaded: DOMContentLoaded,
+    GetElement: GetElement,
+    ParseXML: ParseXML,
     RemoveFromDOM: RemoveFromDOM
+});
+
+class EE {
+    constructor(callback, context, once = false) {
+        this.callback = callback;
+        this.context = context;
+        this.once = once;
+    }
+}
+class EventEmitter {
+    constructor() {
+        this._events = new Map();
+    }
+    on(event, callback, context = this, once = false) {
+        if (typeof callback !== 'function') {
+            throw new TypeError('The listener must be a function');
+        }
+        const listener = new EE(callback, context, once);
+        const listeners = this._events.get(event);
+        if (!listeners) {
+            this._events.set(event, new Set([listener]));
+        }
+        else {
+            listeners.add(listener);
+        }
+        return this;
+    }
+    once(event, callback, context = this) {
+        return this.on(event, callback, context, true);
+    }
+    /**
+     * Clear an event by name.
+     */
+    clearEvent(event) {
+        this._events.delete(event);
+        return this;
+    }
+    /**
+     * Return an array listing the events for which the emitter has registered listeners.
+     */
+    eventNames() {
+        return [...this._events.keys()];
+    }
+    /**
+     * Return the listeners registered for a given event.
+     */
+    listeners(event) {
+        const out = [];
+        const listeners = this._events.get(event);
+        listeners.forEach((ee) => {
+            out.push(ee.callback);
+        });
+        return out;
+    }
+    /**
+     * Return the number of listeners listening to a given event.
+     */
+    listenerCount(event) {
+        const listeners = this._events.get(event);
+        return (listeners) ? listeners.size : 0;
+    }
+    /**
+     * Calls each of the listeners registered for a given event.
+     */
+    emit(event, ...args) {
+        if (!this._events.has(event)) {
+            return false;
+        }
+        const listeners = this._events.get(event);
+        for (const ee of listeners) {
+            ee.callback.apply(ee.context, args);
+            if (ee.once) {
+                listeners.delete(ee);
+            }
+        }
+        if (listeners.size === 0) {
+            this._events.delete(event);
+        }
+        return true;
+    }
+    /**
+     * Remove the listeners of a given event.
+     *
+     * @param event
+     * @param callback
+     * @param context
+     * @param once
+     */
+    off(event, callback, context, once) {
+        if (!callback) {
+            //  Remove all events matching the given key
+            this._events.delete(event);
+        }
+        else {
+            const listeners = this._events.get(event);
+            const hasContext = !context;
+            const hasOnce = (once !== undefined);
+            for (const ee of listeners) {
+                if (ee.callback === callback && (hasContext && ee.context === console) && (hasOnce && ee.once === once)) {
+                    listeners.delete(ee);
+                }
+            }
+            if (listeners.size === 0) {
+                this._events.delete(event);
+            }
+        }
+        return this;
+    }
+    /**
+     * Remove all listeners, or those of the specified event.
+     *
+     * @param event
+     */
+    removeAllListeners(event) {
+        if (!event) {
+            this._events.clear();
+        }
+        else {
+            this._events.delete(event);
+        }
+    }
+}
+
+var index$3 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    EventEmitter: EventEmitter
 });
 
 function AddAnimation(key, frames, ...sprite) {
@@ -540,6 +717,35 @@ function AddAnimationFromAtlas(config, ...sprite) {
     });
 }
 
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+/**
+ * Checks if a given point is inside a Rectangle's bounds.
+ *
+ * @function Phaser.Geom.Rectangle.Contains
+ * @since 3.0.0
+ *
+ * @param {Phaser.Geom.Rectangle} rect - The Rectangle to check.
+ * @param {number} x - The X coordinate of the point to check.
+ * @param {number} y - The Y coordinate of the point to check.
+ *
+ * @return {boolean} `true` if the point is within the Rectangle's bounds, otherwise `false`.
+ */
+function Contains(rect, x, y) {
+    if (rect.width <= 0 || rect.height <= 0) {
+        return false;
+    }
+    return (rect.x <= x && rect.x + rect.width >= x && rect.y <= y && rect.y + rect.height >= y);
+}
+
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
 class Rectangle {
     constructor(x = 0, y = 0, width = 0, height = 0) {
         this.set(x, y, width, height);
@@ -550,6 +756,9 @@ class Rectangle {
         this.width = width;
         this.height = height;
         return this;
+    }
+    contains(x, y) {
+        return Contains(this, x, y);
     }
     set right(value) {
         if (value <= this.x) {
@@ -572,13 +781,6 @@ class Rectangle {
     }
     get bottom() {
         return this.y + this.height;
-    }
-    contains(px, py) {
-        const { x, y, width, height } = this;
-        if (width <= 0 || height <= 0) {
-            return false;
-        }
-        return (x <= px && x + width >= px && y <= py && y + height >= py);
     }
 }
 
@@ -2169,7 +2371,7 @@ var TransformGameObject$1 = {
     TransformGameObject
 };
 
-var index$3 = {
+var index$4 = {
     AnimatedSprite: AnimatedSprite$1,
     Container: Container$1,
     GameObject: GameObject$1,
@@ -2178,9 +2380,9 @@ var index$3 = {
     TransformGameObject: TransformGameObject$1
 };
 
-var index$4 = /*#__PURE__*/Object.freeze({
+var index$5 = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$3
+    'default': index$4
 });
 
 /**
@@ -2567,7 +2769,7 @@ function WrapDegrees(angle) {
 /**
  * @namespace Phaser.Math.Angle
  */
-var index$5 = {
+var index$6 = {
     Between,
     BetweenPoints,
     BetweenPointsY,
@@ -2581,9 +2783,9 @@ var index$5 = {
     WrapDegrees
 };
 
-var Angle = /*#__PURE__*/Object.freeze({
+var index$7 = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$5
+    'default': index$6
 });
 
 /**
@@ -2759,7 +2961,7 @@ function DistanceSquared(x1, y1, x2, y2) {
 /**
  * @namespace Phaser.Math.Distance
  */
-var index$6 = {
+var index$8 = {
     Between: DistanceBetween,
     BetweenPoints: DistanceBetweenPoints,
     BetweenPointsSquared: DistanceBetweenPointsSquared,
@@ -2769,9 +2971,9 @@ var index$6 = {
     Squared: DistanceSquared
 };
 
-var Distance = /*#__PURE__*/Object.freeze({
+var index$9 = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$6
+    'default': index$8
 });
 
 /**
@@ -2891,7 +3093,7 @@ function LessThan(a, b, epsilon = 0.0001) {
 /**
  * @namespace Phaser.Math.Fuzzy
  */
-var index$7 = {
+var index$a = {
     Ceil,
     Equal,
     Floor,
@@ -2899,9 +3101,9 @@ var index$7 = {
     LessThan
 };
 
-var Fuzzy = /*#__PURE__*/Object.freeze({
+var index$b = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$7
+    'default': index$a
 });
 
 /**
@@ -3299,7 +3501,7 @@ function SmootherStepInterpolation(t, min, max) {
 /**
  * @namespace Phaser.Math.Interpolation
  */
-var index$8 = {
+var index$c = {
     Bezier: BezierInterpolation,
     CatmullRom: CatmullRomInterpolation,
     CubicBezier: CubicBezierInterpolation,
@@ -3309,9 +3511,9 @@ var index$8 = {
     SmootherStep: SmootherStepInterpolation
 };
 
-var Interpolation = /*#__PURE__*/Object.freeze({
+var index$d = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$8
+    'default': index$c
 });
 
 //  Adds the src Matrix to the target Matrix and returns the target.
@@ -3354,27 +3556,10 @@ class Vec2 {
     constructor(x = 0, y = 0) {
         this.set(x, y);
     }
-    /**
-     * Sets the components of this Vector2.
-     *
-     * @param {number} [x=0] - X component
-     * @param {number} [y=0] - Y component
-     * @returns {Vec2}
-     * @memberof Vec2
-     */
     set(x = 0, y = 0) {
         this.x = x;
         this.y = y;
         return this;
-    }
-    /**
-     * Sets all components of this Vector2 to zero.
-     *
-     * @returns {Vec2}
-     * @memberof Vec2
-     */
-    zero() {
-        return this.set();
     }
     /**
      * Returns a new array containg the Vector2 component values.
@@ -3547,7 +3732,7 @@ function Zero(target) {
 }
 
 //  Phaser.Math.Matrix2d
-var index$9 = {
+var index$e = {
     Add,
     Copy,
     CopyToContext,
@@ -3571,9 +3756,9 @@ var index$9 = {
     Zero
 };
 
-var Matrix2d = /*#__PURE__*/Object.freeze({
+var index$f = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$9
+    'default': index$e
 });
 
 //  Adds a to b and returns the values in a new Matrix2D
@@ -3683,7 +3868,7 @@ function Zero$1() {
 }
 
 //  Phaser.Math.Matrix2dFuncs
-var index$a = {
+var index$g = {
     Add: Add$1,
     Append,
     Clone,
@@ -3704,9 +3889,9 @@ var index$a = {
     Zero: Zero$1
 };
 
-var Matrix2dFuncs = /*#__PURE__*/Object.freeze({
+var index$h = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$a
+    'default': index$g
 });
 
 /**
@@ -3756,15 +3941,15 @@ function IsValuePowerOfTwo(value) {
 /**
  * @namespace Phaser.Math.Pow2
  */
-var index$b = {
+var index$i = {
     GetNext: GetPowerOfTwo,
     IsSize: IsSizePowerOfTwo,
     IsValue: IsValuePowerOfTwo
 };
 
-var Pow2 = /*#__PURE__*/Object.freeze({
+var index$j = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$b
+    'default': index$i
 });
 
 /**
@@ -3864,24 +4049,24 @@ function SnapTo(value, gap, start = 0, divide = false) {
 /**
  * @namespace Phaser.Math.Snap
  */
-var index$c = {
+var index$k = {
     Ceil: SnapCeil,
     Floor: SnapFloor,
     To: SnapTo
 };
 
-var Snap = /*#__PURE__*/Object.freeze({
+var index$l = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$c
+    'default': index$k
 });
 
-var index$d = {
+var index$m = {
     Vec2
 };
 
-var Vec2$1 = /*#__PURE__*/Object.freeze({
+var index$n = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$d
+    'default': index$m
 });
 
 /**
@@ -4361,50 +4546,45 @@ function Within(a, b, tolerance) {
     return (Math.abs(a - b) <= tolerance);
 }
 
-//  Phaser.Math
-var index$e = {
-    Angle,
-    Distance,
-    Fuzzy,
-    Interpolation,
-    Matrix2d,
-    Matrix2dFuncs,
-    Pow2,
-    Snap,
-    Vec2: Vec2$1,
-    Average,
-    Bernstein,
-    Between: Between$1,
-    CatmullRom,
-    CeilTo,
-    Clamp,
-    CONST: CONST$1,
-    DegToRad,
-    Difference,
-    Factorial,
-    FloatBetween,
-    FloorTo,
-    FromPercent,
-    GetSpeed,
-    Linear,
-    MaxAdd,
-    MinSub,
-    Percent,
-    RadToDeg,
-    RoundAwayFromZero,
-    RoundTo,
-    SinCosTableGenerator,
-    SmootherStep,
-    SmoothStep,
-    ToXY,
-    TransformXY,
-    Within,
-    Wrap
-};
-
-var index$f = /*#__PURE__*/Object.freeze({
+var index$o = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$e
+    Angle: index$7,
+    Distance: index$9,
+    Fuzzy: index$b,
+    Interpolation: index$d,
+    Matrix2d: index$f,
+    Matrix2dFuncs: index$h,
+    Pow2: index$j,
+    Snap: index$l,
+    Vec2: index$n,
+    Average: Average,
+    Bernstein: Bernstein,
+    Between: Between$1,
+    CatmullRom: CatmullRom,
+    CeilTo: CeilTo,
+    Clamp: Clamp,
+    CONST: CONST$1,
+    DegToRad: DegToRad,
+    Difference: Difference,
+    Factorial: Factorial,
+    FloatBetween: FloatBetween,
+    FloorTo: FloorTo,
+    FromPercent: FromPercent,
+    GetSpeed: GetSpeed,
+    Linear: Linear,
+    MaxAdd: MaxAdd,
+    MinSub: MinSub,
+    Percent: Percent,
+    RadToDeg: RadToDeg,
+    RoundAwayFromZero: RoundAwayFromZero,
+    RoundTo: RoundTo,
+    SinCosTableGenerator: SinCosTableGenerator,
+    SmootherStep: SmootherStep,
+    SmoothStep: SmoothStep,
+    ToXY: ToXY,
+    TransformXY: TransformXY,
+    Within: Within,
+    Wrap: Wrap
 });
 
 /**
@@ -4572,20 +4752,14 @@ var MSX = {
  * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
-/**
- * @namespace Phaser.Create.Palettes
- */
-var index$g = {
-    ARNE16: Arne16,
-    C64,
-    CGA,
-    JMP,
-    MSX
-};
 
-var Palettes = /*#__PURE__*/Object.freeze({
+var index$p = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$g
+    ARNE16: Arne16,
+    C64: C64,
+    CGA: CGA,
+    JMP: JMP,
+    MSX: MSX
 });
 
 function AtlasParser(texture, data) {
@@ -4769,15 +4943,11 @@ function SpriteSheetParser (texture, x, y, width, height, frameConfig) {
     }
 }
 
-var index$h = {
-    AtlasParser,
-    BitmapTextParser,
-    SpriteSheetParser
-};
-
-var Parsers = /*#__PURE__*/Object.freeze({
+var index$q = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$h
+    AtlasParser: AtlasParser,
+    BitmapTextParser: BitmapTextParser,
+    SpriteSheetParser: SpriteSheetParser
 });
 
 function GridTexture(color1, color2, width = 32, height = 32, cols = 2, rows = 2) {
@@ -4961,17 +5131,13 @@ function SolidColorTexture(color = 'rgba(0,0,0,0)', width = 32, height = 32) {
     return new Texture(ctx.canvas);
 }
 
-var index$i = {
-    CanvasTexture,
-    GridTexture,
-    PixelTexture,
-    RenderTexture,
-    SolidColorTexture
-};
-
-var Types = /*#__PURE__*/Object.freeze({
+var index$r = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$i
+    CanvasTexture: CanvasTexture,
+    GridTexture: GridTexture,
+    PixelTexture: PixelTexture,
+    RenderTexture: RenderTexture,
+    SolidColorTexture: SolidColorTexture
 });
 
 class TextureManager {
@@ -5019,19 +5185,15 @@ class TextureManager {
     }
 }
 
-var index$j = {
-    CreateCanvas,
-    Frame,
-    Palettes,
-    Parsers,
-    Types,
-    Texture,
-    TextureManager
-};
-
-var index$k = /*#__PURE__*/Object.freeze({
+var index$s = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$j
+    CreateCanvas: CreateCanvas,
+    Frame: Frame,
+    Palettes: index$p,
+    Parsers: index$q,
+    Types: index$r,
+    Texture: Texture,
+    TextureManager: TextureManager
 });
 
 //  From Pixi v5
@@ -5306,16 +5468,41 @@ class MultiTextureQuadShader {
     }
 }
 
+let _bgColor = 0;
+function GetBackgroundColor() {
+    return _bgColor;
+}
+
+let _scenes = [];
+function GetScenes() {
+    return _scenes;
+}
+
+let _width = 800;
+let _height = 600;
+let _resolution = 1;
+function GetWidth() {
+    return _width;
+}
+function GetHeight() {
+    return _height;
+}
+function GetResolution() {
+    return _resolution;
+}
+
+let _contextAttributes = {
+    alpha: false,
+    antialias: false,
+    depth: false,
+    premultipliedAlpha: false
+};
+function GetWebGLContext() {
+    return _contextAttributes;
+}
+
 class WebGLRenderer {
-    constructor(width, height, resolution) {
-        this.contextOptions = {
-            alpha: false,
-            antialias: false,
-            premultipliedAlpha: false,
-            stencil: false,
-            preserveDrawingBuffer: false,
-            desynchronized: false
-        };
+    constructor() {
         this.clearColor = [0, 0, 0, 1];
         this.flushTotal = 0;
         this.maxTextures = 0;
@@ -5326,9 +5513,10 @@ class WebGLRenderer {
         this.optimizeRedraw = true;
         this.autoResize = true;
         this.contextLost = false;
-        this.width = width;
-        this.height = height;
-        this.resolution = resolution;
+        this.width = GetWidth();
+        this.height = GetHeight();
+        this.resolution = GetResolution();
+        this.setBackgroundColor(GetBackgroundColor());
         const canvas = document.createElement('canvas');
         canvas.addEventListener('webglcontextlost', (event) => this.onContextLost(event), false);
         canvas.addEventListener('webglcontextrestored', () => this.onContextRestored(), false);
@@ -5337,7 +5525,7 @@ class WebGLRenderer {
         this.shader = new MultiTextureQuadShader(this);
     }
     initContext() {
-        const gl = this.canvas.getContext('webgl', this.contextOptions);
+        const gl = this.canvas.getContext('webgl', GetWebGLContext());
         GL.set(gl);
         this.gl = gl;
         this.elementIndexExtension = gl.getExtension('OES_element_index_uint');
@@ -5514,7 +5702,7 @@ function GetConfigValue(config, property, defaultValue) {
 }
 
 class SceneManager {
-    constructor(game) {
+    constructor() {
         this.sceneIndex = 0;
         //  Flush the cache
         this.flush = false;
@@ -5524,11 +5712,13 @@ class SceneManager {
         this.dirtyFrame = 0;
         //  How many Game Objects were processed this frame across all Scenes?
         this.totalFrame = 0;
-        this.game = game;
+        this.game = GameInstance.get();
         this.scenes = new Map();
         this.renderList = [];
+        this.game.once('boot', () => this.boot());
     }
-    boot(scenes) {
+    boot() {
+        const scenes = GetScenes();
         scenes.forEach(scene => {
             this.add(scene);
         });
@@ -5603,129 +5793,8 @@ class SceneManager {
     }
 }
 
-class EE {
-    constructor(callback, context, once = false) {
-        this.callback = callback;
-        this.context = context;
-        this.once = once;
-    }
-}
-class EventEmitter {
-    constructor() {
-        this._events = new Map();
-    }
-    on(event, callback, context = this, once = false) {
-        if (typeof callback !== 'function') {
-            throw new TypeError('The listener must be a function');
-        }
-        const listener = new EE(callback, context, once);
-        const listeners = this._events.get(event);
-        if (!listeners) {
-            this._events.set(event, new Set([listener]));
-        }
-        else {
-            listeners.add(listener);
-        }
-        return this;
-    }
-    once(event, callback, context = this) {
-        return this.on(event, callback, context, true);
-    }
-    /**
-     * Clear an event by name.
-     */
-    clearEvent(event) {
-        this._events.delete(event);
-        return this;
-    }
-    /**
-     * Return an array listing the events for which the emitter has registered listeners.
-     */
-    eventNames() {
-        return [...this._events.keys()];
-    }
-    /**
-     * Return the listeners registered for a given event.
-     */
-    listeners(event) {
-        const out = [];
-        const listeners = this._events.get(event);
-        listeners.forEach((ee) => {
-            out.push(ee.callback);
-        });
-        return out;
-    }
-    /**
-     * Return the number of listeners listening to a given event.
-     */
-    listenerCount(event) {
-        const listeners = this._events.get(event);
-        return (listeners) ? listeners.size : 0;
-    }
-    /**
-     * Calls each of the listeners registered for a given event.
-     */
-    emit(event, ...args) {
-        if (!this._events.has(event)) {
-            return false;
-        }
-        const listeners = this._events.get(event);
-        for (const ee of listeners) {
-            ee.callback.apply(ee.context, args);
-            if (ee.once) {
-                listeners.delete(ee);
-            }
-        }
-        if (listeners.size === 0) {
-            this._events.delete(event);
-        }
-        return true;
-    }
-    /**
-     * Remove the listeners of a given event.
-     *
-     * @param event
-     * @param callback
-     * @param context
-     * @param once
-     */
-    off(event, callback, context, once) {
-        if (!callback) {
-            //  Remove all events matching the given key
-            this._events.delete(event);
-        }
-        else {
-            const listeners = this._events.get(event);
-            const hasContext = !context;
-            const hasOnce = (once !== undefined);
-            for (const ee of listeners) {
-                if (ee.callback === callback && (hasContext && ee.context === console) && (hasOnce && ee.once === once)) {
-                    listeners.delete(ee);
-                }
-            }
-            if (listeners.size === 0) {
-                this._events.delete(event);
-            }
-        }
-        return this;
-    }
-    /**
-     * Remove all listeners, or those of the specified event.
-     *
-     * @param event
-     */
-    removeAllListeners(event) {
-        if (!event) {
-            this._events.clear();
-        }
-        else {
-            this._events.delete(event);
-        }
-    }
-}
-
 class Game extends EventEmitter {
-    constructor(config) {
+    constructor(...settings) {
         super();
         this.VERSION = '4.0.0-beta1';
         this.isPaused = false;
@@ -5734,8 +5803,9 @@ class Game extends EventEmitter {
         this.elapsed = 0;
         //  The current game frame
         this.frame = 0;
-        const { width = 800, height = 600, resolution = 1, backgroundColor = 0x00000, parent = document.body, scene = null } = config;
-        this.config = { width, height, resolution, backgroundColor, parent, scene };
+        settings.forEach(setting => {
+            setting();
+        });
         this.cache = {
             json: new Map(),
             csv: new Map(),
@@ -5754,17 +5824,13 @@ class Game extends EventEmitter {
         this.emit('resume');
     }
     boot() {
-        const config = this.config;
         this.isBooted = true;
         this.lastTick = Date.now();
-        const renderer = new WebGLRenderer(config.width, config.height, config.resolution);
-        renderer.setBackgroundColor(config.backgroundColor);
-        AddToDOM(renderer.canvas, config.parent);
+        const renderer = new WebGLRenderer();
         this.renderer = renderer;
         this.textures = new TextureManager();
-        this.scenes = new SceneManager(this);
+        this.scenes = new SceneManager();
         this.banner(this.VERSION);
-        this.scenes.boot([].concat(config.scene));
         //  Visibility API
         document.addEventListener('visibilitychange', () => {
             this.emit('visibilitychange', document.hidden);
@@ -6211,5 +6277,5 @@ class Loader extends EventEmitter {
     }
 }
 
-export { index$2 as DOM, index$1 as Device, EventEmitter, Game, index$4 as GameObjects, Loader, index$f as Math, Scene, StaticScene, index$k as Textures, WebGLRenderer };
+export { index$2 as DOM, index$1 as Device, index$3 as Events, Game, index$5 as GameObjects, Loader, index$o as Math, Scene, StaticScene, index$s as Textures, WebGLRenderer };
 //# sourceMappingURL=Phaser4.esm.js.map

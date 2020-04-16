@@ -1,5 +1,5 @@
 import IInteractiveArea from '../../input/IInteractiveArea';
-import Rectangle from '../../geom/Rectangle';
+import Rectangle from '../../geom/rectangle/Rectangle';
 import IParent from '../container/IParent';
 import IBaseScene from '../../scenes/IBaseScene';
 export default class GameObject {

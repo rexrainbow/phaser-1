@@ -5,14 +5,5 @@ import CreateCanvas from './CreateCanvas';
 import Frame from './Frame';
 import Texture from './Texture';
 import TextureManager from './TextureManager';
-declare const _default: {
-    CreateCanvas: typeof CreateCanvas;
-    Frame: typeof Frame;
-    Palettes: typeof Palettes;
-    Parsers: typeof Parsers;
-    Types: typeof Types;
-    Texture: typeof Texture;
-    TextureManager: typeof TextureManager;
-};
-export default _default;
+export { CreateCanvas, Frame, Palettes, Parsers, Types, Texture, TextureManager };
 //# sourceMappingURL=index.d.ts.map

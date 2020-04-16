@@ -1,0 +1,1 @@
+{"version":3,"file":"GetRectangleToRectangle.d.ts","sourceRoot":"","sources":["../../../src/geom/intersects/GetRectangleToRectangle.ts"],"names":[],"mappings":"AAAA;;;;;GAKG;AAIH,OAAO,UAAU,MAAM,yBAAyB,CAAC;AACjD,OAAO,IAAI,MAAM,sBAAsB,CAAC;AAGxC;;;;;;;;;;;;;GAaG;AACH,MAAM,CAAC,OAAO,UAAU,uBAAuB,CAAE,KAAK,EAAE,UAAU,EAAE,KAAK,EAAE,UAAU,EAAE,GAAG,GAAE,IAAI,EAAO,GAAG,IAAI,EAAE,CAa/G"}

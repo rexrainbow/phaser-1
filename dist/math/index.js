@@ -36,43 +36,5 @@ import TransformXY from './TransformXY';
 import Within from './Within';
 import Wrap from './Wrap';
 //  Phaser.Math
-export default {
-    Angle,
-    Distance,
-    Fuzzy,
-    Interpolation,
-    Matrix2d,
-    Matrix2dFuncs,
-    Pow2,
-    Snap,
-    Vec2,
-    Average,
-    Bernstein,
-    Between,
-    CatmullRom,
-    CeilTo,
-    Clamp,
-    CONST,
-    DegToRad,
-    Difference,
-    Factorial,
-    FloatBetween,
-    FloorTo,
-    FromPercent,
-    GetSpeed,
-    Linear,
-    MaxAdd,
-    MinSub,
-    Percent,
-    RadToDeg,
-    RoundAwayFromZero,
-    RoundTo,
-    SinCosTableGenerator,
-    SmootherStep,
-    SmoothStep,
-    ToXY,
-    TransformXY,
-    Within,
-    Wrap
-};
+export { Angle, Distance, Fuzzy, Interpolation, Matrix2d, Matrix2dFuncs, Pow2, Snap, Vec2, Average, Bernstein, Between, CatmullRom, CeilTo, Clamp, CONST, DegToRad, Difference, Factorial, FloatBetween, FloorTo, FromPercent, GetSpeed, Linear, MaxAdd, MinSub, Percent, RadToDeg, RoundAwayFromZero, RoundTo, SinCosTableGenerator, SmootherStep, SmoothStep, ToXY, TransformXY, Within, Wrap };
 //# sourceMappingURL=index.js.map

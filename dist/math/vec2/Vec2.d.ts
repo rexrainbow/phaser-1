@@ -21,22 +21,7 @@ export default class Vec2 {
      * @memberof Vec2
      */
     constructor(x?: number, y?: number);
-    /**
-     * Sets the components of this Vector2.
-     *
-     * @param {number} [x=0] - X component
-     * @param {number} [y=0] - Y component
-     * @returns {Vec2}
-     * @memberof Vec2
-     */
-    set(x?: number, y?: number): Vec2;
-    /**
-     * Sets all components of this Vector2 to zero.
-     *
-     * @returns {Vec2}
-     * @memberof Vec2
-     */
-    zero(): Vec2;
+    set(x?: number, y?: number): this;
     /**
      * Returns a new array containg the Vector2 component values.
      *
