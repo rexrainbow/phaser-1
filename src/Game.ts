@@ -25,7 +25,7 @@ export default class Game extends EventEmitter
     //  The current game frame
     frame: number = 0;
 
-    constructor (...settings: { (): void } [])
+    constructor (...settings: { (): void }[])
     {
         super();
 
