@@ -28,6 +28,11 @@ export default function SetTexture (key: string | Texture, frame: string | numbe
         }
         else
         {
+            if (!entity.texture.glTexture)
+            {
+                entity.texture.createGL();
+            }
+
             SetFrame(frame, entity);
         }
 
