@@ -9,6 +9,7 @@ import C64 from './C64';
 import CGA from './CGA';
 import JMP from './JMP';
 import MSX from './MSX';
+import PICO8 from './PICO8';
 
 /**
  * @namespace Phaser.Create.Palettes
@@ -19,5 +20,6 @@ export {
     C64,
     CGA,
     JMP,
-    MSX
+    MSX,
+    PICO8
 }
