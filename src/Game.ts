@@ -46,22 +46,6 @@ export default class Game extends EventEmitter
         DOMContentLoaded(() => this.boot());
     }
 
-    pause ()
-    {
-        this.isPaused = true;
-
-        this.emit('pause');
-    }
-
-    resume ()
-    {
-        this.isPaused = false;
-
-        this.lastTick = Date.now();
-
-        this.emit('resume');
-    }
-
     boot ()
     {
         this.isBooted = true;
@@ -104,6 +88,22 @@ export default class Game extends EventEmitter
         this.emit('boot');
 
         requestAnimationFrame(() => this.step());
+    }
+
+    pause ()
+    {
+        this.isPaused = true;
+
+        this.emit('pause');
+    }
+
+    resume ()
+    {
+        this.isPaused = false;
+
+        this.lastTick = Date.now();
+
+        this.emit('resume');
     }
 
     banner (version: string)
