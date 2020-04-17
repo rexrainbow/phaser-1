@@ -10,17 +10,8 @@ import Chebyshev from './DistanceChebyshev';
 import Power from './DistancePower';
 import Snake from './DistanceSnake';
 import Squared from './DistanceSquared';
-declare const _default: {
-    Between: typeof Between;
-    BetweenPoints: typeof BetweenPoints;
-    BetweenPointsSquared: typeof BetweenPointsSquared;
-    Chebyshev: typeof Chebyshev;
-    Power: typeof Power;
-    Snake: typeof Snake;
-    Squared: typeof Squared;
-};
 /**
  * @namespace Phaser.Math.Distance
  */
-export default _default;
+export { Between, BetweenPoints, BetweenPointsSquared, Chebyshev, Power, Snake, Squared };
 //# sourceMappingURL=index.d.ts.map

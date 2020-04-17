@@ -13,13 +13,5 @@ import SmootherStep from './SmootherStepInterpolation';
 /**
  * @namespace Phaser.Math.Interpolation
  */
-export default {
-    Bezier,
-    CatmullRom,
-    CubicBezier,
-    Linear,
-    QuadraticBezier,
-    SmoothStep,
-    SmootherStep
-};
+export { Bezier, CatmullRom, CubicBezier, Linear, QuadraticBezier, SmoothStep, SmootherStep };
 //# sourceMappingURL=index.js.map

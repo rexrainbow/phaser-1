@@ -16,25 +16,5 @@ import Scale from './Scale';
 import Subtract from './Subtract';
 import Translate from './Translate';
 import Zero from './Zero';
-declare const _default: {
-    Add: typeof Add;
-    Append: typeof Append;
-    Clone: typeof Clone;
-    Equals: typeof Equals;
-    ExactEquals: typeof ExactEquals;
-    FromRotation: typeof FromRotation;
-    FromScaling: typeof FromScaling;
-    FromTranslation: typeof FromTranslation;
-    Identity: typeof Identity;
-    Invert: typeof Invert;
-    Multiply: typeof Multiply;
-    MultiplyScalar: typeof MultiplyScalar;
-    MultiplyScalarAndAdd: typeof MultiplyScalarAndAdd;
-    Rotate: typeof Rotate;
-    Scale: typeof Scale;
-    Subtract: typeof Subtract;
-    Translate: typeof Translate;
-    Zero: typeof Zero;
-};
-export default _default;
+export { Add, Append, Clone, Equals, ExactEquals, FromRotation, FromScaling, FromTranslation, Identity, Invert, Multiply, MultiplyScalar, MultiplyScalarAndAdd, Rotate, Scale, Subtract, Translate, Zero };
 //# sourceMappingURL=index.d.ts.map

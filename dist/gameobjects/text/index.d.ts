@@ -12,21 +12,5 @@ import SetText from './SetText';
 import SetTextAlign from './SetTextAlign';
 import SetTextBaseline from './SetTextBaseline';
 import Text from './Text';
-declare const _default: {
-    SetBackgroundStyle: typeof SetBackgroundStyle;
-    SetCornerRadius: typeof SetCornerRadius;
-    SetFillStyle: typeof SetFillStyle;
-    SetFixedSize: typeof SetFixedSize;
-    SetFont: typeof SetFont;
-    SetLineDash: typeof SetLineDash;
-    SetLineSpacing: typeof SetLineSpacing;
-    SetLineWidth: typeof SetLineWidth;
-    SetPadding: typeof SetPadding;
-    SetStrokeStyle: typeof SetStrokeStyle;
-    SetText: typeof SetText;
-    SetTextAlign: typeof SetTextAlign;
-    SetTextBaseline: typeof SetTextBaseline;
-    Text: typeof Text;
-};
-export default _default;
+export { SetBackgroundStyle, SetCornerRadius, SetFillStyle, SetFixedSize, SetFont, SetLineDash, SetLineSpacing, SetLineWidth, SetPadding, SetStrokeStyle, SetText, SetTextAlign, SetTextBaseline, Text };
 //# sourceMappingURL=index.d.ts.map

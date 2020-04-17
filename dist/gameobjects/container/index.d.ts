@@ -10,19 +10,5 @@ import RemoveChildren from './RemoveChildren';
 import ReparentChildren from './ReparentChildren';
 import SetParent from './SetParent';
 import SwapChildren from './SwapChildren';
-declare const _default: {
-    AddChild: typeof AddChild;
-    AddChildAt: typeof AddChildAt;
-    Container: typeof Container;
-    DestroyChildren: typeof DestroyChildren;
-    GetChildAt: typeof GetChildAt;
-    GetChildIndex: typeof GetChildIndex;
-    RemoveChild: typeof RemoveChild;
-    RemoveChildAt: typeof RemoveChildAt;
-    RemoveChildren: typeof RemoveChildren;
-    ReparentChildren: typeof ReparentChildren;
-    SetParent: typeof SetParent;
-    SwapChildren: typeof SwapChildren;
-};
-export default _default;
+export { AddChild, AddChildAt, Container, DestroyChildren, GetChildAt, GetChildIndex, RemoveChild, RemoveChildAt, RemoveChildren, ReparentChildren, SetParent, SwapChildren };
 //# sourceMappingURL=index.d.ts.map

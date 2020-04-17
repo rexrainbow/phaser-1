@@ -13,13 +13,5 @@ import Squared from './DistanceSquared';
 /**
  * @namespace Phaser.Math.Distance
  */
-export default {
-    Between,
-    BetweenPoints,
-    BetweenPointsSquared,
-    Chebyshev,
-    Power,
-    Snake,
-    Squared
-};
+export { Between, BetweenPoints, BetweenPointsSquared, Chebyshev, Power, Snake, Squared };
 //# sourceMappingURL=index.js.map

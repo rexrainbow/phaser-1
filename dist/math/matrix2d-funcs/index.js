@@ -17,24 +17,5 @@ import Subtract from './Subtract';
 import Translate from './Translate';
 import Zero from './Zero';
 //  Phaser.Math.Matrix2dFuncs
-export default {
-    Add,
-    Append,
-    Clone,
-    Equals,
-    ExactEquals,
-    FromRotation,
-    FromScaling,
-    FromTranslation,
-    Identity,
-    Invert,
-    Multiply,
-    MultiplyScalar,
-    MultiplyScalarAndAdd,
-    Rotate,
-    Scale,
-    Subtract,
-    Translate,
-    Zero
-};
+export { Add, Append, Clone, Equals, ExactEquals, FromRotation, FromScaling, FromTranslation, Identity, Invert, Multiply, MultiplyScalar, MultiplyScalarAndAdd, Rotate, Scale, Subtract, Translate, Zero };
 //# sourceMappingURL=index.js.map

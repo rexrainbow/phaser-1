@@ -12,20 +12,5 @@ import SetText from './SetText';
 import SetTextAlign from './SetTextAlign';
 import SetTextBaseline from './SetTextBaseline';
 import Text from './Text';
-export default {
-    SetBackgroundStyle,
-    SetCornerRadius,
-    SetFillStyle,
-    SetFixedSize,
-    SetFont,
-    SetLineDash,
-    SetLineSpacing,
-    SetLineWidth,
-    SetPadding,
-    SetStrokeStyle,
-    SetText,
-    SetTextAlign,
-    SetTextBaseline,
-    Text
-};
+export { SetBackgroundStyle, SetCornerRadius, SetFillStyle, SetFixedSize, SetFont, SetLineDash, SetLineSpacing, SetLineWidth, SetPadding, SetStrokeStyle, SetText, SetTextAlign, SetTextBaseline, Text };
 //# sourceMappingURL=index.js.map

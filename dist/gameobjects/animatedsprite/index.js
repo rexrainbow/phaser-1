@@ -5,13 +5,5 @@ import ClearAnimations from './ClearAnimations';
 import Play from './Play';
 import RemoveAnimation from './RemoveAnimation';
 import Stop from './Stop';
-export default {
-    AddAnimation,
-    AddAnimationFromAtlas,
-    AnimatedSprite,
-    ClearAnimations,
-    Play,
-    RemoveAnimation,
-    Stop
-};
+export { AddAnimation, AddAnimationFromAtlas, AnimatedSprite, ClearAnimations, Play, RemoveAnimation, Stop };
 //# sourceMappingURL=index.js.map

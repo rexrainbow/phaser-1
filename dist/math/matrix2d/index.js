@@ -20,27 +20,5 @@ import Subtract from './Subtract';
 import Translate from './Translate';
 import Zero from './Zero';
 //  Phaser.Math.Matrix2d
-export default {
-    Add,
-    Copy,
-    CopyToContext,
-    Determinant,
-    Frobenius,
-    GlobalToLocal,
-    Invert,
-    ITRS,
-    ITRSS,
-    LocalToGlobal,
-    Matrix2D,
-    Multiply,
-    MultiplyScalar,
-    MultiplyScalarAndAdd,
-    Rotate,
-    Scale,
-    SetToContext,
-    Skew,
-    Subtract,
-    Translate,
-    Zero
-};
+export { Add, Copy, CopyToContext, Determinant, Frobenius, GlobalToLocal, Invert, ITRS, ITRSS, LocalToGlobal, Matrix2D, Multiply, MultiplyScalar, MultiplyScalarAndAdd, Rotate, Scale, SetToContext, Skew, Subtract, Translate, Zero };
 //# sourceMappingURL=index.js.map

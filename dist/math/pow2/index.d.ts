@@ -6,13 +6,8 @@
 import GetNext from './GetPowerOfTwo';
 import IsSize from './IsSizePowerOfTwo';
 import IsValue from './IsValuePowerOfTwo';
-declare const _default: {
-    GetNext: typeof GetNext;
-    IsSize: typeof IsSize;
-    IsValue: typeof IsValue;
-};
 /**
  * @namespace Phaser.Math.Pow2
  */
-export default _default;
+export { GetNext, IsSize, IsValue };
 //# sourceMappingURL=index.d.ts.map

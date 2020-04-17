@@ -1768,15 +1768,16 @@ function Stop(...sprite) {
     });
 }
 
-var AnimatedSprite$1 = {
-    AddAnimation,
-    AddAnimationFromAtlas,
-    AnimatedSprite,
-    ClearAnimations,
-    Play,
-    RemoveAnimation,
-    Stop
-};
+var index$4 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    AddAnimation: AddAnimation,
+    AddAnimationFromAtlas: AddAnimationFromAtlas,
+    AnimatedSprite: AnimatedSprite,
+    ClearAnimations: ClearAnimations,
+    Play: Play,
+    RemoveAnimation: RemoveAnimation,
+    Stop: Stop
+});
 
 function RemoveChild(parent, ...child) {
     const children = parent.children;
@@ -1892,20 +1893,21 @@ function SwapChildren(child1, child2) {
     }
 }
 
-var Container$1 = {
-    AddChild,
-    AddChildAt,
-    Container,
-    DestroyChildren,
-    GetChildAt,
-    GetChildIndex,
-    RemoveChild,
-    RemoveChildAt,
-    RemoveChildren,
-    ReparentChildren,
-    SetParent,
-    SwapChildren
-};
+var index$5 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    AddChild: AddChild,
+    AddChildAt: AddChildAt,
+    Container: Container,
+    DestroyChildren: DestroyChildren,
+    GetChildAt: GetChildAt,
+    GetChildIndex: GetChildIndex,
+    RemoveChild: RemoveChild,
+    RemoveChildAt: RemoveChildAt,
+    RemoveChildren: RemoveChildren,
+    ReparentChildren: ReparentChildren,
+    SetParent: SetParent,
+    SwapChildren: SwapChildren
+});
 
 function SetBounds(x, y, width, height, ...child) {
     child.forEach(entity => {
@@ -1937,14 +1939,15 @@ function SetVisible(visible, ...child) {
     });
 }
 
-var GameObject$1 = {
-    GameObject,
-    SetBounds,
-    SetName,
-    SetScene,
-    SetType,
-    SetVisible
-};
+var index$6 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    GameObject: GameObject,
+    SetBounds: SetBounds,
+    SetName: SetName,
+    SetScene: SetScene,
+    SetType: SetType,
+    SetVisible: SetVisible
+});
 
 function PackColor(rgb, alpha) {
     let ua = ((alpha * 255) | 0) & 0xFF;
@@ -1985,13 +1988,14 @@ function SetQuadTint(topLeft, topRight, bottomLeft, bottomRight, ...sprite) {
     });
 }
 
-var Sprite$1 = {
-    SetFrame,
-    SetQuadAlpha,
-    SetQuadTint,
-    SetTexture,
-    Sprite
-};
+var index$7 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    SetFrame: SetFrame,
+    SetQuadAlpha: SetQuadAlpha,
+    SetQuadTint: SetQuadTint,
+    SetTexture: SetTexture,
+    Sprite: Sprite
+});
 
 function SetBackgroundStyle(style, cornerRadius, ...text) {
     text.forEach(entity => {
@@ -2292,22 +2296,23 @@ class Text extends Sprite {
     }
 }
 
-var Text$1 = {
-    SetBackgroundStyle,
-    SetCornerRadius,
-    SetFillStyle,
-    SetFixedSize,
-    SetFont,
-    SetLineDash,
-    SetLineSpacing,
-    SetLineWidth,
-    SetPadding,
-    SetStrokeStyle,
-    SetText,
-    SetTextAlign,
-    SetTextBaseline,
-    Text
-};
+var index$8 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    SetBackgroundStyle: SetBackgroundStyle,
+    SetCornerRadius: SetCornerRadius,
+    SetFillStyle: SetFillStyle,
+    SetFixedSize: SetFixedSize,
+    SetFont: SetFont,
+    SetLineDash: SetLineDash,
+    SetLineSpacing: SetLineSpacing,
+    SetLineWidth: SetLineWidth,
+    SetPadding: SetPadding,
+    SetStrokeStyle: SetStrokeStyle,
+    SetText: SetText,
+    SetTextAlign: SetTextAlign,
+    SetTextBaseline: SetTextBaseline,
+    Text: Text
+});
 
 function SetOrigin(originX, originY, ...child) {
     child.forEach(entity => {
@@ -2361,28 +2366,25 @@ function SetSkew(skewX, skewY, ...child) {
     });
 }
 
-var TransformGameObject$1 = {
-    SetOrigin,
-    SetPosition,
-    SetRotation,
-    SetScale,
-    SetSize,
-    SetSkew,
-    TransformGameObject
-};
-
-var index$4 = {
-    AnimatedSprite: AnimatedSprite$1,
-    Container: Container$1,
-    GameObject: GameObject$1,
-    Sprite: Sprite$1,
-    Text: Text$1,
-    TransformGameObject: TransformGameObject$1
-};
-
-var index$5 = /*#__PURE__*/Object.freeze({
+var index$9 = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$4
+    SetOrigin: SetOrigin,
+    SetPosition: SetPosition,
+    SetRotation: SetRotation,
+    SetScale: SetScale,
+    SetSize: SetSize,
+    SetSkew: SetSkew,
+    TransformGameObject: TransformGameObject
+});
+
+var index$a = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    AnimatedSprite: index$4,
+    Container: index$5,
+    GameObject: index$6,
+    Sprite: index$7,
+    Text: index$8,
+    TransformGameObject: index$9
 });
 
 /**
@@ -2766,26 +2768,20 @@ function WrapDegrees(angle) {
  * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
-/**
- * @namespace Phaser.Math.Angle
- */
-var index$6 = {
-    Between,
-    BetweenPoints,
-    BetweenPointsY,
-    BetweenY,
-    CounterClockwise,
-    Normalize,
-    Reverse,
-    RotateTo,
-    ShortestBetween,
-    Wrap: Wrap$1,
-    WrapDegrees
-};
 
-var index$7 = /*#__PURE__*/Object.freeze({
+var index$b = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$6
+    Between: Between,
+    BetweenPoints: BetweenPoints,
+    BetweenPointsY: BetweenPointsY,
+    BetweenY: BetweenY,
+    CounterClockwise: CounterClockwise,
+    Normalize: Normalize,
+    Reverse: Reverse,
+    RotateTo: RotateTo,
+    ShortestBetween: ShortestBetween,
+    Wrap: Wrap$1,
+    WrapDegrees: WrapDegrees
 });
 
 /**
@@ -2958,10 +2954,9 @@ function DistanceSquared(x1, y1, x2, y2) {
  * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
-/**
- * @namespace Phaser.Math.Distance
- */
-var index$8 = {
+
+var index$c = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     Between: DistanceBetween,
     BetweenPoints: DistanceBetweenPoints,
     BetweenPointsSquared: DistanceBetweenPointsSquared,
@@ -2969,11 +2964,6 @@ var index$8 = {
     Power: DistancePower,
     Snake: SnakeDistance,
     Squared: DistanceSquared
-};
-
-var index$9 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    'default': index$8
 });
 
 /**
@@ -3090,20 +3080,14 @@ function LessThan(a, b, epsilon = 0.0001) {
  * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
-/**
- * @namespace Phaser.Math.Fuzzy
- */
-var index$a = {
-    Ceil,
-    Equal,
-    Floor,
-    GreaterThan,
-    LessThan
-};
 
-var index$b = /*#__PURE__*/Object.freeze({
+var index$d = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$a
+    Ceil: Ceil,
+    Equal: Equal,
+    Floor: Floor,
+    GreaterThan: GreaterThan,
+    LessThan: LessThan
 });
 
 /**
@@ -3498,10 +3482,9 @@ function SmootherStepInterpolation(t, min, max) {
  * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
-/**
- * @namespace Phaser.Math.Interpolation
- */
-var index$c = {
+
+var index$e = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     Bezier: BezierInterpolation,
     CatmullRom: CatmullRomInterpolation,
     CubicBezier: CubicBezierInterpolation,
@@ -3509,11 +3492,6 @@ var index$c = {
     QuadraticBezier: QuadraticBezierInterpolation,
     SmoothStep: SmoothStepInterpolation,
     SmootherStep: SmootherStepInterpolation
-};
-
-var index$d = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    'default': index$c
 });
 
 //  Adds the src Matrix to the target Matrix and returns the target.
@@ -3731,34 +3709,29 @@ function Zero(target) {
     return target.set(0, 0, 0, 0, 0, 0);
 }
 
-//  Phaser.Math.Matrix2d
-var index$e = {
-    Add,
-    Copy,
-    CopyToContext,
-    Determinant,
-    Frobenius,
-    GlobalToLocal,
-    Invert,
-    ITRS,
-    ITRSS,
-    LocalToGlobal,
-    Matrix2D,
-    Multiply,
-    MultiplyScalar,
-    MultiplyScalarAndAdd,
-    Rotate,
-    Scale,
-    SetToContext,
-    Skew,
-    Subtract,
-    Translate,
-    Zero
-};
-
 var index$f = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$e
+    Add: Add,
+    Copy: Copy,
+    CopyToContext: CopyToContext,
+    Determinant: Determinant,
+    Frobenius: Frobenius,
+    GlobalToLocal: GlobalToLocal,
+    Invert: Invert,
+    ITRS: ITRS,
+    ITRSS: ITRSS,
+    LocalToGlobal: LocalToGlobal,
+    Matrix2D: Matrix2D,
+    Multiply: Multiply,
+    MultiplyScalar: MultiplyScalar,
+    MultiplyScalarAndAdd: MultiplyScalarAndAdd,
+    Rotate: Rotate,
+    Scale: Scale,
+    SetToContext: SetToContext,
+    Skew: Skew,
+    Subtract: Subtract,
+    Translate: Translate,
+    Zero: Zero
 });
 
 //  Adds a to b and returns the values in a new Matrix2D
@@ -3867,17 +3840,17 @@ function Zero$1() {
     return new Matrix2D(0, 0, 0, 0, 0, 0);
 }
 
-//  Phaser.Math.Matrix2dFuncs
-var index$g = {
+var index$g = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     Add: Add$1,
-    Append,
-    Clone,
-    Equals,
-    ExactEquals,
-    FromRotation,
-    FromScaling,
-    FromTranslation,
-    Identity,
+    Append: Append,
+    Clone: Clone,
+    Equals: Equals,
+    ExactEquals: ExactEquals,
+    FromRotation: FromRotation,
+    FromScaling: FromScaling,
+    FromTranslation: FromTranslation,
+    Identity: Identity,
     Invert: Invert$1,
     Multiply: Multiply$1,
     MultiplyScalar: MultiplyScalar$1,
@@ -3887,11 +3860,6 @@ var index$g = {
     Subtract: Subtract$1,
     Translate: Translate$1,
     Zero: Zero$1
-};
-
-var index$h = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    'default': index$g
 });
 
 /**
@@ -3938,18 +3906,12 @@ function IsValuePowerOfTwo(value) {
  * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
-/**
- * @namespace Phaser.Math.Pow2
- */
-var index$i = {
+
+var index$h = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     GetNext: GetPowerOfTwo,
     IsSize: IsSizePowerOfTwo,
     IsValue: IsValuePowerOfTwo
-};
-
-var index$j = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    'default': index$i
 });
 
 /**
@@ -4046,27 +4008,17 @@ function SnapTo(value, gap, start = 0, divide = false) {
  * @copyright    2020 Photon Storm Ltd.
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
-/**
- * @namespace Phaser.Math.Snap
- */
-var index$k = {
+
+var index$i = /*#__PURE__*/Object.freeze({
+    __proto__: null,
     Ceil: SnapCeil,
     Floor: SnapFloor,
     To: SnapTo
-};
-
-var index$l = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    'default': index$k
 });
 
-var index$m = {
-    Vec2
-};
-
-var index$n = /*#__PURE__*/Object.freeze({
+var index$j = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    'default': index$m
+    Vec2: Vec2
 });
 
 /**
@@ -4546,17 +4498,17 @@ function Within(a, b, tolerance) {
     return (Math.abs(a - b) <= tolerance);
 }
 
-var index$o = /*#__PURE__*/Object.freeze({
+var index$k = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    Angle: index$7,
-    Distance: index$9,
-    Fuzzy: index$b,
-    Interpolation: index$d,
+    Angle: index$b,
+    Distance: index$c,
+    Fuzzy: index$d,
+    Interpolation: index$e,
     Matrix2d: index$f,
-    Matrix2dFuncs: index$h,
-    Pow2: index$j,
-    Snap: index$l,
-    Vec2: index$n,
+    Matrix2dFuncs: index$g,
+    Pow2: index$h,
+    Snap: index$i,
+    Vec2: index$j,
     Average: Average,
     Bernstein: Bernstein,
     Between: Between$1,
@@ -4753,7 +4705,7 @@ var MSX = {
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-var index$p = /*#__PURE__*/Object.freeze({
+var index$l = /*#__PURE__*/Object.freeze({
     __proto__: null,
     ARNE16: Arne16,
     C64: C64,
@@ -4943,7 +4895,7 @@ function SpriteSheetParser (texture, x, y, width, height, frameConfig) {
     }
 }
 
-var index$q = /*#__PURE__*/Object.freeze({
+var index$m = /*#__PURE__*/Object.freeze({
     __proto__: null,
     AtlasParser: AtlasParser,
     BitmapTextParser: BitmapTextParser,
@@ -5131,7 +5083,7 @@ function SolidColorTexture(color = 'rgba(0,0,0,0)', width = 32, height = 32) {
     return new Texture(ctx.canvas);
 }
 
-var index$r = /*#__PURE__*/Object.freeze({
+var index$n = /*#__PURE__*/Object.freeze({
     __proto__: null,
     CanvasTexture: CanvasTexture,
     GridTexture: GridTexture,
@@ -5185,13 +5137,13 @@ class TextureManager {
     }
 }
 
-var index$s = /*#__PURE__*/Object.freeze({
+var index$o = /*#__PURE__*/Object.freeze({
     __proto__: null,
     CreateCanvas: CreateCanvas,
     Frame: Frame,
-    Palettes: index$p,
-    Parsers: index$q,
-    Types: index$r,
+    Palettes: index$l,
+    Parsers: index$m,
+    Types: index$n,
     Texture: Texture,
     TextureManager: TextureManager
 });
@@ -6277,5 +6229,5 @@ class Loader extends EventEmitter {
     }
 }
 
-export { index$2 as DOM, index$1 as Device, index$3 as Events, Game, index$5 as GameObjects, Loader, index$o as Math, Scene, StaticScene, index$s as Textures, WebGLRenderer };
+export { index$2 as DOM, index$1 as Device, index$3 as Events, Game, index$a as GameObjects, Loader, index$k as Math, Scene, StaticScene, index$o as Textures, WebGLRenderer };
 //# sourceMappingURL=Phaser4.esm.js.map

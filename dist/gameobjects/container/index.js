@@ -10,18 +10,5 @@ import RemoveChildren from './RemoveChildren';
 import ReparentChildren from './ReparentChildren';
 import SetParent from './SetParent';
 import SwapChildren from './SwapChildren';
-export default {
-    AddChild,
-    AddChildAt,
-    Container,
-    DestroyChildren,
-    GetChildAt,
-    GetChildIndex,
-    RemoveChild,
-    RemoveChildAt,
-    RemoveChildren,
-    ReparentChildren,
-    SetParent,
-    SwapChildren
-};
+export { AddChild, AddChildAt, Container, DestroyChildren, GetChildAt, GetChildIndex, RemoveChild, RemoveChildAt, RemoveChildren, ReparentChildren, SetParent, SwapChildren };
 //# sourceMappingURL=index.js.map

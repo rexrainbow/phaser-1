@@ -9,9 +9,5 @@ import To from './SnapTo';
 /**
  * @namespace Phaser.Math.Snap
  */
-export default {
-    Ceil,
-    Floor,
-    To
-};
+export { Ceil, Floor, To };
 //# sourceMappingURL=index.js.map

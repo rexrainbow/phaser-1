@@ -17,17 +17,5 @@ import WrapDegrees from './WrapDegrees';
 /**
  * @namespace Phaser.Math.Angle
  */
-export default {
-    Between,
-    BetweenPoints,
-    BetweenPointsY,
-    BetweenY,
-    CounterClockwise,
-    Normalize,
-    Reverse,
-    RotateTo,
-    ShortestBetween,
-    Wrap,
-    WrapDegrees
-};
+export { Between, BetweenPoints, BetweenPointsY, BetweenY, CounterClockwise, Normalize, Reverse, RotateTo, ShortestBetween, Wrap, WrapDegrees };
 //# sourceMappingURL=index.js.map

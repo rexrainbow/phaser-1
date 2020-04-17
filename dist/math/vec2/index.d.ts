@@ -1,6 +1,3 @@
 import Vec2 from './Vec2';
-declare const _default: {
-    Vec2: typeof Vec2;
-};
-export default _default;
+export { Vec2 };
 //# sourceMappingURL=index.d.ts.map

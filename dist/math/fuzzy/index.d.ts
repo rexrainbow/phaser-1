@@ -8,15 +8,8 @@ import Equal from './Equal';
 import Floor from './Floor';
 import GreaterThan from './GreaterThan';
 import LessThan from './LessThan';
-declare const _default: {
-    Ceil: typeof Ceil;
-    Equal: typeof Equal;
-    Floor: typeof Floor;
-    GreaterThan: typeof GreaterThan;
-    LessThan: typeof LessThan;
-};
 /**
  * @namespace Phaser.Math.Fuzzy
  */
-export default _default;
+export { Ceil, Equal, Floor, GreaterThan, LessThan };
 //# sourceMappingURL=index.d.ts.map

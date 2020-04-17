@@ -9,9 +9,5 @@ import IsValue from './IsValuePowerOfTwo';
 /**
  * @namespace Phaser.Math.Pow2
  */
-export default {
-    GetNext,
-    IsSize,
-    IsValue
-};
+export { GetNext, IsSize, IsValue };
 //# sourceMappingURL=index.js.map

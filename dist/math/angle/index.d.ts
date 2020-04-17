@@ -14,21 +14,8 @@ import RotateTo from './RotateTo';
 import ShortestBetween from './ShortestBetween';
 import Wrap from './Wrap';
 import WrapDegrees from './WrapDegrees';
-declare const _default: {
-    Between: typeof Between;
-    BetweenPoints: typeof BetweenPoints;
-    BetweenPointsY: typeof BetweenPointsY;
-    BetweenY: typeof BetweenY;
-    CounterClockwise: typeof CounterClockwise;
-    Normalize: typeof Normalize;
-    Reverse: typeof Reverse;
-    RotateTo: typeof RotateTo;
-    ShortestBetween: typeof ShortestBetween;
-    Wrap: typeof Wrap;
-    WrapDegrees: typeof WrapDegrees;
-};
 /**
  * @namespace Phaser.Math.Angle
  */
-export default _default;
+export { Between, BetweenPoints, BetweenPointsY, BetweenY, CounterClockwise, Normalize, Reverse, RotateTo, ShortestBetween, Wrap, WrapDegrees };
 //# sourceMappingURL=index.d.ts.map

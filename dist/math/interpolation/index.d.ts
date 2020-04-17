@@ -10,17 +10,8 @@ import Linear from './LinearInterpolation';
 import QuadraticBezier from './QuadraticBezierInterpolation';
 import SmoothStep from './SmoothStepInterpolation';
 import SmootherStep from './SmootherStepInterpolation';
-declare const _default: {
-    Bezier: typeof Bezier;
-    CatmullRom: typeof CatmullRom;
-    CubicBezier: typeof CubicBezier;
-    Linear: typeof Linear;
-    QuadraticBezier: typeof QuadraticBezier;
-    SmoothStep: typeof SmoothStep;
-    SmootherStep: typeof SmootherStep;
-};
 /**
  * @namespace Phaser.Math.Interpolation
  */
-export default _default;
+export { Bezier, CatmullRom, CubicBezier, Linear, QuadraticBezier, SmoothStep, SmootherStep };
 //# sourceMappingURL=index.d.ts.map

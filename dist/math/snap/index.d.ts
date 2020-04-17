@@ -6,13 +6,8 @@
 import Ceil from './SnapCeil';
 import Floor from './SnapFloor';
 import To from './SnapTo';
-declare const _default: {
-    Ceil: typeof Ceil;
-    Floor: typeof Floor;
-    To: typeof To;
-};
 /**
  * @namespace Phaser.Math.Snap
  */
-export default _default;
+export { Ceil, Floor, To };
 //# sourceMappingURL=index.d.ts.map

@@ -11,11 +11,5 @@ import LessThan from './LessThan';
 /**
  * @namespace Phaser.Math.Fuzzy
  */
-export default {
-    Ceil,
-    Equal,
-    Floor,
-    GreaterThan,
-    LessThan
-};
+export { Ceil, Equal, Floor, GreaterThan, LessThan };
 //# sourceMappingURL=index.js.map
