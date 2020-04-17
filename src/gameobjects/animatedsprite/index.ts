@@ -6,7 +6,7 @@ import Play from './Play';
 import RemoveAnimation from './RemoveAnimation';
 import Stop from './Stop';
 
-export default {
+export {
     AddAnimation,
     AddAnimationFromAtlas,
     AnimatedSprite,

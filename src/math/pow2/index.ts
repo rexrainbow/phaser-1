@@ -12,7 +12,7 @@ import IsValue from './IsValuePowerOfTwo';
  * @namespace Phaser.Math.Pow2
  */
 
-export default {
+export {
     GetNext,
     IsSize,
     IsValue

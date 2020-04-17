@@ -14,7 +14,7 @@ import LessThan from './LessThan';
  * @namespace Phaser.Math.Fuzzy
  */
 
-export default {
+export {
     Ceil,
     Equal,
     Floor,

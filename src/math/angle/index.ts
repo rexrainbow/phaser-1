@@ -20,7 +20,7 @@ import WrapDegrees from './WrapDegrees';
  * @namespace Phaser.Math.Angle
  */
 
-export default {
+export {
     Between,
     BetweenPoints,
     BetweenPointsY,

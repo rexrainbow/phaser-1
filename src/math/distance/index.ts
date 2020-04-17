@@ -16,7 +16,7 @@ import Squared from './DistanceSquared';
  * @namespace Phaser.Math.Distance
  */
 
-export default {
+export {
     Between,
     BetweenPoints,
     BetweenPointsSquared,

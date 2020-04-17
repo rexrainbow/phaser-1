@@ -19,7 +19,7 @@ import Zero from './Zero';
 
 //  Phaser.Math.Matrix2dFuncs
 
-export default {
+export {
     Add,
     Append,
     Clone,

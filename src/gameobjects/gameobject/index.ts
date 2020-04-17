@@ -5,7 +5,7 @@ import SetScene from './SetScene';
 import SetType from './SetType';
 import SetVisible from './SetVisible';
 
-export default {
+export {
     GameObject,
     SetBounds,
     SetName,

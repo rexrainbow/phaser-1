@@ -16,7 +16,7 @@ import SmootherStep from './SmootherStepInterpolation';
  * @namespace Phaser.Math.Interpolation
  */
 
-export default {
+export {
     Bezier,
     CatmullRom,
     CubicBezier,

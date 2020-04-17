@@ -12,7 +12,7 @@ import To from './SnapTo';
  * @namespace Phaser.Math.Snap
  */
 
-export default {
+export {
     Ceil,
     Floor,
     To

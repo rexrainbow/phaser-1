@@ -22,7 +22,7 @@ import Zero from './Zero';
 
 //  Phaser.Math.Matrix2d
 
-export default {
+export {
     Add,
     Copy,
     CopyToContext,

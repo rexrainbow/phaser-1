@@ -13,7 +13,7 @@ import SetTextAlign from './SetTextAlign';
 import SetTextBaseline from './SetTextBaseline';
 import Text from './Text';
 
-export default {
+export {
     SetBackgroundStyle,
     SetCornerRadius,
     SetFillStyle,

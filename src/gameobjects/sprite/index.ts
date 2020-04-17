@@ -4,7 +4,7 @@ import SetQuadTint from './SetQuadTint';
 import SetTexture from './SetTexture';
 import Sprite from './Sprite';
 
-export default {
+export {
     SetFrame,
     SetQuadAlpha,
     SetQuadTint,
