@@ -26,15 +26,6 @@ export default class Game extends EventEmitter {
         GameInstance.set(this);
         DOMContentLoaded(() => this.boot());
     }
-    pause() {
-        this.isPaused = true;
-        this.emit('pause');
-    }
-    resume() {
-        this.isPaused = false;
-        this.lastTick = Date.now();
-        this.emit('resume');
-    }
     boot() {
         this.isBooted = true;
         this.lastTick = Date.now();
@@ -62,6 +53,15 @@ export default class Game extends EventEmitter {
         // window.addEventListener('focus', () => this.resume());
         this.emit('boot');
         requestAnimationFrame(() => this.step());
+    }
+    pause() {
+        this.isPaused = true;
+        this.emit('pause');
+    }
+    resume() {
+        this.isPaused = false;
+        this.lastTick = Date.now();
+        this.emit('resume');
     }
     banner(version) {
         console.log('%cPhaser v' + version + '%c https://phaser4.io', 'padding: 4px 16px; color: #fff; background: linear-gradient(#3e0081 40%, #00bcc3)', '');

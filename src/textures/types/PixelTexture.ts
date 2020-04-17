@@ -88,7 +88,7 @@ export default function PixelTexture (config: PixelTextureConfig): Texture
         canvas = null,
         palette = Arne16,
         pixelWidth = 1,
-        pixelHeight = 1,
+        pixelHeight = pixelWidth,
         resizeCanvas = true,
         clearCanvas = true,
         preRender = null,

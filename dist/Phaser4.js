@@ -4710,6 +4710,38 @@
      * @copyright    2020 Photon Storm Ltd.
      * @license      {@link https://opensource.org/licenses/MIT|MIT License}
      */
+    /**
+     * A 16 color palette as used in Pico8.
+     *
+     * @name Phaser.Create.Palettes.PICO8
+     * @since 4.0.0
+     *
+     * @type {Phaser.Types.Create.Palette}
+     */
+    var PICO8 = {
+        0: '#000',
+        1: '#1D2B53',
+        2: '#7E2553',
+        3: '#008751',
+        4: '#AB5236',
+        5: '#5F574F',
+        6: '#C2C3C7',
+        7: '#FFF1E8',
+        8: '#FF004D',
+        9: '#FFA300',
+        A: '#FFEC27',
+        B: '#00E436',
+        C: '#29ADFF',
+        D: '#83769C',
+        E: '#FF77A8',
+        F: '#FFCCAA'
+    };
+
+    /**
+     * @author       Richard Davey <rich@photonstorm.com>
+     * @copyright    2020 Photon Storm Ltd.
+     * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+     */
 
     var index$l = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -4717,7 +4749,8 @@
         C64: C64,
         CGA: CGA,
         JMP: JMP,
-        MSX: MSX
+        MSX: MSX,
+        PICO8: PICO8
     });
 
     function AtlasParser(texture, data) {
@@ -5772,15 +5805,6 @@ void main (void)
             GameInstance.set(this);
             DOMContentLoaded(() => this.boot());
         }
-        pause() {
-            this.isPaused = true;
-            this.emit('pause');
-        }
-        resume() {
-            this.isPaused = false;
-            this.lastTick = Date.now();
-            this.emit('resume');
-        }
         boot() {
             this.isBooted = true;
             this.lastTick = Date.now();
@@ -5803,6 +5827,15 @@ void main (void)
             // window.addEventListener('focus', () => this.resume());
             this.emit('boot');
             requestAnimationFrame(() => this.step());
+        }
+        pause() {
+            this.isPaused = true;
+            this.emit('pause');
+        }
+        resume() {
+            this.isPaused = false;
+            this.lastTick = Date.now();
+            this.emit('resume');
         }
         banner(version) {
             console.log('%cPhaser v' + version + '%c https://phaser4.io', 'padding: 4px 16px; color: #fff; background: linear-gradient(#3e0081 40%, #00bcc3)', '');

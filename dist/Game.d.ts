@@ -21,9 +21,9 @@ export default class Game extends EventEmitter {
     constructor(...settings: {
         (): void;
     }[]);
+    boot(): void;
     pause(): void;
     resume(): void;
-    boot(): void;
     banner(version: string): void;
     step(): void;
     destroy(): void;
