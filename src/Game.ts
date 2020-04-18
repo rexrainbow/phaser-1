@@ -24,7 +24,7 @@ export default class Game extends EventEmitter
         xml: new Map()
     };
 
-    private lastTick: number = Date.now();
+    private lastTick: number = performance.now();
     lifetime: number = 0;
     elapsed: number = 0;
 
