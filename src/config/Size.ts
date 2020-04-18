@@ -14,7 +14,7 @@ function Size (width: number = 800, height: number = 600, resolution: number = 1
         _width = width;
         _height = height;
         _resolution = resolution;
-    
+
     };
 }
 

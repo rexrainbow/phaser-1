@@ -101,7 +101,7 @@ export default {
     plugins: [
 
         clear({
-            targets: [ './stats.html' ],
+            targets: [ './dist', './stats.html' ],
             watch: true
         }),
 

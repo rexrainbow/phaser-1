@@ -1,6 +1,5 @@
 # Compiled JS
-dev/index.js
-dev/index.js.map
+dev/dist
 
 # System and IDE files
 Thumbs.db
