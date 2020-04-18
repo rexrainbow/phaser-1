@@ -1,5 +1,5 @@
-import Texture from '../Texture';
 import Frame from '../Frame';
+import Texture from '../Texture';
 
 /**
  * Read an integer value from an XML Node.
@@ -18,6 +18,27 @@ function getValue (node: any, attribute: string): number
     return parseInt(node.getAttribute(attribute), 10);
 }
 
+type BitmapCharacter = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    // centerX: number;
+    // centerY: number,
+    xOffset: number;
+    yOffset: number;
+    xAdvance: number;
+    // data: {};
+    kerning: Record<number, number>;
+};
+
+type BitmapData = {
+    font: string;
+    size: number;
+    lineHeight: number;
+    chars: Record<number, BitmapCharacter>;
+};
+
 export default function BitmapTextParser (texture: Texture, xml: XMLDocument, frame?: Frame)
 {
     const xSpacing = 0;
@@ -26,7 +47,7 @@ export default function BitmapTextParser (texture: Texture, xml: XMLDocument, fr
     const info = xml.getElementsByTagName('info')[0];
     const common = xml.getElementsByTagName('common')[0];
 
-    const data = {
+    const data: BitmapData = {
         font: info.getAttribute('face'),
         size: getValue(info, 'size'),
         lineHeight: getValue(common, 'lineHeight') + ySpacing,

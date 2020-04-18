@@ -76,7 +76,7 @@ export default class SceneManager
     {
         const size = this.scenes.size;
         const sceneIndex = this.sceneIndex;
-        const firstScene: boolean = (size === 0);
+        const firstScene = (size === 0);
 
         if (typeof config === 'string')
         {
@@ -84,9 +84,9 @@ export default class SceneManager
         }
         else if (config || (!config && firstScene))
         {
-            scene.key = GetConfigValue(config, 'key', 'scene' + sceneIndex) as string;
-            scene.willUpdate = GetConfigValue(config, 'willUpdate', firstScene) as boolean;
-            scene.willRender = GetConfigValue(config, 'willRender', firstScene) as boolean;
+            scene.key = GetConfigValue(config, 'key', 'scene' + sceneIndex);
+            scene.willUpdate = GetConfigValue(config, 'willUpdate', firstScene);
+            scene.willRender = GetConfigValue(config, 'willRender', firstScene);
         }
 
         if (this.scenes.has(scene.key))

@@ -1,13 +1,13 @@
 import Rectangle from '../geom/rectangle/Rectangle';
 import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
 import IBaseScene from '../scenes/IBaseScene';
-import IBaseCamera from './IBaseCamera';
 
-export default class StaticCamera implements IBaseCamera
+export default class StaticCamera // implements ICamera
 {
     scene: IBaseScene;
     matrix: Float32Array;
     renderer: WebGLRenderer;
+    dirtyRender: boolean = false;
 
     width: number;
     height: number;

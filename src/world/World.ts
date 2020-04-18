@@ -1,5 +1,4 @@
 import Camera from '../camera/Camera';
-import IBaseCamera from '../camera/IBaseCamera';
 import ICamera from '../camera/ICamera';
 import IContainer from '../gameobjects/container/IContainer';
 import IParent from '../gameobjects/container/IParent';
@@ -11,7 +10,7 @@ import IScene from '../scenes/IScene';
 import IWorld from './IWorld';
 
 export interface IWorldRenderResult {
-    camera: IBaseCamera;
+    camera: ICamera;
     rendered: IRenderable[];
     numRendered: number;
 }

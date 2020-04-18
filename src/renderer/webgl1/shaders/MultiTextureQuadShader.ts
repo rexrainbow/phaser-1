@@ -1,5 +1,7 @@
 import WebGLRenderer from '../WebGLRenderer';
+import { IShaderAttributes } from './IShaderAttributes';
 import IShaderConfig from './IShaderConfig';
+import { IShaderUniforms } from './IShaderUniforms';
 
 const shaderSource = {
 
@@ -52,8 +54,8 @@ export default class MultiTextureQuadShader
 
     program: WebGLProgram;
 
-    attribs: { aVertexPosition: number; aTextureCoord: number; aTextureId: number; aTintColor: number } = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
-    uniforms: { uProjectionMatrix: WebGLUniformLocation; uCameraMatrix: WebGLUniformLocation; uTexture: WebGLUniformLocation; } = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0 };
+    attribs: IShaderAttributes = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
+    uniforms: IShaderUniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0 };
 
     /**
      * Maximum number of quads per batch before a flush takes place.
@@ -312,7 +314,7 @@ export default class MultiTextureQuadShader
 
         this.program = program;
         
-        for (let key of Object.keys(this.attribs))
+        for (let key of Object.keys(this.attribs) as Array<keyof IShaderAttributes>)
         {
             let location = gl.getAttribLocation(program, key);
 
@@ -321,7 +323,7 @@ export default class MultiTextureQuadShader
             this.attribs[key] = location;
         }
 
-        for (let key of Object.keys(this.uniforms))
+        for (let key of Object.keys(this.uniforms) as Array<keyof IShaderUniforms>)
         {
             this.uniforms[key] = gl.getUniformLocation(program, key);
         }

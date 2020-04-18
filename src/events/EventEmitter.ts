@@ -71,7 +71,7 @@ export default class EventEmitter
      */
     listeners (event: string): Function[]
     {
-        const out = [];
+        const out: Function[] = [];
 
         const listeners = this._events.get(event);
 

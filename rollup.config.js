@@ -17,6 +17,13 @@ const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
 ];
 
+const licenseInfo =
+`/**
+* @author       Richard Davey <rich@photonstorm.com>
+* @copyright    2020 Photon Storm Ltd.
+* @license      {@link https://opensource.org/licenses/MIT|MIT License}
+'*/`;
+
 /**
  * Custom Roll-up Plugin that copies the package.json version to the dist package.json
  */
@@ -62,7 +69,12 @@ export default {
             name: 'Phaser4',
             sourcemap: false,
             plugins: [
-                terser(),
+                terser({
+                    output: {
+                        preamble: licenseInfo,
+                        comments: false
+                    }
+                }),
 
                 command([
                     `echo "Running tsc ..."`,
@@ -89,7 +101,7 @@ export default {
     plugins: [
 
         clear({
-            targets: [ './dist', './stats.html' ],
+            targets: [ './stats.html' ],
             watch: true
         }),
 

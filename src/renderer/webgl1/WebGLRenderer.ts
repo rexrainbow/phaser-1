@@ -105,7 +105,7 @@ export default class WebGLRenderer
         this.projectionMatrix = Ortho(width, height);
     }
 
-    onContextLost (event)
+    onContextLost (event: Event)
     {
         event.preventDefault();
 

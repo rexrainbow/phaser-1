@@ -1,3 +1,4 @@
+import ICamera from '../camera/ICamera';
 import StaticCamera from '../camera/StaticCamera';
 import IContainer from '../gameobjects/container/IContainer';
 import IGameObject from '../gameobjects/gameobject/IGameObject';
@@ -15,7 +16,7 @@ export default class StaticWorld implements IWorld
 {
     scene: StaticScene;
 
-    camera: StaticCamera;
+    camera: ICamera;
 
     children: IGameObject[] = [];
 
@@ -38,7 +39,7 @@ export default class StaticWorld implements IWorld
     constructor (scene: StaticScene)
     {
         this.scene = scene;
-        this.camera = new StaticCamera(scene);
+        this.camera = new StaticCamera(scene) as ICamera; // TODO: Remove this as ICamera onnce StaticCamera is finished
     }
 
     private scanChildren (root: IContainer | StaticWorld, gameFrame: number)
