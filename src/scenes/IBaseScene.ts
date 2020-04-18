@@ -3,9 +3,9 @@ import IWorld from '../world/IWorld';
 
 export default interface IBaseScene
 {
-    key: string;
-    willUpdate: boolean;
-    willRender: boolean;
+    key?: string;
+    willUpdate?: boolean;
+    willRender?: boolean;
     game: Game;
     world: IWorld;
     boot (): void;

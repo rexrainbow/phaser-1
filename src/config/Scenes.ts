@@ -1,8 +1,12 @@
 import IBaseScene from '../scenes/IBaseScene';
 
-let _scenes: any[] = [];
+type SceneClass = {
+    new (): IBaseScene;
+}
 
-function Scenes (scenes?: IBaseScene | IBaseScene[] | any | any[])
+let _scenes: SceneClass[] = [];
+
+function Scenes(scenes?: SceneClass | Array<SceneClass>)
 {
     return () => {
 
@@ -11,7 +15,7 @@ function Scenes (scenes?: IBaseScene | IBaseScene[] | any | any[])
     };
 }
 
-function GetScenes (): any[]
+function GetScenes (): SceneClass[]
 {
     return _scenes;
 }
@@ -20,3 +24,4 @@ export {
     Scenes,
     GetScenes
 }
+

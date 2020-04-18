@@ -12,12 +12,12 @@ export default class Game extends EventEmitter
 {
     VERSION: string = '4.0.0-beta1';
 
+    renderer: WebGLRenderer;
+    textures: TextureManager;
+    scenes: SceneManager;
+
     isPaused: boolean = false;
     isBooted: boolean = false;
-
-    scenes: SceneManager;
-    textures: TextureManager;
-    renderer: WebGLRenderer;
 
     cache: GameContentCache = {
         json: new Map(),
@@ -36,17 +36,13 @@ export default class Game extends EventEmitter
     {
         super();
 
-        settings.forEach(setting => {
-
-            setting();
-
-        });
-
         GameInstance.set(this);
 
         this.renderer = new WebGLRenderer();
         this.textures = new TextureManager();
         this.scenes = new SceneManager();
+
+        settings.forEach(setting => setting());
 
         DOMContentLoaded(this.boot);
     }
