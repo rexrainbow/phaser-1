@@ -6,8 +6,6 @@ import WebGLRenderer from './renderer/webgl1/WebGLRenderer';
 import SceneManager from './scenes/SceneManager';
 import TextureManager from './textures/TextureManager';
 
-type GameContentCache = { json: Map<string, any>; csv: Map<string, any>; xml: Map<string, any>; };
-
 export default class Game extends EventEmitter
 {
     VERSION: string = '4.0.0-beta1';
@@ -19,10 +17,10 @@ export default class Game extends EventEmitter
     isPaused: boolean = false;
     isBooted: boolean = false;
 
-    cache: GameContentCache = {
-        json: new Map(),
-        csv: new Map(),
-        xml: new Map()
+    cache = {
+        json: new Map<string, any>(),
+        csv: new Map<string, any>(),
+        xml: new Map<string, any>()
     };
 
     private lastTick: number = 0;
