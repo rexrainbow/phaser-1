@@ -15,16 +15,17 @@ export default class Game extends EventEmitter
     isPaused: boolean = false;
     isBooted: boolean = false;
 
-    scenes: SceneManager = new SceneManager();
-    textures: TextureManager = new TextureManager();
-    renderer: WebGLRenderer = new WebGLRenderer();
+    scenes: SceneManager;
+    textures: TextureManager;
+    renderer: WebGLRenderer;
+
     cache: GameContentCache = {
         json: new Map(),
         csv: new Map(),
         xml: new Map()
     };
 
-    private lastTick: number = performance.now();
+    private lastTick: number = 0;
     lifetime: number = 0;
     elapsed: number = 0;
 
@@ -42,6 +43,10 @@ export default class Game extends EventEmitter
         });
 
         GameInstance.set(this);
+
+        this.renderer = new WebGLRenderer();
+        this.textures = new TextureManager();
+        this.scenes = new SceneManager();
 
         DOMContentLoaded(this.boot);
     }
@@ -79,6 +84,8 @@ export default class Game extends EventEmitter
         // window.addEventListener('focus', this.resume);
 
         this.emit('boot');
+
+        this.lastTick = performance.now();
 
         requestAnimationFrame(this.step);
     }

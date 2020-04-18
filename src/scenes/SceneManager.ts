@@ -25,7 +25,7 @@ export interface ISceneRenderData {
 
 export default class SceneManager
 {
-    game: Game = GameInstance.get();
+    game: Game;
 
     scenes: Map<string, IBaseScene>  = new Map();
 
@@ -44,6 +44,7 @@ export default class SceneManager
 
     constructor ()
     {
+        this.game = GameInstance.get()
         this.game.once('boot', this.boot);
     }
 
