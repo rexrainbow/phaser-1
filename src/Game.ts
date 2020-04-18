@@ -1,10 +1,12 @@
+import { GetParent } from './config';
 import { AddToDOM, DOMContentLoaded } from './dom';
+import EventEmitter from './events/EventEmitter';
+import GameInstance from './GameInstance';
 import WebGLRenderer from './renderer/webgl1/WebGLRenderer';
 import SceneManager from './scenes/SceneManager';
 import TextureManager from './textures/TextureManager';
-import EventEmitter from './events/EventEmitter';
-import GameInstance from './GameInstance';
-import { GetParent } from './config';
+
+type GameContentCache = { json: Map<string, any>; csv: Map<string, any>; xml: Map<string, any>; };
 
 export default class Game extends EventEmitter
 {
@@ -13,12 +15,16 @@ export default class Game extends EventEmitter
     isPaused: boolean = false;
     isBooted: boolean = false;
 
-    scenes: SceneManager;
-    textures: TextureManager;
-    renderer: WebGLRenderer;
-    cache: { json: Map<string, any>; csv: Map<string, any>; xml: Map<string, any>; };
+    scenes: SceneManager = new SceneManager();
+    textures: TextureManager = new TextureManager();
+    renderer: WebGLRenderer = new WebGLRenderer();
+    cache: GameContentCache = {
+        json: new Map(),
+        csv: new Map(),
+        xml: new Map()
+    };
 
-    private lastTick: number;
+    private lastTick: number = Date.now();
     lifetime: number = 0;
     elapsed: number = 0;
 
@@ -35,34 +41,21 @@ export default class Game extends EventEmitter
 
         });
 
-        this.cache = {
-            json: new Map(),
-            csv: new Map(),
-            xml: new Map()
-        };
-
         GameInstance.set(this);
 
-        DOMContentLoaded(() => this.boot());
+        DOMContentLoaded(this.boot);
     }
 
-    boot ()
+    boot = () =>
     {
         this.isBooted = true;
-        this.lastTick = Date.now();
-
-        const renderer = new WebGLRenderer();
 
         //  Only add to the DOM if they either didn't set a Parent, or expressly set it to be non-null
         //  Otherwise we'll let them add the canvas to the DOM themselves
         if (GetParent())
         {
-            AddToDOM(renderer.canvas, GetParent());
+            AddToDOM(this.renderer.canvas, GetParent());
         }
-
-        this.renderer = renderer;
-        this.textures = new TextureManager();
-        this.scenes = new SceneManager();
 
         this.banner(this.VERSION);
 
@@ -82,26 +75,26 @@ export default class Game extends EventEmitter
 
         });
 
-        // window.addEventListener('blur', () => this.pause());
-        // window.addEventListener('focus', () => this.resume());
+        // window.addEventListener('blur', this.pause);
+        // window.addEventListener('focus', this.resume);
 
         this.emit('boot');
 
-        requestAnimationFrame(() => this.step());
+        requestAnimationFrame(this.step);
     }
 
-    pause ()
+    pause = () =>
     {
         this.isPaused = true;
 
         this.emit('pause');
     }
 
-    resume ()
+    resume = () =>
     {
         this.isPaused = false;
 
-        this.lastTick = Date.now();
+        this.lastTick = performance.now();
 
         this.emit('resume');
     }
@@ -115,9 +108,8 @@ export default class Game extends EventEmitter
         );
     }
 
-    step ()
+    step = (now: number) =>
     {
-        const now = Date.now();
         const delta = now - this.lastTick;
 
         const dt = delta / 1000;
@@ -137,17 +129,14 @@ export default class Game extends EventEmitter
 
         this.emit('update', dt, now);
 
-        //  TODO: Optimize to remove const and array creation here:
-        const [ renderList, dirtyFrame, dirtyCameras ] = sceneManager.render(this.frame);
-
-        this.renderer.render(renderList, dirtyFrame, dirtyCameras);
+        this.renderer.render(sceneManager.render(this.frame));
 
         this.emit('render', dt, now);
 
         //  The frame always advances by 1 each step (even when paused)
         this.frame++;
 
-        requestAnimationFrame(() => this.step());
+        requestAnimationFrame(this.step);
     }
 
     destroy ()

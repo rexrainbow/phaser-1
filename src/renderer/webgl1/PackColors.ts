@@ -1,7 +1,7 @@
-import ISprite from '../../gameobjects/sprite/ISprite';
+import IRenderable from '../../gameobjects/sprite/IRenderable';
 import PackColor from './PackColor';
 
-export default function PackColors (sprite: ISprite)
+export default function PackColors (sprite: IRenderable)
 {
     const alpha = sprite.vertexAlpha;
     const tint = sprite.vertexTint;

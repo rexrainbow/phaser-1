@@ -1,8 +1,8 @@
-import IContainer from '../container/IContainer';
-import Texture from '../../textures/Texture';
 import Frame from '../../textures/Frame';
+import Texture from '../../textures/Texture';
+import IContainer from '../container/IContainer';
 
-export default interface ISprite extends IContainer
+export default interface IRenderable extends IContainer
 {
     texture: Texture;
     frame: Frame;

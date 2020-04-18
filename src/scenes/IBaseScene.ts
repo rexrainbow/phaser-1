@@ -1,4 +1,5 @@
 import Game from '../Game';
+import IWorld from '../world/IWorld';
 
 export default interface IBaseScene
 {
@@ -6,7 +7,7 @@ export default interface IBaseScene
     willUpdate: boolean;
     willRender: boolean;
     game: Game;
-    world: any;
+    world: IWorld;
     boot (): void;
     update (delta: number, time: number): void;
     render (gameFrame: number): void;

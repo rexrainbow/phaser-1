@@ -1,9 +1,10 @@
-import IInteractiveArea from '../../input/IInteractiveArea';
 import Rectangle from '../../geom/rectangle/Rectangle';
-import IParent from '../container/IParent';
+import IInteractiveArea from '../../input/IInteractiveArea';
 import IBaseScene from '../../scenes/IBaseScene';
+import { IDestroyable } from '../../types/IDestroyable';
+import IParent from '../container/IParent';
 
-export default interface IGameObject
+export default interface IGameObject extends IDestroyable
 {
     scene: IBaseScene;
     name: string;
@@ -28,6 +29,6 @@ export default interface IGameObject
     getBounds (includeChildren?: boolean): Rectangle;
     update (delta: number, time: number): void;
     updateTransform (): this;
-    render (...args: any[]): void;
+    render (gameFrame: number): void;
     destroy (reparentChildren?: IParent): void;
 }

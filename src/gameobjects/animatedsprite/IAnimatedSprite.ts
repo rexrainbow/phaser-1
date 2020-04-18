@@ -1,8 +1,8 @@
-import ISprite from '../sprite/ISprite';
-import IAnimationData from './IAnimationData';
 import Frame from '../../textures/Frame';
+import IRenderable from '../sprite/IRenderable';
+import IAnimationData from './IAnimationData';
 
-export default interface IAnimatedSprite extends ISprite
+export default interface IAnimatedSprite extends IRenderable
 {
     anims: Map<string, Frame[]>;
     animData: IAnimationData;

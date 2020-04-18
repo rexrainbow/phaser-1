@@ -1,9 +1,10 @@
 import Game from '../Game';
 import GameInstance from '../GameInstance';
 import World from '../world/World';
+import IBaseScene from './IBaseScene';
 import ISceneConfig from './ISceneConfig';
 
-export default class Scene
+export default class Scene implements IBaseScene
 {
     key: string;
     willUpdate: boolean = false;

@@ -1,6 +1,6 @@
 import ISceneConfig from './ISceneConfig';
 
-export default function GetConfigValue (config: ISceneConfig, property: string, defaultValue: any): any
+export default function GetConfigValue<T = unknown>(config: ISceneConfig, property: string, defaultValue: T): T
 {
     if (config.hasOwnProperty(property))
     {

@@ -1,3 +1,7 @@
+# Compiled JS
+dev/index.js
+dev/index.js.map
+
 # System and IDE files
 Thumbs.db
 .DS_Store

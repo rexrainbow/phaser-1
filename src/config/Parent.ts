@@ -16,12 +16,10 @@ function Parent (parent?: string | HTMLElement)
     };
 }
 
-function GetParent (): HTMLElement | null
+function GetParent (): string | HTMLElement | undefined
 {
     return _parent;
 }
 
-export {
-    Parent,
-    GetParent
-}
+export { Parent, GetParent };
+

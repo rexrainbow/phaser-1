@@ -1,18 +1,18 @@
-import Camera from '../camera/Camera';
-import Scene from '../scenes/Scene';
+import IBaseCamera from '../camera/IBaseCamera';
 import IGameObject from '../gameobjects/gameobject/IGameObject';
+import IRenderable from '../gameobjects/sprite/IRenderable';
+import { IDestroyable } from '../types/IDestroyable';
 
-export default interface IWorld
+export default interface IWorld extends IDestroyable
 {
-    scene: Scene;
+    camera: IBaseCamera;
     dirtyFrame: number;
-    totalFrame: number;
-    visibleFrame: number;
-    boundsFrame: number;
+    numRendered: number;
+    numRenderable: number;
     children: IGameObject[];
-    camera: Camera;
+    rendered: IRenderable[];
     forceRefresh: boolean;
-    render (gameFrame: number): number
+    update (delta?: number, time?: number);
+    render (gameFrame: number): number;
     shutdown (): void;
-    destroy (): void;
 }

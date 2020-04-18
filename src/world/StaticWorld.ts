@@ -1,47 +1,43 @@
-import IGameObject from '../gameobjects/gameobject/IGameObject';
 import StaticCamera from '../camera/StaticCamera';
 import IContainer from '../gameobjects/container/IContainer';
-import StaticScene from '../scenes/StaticScene';
+import IGameObject from '../gameobjects/gameobject/IGameObject';
+import IRenderable from '../gameobjects/sprite/IRenderable';
 import Matrix2D from '../math/matrix2d/Matrix2D';
+import StaticScene from '../scenes/StaticScene';
+import IWorld from './IWorld';
 
 //  A Static World is designed specifically to have a bounds of a fixed size
 //  and a camera that doesn't move at all (no scrolling, rotation, etc)
 //  Because it has a fixed size, there is no camera culling enabled.
 //  Games that use this kind of world include Pacman, Bejeweled and 2048.
 
-export default class StaticWorld
+export default class StaticWorld implements IWorld
 {
     scene: StaticScene;
 
-    children: IGameObject[];
-
     camera: StaticCamera;
+
+    children: IGameObject[] = [];
 
     //  How many Game Objects were made dirty this frame?
     dirtyFrame: number = 0;
 
     //  How many Game Objects will be rendered this frame? (are in-bounds)
-    totalFrame: number = 0;
+    numRendered: number = 0;
 
     //  How many Game Objects passed `willRender` this frame? (but may not have been in bounds)
-    visibleFrame: number = 0;
+    numRenderable: number = 0;
 
     //  A list of Game Objects that will be rendered in the next pass
-    private renderList: IGameObject[];
+    rendered: IRenderable[] = [];
 
     forceRefresh: boolean = false;
 
-    worldTransform: Matrix2D;
+    worldTransform: Matrix2D = new Matrix2D();
 
     constructor (scene: StaticScene)
     {
         this.scene = scene;
-
-        this.children = [];
-        this.renderList = [];
-
-        this.worldTransform = new Matrix2D();
-
         this.camera = new StaticCamera(scene);
     }
 
@@ -59,14 +55,15 @@ export default class StaticWorld
     {
         if (root.isRenderable())
         {
-            this.renderList.push(root);
+            this.numRendered++;
+            this.rendered.push(root as IRenderable);
 
             if (root.dirtyFrame >= gameFrame)
             {
                 this.dirtyFrame++;
             }
 
-            this.visibleFrame++;
+            this.numRenderable++;
         }
 
         if (root.isParent && root.visible)
@@ -93,12 +90,10 @@ export default class StaticWorld
     render (gameFrame: number): number
     {
         this.dirtyFrame = 0;
-        this.visibleFrame = 0;
-        this.renderList.length = 0;
+        this.numRendered = 0;
+        this.numRenderable = 0;
 
         this.scanChildren(this, gameFrame);
-
-        this.totalFrame = this.renderList.length;
 
         if (this.forceRefresh)
         {
@@ -117,7 +112,7 @@ export default class StaticWorld
 
         // this.removeChildren();
 
-        this.renderList = [];
+        this.rendered = [];
 
         this.camera.reset();
     }
@@ -127,7 +122,7 @@ export default class StaticWorld
         this.camera.destroy();
 
         this.camera = null;
-        this.renderList = null;
+        this.rendered = null;
     }
 
     get numChildren (): number
