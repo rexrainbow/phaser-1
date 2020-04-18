@@ -5,7 +5,7 @@ function BackgroundColor (color: number = 0)
     return () => {
 
         _bgColor = color;
-    
+
     };
 }
 

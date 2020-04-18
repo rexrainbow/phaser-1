@@ -36,11 +36,11 @@ export default class Game extends EventEmitter
 
         GameInstance.set(this);
 
+        settings.forEach(setting => setting());
+
         this.renderer = new WebGLRenderer();
         this.textures = new TextureManager();
         this.scenes = new SceneManager();
-
-        settings.forEach(setting => setting());
 
         DOMContentLoaded(this.boot);
     }
