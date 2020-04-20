@@ -1,20 +1,18 @@
 import IGameObject from '../gameobject/IGameObject';
 import IParent from './IParent';
 
-export default function RemoveChild (parent: IParent, ...child: IGameObject[])
+export default function RemoveChild (parent: IParent, child: IGameObject): IGameObject
 {
     const children = parent.children;
 
-    child.forEach(entity => {
+    let index: number = children.indexOf(child);
 
-        let index: number = children.indexOf(entity);
+    if (index > -1)
+    {
+        children.splice(index, 1);
 
-        if (index > -1)
-        {
-            children.splice(index, 1);
+        child.parent = null;
+    }
 
-            entity.parent = null;
-        }
-
-    });
+    return child;
 }

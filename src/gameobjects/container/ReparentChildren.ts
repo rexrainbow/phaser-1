@@ -1,11 +1,11 @@
 import IParent from './IParent';
 import IGameObject from '../gameobject/IGameObject';
-import RemoveChildren from './RemoveChildren';
+import RemoveChildrenBetween from './RemoveChildrenBetween';
 import SetParent from './SetParent';
 
 export default function ReparentChildren (parent: IParent, newParent: IParent, beginIndex: number = 0, endIndex?: number): IGameObject[]
 {
-    const moved = RemoveChildren(parent, beginIndex, endIndex);
+    const moved = RemoveChildrenBetween(parent, beginIndex, endIndex);
 
     moved.forEach(child => {
 

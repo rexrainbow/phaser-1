@@ -1,9 +1,9 @@
 import IParent from './IParent';
-import RemoveChildren from './RemoveChildren';
+import RemoveChildrenBetween from './RemoveChildrenBetween';
 
 export default function DestroyChildren (parent: IParent, beginIndex: number = 0, endIndex?: number)
 {
-    const removed = RemoveChildren(parent, beginIndex, endIndex);
+    const removed = RemoveChildrenBetween(parent, beginIndex, endIndex);
 
     removed.forEach(child => {
 

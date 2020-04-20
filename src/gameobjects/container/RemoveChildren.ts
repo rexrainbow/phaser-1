@@ -1,31 +1,12 @@
-import IParent from './IParent';
 import IGameObject from '../gameobject/IGameObject';
+import IParent from './IParent';
+import RemoveChild from './RemoveChild';
 
-export default function RemoveChildren (parent: IParent, beginIndex: number = 0, endIndex?: number): IGameObject[]
+export default function RemoveChildren (parent: IParent, ...children: IGameObject[])
 {
-    const children = parent.children;
+    children.forEach(child => {
 
-    if (endIndex === undefined)
-    {
-        endIndex = children.length;
-    }
+        RemoveChild(parent, child);
 
-    const range = endIndex - beginIndex;
-
-    if (range > 0 && range <= endIndex)
-    {
-        const removed = children.splice(beginIndex, range);
-
-        removed.forEach(child => {
-
-            child.parent = null;
-
-        });
-
-        return removed;
-    }
-    else
-    {
-        return [];
-    }
+    });
 }
