@@ -13,7 +13,7 @@ export default class Game extends EventEmitter
     isPaused: boolean = false;
     isBooted: boolean = false;
 
-    lastTick: number = 0;
+    private lastTick: number = 0;
     lifetime: number = 0;
     elapsed: number = 0;
 
