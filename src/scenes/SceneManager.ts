@@ -4,7 +4,6 @@ import GameInstance from '../GameInstance';
 import GetConfigValue from './GetConfigValue';
 import IScene from './IScene';
 import ISceneConfig from './ISceneConfig';
-import ISceneConstructor from './ISceneConstructor';
 import { ISceneRenderData } from './ISceneRenderData';
 
 export default class SceneManager
@@ -34,27 +33,7 @@ export default class SceneManager
 
     boot = () =>
     {
-        const scenes = GetScenes();
-
-        scenes.forEach(scene => {
-
-            this.add(scene);
-
-        });
-    }
-
-    add (scene: ISceneConstructor)
-    {
-        const instance = new scene();
-
-        //  At this point the act of creating a new instance of the Scene
-        //  will have invoked the init method below, so we can now safely
-        //  add the Scene into our Map
-
-        if (instance.willUpdate)
-        {
-            instance.boot.call(instance);
-        }
+        GetScenes().forEach(scene => new scene());
     }
 
     init (scene: IScene, config: string | ISceneConfig = {})

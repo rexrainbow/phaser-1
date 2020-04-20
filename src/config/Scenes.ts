@@ -1,12 +1,8 @@
-import IScene from '../scenes/IScene';
+import ISceneConstructor from '../scenes/ISceneConstructor';
 
-type SceneClass = {
-    new (): IScene;
-}
+let _scenes: ISceneConstructor[] = [];
 
-let _scenes: SceneClass[] = [];
-
-function Scenes(scenes?: SceneClass | Array<SceneClass>)
+function Scenes (scenes?: ISceneConstructor | Array<ISceneConstructor>): () => void
 {
     return () => {
 
@@ -15,7 +11,7 @@ function Scenes(scenes?: SceneClass | Array<SceneClass>)
     };
 }
 
-function GetScenes (): SceneClass[]
+function GetScenes (): ISceneConstructor[]
 {
     return _scenes;
 }
