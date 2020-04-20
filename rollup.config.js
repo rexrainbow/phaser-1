@@ -6,7 +6,6 @@ import resolve from '@rollup/plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import filesize from 'rollup-plugin-filesize';
-import command from 'rollup-plugin-command';
 import fs from 'fs-extra';
 import copy from 'rollup-plugin-copy';
 
@@ -58,7 +57,7 @@ export default {
             file: './dist/Phaser4.js',
             format: 'umd',
             name: 'Phaser4',
-            sourcemap: false,
+            sourcemap: true,
             plugins: [
                 filesize()
             ]
@@ -75,12 +74,6 @@ export default {
                         comments: false
                     }
                 }),
-
-                command([
-                    `echo "Running tsc ..."`,
-                    `tsc`
-                ]),
-
                 DistPackagePlugin
             ]
         }
@@ -115,6 +108,7 @@ export default {
 
         copy({
             targets: [
+                { src: 'LICENSE', dest: 'dist', copyOnce: true },
                 { src: 'README.dist.md', dest: 'dist', rename: 'README.md', copyOnce: true }
             ]
         }),
