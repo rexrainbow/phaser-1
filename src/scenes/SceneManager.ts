@@ -82,10 +82,12 @@ export default class SceneManager
 
     render (gameFrame: number): ISceneRenderData
     {
-        this.renderResult.numTotalFrames = 0;
-        this.renderResult.numDirtyFrames = 0;
-        this.renderResult.numDirtyCameras = 0;
-        this.renderResult.numRenderedWorlds = 0;
+        const results = this.renderResult;
+
+        results.numTotalFrames = 0;
+        results.numDirtyFrames = 0;
+        results.numDirtyCameras = 0;
+        results.numRenderedWorlds = 0;
 
         for (let scene of this.scenes.values())
         {
@@ -93,8 +95,8 @@ export default class SceneManager
             {
                 let world = scene.world;
 
-                this.renderResult.numDirtyFrames += world.render(gameFrame);
-                this.renderResult.numTotalFrames += world.numRendered;
+                results.numDirtyFrames += world.render(gameFrame);
+                results.numTotalFrames += world.numRendered;
 
                 if (world.rendered.length === 0)
                 {
@@ -103,18 +105,18 @@ export default class SceneManager
 
                 if (world.camera.dirtyRender)
                 {
-                    this.renderResult.numDirtyCameras++;
+                    results.numDirtyCameras++;
 
                     world.camera.dirtyRender = false;
                 }
 
-                let renderListSize = this.renderResult.renderedWorlds.length;
+                let renderListSize = results.renderedWorlds.length;
 
-                if (renderListSize <= this.renderResult.numRenderedWorlds)
+                if (renderListSize <= results.numRenderedWorlds)
                 {
                     renderListSize++;
 
-                    this.renderResult.renderedWorlds.push({
+                    results.renderedWorlds.push({
                         camera: world.camera,
                         rendered: world.rendered,
                         numRendered: world.numRendered
@@ -122,26 +124,26 @@ export default class SceneManager
                 }
                 else
                 {
-                    const renderData = this.renderResult.renderedWorlds[this.renderResult.numRenderedWorlds];
+                    const renderData = results.renderedWorlds[results.numRenderedWorlds];
 
                     renderData.camera = world.camera;
                     renderData.rendered = world.rendered;
                     renderData.numRendered = world.numRendered;
                 }
 
-                this.renderResult.numRenderedWorlds++;
+                results.numRenderedWorlds++;
             }
         }
 
         if (this.flush)
         {
             //  Invalidate the renderer cache
-            this.renderResult.numDirtyFrames++;
+            results.numDirtyFrames++;
 
             //  And reset
             this.flush = false;
         }
 
-        return this.renderResult;
+        return results;
     }
 }
