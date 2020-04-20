@@ -36,16 +36,16 @@ export class Game extends EventEmitter
 
         GameInstance.set(this);
 
-        DOMContentLoaded(() => this.boot(settings));
+        settings.forEach(setting => setting());
+
+        DOMContentLoaded(this.boot);
     }
 
-    boot (settings: { (): void }[])
+    boot = () =>
     {
         this.renderer = new WebGLRenderer();
         this.textures = new TextureManager();
         this.scenes = new SceneManager();
-
-        settings.forEach(setting => setting());
 
         //  Only add to the DOM if they either didn't set a Parent, or expressly set it to be non-null
         //  Otherwise we'll let them add the canvas to the DOM themselves
