@@ -1,8 +1,8 @@
-import IRenderable from '../sprite/IRenderable';
+import ISprite from '../sprite/ISprite';
 
 type VerticalTextAlignment = 'ascent' | 'lineheight';
 
-export default interface IText extends IRenderable
+export default interface IText extends ISprite
 {
     preRenderCallback: (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => void;
     wordWrapCallback: (text: string) => string;

@@ -1,6 +1,6 @@
 import ICamera from '../camera/ICamera';
 import IGameObject from '../gameobjects/gameobject/IGameObject';
-import IRenderable from '../gameobjects/sprite/IRenderable';
+import ISprite from '../gameobjects/sprite/ISprite';
 import { IDestroyable } from '../types/IDestroyable';
 
 export default interface IWorld extends IDestroyable
@@ -10,7 +10,7 @@ export default interface IWorld extends IDestroyable
     numRendered: number;
     numRenderable: number;
     children: IGameObject[];
-    rendered: IRenderable[];
+    rendered: ISprite[];
     forceRefresh: boolean;
     update (delta?: number, time?: number): void;
     render (gameFrame: number): number;

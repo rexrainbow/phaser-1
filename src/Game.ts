@@ -10,25 +10,25 @@ export default class Game extends EventEmitter
 {
     VERSION: string = '4.0.0-beta1';
 
-    renderer: WebGLRenderer;
-    textures: TextureManager;
-    scenes: SceneManager;
-
     isPaused: boolean = false;
     isBooted: boolean = false;
 
-    cache = {
-        json: new Map<string, any>(),
-        csv: new Map<string, any>(),
-        xml: new Map<string, any>()
-    };
-
-    private lastTick: number = 0;
+    lastTick: number = 0;
     lifetime: number = 0;
     elapsed: number = 0;
 
     //  The current game frame
     frame: number = 0;
+
+    renderer: WebGLRenderer;
+    textures: TextureManager;
+    scenes: SceneManager;
+
+    cache = {
+        json: new Map<string, any>(),
+        csv: new Map<string, any>(),
+        xml: new Map<string, any>(),
+    };
 
     constructor (...settings: { (): void }[])
     {
@@ -36,17 +36,17 @@ export default class Game extends EventEmitter
 
         GameInstance.set(this);
 
-        settings.forEach(setting => setting());
+        DOMContentLoaded(() => this.boot(settings));
+    }
 
+    boot(settings: { (): void }[])
+    {
         this.renderer = new WebGLRenderer();
         this.textures = new TextureManager();
         this.scenes = new SceneManager();
 
-        DOMContentLoaded(this.boot);
-    }
+        settings.forEach(setting => setting());
 
-    boot = () =>
-    {
         this.isBooted = true;
 
         //  Only add to the DOM if they either didn't set a Parent, or expressly set it to be non-null

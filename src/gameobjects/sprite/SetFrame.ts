@@ -1,7 +1,7 @@
 import Frame from '../../textures/Frame';
-import IRenderable from './IRenderable';
+import ISprite from './ISprite';
 
-export default function SetFrame (key?: string | number | Frame, ...sprite: IRenderable[])
+export default function SetFrame (key?: string | number | Frame, ...sprite: ISprite[])
 {
     sprite.forEach(entity => {
 

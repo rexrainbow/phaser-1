@@ -1,27 +1,11 @@
 import { GetScenes } from '../config';
 import Game from '../Game';
 import GameInstance from '../GameInstance';
-import { IWorldRenderResult } from '../world/World';
 import GetConfigValue from './GetConfigValue';
 import IBaseScene from './IBaseScene';
 import IBaseSceneConstructor from './IBaseSceneConstructor';
 import ISceneConfig from './ISceneConfig';
-
-export interface ISceneRenderData {
-    //  How many Cameras were made dirty this frame across all Scenes?
-    numDirtyCameras: number,
-
-    //  How many Game Objects were made dirty this frame across all Scenes?
-    numDirtyFrames: number,
-
-    //  How many Game Objects were processed this frame across all Scenes?
-    numTotalFrames: number,
-
-    renderedWorlds: IWorldRenderResult[],
-
-    //  How many objects inside the circular array renderList?
-    numRenderedWorlds: number
-}
+import { ISceneRenderData } from './ISceneRenderData';
 
 export default class SceneManager
 {

@@ -3,7 +3,7 @@ import ICamera from '../camera/ICamera';
 import IContainer from '../gameobjects/container/IContainer';
 import IParent from '../gameobjects/container/IParent';
 import IGameObject from '../gameobjects/gameobject/IGameObject';
-import IRenderable from '../gameobjects/sprite/IRenderable';
+import ISprite from '../gameobjects/sprite/ISprite';
 import RectangleToRectangle from '../geom/intersects/RectangleToRectangle';
 import Matrix2D from '../math/matrix2d/Matrix2D';
 import IScene from '../scenes/IScene';
@@ -11,7 +11,7 @@ import IWorld from './IWorld';
 
 export interface IWorldRenderResult {
     camera: ICamera;
-    rendered: IRenderable[];
+    rendered: ISprite[];
     numRendered: number;
 }
 
@@ -33,7 +33,7 @@ export default class World implements IWorld
     numRenderable: number = 0;
 
     //  A list of Game Objects that will be rendered in the next pass
-    rendered: IRenderable[] = [];
+    rendered: ISprite[] = [];
 
     forceRefresh: boolean = false;
 
@@ -65,7 +65,7 @@ export default class World implements IWorld
             if (!cull || (cull && RectangleToRectangle(root.getBounds(), this.camera.bounds)))
             {
                 this.numRendered++;
-                this.rendered.push(root as IRenderable);
+                this.rendered.push(root as ISprite);
 
                 if (root.dirtyFrame >= gameFrame)
                 {

@@ -2,7 +2,7 @@ import ICamera from '../camera/ICamera';
 import StaticCamera from '../camera/StaticCamera';
 import IContainer from '../gameobjects/container/IContainer';
 import IGameObject from '../gameobjects/gameobject/IGameObject';
-import IRenderable from '../gameobjects/sprite/IRenderable';
+import ISprite from '../gameobjects/sprite/ISprite';
 import Matrix2D from '../math/matrix2d/Matrix2D';
 import StaticScene from '../scenes/StaticScene';
 import IWorld from './IWorld';
@@ -30,7 +30,7 @@ export default class StaticWorld implements IWorld
     numRenderable: number = 0;
 
     //  A list of Game Objects that will be rendered in the next pass
-    rendered: IRenderable[] = [];
+    rendered: ISprite[] = [];
 
     forceRefresh: boolean = false;
 
@@ -57,7 +57,7 @@ export default class StaticWorld implements IWorld
         if (root.isRenderable())
         {
             this.numRendered++;
-            this.rendered.push(root as IRenderable);
+            this.rendered.push(root as ISprite);
 
             if (root.dirtyFrame >= gameFrame)
             {

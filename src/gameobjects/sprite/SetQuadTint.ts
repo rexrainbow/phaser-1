@@ -1,7 +1,7 @@
 import PackColors from '../../renderer/webgl1/PackColors';
-import IRenderable from './IRenderable';
+import ISprite from './ISprite';
 
-export default function SetQuadTint (topLeft: number, topRight: number, bottomLeft: number, bottomRight: number, ...sprite: IRenderable[])
+export default function SetQuadTint (topLeft: number, topRight: number, bottomLeft: number, bottomRight: number, ...sprite: ISprite[])
 {
     sprite.forEach(entity => {
 

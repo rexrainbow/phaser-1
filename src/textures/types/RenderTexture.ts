@@ -1,4 +1,4 @@
-import IRenderable from '../../gameobjects/sprite/IRenderable';
+import ISprite from '../../gameobjects/sprite/ISprite';
 import SpriteRenderWebGL from '../../gameobjects/sprite/RenderWebGL';
 import CreateFramebuffer from '../../renderer/webgl1/CreateFramebuffer';
 import Ortho from '../../renderer/webgl1/Ortho';
@@ -52,12 +52,12 @@ export default class RenderTexture extends Texture
         return this;
     }
 
-    batchDraw (sprites: IRenderable[], numSprites: number): this
+    batchDraw (sprites: ISprite[]): this
     {
         const renderer = this.renderer;
         const shader = renderer.shader;
 
-        for (let i: number = 0; i < numSprites; i++)
+        for (let i = 0, len = sprites.length; i < len; i++)
         {
             SpriteRenderWebGL(sprites[i], renderer, shader, renderer.startActiveTexture);
         }
@@ -77,10 +77,10 @@ export default class RenderTexture extends Texture
         return this;
     }
 
-    draw (sprites: IRenderable[], numSprites: number): this
+    draw (sprites: ISprite[]): this
     {
         this.batchStart();
-        this.batchDraw(sprites, numSprites);
+        this.batchDraw(sprites);
         this.batchEnd();
 
         return this;

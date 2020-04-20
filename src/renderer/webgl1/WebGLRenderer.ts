@@ -2,7 +2,7 @@ import ICamera from '../../camera/ICamera';
 import { GetBackgroundColor, GetHeight, GetResolution, GetWebGLContext, GetWidth } from '../../config';
 import SpriteRenderWebGL from '../../gameobjects/sprite/RenderWebGL';
 import Matrix2dEqual from '../../math/matrix2d-funcs/ExactEquals';
-import { ISceneRenderData } from '../../scenes/SceneManager';
+import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import Texture from '../../textures/Texture';
 import GL from './GL';
 import Ortho from './Ortho';
