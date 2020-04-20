@@ -1,7 +1,7 @@
-import IBaseScene from '../scenes/IBaseScene';
+import IScene from '../scenes/IScene';
 
 type SceneClass = {
-    new (): IBaseScene;
+    new (): IScene;
 }
 
 let _scenes: SceneClass[] = [];

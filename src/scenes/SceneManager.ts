@@ -2,16 +2,16 @@ import { GetScenes } from '../config';
 import Game from '../Game';
 import GameInstance from '../GameInstance';
 import GetConfigValue from './GetConfigValue';
-import IBaseScene from './IBaseScene';
-import IBaseSceneConstructor from './IBaseSceneConstructor';
+import IScene from './IScene';
 import ISceneConfig from './ISceneConfig';
+import ISceneConstructor from './ISceneConstructor';
 import { ISceneRenderData } from './ISceneRenderData';
 
 export default class SceneManager
 {
     game: Game;
 
-    scenes: Map<string, IBaseScene>  = new Map();
+    scenes: Map<string, IScene>  = new Map();
 
     sceneIndex: number = 0;
 
@@ -43,7 +43,7 @@ export default class SceneManager
         });
     }
 
-    add (scene: IBaseSceneConstructor)
+    add (scene: ISceneConstructor)
     {
         const instance = new scene();
 
@@ -57,7 +57,7 @@ export default class SceneManager
         }
     }
 
-    init (scene: IBaseScene, config: string | ISceneConfig = {})
+    init (scene: IScene, config: string | ISceneConfig = {})
     {
         const size = this.scenes.size;
         const sceneIndex = this.sceneIndex;

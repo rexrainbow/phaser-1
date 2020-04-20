@@ -1,10 +1,10 @@
 import Rectangle from '../geom/rectangle/Rectangle';
 import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
-import IBaseScene from '../scenes/IBaseScene';
+import IScene from '../scenes/IScene';
 
 export default class StaticCamera // implements ICamera
 {
-    scene: IBaseScene;
+    scene: IScene;
     matrix: Float32Array;
     renderer: WebGLRenderer;
     dirtyRender: boolean = false;
@@ -13,7 +13,7 @@ export default class StaticCamera // implements ICamera
     height: number;
     bounds: Rectangle;
 
-    constructor (scene: IBaseScene)
+    constructor (scene: IScene)
     {
         this.scene = scene;
 

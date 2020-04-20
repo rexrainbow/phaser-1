@@ -1,7 +1,16 @@
-import World from '../world/World';
-import IBaseScene from './IBaseScene';
+import { Game } from '..';
+import IWorld from '../world/IWorld';
 
-export default interface IScene extends IBaseScene
+export default interface IScene
 {
-    world: World;
+    key?: string;
+    willUpdate?: boolean;
+    willRender?: boolean;
+    game: Game;
+    world: IWorld;
+    boot (): void;
+    update (delta: number, time: number): void;
+    render (gameFrame: number): void;
+    shutdown (): void;
+    destroy (): void;
 }

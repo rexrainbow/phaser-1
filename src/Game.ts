@@ -47,8 +47,6 @@ export default class Game extends EventEmitter
 
         settings.forEach(setting => setting());
 
-        this.isBooted = true;
-
         //  Only add to the DOM if they either didn't set a Parent, or expressly set it to be non-null
         //  Otherwise we'll let them add the canvas to the DOM themselves
         if (GetParent())
@@ -76,6 +74,8 @@ export default class Game extends EventEmitter
 
         // window.addEventListener('blur', this.pause);
         // window.addEventListener('focus', this.resume);
+
+        this.isBooted = true;
 
         this.emit('boot');
 

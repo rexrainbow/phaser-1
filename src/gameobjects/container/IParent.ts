@@ -1,10 +1,10 @@
-import IGameObject from '../gameobject/IGameObject';
-import IBaseScene from '../../scenes/IBaseScene';
 import Matrix2D from '../../math/matrix2d/Matrix2D';
+import IScene from '../../scenes/IScene';
+import IGameObject from '../gameobject/IGameObject';
 
 export default interface IParent
 {
-    scene: IBaseScene;
+    scene: IScene;
     localTransform?: Matrix2D;
     worldTransform?: Matrix2D;
     children: IGameObject[];
