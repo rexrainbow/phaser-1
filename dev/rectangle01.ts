@@ -1,10 +1,10 @@
-import Game from '../src/Game';
-import StaticScene from '../src/scenes/StaticScene';
+import { Game } from '../src/Game';
+import { StaticScene } from '../src/scenes/StaticScene';
 import { Rectangle, MarchingAnts } from '../src/geom/rectangle';
 import { Parent, Scenes, BackgroundColor } from '../src/config';
-import SolidColorTexture from '../src/textures/types/SolidColorTexture';
-import Sprite from '../src/gameobjects/sprite/Sprite';
-import AddChild from '../src/gameobjects/container/AddChild';
+import { SolidColorTexture } from '../src/textures/types/SolidColorTexture';
+import { Sprite } from '../src/gameobjects/sprite/Sprite';
+import { AddChild } from '../src/gameobjects/container/AddChild';
 
 class Demo extends StaticScene
 {

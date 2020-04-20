@@ -1,5 +1,5 @@
-import Game from '../src/Game';
-import StaticScene from '../src/scenes/StaticScene';
+import { Game } from '../src/Game';
+import { StaticScene } from '../src/scenes/StaticScene';
 import { Parent, Size, Scenes, BackgroundColor } from '../src/config';
 
 class Demo extends StaticScene
