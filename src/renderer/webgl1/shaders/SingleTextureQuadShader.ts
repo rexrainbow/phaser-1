@@ -1,5 +1,7 @@
 import WebGLRenderer from '../WebGLRenderer';
-import IShaderConfig from './IShaderConfig';
+import { IShaderAttributes as IShaderAttributes } from './IShaderAttributes';
+import { IShaderConfig } from './IShaderConfig';
+import { IShaderUniforms } from './IShaderUniforms';
 
 const shaderSource = {
 
@@ -51,8 +53,8 @@ export default class SingleTextureQuadShader
 
     program: WebGLProgram;
 
-    attribs: { aVertexPosition: number; aTextureCoord: number; aTextureId: number; aTintColor: number } = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
-    uniforms: { uProjectionMatrix: WebGLUniformLocation; uCameraMatrix: WebGLUniformLocation; uTexture: WebGLUniformLocation; } = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0 };
+    attribs: IShaderAttributes = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
+    uniforms: IShaderUniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0 };
 
     /**
      * Maximum number of quads per batch before a flush takes place.
@@ -245,7 +247,7 @@ export default class SingleTextureQuadShader
         this.vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.DYNAMIC_DRAW);
-       
+
         this.indexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.index, gl.STATIC_DRAW);
@@ -281,7 +283,7 @@ export default class SingleTextureQuadShader
 
         this.program = program;
         
-        for (let key of Object.keys(this.attribs))
+        for (let key of Object.keys(this.attribs) as Array<keyof IShaderAttributes>)
         {
             let location = gl.getAttribLocation(program, key);
 
@@ -290,7 +292,7 @@ export default class SingleTextureQuadShader
             this.attribs[key] = location;
         }
 
-        for (let key of Object.keys(this.uniforms))
+        for (let key of Object.keys(this.uniforms) as Array<keyof IShaderUniforms>)
         {
             this.uniforms[key] = gl.getUniformLocation(program, key);
         }

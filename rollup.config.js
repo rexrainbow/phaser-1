@@ -6,7 +6,6 @@ import resolve from '@rollup/plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import filesize from 'rollup-plugin-filesize';
-import command from 'rollup-plugin-command';
 import fs from 'fs-extra';
 import copy from 'rollup-plugin-copy';
 
@@ -16,6 +15,13 @@ import copy from 'rollup-plugin-copy';
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
 ];
+
+const licenseInfo =
+`/**
+* @author       Richard Davey <rich@photonstorm.com>
+* @copyright    2020 Photon Storm Ltd.
+* @license      {@link https://opensource.org/licenses/MIT|MIT License}
+'*/`;
 
 /**
  * Custom Roll-up Plugin that copies the package.json version to the dist package.json
@@ -51,7 +57,7 @@ export default {
             file: './dist/Phaser4.js',
             format: 'umd',
             name: 'Phaser4',
-            sourcemap: false,
+            sourcemap: true,
             plugins: [
                 filesize()
             ]
@@ -62,13 +68,12 @@ export default {
             name: 'Phaser4',
             sourcemap: false,
             plugins: [
-                terser(),
-
-                command([
-                    `echo "Running tsc ..."`,
-                    `tsc`
-                ]),
-
+                terser({
+                    output: {
+                        preamble: licenseInfo,
+                        comments: false
+                    }
+                }),
                 DistPackagePlugin
             ]
         }
@@ -103,6 +108,7 @@ export default {
 
         copy({
             targets: [
+                { src: 'LICENSE', dest: 'dist', copyOnce: true },
                 { src: 'README.dist.md', dest: 'dist', rename: 'README.md', copyOnce: true }
             ]
         }),

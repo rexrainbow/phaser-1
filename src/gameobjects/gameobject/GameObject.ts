@@ -1,13 +1,13 @@
-import IInteractiveArea from '../../input/IInteractiveArea';
 import Rectangle from '../../geom/rectangle/Rectangle';
+import IInteractiveArea from '../../input/IInteractiveArea';
+import IScene from '../../scenes/IScene';
 import IParent from '../container/IParent';
-import IBaseScene from '../../scenes/IBaseScene';
 
 //  The Base Game Object which all Scene entites extend
 
 export default class GameObject
 {
-    scene: IBaseScene;
+    scene: IScene;
     name: string = '';
     type: string = 'GameObject';
 

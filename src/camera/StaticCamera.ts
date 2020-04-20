@@ -1,18 +1,19 @@
-import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
 import Rectangle from '../geom/rectangle/Rectangle';
-import IBaseScene from '../scenes/IBaseScene';
+import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
+import IScene from '../scenes/IScene';
 
-export default class StaticCamera
+export default class StaticCamera // implements ICamera
 {
-    scene: IBaseScene;
+    scene: IScene;
     matrix: Float32Array;
     renderer: WebGLRenderer;
+    dirtyRender: boolean = false;
 
     width: number;
     height: number;
     bounds: Rectangle;
 
-    constructor (scene: IBaseScene)
+    constructor (scene: IScene)
     {
         this.scene = scene;
 
@@ -34,6 +35,14 @@ export default class StaticCamera
         this.height = height;
 
         this.bounds.set(0, 0, width, height);
+    }
+
+    update (delta: number, time: number): void {
+        // TODO
+    }
+
+    render (gameFrame: number): void {
+        // TODO
     }
 
     destroy ()

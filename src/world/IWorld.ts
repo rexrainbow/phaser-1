@@ -1,18 +1,18 @@
-import Camera from '../camera/Camera';
-import Scene from '../scenes/Scene';
+import ICamera from '../camera/ICamera';
 import IGameObject from '../gameobjects/gameobject/IGameObject';
+import ISprite from '../gameobjects/sprite/ISprite';
 
 export default interface IWorld
 {
-    scene: Scene;
+    camera: ICamera;
     dirtyFrame: number;
-    totalFrame: number;
-    visibleFrame: number;
-    boundsFrame: number;
+    numRendered: number;
+    numRenderable: number;
     children: IGameObject[];
-    camera: Camera;
+    rendered: ISprite[];
     forceRefresh: boolean;
-    render (gameFrame: number): number
+    update (delta?: number, time?: number): void;
+    render (gameFrame: number): number;
     shutdown (): void;
-    destroy (): void;
+    destroy(): void;
 }

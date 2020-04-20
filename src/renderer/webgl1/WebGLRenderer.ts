@@ -1,15 +1,14 @@
-import CheckShaderMaxIfStatements from './shaders/CheckShaderMaxIfStatements';
-import MultiTextureQuadShader from './shaders/MultiTextureQuadShader';
-import Texture from '../../textures/Texture';
-import Matrix2dEqual from '../../math/matrix2d-funcs/ExactEquals';
 import ICamera from '../../camera/ICamera';
-import Ortho from './Ortho';
-import GL from './GL';
-import IGameObject from '../../gameobjects/gameobject/IGameObject';
+import { GetBackgroundColor, GetHeight, GetResolution, GetWebGLContext, GetWidth } from '../../config';
 import SpriteRenderWebGL from '../../gameobjects/sprite/RenderWebGL';
-import ISprite from '../../gameobjects/sprite/ISprite';
+import Matrix2dEqual from '../../math/matrix2d-funcs/ExactEquals';
+import { ISceneRenderData } from '../../scenes/ISceneRenderData';
+import Texture from '../../textures/Texture';
+import GL from './GL';
+import Ortho from './Ortho';
+import CheckShaderMaxIfStatements from './shaders/CheckShaderMaxIfStatements';
 import IShader from './shaders/IShader';
-import { GetWidth, GetHeight, GetResolution, GetBackgroundColor, GetWebGLContext } from '../../config';
+import MultiTextureQuadShader from './shaders/MultiTextureQuadShader';
 
 export default class WebGLRenderer
 {
@@ -23,11 +22,11 @@ export default class WebGLRenderer
     width: number;
     height: number;
     resolution: number;
-    
+
     projectionMatrix: Float32Array;
     textureIndex: number[];
     flushTotal: number = 0;
-    
+
     maxTextures: number = 0;
     activeTextures: Texture[];
     currentActiveTexture: number = 0;
@@ -106,7 +105,7 @@ export default class WebGLRenderer
         this.projectionMatrix = Ortho(width, height);
     }
 
-    onContextLost (event)
+    onContextLost (event: Event)
     {
         event.preventDefault();
 
@@ -155,17 +154,17 @@ export default class WebGLRenderer
         }
 
         //  Create temp textures to stop WebGL errors on mac os
-        for (let i: number = 0; i < maxTextures; i++)
+        for (let texturesIndex: number = 0; texturesIndex < maxTextures; texturesIndex++)
         {
             let tempTexture = gl.createTexture();
-    
-            gl.activeTexture(gl.TEXTURE0 + i);
-    
+
+            gl.activeTexture(gl.TEXTURE0 + texturesIndex);
+
             gl.bindTexture(gl.TEXTURE_2D, tempTexture);
-    
+
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([ 0, 0, 255, 255 ]));
 
-            tempTextures[i] = tempTexture;
+            tempTextures[texturesIndex] = tempTexture;
         }
 
         this.maxTextures = maxTextures;
@@ -191,7 +190,7 @@ export default class WebGLRenderer
         this.flushTotal = 0;
     }
 
-    render (sceneList: any[], dirtyFrame: number, dirtyCameras: number)
+    render (renderData: ISceneRenderData)
     {
         if (this.contextLost)
         {
@@ -199,14 +198,13 @@ export default class WebGLRenderer
         }
 
         const gl = this.gl;
-        const flushTotal = this.flushTotal;
 
         //  This is only here because if we don't do _something_ with the context, GL Spector can't see it.
         //  Technically, we could move it below the dirty bail-out below.
         this.reset();
 
         //  Cache 1 - Nothing dirty? Display the previous frame
-        if (this.optimizeRedraw && dirtyFrame === 0 && dirtyCameras === 0)
+        if (this.optimizeRedraw && renderData.numDirtyFrames === 0 && renderData.numDirtyCameras === 0)
         {
             return;
         }
@@ -224,6 +222,7 @@ export default class WebGLRenderer
 
         //  Cache 2 - Only one dirty camera and one flush? We can re-use the buffers
         /*
+        const flushTotal = this.flushTotal;
         if (dirtyCameras === 1 && dirtyFrame === 0 && flushTotal === 1)
         {
             //  Total items rendered in the previous frame
@@ -242,11 +241,11 @@ export default class WebGLRenderer
         */
 
         let prevCamera: ICamera;
+        const { renderedWorlds, numRenderedWorlds } = renderData;
 
-        for (let c: number = 0; c < sceneList.length; c += 2)
+        for (let renderedWorldsIndex: number = 0; renderedWorldsIndex < numRenderedWorlds; renderedWorldsIndex++)
         {
-            let camera: ICamera = sceneList[c];
-            let list: IGameObject[] = sceneList[c + 1];
+            const { camera, rendered, numRendered } = renderedWorlds[renderedWorldsIndex];
 
             //  This only needs rebinding if the camera matrix is different to before
             if (!prevCamera || !Matrix2dEqual(camera.worldTransform, prevCamera.worldTransform))
@@ -259,9 +258,9 @@ export default class WebGLRenderer
             }
 
             //  Process the render list
-            for (let i: number = 0; i < list.length; i++)
+            for (let renderedIndex: number = 0; renderedIndex < numRendered; renderedIndex++)
             {
-                SpriteRenderWebGL(list[i] as ISprite, this, shader, this.startActiveTexture);
+                SpriteRenderWebGL(rendered[renderedIndex], this, shader, this.startActiveTexture);
             }
         }
 

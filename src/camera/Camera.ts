@@ -1,8 +1,9 @@
+import GameInstance from '../GameInstance';
 import TransformGameObject from '../gameobjects/transformgameobject/TransformGameObject';
 import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
-import GameInstance from '../GameInstance';
+import ICamera from './ICamera';
 
-export default class Camera extends TransformGameObject
+export default class Camera extends TransformGameObject implements ICamera
 {
     matrix: Float32Array;
     renderer: WebGLRenderer;

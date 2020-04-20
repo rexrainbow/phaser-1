@@ -1,3 +1,6 @@
+# Compiled JS
+dev/dist
+
 # System and IDE files
 Thumbs.db
 .DS_Store

@@ -1,4 +1,4 @@
-export default interface IShaderConfig {
+export type IShaderConfig = {
     batchSize?: number;
     fragmentShader?: string;
     vertexShader?: string;

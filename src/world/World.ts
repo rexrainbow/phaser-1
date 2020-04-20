@@ -1,56 +1,56 @@
 import Camera from '../camera/Camera';
-import Scene from '../scenes/Scene';
-import RectangleToRectangle from '../geom/intersects/RectangleToRectangle';
-import IGameObject from '../gameobjects/gameobject/IGameObject';
+import ICamera from '../camera/ICamera';
 import IContainer from '../gameobjects/container/IContainer';
+import IParent from '../gameobjects/container/IParent';
+import IGameObject from '../gameobjects/gameobject/IGameObject';
+import ISprite from '../gameobjects/sprite/ISprite';
+import RectangleToRectangle from '../geom/intersects/RectangleToRectangle';
 import Matrix2D from '../math/matrix2d/Matrix2D';
+import IScene from '../scenes/IScene';
+import IWorld from './IWorld';
 
-export default class World
+export interface IWorldRenderResult {
+    camera: ICamera;
+    rendered: ISprite[];
+    numRendered: number;
+}
+
+export default class World implements IWorld
 {
-    scene: Scene;
+    scene: IScene;
 
-    children: IGameObject[];
+    children: IGameObject[] = [];
 
-    camera: Camera;
+    camera: ICamera = new Camera();
 
     //  How many Game Objects were made dirty this frame?
     dirtyFrame: number = 0;
 
     //  How many Game Objects will be rendered this frame? (are in-bounds)
-    totalFrame: number = 0;
+    numRendered: number = 0;
 
     //  How many Game Objects passed `willRender` this frame? (but may not have been in bounds)
-    visibleFrame: number = 0;
-
-    //  How many Game Objects were out of bounds this frame?
-    boundsFrame: number = 0;
+    numRenderable: number = 0;
 
     //  A list of Game Objects that will be rendered in the next pass
-    private renderList: IGameObject[];
+    rendered: ISprite[] = [];
 
     forceRefresh: boolean = false;
 
     enableCameraCull: boolean = true;
 
-    worldTransform: Matrix2D;
+    worldTransform: Matrix2D = new Matrix2D();
 
-    constructor (scene: Scene)
+    constructor (scene: IScene)
     {
         this.scene = scene;
-
-        this.children = [];
-        this.renderList = [];
-
-        this.worldTransform = new Matrix2D();
-
-        this.camera = new Camera();
     }
 
     private scanChildren (root: IContainer | World, gameFrame: number)
     {
         const children = root.children;
 
-        for (let i: number = 0; i < children.length; i++)
+        for (let i = 0, numChildren = children.length; i < numChildren; i++)
         {
             this.buildRenderList(children[i], gameFrame);
         }
@@ -64,7 +64,8 @@ export default class World
 
             if (!cull || (cull && RectangleToRectangle(root.getBounds(), this.camera.bounds)))
             {
-                this.renderList.push(root);
+                this.numRendered++;
+                this.rendered.push(root as ISprite);
 
                 if (root.dirtyFrame >= gameFrame)
                 {
@@ -72,7 +73,7 @@ export default class World
                 }
             }
 
-            this.visibleFrame++;
+            this.numRenderable++;
         }
 
         if (root.isParent && root.visible)
@@ -85,7 +86,7 @@ export default class World
     {
         const children = this.children;
 
-        for (let i = 0; i < children.length; i++)
+        for (let i = 0, numChildren = children.length; i < numChildren; i++)
         {
             let child = children[i];
 
@@ -99,13 +100,10 @@ export default class World
     render (gameFrame: number): number
     {
         this.dirtyFrame = 0;
-        this.boundsFrame = 0;
-        this.visibleFrame = 0;
-        this.renderList.length = 0;
+        this.numRendered = 0;
+        this.numRenderable = 0;
 
         this.scanChildren(this, gameFrame);
-
-        this.totalFrame = this.renderList.length;
 
         if (this.forceRefresh)
         {
@@ -124,17 +122,17 @@ export default class World
 
         // this.removeChildren();
 
-        this.renderList = [];
+        this.rendered = [];
 
         this.camera.reset();
     }
 
-    destroy ()
+    destroy (reparentChildren?: IParent)
     {
         this.camera.destroy();
 
         this.camera = null;
-        this.renderList = null;
+        this.rendered = null;
     }
 
     get numChildren (): number

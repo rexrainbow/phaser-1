@@ -16,7 +16,7 @@ function Parent (parent?: string | HTMLElement)
     };
 }
 
-function GetParent (): HTMLElement | null
+function GetParent (): string | HTMLElement | undefined
 {
     return _parent;
 }
@@ -24,4 +24,4 @@ function GetParent (): HTMLElement | null
 export {
     Parent,
     GetParent
-}
+};

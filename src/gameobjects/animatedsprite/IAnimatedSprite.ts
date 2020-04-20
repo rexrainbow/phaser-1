@@ -1,6 +1,6 @@
+import Frame from '../../textures/Frame';
 import ISprite from '../sprite/ISprite';
 import IAnimationData from './IAnimationData';
-import Frame from '../../textures/Frame';
 
 export default interface IAnimatedSprite extends ISprite
 {

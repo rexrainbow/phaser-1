@@ -1,11 +1,11 @@
-import ISprite from './ISprite';
 import Frame from '../../textures/Frame';
+import ISprite from './ISprite';
 
 export default function SetFrame (key?: string | number | Frame, ...sprite: ISprite[])
 {
     sprite.forEach(entity => {
 
-        let frame: Frame = entity.texture.get(key);
+        let frame = entity.texture.get(key);
 
         if (frame === entity.frame)
         {

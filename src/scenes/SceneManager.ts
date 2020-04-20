@@ -1,74 +1,46 @@
-import Game from '../Game';
-import IBaseScene from './IBaseScene';
-import ISceneConfig from './ISceneConfig';
-import GetConfigValue from './GetConfigValue';
-import IBaseSceneConstructor from './IBaseSceneConstructor';
 import { GetScenes } from '../config';
+import Game from '../Game';
 import GameInstance from '../GameInstance';
+import GetConfigValue from './GetConfigValue';
+import IScene from './IScene';
+import ISceneConfig from './ISceneConfig';
+import { ISceneRenderData } from './ISceneRenderData';
 
 export default class SceneManager
 {
     game: Game;
 
-    scenes: Map<string, IBaseScene>;
+    scenes: Map<string, IScene>  = new Map();
 
     sceneIndex: number = 0;
 
     //  Flush the cache
     flush: boolean = false;
 
-    //  How many Cameras were made dirty this frame across all Scenes?
-    dirtyCameras: number = 0;
+    renderResult: ISceneRenderData = {
+        numDirtyCameras: 0,
+        numDirtyFrames: 0,
+        numTotalFrames: 0,
+        renderedWorlds: [],
+        numRenderedWorlds: 0
+    };
 
-    //  How many Game Objects were made dirty this frame across all Scenes?
-    dirtyFrame: number = 0;
-
-    //  How many Game Objects were processed this frame across all Scenes?
-    totalFrame: number = 0;
-
-    renderList: any[];
-    
     constructor ()
     {
-        this.game = GameInstance.get();
-
-        this.scenes = new Map();
-
-        this.renderList = [];
-
-        this.game.once('boot', () => this.boot());
+        this.game = GameInstance.get()
+        this.game.once('boot', this.boot);
     }
 
-    boot ()
+    boot = () =>
     {
-        const scenes = GetScenes();
-
-        scenes.forEach(scene => {
-
-            this.add(scene);
-
-        });
+        GetScenes().forEach(scene => new scene());
     }
 
-    add (scene: IBaseSceneConstructor)
-    {
-        const instance = new scene();
-
-        //  At this point the act of creating a new instance of the Scene
-        //  will have invoked the init method below, so we can now safely
-        //  add the Scene into our Map
-
-        if (instance.willUpdate)
-        {
-            instance.boot.call(instance);
-        }
-    }
-
-    init (scene: IBaseScene, config: string | ISceneConfig = {})
+    init (scene: IScene, config: string | ISceneConfig = {})
     {
         const size = this.scenes.size;
         const sceneIndex = this.sceneIndex;
-        const firstScene: boolean = (size === 0);
+        const firstScene = (size === 0);
 
         if (typeof config === 'string')
         {
@@ -76,9 +48,9 @@ export default class SceneManager
         }
         else if (config || (!config && firstScene))
         {
-            scene.key = GetConfigValue(config, 'key', 'scene' + sceneIndex) as string;
-            scene.willUpdate = GetConfigValue(config, 'willUpdate', firstScene) as boolean;
-            scene.willRender = GetConfigValue(config, 'willRender', firstScene) as boolean;
+            scene.key = GetConfigValue(config, 'key', 'scene' + sceneIndex);
+            scene.willUpdate = GetConfigValue(config, 'willUpdate', firstScene);
+            scene.willRender = GetConfigValue(config, 'willRender', firstScene);
         }
 
         if (this.scenes.has(scene.key))
@@ -108,15 +80,12 @@ export default class SceneManager
         }
     }
 
-    render (gameFrame: number): [ any[], number, number ]
+    render (gameFrame: number): ISceneRenderData
     {
-        const renderList = this.renderList;
-
-        renderList.length = 0;
-
-        this.dirtyCameras = 0;
-        this.dirtyFrame = 0;
-        this.totalFrame = 0;
+        this.renderResult.numTotalFrames = 0;
+        this.renderResult.numDirtyFrames = 0;
+        this.renderResult.numDirtyCameras = 0;
+        this.renderResult.numRenderedWorlds = 0;
 
         for (let scene of this.scenes.values())
         {
@@ -124,35 +93,55 @@ export default class SceneManager
             {
                 let world = scene.world;
 
-                this.dirtyFrame += world.render(gameFrame);
-                this.totalFrame += world.totalFrame;
+                this.renderResult.numDirtyFrames += world.render(gameFrame);
+                this.renderResult.numTotalFrames += world.numRendered;
 
-                if (world.renderList.length === 0)
+                if (world.rendered.length === 0)
                 {
                     continue;
                 }
 
                 if (world.camera.dirtyRender)
                 {
-                    this.dirtyCameras++;
+                    this.renderResult.numDirtyCameras++;
 
                     world.camera.dirtyRender = false;
                 }
-    
-                renderList.push(world.camera);
-                renderList.push(world.renderList);
+
+                let renderListSize = this.renderResult.renderedWorlds.length;
+
+                if (renderListSize <= this.renderResult.numRenderedWorlds)
+                {
+                    renderListSize++;
+
+                    this.renderResult.renderedWorlds.push({
+                        camera: world.camera,
+                        rendered: world.rendered,
+                        numRendered: world.numRendered
+                    });
+                }
+                else
+                {
+                    const renderData = this.renderResult.renderedWorlds[this.renderResult.numRenderedWorlds];
+
+                    renderData.camera = world.camera;
+                    renderData.rendered = world.rendered;
+                    renderData.numRendered = world.numRendered;
+                }
+
+                this.renderResult.numRenderedWorlds++;
             }
         }
 
         if (this.flush)
         {
             //  Invalidate the renderer cache
-            this.dirtyFrame++;
+            this.renderResult.numDirtyFrames++;
 
             //  And reset
             this.flush = false;
         }
 
-        return [ renderList, this.dirtyFrame, this.dirtyCameras ];
+        return this.renderResult;
     }
 }

@@ -1,10 +1,10 @@
-import Scene from '../scenes/Scene';
-import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
 import Rectangle from '../geom/rectangle/Rectangle';
+import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
+import IScene from '../scenes/IScene';
 
 export default interface IStaticCamera
 {
-    scene: Scene;
+    scene: IScene;
     matrix: Float32Array;
     renderer: WebGLRenderer;
     bounds: Rectangle;

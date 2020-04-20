@@ -21,7 +21,7 @@ export default class Container extends TransformGameObject
     {
         const children = this.children;
 
-        for (let i = 0; i < children.length; i++)
+        for (let i = 0, numChildren = children.length; i < numChildren; i++)
         {
             let child = children[i];
 

@@ -1,11 +1,11 @@
-import IInteractiveArea from '../../input/IInteractiveArea';
 import Rectangle from '../../geom/rectangle/Rectangle';
+import IInteractiveArea from '../../input/IInteractiveArea';
+import IScene from '../../scenes/IScene';
 import IParent from '../container/IParent';
-import IBaseScene from '../../scenes/IBaseScene';
 
 export default interface IGameObject
 {
-    scene: IBaseScene;
+    scene: IScene;
     name: string;
     type: string;
     willRender: boolean;
@@ -28,6 +28,6 @@ export default interface IGameObject
     getBounds (includeChildren?: boolean): Rectangle;
     update (delta: number, time: number): void;
     updateTransform (): this;
-    render (...args: any[]): void;
+    render (gameFrame: number): void;
     destroy (reparentChildren?: IParent): void;
 }

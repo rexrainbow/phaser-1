@@ -1,8 +1,8 @@
-import IBaseScene from '../scenes/IBaseScene';
+import ISceneConstructor from '../scenes/ISceneConstructor';
 
-let _scenes: any[] = [];
+let _scenes: ISceneConstructor[] = [];
 
-function Scenes (scenes?: IBaseScene | IBaseScene[] | any | any[])
+function Scenes (scenes?: ISceneConstructor | Array<ISceneConstructor>): () => void
 {
     return () => {
 
@@ -11,12 +11,12 @@ function Scenes (scenes?: IBaseScene | IBaseScene[] | any | any[])
     };
 }
 
-function GetScenes (): any[]
+function GetScenes (): ISceneConstructor[]
 {
     return _scenes;
 }
 
 export {
-    Scenes,
-    GetScenes
-}
+	Scenes,
+	GetScenes
+};
