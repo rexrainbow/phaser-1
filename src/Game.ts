@@ -39,7 +39,7 @@ export default class Game extends EventEmitter
         DOMContentLoaded(() => this.boot(settings));
     }
 
-    boot(settings: { (): void }[])
+    boot (settings: { (): void }[])
     {
         this.renderer = new WebGLRenderer();
         this.textures = new TextureManager();
