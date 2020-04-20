@@ -1,10 +1,9 @@
 import Rectangle from '../../geom/rectangle/Rectangle';
 import IInteractiveArea from '../../input/IInteractiveArea';
 import IBaseScene from '../../scenes/IBaseScene';
-import { IDestroyable } from '../../types/IDestroyable';
 import IParent from '../container/IParent';
 
-export default interface IGameObject extends IDestroyable
+export default interface IGameObject
 {
     scene: IBaseScene;
     name: string;
