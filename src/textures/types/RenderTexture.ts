@@ -1,11 +1,11 @@
-import ISprite from '../../gameobjects/sprite/ISprite';
-import SpriteRenderWebGL from '../../gameobjects/sprite/RenderWebGL';
-import CreateFramebuffer from '../../renderer/webgl1/CreateFramebuffer';
-import Ortho from '../../renderer/webgl1/Ortho';
-import WebGLRenderer from '../../renderer/webgl1/WebGLRenderer';
-import Texture from '../Texture';
+import { ISprite } from '../../gameobjects/sprite/ISprite';
+import { RenderWebGL } from '../../gameobjects/sprite/RenderWebGL';
+import { CreateFramebuffer } from '../../renderer/webgl1/CreateFramebuffer';
+import { Ortho } from '../../renderer/webgl1/Ortho';
+import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
+import { Texture } from '../Texture';
 
-export default class RenderTexture extends Texture
+export class RenderTexture extends Texture
 {
     renderer: WebGLRenderer;
     cameraMatrix: Float32Array;
@@ -26,7 +26,7 @@ export default class RenderTexture extends Texture
         this.cameraMatrix = new Float32Array([ 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, height, 0, 1 ]);
     }
 
-    cls (): this
+    cls ()
     {
         const renderer = this.renderer;
         const gl = renderer.gl;
@@ -41,7 +41,7 @@ export default class RenderTexture extends Texture
         return this;
     }
 
-    batchStart (): this
+    batchStart ()
     {
         const renderer = this.renderer;
 
@@ -52,20 +52,20 @@ export default class RenderTexture extends Texture
         return this;
     }
 
-    batchDraw (sprites: ISprite[]): this
+    batchDraw (sprites: ISprite[])
     {
         const renderer = this.renderer;
         const shader = renderer.shader;
 
         for (let i = 0, len = sprites.length; i < len; i++)
         {
-            SpriteRenderWebGL(sprites[i], renderer, shader, renderer.startActiveTexture);
+            RenderWebGL(sprites[i], renderer, shader, renderer.startActiveTexture);
         }
 
         return this;
     }
 
-    batchEnd (): this
+    batchEnd ()
     {
         const renderer = this.renderer;
         const shader = renderer.shader;
@@ -77,7 +77,7 @@ export default class RenderTexture extends Texture
         return this;
     }
 
-    draw (sprites: ISprite[]): this
+    draw (...sprites: ISprite[])
     {
         this.batchStart();
         this.batchDraw(sprites);

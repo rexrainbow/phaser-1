@@ -25,7 +25,7 @@
  *
  * @return {number} The shortest angle, in degrees. If greater than zero it's a counter-clockwise rotation.
  */
-export default function ShortestBetween (angle1: number, angle2: number): number
+export function ShortestAngleBetween (angle1: number, angle2: number): number
 {
     const difference = angle2 - angle1;
 

@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
-import Rectangle from '../Rectangle/Rectangle';
+import { IEllipse } from './IEllipse';
+import { Rectangle } from '../Rectangle/Rectangle';
 
 /**
  * Returns the bounds of the Ellipse object.
@@ -20,7 +20,7 @@ import Rectangle from '../Rectangle/Rectangle';
  *
  * @return {(Phaser.Geom.Rectangle|object)} The Rectangle object containing the Ellipse bounds.
  */
-export default function GetBounds (ellipse: IEllipse, out: Rectangle = new Rectangle()): Rectangle
+export function GetBounds (ellipse: IEllipse, out: Rectangle = new Rectangle()): Rectangle
 {
     return out.set(
         ellipse.left,

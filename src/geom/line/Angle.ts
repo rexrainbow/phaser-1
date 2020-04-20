@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
+import { ILine } from './ILine';
 
 /**
  * Calculate the angle of the line in radians.
@@ -16,7 +16,7 @@ import ILine from './ILine';
  *
  * @return {number} The angle of the line, in radians.
  */
-export default function Angle (line: ILine): number
+export function Angle (line: ILine): number
 {
     return Math.atan2(line.y2 - line.y1, line.x2 - line.x1);
 }

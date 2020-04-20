@@ -1,6 +1,6 @@
-import IText from './IText';
+import { IText } from './IText';
 
-export default function SetCornerRadius (cornerRadius: number, ...text: IText[])
+export function SetCornerRadius (cornerRadius: number, ...text: IText[])
 {
     text.forEach(entity => {
 

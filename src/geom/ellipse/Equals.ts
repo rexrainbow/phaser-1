@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
+import { IEllipse } from './IEllipse';
 
 /**
  * Compares the `x`, `y`, `width` and `height` properties of the two given Ellipses.
@@ -18,7 +18,7 @@ import IEllipse from './IEllipse';
  *
  * @return {boolean} `true` if the two Ellipse equal each other, otherwise `false`.
  */
-export default function Equals (ellipse: IEllipse, toCompare: IEllipse): boolean
+export function Equals (ellipse: IEllipse, toCompare: IEllipse): boolean
 {
     return (
         ellipse.x === toCompare.x &&

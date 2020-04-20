@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
-import Vec2 from '../../math/vec2/Vec2';
+import { ICircle } from './ICircle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns a Point object containing the coordinates of a point on the circumference of the Circle based on the given angle.
@@ -21,7 +21,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} A Point object where the `x` and `y` properties are the point on the circumference.
  */
-export default function CircumferencePoint (circle: ICircle, angle: number, out: Vec2 = new Vec2()): Vec2
+export function CircumferencePoint (circle: ICircle, angle: number, out: Vec2 = new Vec2()): Vec2
 {
     return out.set(
         circle.x + (circle.radius * Math.cos(angle)),

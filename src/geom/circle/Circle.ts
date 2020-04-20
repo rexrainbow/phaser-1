@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Contains from './Contains';
+import { Contains } from './Contains';
 
 /**
  * @classdesc
@@ -23,7 +23,7 @@ import Contains from './Contains';
  * @param {number} [y=0] - The y position of the center of the circle.
  * @param {number} [radius=0] - The radius of the circle.
  */
-export default class Circle
+export class Circle
 {
     x: number;
     y: number;

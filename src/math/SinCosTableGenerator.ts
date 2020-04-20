@@ -28,7 +28,7 @@ type SinCosTable = { sin: number[], cos: number[], length: number };
  *
  * @return {SinCosTable} The generated values.
  */
-export default function SinCosTableGenerator (length: number, sinAmp: number = 1, cosAmp: number = 1, frequency: number = 1): SinCosTable
+export function SinCosTableGenerator (length: number, sinAmp: number = 1, cosAmp: number = 1, frequency: number = 1): SinCosTable
 {
     frequency *= Math.PI / length;
 

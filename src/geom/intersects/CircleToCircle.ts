@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import DistanceBetween from '../../math/distance/DistanceBetween';
-import ICircle from '../circle/ICircle';
+import { DistanceBetween } from '../../math/distance/DistanceBetween';
+import { ICircle } from '../circle/ICircle';
 
 /**
  * Checks if two Circles intersect.
@@ -18,7 +18,7 @@ import ICircle from '../circle/ICircle';
  *
  * @return {boolean} `true` if the two Circles intersect, otherwise `false`.
  */
-export default function CircleToCircle (circleA: ICircle, circleB: ICircle): boolean
+export function CircleToCircle (circleA: ICircle, circleB: ICircle): boolean
 {
     return (DistanceBetween(circleA.x, circleA.y, circleB.x, circleB.y) <= (circleA.radius + circleB.radius));
 }

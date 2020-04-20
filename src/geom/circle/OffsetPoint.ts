@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
-import IVec2 from '../../math/vec2/IVec2';
+import { ICircle } from './ICircle';
+import { IVec2 } from '../../math/vec2/IVec2';
 
 /**
  * Offsets the Circle by the values given in the `x` and `y` properties of the Point object.
@@ -20,7 +20,7 @@ import IVec2 from '../../math/vec2/IVec2';
  *
  * @return {Phaser.Geom.Circle} The Circle that was offset.
  */
-export default function OffsetPoint (circle: ICircle, point: IVec2): ICircle
+export function OffsetPoint (circle: ICircle, point: IVec2): ICircle
 {
     circle.x += point.x;
     circle.y += point.y;

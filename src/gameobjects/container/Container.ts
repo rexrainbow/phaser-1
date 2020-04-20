@@ -1,8 +1,8 @@
-import IGameObject from '../gameobject/IGameObject';
-import TransformGameObject from '../transformgameobject/TransformGameObject';
-import IParent from './IParent';
+import { IGameObject } from '../gameobject/IGameObject';
+import { TransformGameObject } from '../transformgameobject/TransformGameObject';
+import { IParent } from './IParent';
 
-export default class Container extends TransformGameObject
+export class Container extends TransformGameObject
 {
     children: IGameObject[];
 

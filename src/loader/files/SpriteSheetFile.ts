@@ -1,11 +1,11 @@
-import File from '../File';
-import ImageTagLoader from '../ImageTagLoader';
-import IFrameConfig from '../../textures/IFrameConfig';
-import GameInstance from '../../GameInstance';
-import GetURL from '../GetURL';
-import SpriteSheetParser from '../../textures/parsers/SpriteSheetParser';
+import { File } from '../File';
+import { ImageTagLoader } from '../ImageTagLoader';
+import { IFrameConfig } from '../../textures/IFrameConfig';
+import { GameInstance } from '../../GameInstance';
+import { GetURL } from '../GetURL';
+import { SpriteSheetParser } from '../../textures/parsers/SpriteSheetParser';
 
-export default function SpriteSheetFile (key: string, url: string, frameConfig: IFrameConfig): File
+export function SpriteSheetFile (key: string, url: string, frameConfig: IFrameConfig): File
 {
     const file = new File(key, url);
 

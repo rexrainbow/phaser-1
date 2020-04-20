@@ -1,6 +1,6 @@
-import Game from '../Game';
+import { Game } from '../Game';
 
-export default interface ISceneConfig
+export interface ISceneConfig
 {
     game?: Game;
     key?: string;

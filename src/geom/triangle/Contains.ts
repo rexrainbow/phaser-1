@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
+import { ITriangle } from './ITriangle';
 
 /**
  * Checks if a point (as a pair of coordinates) is inside a Triangle's bounds.
@@ -20,7 +20,7 @@ import ITriangle from './ITriangle';
  *
  * @return {boolean} `true` if the point is inside the Triangle, otherwise `false`.
  */
-export default function Contains (triangle: ITriangle, x: number, y: number): boolean
+export function Contains (triangle: ITriangle, x: number, y: number): boolean
 {
     const { x1, y1, x2, y2, x3, y3 } = triangle;
 

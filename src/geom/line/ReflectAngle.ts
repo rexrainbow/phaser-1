@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Angle from './Angle';
-import NormalAngle from './NormalAngle';
-import ILine from './ILine';
+import { Angle } from './Angle';
+import { NormalAngle } from './NormalAngle';
+import { ILine } from './ILine';
 
 /**
  * Calculate the reflected angle between two lines.
@@ -21,7 +21,7 @@ import ILine from './ILine';
  *
  * @return {number} The reflected angle between each line.
  */
-export default function ReflectAngle (lineA: ILine, lineB: ILine): number
+export function ReflectAngle (lineA: ILine, lineB: ILine): number
 {
     return (2 * NormalAngle(lineB) - Math.PI - Angle(lineA));
 }

@@ -5,12 +5,12 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import LineToLine from './LineToLine';
-import LineToRectangle from './LineToRectangle';
-import ILine from '../line/ILine';
-import IRectangle from '../rectangle/IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
-import GetEdges from '../Rectangle/GetEdges';
+import { LineToLine } from './LineToLine';
+import { LineToRectangle } from './LineToRectangle';
+import { ILine } from '../line/ILine';
+import { IRectangle } from '../rectangle/IRectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
+import { GetEdges } from '../Rectangle/GetEdges';
 
 /**
  * Checks for intersection between the Line and a Rectangle shape,
@@ -25,7 +25,7 @@ import GetEdges from '../Rectangle/GetEdges';
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetLineToRectangle (line: ILine, rect: IRectangle, out: Vec2[] = []): Vec2[]
+export function GetLineToRectangle (line: ILine, rect: IRectangle, out: Vec2[] = []): Vec2[]
 {
     if (LineToRectangle(line, rect))
     {

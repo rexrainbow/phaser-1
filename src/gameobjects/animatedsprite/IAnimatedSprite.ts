@@ -1,8 +1,8 @@
-import Frame from '../../textures/Frame';
-import ISprite from '../sprite/ISprite';
-import IAnimationData from './IAnimationData';
+import { Frame } from '../../textures/Frame';
+import { ISprite } from '../sprite/ISprite';
+import { IAnimationData } from './IAnimationData';
 
-export default interface IAnimatedSprite extends ISprite
+export interface IAnimatedSprite extends ISprite
 {
     anims: Map<string, Frame[]>;
     animData: IAnimationData;

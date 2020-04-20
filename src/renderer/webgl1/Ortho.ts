@@ -1,4 +1,4 @@
-export default function Ortho (width: number, height: number, near: number = -1, far: number = 1): Float32Array
+export function Ortho (width: number, height: number, near: number = -1, far: number = 1): Float32Array
 {
     const m00: number = -2 * (1 / -width);
     const m11: number = -2 * (1 / height);

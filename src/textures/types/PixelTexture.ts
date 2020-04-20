@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Arne16 from '../palettes/Arne16';
-import CreateCanvas from '../CreateCanvas';
-import Texture from '../Texture';
+import { Arne16 } from '../palettes/Arne16';
+import { CreateCanvas } from '../CreateCanvas';
+import { Texture } from '../Texture';
 
 /**
  * @callback Phaser.Types.Create.GenerateTextureCallback
@@ -81,7 +81,7 @@ export type PixelTextureConfig = {
  *
  * @return {Texture} An HTMLCanvasElement which contains the generated texture drawn to it.
  */
-export default function PixelTexture (config: PixelTextureConfig): Texture
+export function PixelTexture (config: PixelTextureConfig): Texture
 {
     let {
         data = [],

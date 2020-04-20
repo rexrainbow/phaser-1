@@ -18,7 +18,7 @@
  *
  * @return {boolean} `true` if `a` is fuzzily less than `b`, otherwise `false`.
  */
-export default function LessThan (a: number, b: number, epsilon: number = 0.0001): boolean
+export function FuzzyLessThan (a: number, b: number, epsilon: number = 0.0001): boolean
 {
     return a < b + epsilon;
 }

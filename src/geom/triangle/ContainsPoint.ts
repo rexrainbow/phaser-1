@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
-import Contains from './Contains';
-import IVec2 from '../../math/vec2/IVec2';
+import { ITriangle } from './ITriangle';
+import { Contains } from './Contains';
+import { IVec2 } from '../../math/vec2/IVec2';
 
 /**
  * Tests if a triangle contains a point.
@@ -19,7 +19,7 @@ import IVec2 from '../../math/vec2/IVec2';
  *
  * @return {boolean} `true` if the point is within the triangle, otherwise `false`.
  */
-export default function ContainsPoint (triangle: ITriangle, point: IVec2): boolean
+export function ContainsPoint (triangle: ITriangle, point: IVec2): boolean
 {
     return Contains(triangle, point.x, point.y);
 }

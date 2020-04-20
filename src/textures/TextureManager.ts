@@ -1,7 +1,7 @@
-import Texture from './Texture';
-import CreateCanvas from './CreateCanvas';
+import { Texture } from './Texture';
+import { CreateCanvas } from './CreateCanvas';
 
-export default class TextureManager
+export class TextureManager
 {
     textures: Map<string, Texture>;
 

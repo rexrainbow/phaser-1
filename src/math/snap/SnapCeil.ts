@@ -20,7 +20,7 @@
  *
  * @return {number} The snapped value.
  */
-export default function SnapCeil (value: number, gap: number, start: number = 0, divide: boolean = false): number
+export function SnapCeil (value: number, gap: number, start: number = 0, divide: boolean = false): number
 {
     if (gap === 0)
     {

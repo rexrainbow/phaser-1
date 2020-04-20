@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Calculates the width/height ratio of a rectangle.
@@ -16,7 +16,7 @@ import IRectangle from './IRectangle';
  *
  * @return {number} The width/height ratio of the rectangle.
  */
-export default function GetAspectRatio (rect: IRectangle): number
+export function GetAspectRatio (rect: IRectangle): number
 {
     return (rect.height === 0) ? NaN : rect.width / rect.height;
 }

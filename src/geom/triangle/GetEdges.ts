@@ -1,7 +1,7 @@
-import ITriangle from './ITriangle';
-import Line from '../line/Line';
+import { ITriangle } from './ITriangle';
+import { Line } from '../line/Line';
 
-export default function GetEdges (triangle: ITriangle): Line[]
+export function GetEdges (triangle: ITriangle): Line[]
 {
     const { x1, y1, x2, y2, x3, y3 } = triangle;
 

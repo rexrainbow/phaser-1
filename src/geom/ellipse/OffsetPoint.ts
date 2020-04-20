@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
-import IVec2 from '../../math/vec2/IVec2';
+import { IEllipse } from './IEllipse';
+import { IVec2 } from '../../math/vec2/IVec2';
 
 /**
  * Offsets the Ellipse by the values given in the `x` and `y` properties of the Point object.
@@ -20,7 +20,7 @@ import IVec2 from '../../math/vec2/IVec2';
  *
  * @return {Phaser.Geom.Ellipse} The Ellipse that was offset.
  */
-export default function OffsetPoint (ellipse: IEllipse, point: IVec2): IEllipse
+export function OffsetPoint (ellipse: IEllipse, point: IVec2): IEllipse
 {
     ellipse.x += point.x;
     ellipse.y += point.y;

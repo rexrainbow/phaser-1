@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { ITriangle } from './ITriangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 
 /**
@@ -27,7 +27,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} The `out` object with modified `x` and `y` properties, or a new Point if none was provided.
  */
-export default function Centroid (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
+export function Centroid (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
 {
     return out.set(
         (triangle.x1 + triangle.x2 + triangle.x3) / 3,

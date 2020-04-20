@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
+import { ICircle } from './ICircle';
 
 /**
  * Copies the `x`, `y` and `radius` properties from the `source` Circle
@@ -20,7 +20,7 @@ import ICircle from './ICircle';
  *
  * @return {Phaser.Geom.Circle} The destination Circle.
  */
-export default function CopyFrom (source: ICircle, dest: ICircle): ICircle
+export function CopyFrom (source: ICircle, dest: ICircle): ICircle
 {
     return dest.set(source.x, source.y, source.radius);
 }

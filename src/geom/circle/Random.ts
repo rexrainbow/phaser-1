@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
-import Vec2 from '../../math/vec2/Vec2';
+import { ICircle } from './ICircle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns a uniformly distributed random point from anywhere within the given Circle.
@@ -20,7 +20,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} A Point object with the random values set in the `x` and `y` properties.
  */
-export default function Random (circle: ICircle, out: Vec2 = new Vec2()): Vec2
+export function Random (circle: ICircle, out: Vec2 = new Vec2()): Vec2
 {
     const t = 2 * Math.PI * Math.random();
     const u = Math.random() + Math.random();

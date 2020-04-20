@@ -16,7 +16,7 @@
  * 
  * @returns {HTMLElement} The HTML Element that was found.
  */
-export default function GetElement (target?: string | HTMLElement): HTMLElement
+export function GetElement (target?: string | HTMLElement): HTMLElement
 {
     let element: HTMLElement;
 

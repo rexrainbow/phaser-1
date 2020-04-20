@@ -4,24 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Bezier from './BezierInterpolation';
-import CatmullRom from './CatmullRomInterpolation';
-import CubicBezier from './CubicBezierInterpolation';
-import Linear from './LinearInterpolation';
-import QuadraticBezier from './QuadraticBezierInterpolation';
-import SmoothStep from './SmoothStepInterpolation';
-import SmootherStep from './SmootherStepInterpolation';
-
-/**
- * @namespace Phaser.Math.Interpolation
- */
-
-export {
-    Bezier,
-    CatmullRom,
-    CubicBezier,
-    Linear,
-    QuadraticBezier,
-    SmoothStep,
-    SmootherStep
-}
+export * as BezierInterpolation from './BezierInterpolation';
+export * as CatmullRomInterpolation from './CatmullRomInterpolation';
+export * as CubicBezierInterpolation from './CubicBezierInterpolation';
+export * as LinearInterpolation from './LinearInterpolation';
+export * as QuadraticBezierInterpolation from './QuadraticBezierInterpolation';
+export * as SmoothStepInterpolation from './SmoothStepInterpolation';
+export * as SmootherStepInterpolation from './SmootherStepInterpolation';

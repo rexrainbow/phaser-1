@@ -1,7 +1,7 @@
-import ITransformGameObject from './ITransformGameObject';
-import CONST from './const';
+import { ITransformGameObject } from './ITransformGameObject';
+import { CONST } from './const';
 
-export default function SetRotation (rotation: number, ...child: ITransformGameObject[])
+export function SetRotation (rotation: number, ...child: ITransformGameObject[])
 {
     child.forEach(entity => {
 

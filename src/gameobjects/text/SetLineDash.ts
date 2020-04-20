@@ -1,6 +1,6 @@
-import IText from './IText';
+import { IText } from './IText';
 
-export default function SetLineDash (segments: number[], ...text: IText[])
+export function SetLineDash (segments: number[], ...text: IText[])
 {
     text.forEach(entity => {
 

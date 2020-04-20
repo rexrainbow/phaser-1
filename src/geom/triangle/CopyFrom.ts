@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
+import { ITriangle } from './ITriangle';
 
 /**
  * Copy the values of one Triangle to a destination Triangle.
@@ -19,7 +19,7 @@ import ITriangle from './ITriangle';
  *
  * @return {Phaser.Geom.Triangle} The destination Triangle.
  */
-export default function CopyFrom (source: ITriangle, dest: ITriangle): ITriangle
+export function CopyFrom (source: ITriangle, dest: ITriangle): ITriangle
 {
     const { x1, y1, x2, y2, x3, y3 } = source;
 

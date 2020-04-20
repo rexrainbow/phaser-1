@@ -1,7 +1,7 @@
-import File from './File';
-import EventEmitter from '../events/EventEmitter';
+import { File } from './File';
+import { EventEmitter } from '../events/EventEmitter';
 
-export default class Loader extends EventEmitter
+export class Loader extends EventEmitter
 {
     baseURL: string = '';
     path: string = '';

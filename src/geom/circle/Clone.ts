@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Circle from './Circle';
-import ICircle from './ICircle';
+import { Circle } from './Circle';
+import { ICircle } from './ICircle';
 
 /**
  * Creates a new Circle instance based on the values contained in the given source.
@@ -17,7 +17,7 @@ import ICircle from './ICircle';
  *
  * @return {Phaser.Geom.Circle} A clone of the source Circle.
  */
-export default function Clone (source: ICircle): Circle
+export function Clone (source: ICircle): Circle
 {
     return new Circle(source.x, source.y, source.radius);
 }

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IVec2 from '../vec2/IVec2';
+import { IVec2 } from '../vec2/IVec2';
 
 /**
  * Calculate the squared distance between two points.
@@ -17,7 +17,7 @@ import IVec2 from '../vec2/IVec2';
  *
  * @return {number} The squared distance between the points.
  */
-export default function DistanceBetweenPointsSquared (a: IVec2, b: IVec2): number
+export function DistanceBetweenPointsSquared (a: IVec2, b: IVec2): number
 {
     const dx = a.x - b.x;
     const dy = a.y - b.y;

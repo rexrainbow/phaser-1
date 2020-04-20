@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
-import Vec2 from '../../math/vec2/Vec2';
+import { ILine } from './ILine';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Using Bresenham's line algorithm this will return an array of all coordinates on this line.
@@ -21,7 +21,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {Phaser.Types.Math.Vector2Like[]} The array of coordinates on the line.
  */
-export default function BresenhamPoints (line: ILine, stepRate: number = 1, results: Vec2[] = []): Vec2[]
+export function BresenhamPoints (line: ILine, stepRate: number = 1, results: Vec2[] = []): Vec2[]
 {
     let x1 = Math.round(line.x1);
     let y1 = Math.round(line.y1);

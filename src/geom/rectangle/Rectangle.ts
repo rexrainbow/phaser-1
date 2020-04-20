@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Contains from './Contains';
+import { Contains } from './Contains';
 
-export default class Rectangle
+export class Rectangle
 {
     x: number;
     y: number;

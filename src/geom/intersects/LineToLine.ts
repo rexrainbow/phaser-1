@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from '../line/ILine';
-import IVec2 from '../../math/vec2/IVec2';
+import { ILine } from '../line/ILine';
+import { IVec2 } from '../../math/vec2/IVec2';
 
 /**
  * Checks if two Lines intersect.
@@ -23,7 +23,7 @@ import IVec2 from '../../math/vec2/IVec2';
  *
  * @return {boolean} `true` if the two Lines intersect, and the `out` object will be populated, if given. Otherwise, `false`.
  */
-export default function LineToLine (line1: ILine, line2: ILine, out?: IVec2): boolean
+export function LineToLine (line1: ILine, line2: ILine, out?: IVec2): boolean
 {
     const { x1, y1, x2, y2 } = line1;
     const { x1: x3, y1: y3, x2: x4, y2: y4 } = line2;

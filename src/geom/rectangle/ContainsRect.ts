@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Tests if one rectangle fully contains another.
@@ -17,7 +17,7 @@ import IRectangle from './IRectangle';
  *
  * @return {boolean} True only if rectA fully contains rectB.
  */
-export default function ContainsRect (rectA: IRectangle, rectB: IRectangle): boolean
+export function ContainsRect (rectA: IRectangle, rectB: IRectangle): boolean
 {
     //  Volume check (if rectB volume > rectA then rectA cannot contain it)
     if ((rectB.width * rectB.height) > (rectA.width * rectA.height))

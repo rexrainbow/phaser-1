@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
+import { IEllipse } from './IEllipse';
 
 /**
  * Offsets the Ellipse by the values given.
@@ -20,7 +20,7 @@ import IEllipse from './IEllipse';
  *
  * @return {Phaser.Geom.Ellipse} The Ellipse that was offset.
  */
-export default function Offset (ellipse: IEllipse, x: number, y: number): IEllipse
+export function Offset (ellipse: IEllipse, x: number, y: number): IEllipse
 {
     ellipse.x += x;
     ellipse.y += y;

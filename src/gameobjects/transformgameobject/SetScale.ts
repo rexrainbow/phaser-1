@@ -1,7 +1,7 @@
-import ITransformGameObject from './ITransformGameObject';
-import CONST from './const';
+import { ITransformGameObject } from './ITransformGameObject';
+import { CONST } from './const';
 
-export default function SetScale (scaleX: number, scaleY: number, ...child: ITransformGameObject[])
+export function SetScale (scaleX: number, scaleY: number, ...child: ITransformGameObject[])
 {
     child.forEach(entity => {
 

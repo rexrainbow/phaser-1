@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Contains from './Contains';
+import { Contains } from './Contains';
 
 /**
  * @classdesc
@@ -24,7 +24,7 @@ import Contains from './Contains';
  * @param {number} [x3=0] - `x` coordinate of the third point.
  * @param {number} [y3=0] - `y` coordinate of the third point.
  */
-export default class Triangle
+export class Triangle
 {
     x1: number;
     y1: number;

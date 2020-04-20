@@ -12,7 +12,7 @@ class EE
     }
 }
 
-export default class EventEmitter
+export class EventEmitter
 {
     private _events: Map<string, Set<EE>>;
 

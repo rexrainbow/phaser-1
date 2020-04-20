@@ -4,16 +4,6 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import GetNext from './GetPowerOfTwo';
-import IsSize from './IsSizePowerOfTwo';
-import IsValue from './IsValuePowerOfTwo';
-
-/**
- * @namespace Phaser.Math.Pow2
- */
-
-export {
-    GetNext,
-    IsSize,
-    IsValue
-}
+export * as GetPowerOfTwo from './GetPowerOfTwo';
+export * as IsSizePowerOfTwo from './IsSizePowerOfTwo';
+export * as IsValuePowerOfTwo from './IsValuePowerOfTwo';

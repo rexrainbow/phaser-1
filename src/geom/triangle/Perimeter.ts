@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Length from '../line/Length';
-import ITriangle from './ITriangle';
-import GetEdges from './GetEdges';
+import { Length } from '../line/Length';
+import { ITriangle } from './ITriangle';
+import { GetEdges } from './GetEdges';
 
 /**
  * Gets the length of the perimeter of the given triangle.
@@ -19,7 +19,7 @@ import GetEdges from './GetEdges';
  *
  * @return {number} The length of the Triangle.
  */
-export default function Perimeter (triangle: ITriangle): number
+export function Perimeter (triangle: ITriangle): number
 {
     const [ line1, line2, line3 ] = GetEdges(triangle);
 

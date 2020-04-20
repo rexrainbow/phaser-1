@@ -14,7 +14,7 @@
  *
  * @return {number} The average value.
  */
-export default function Average (values: number[]): number
+export function Average (values: number[]): number
 {
     let sum = 0;
 

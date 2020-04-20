@@ -16,7 +16,7 @@
  *
  * @return {boolean} Returns `true` if `a` is less than or equal to the tolerance of `b`.
  */
-export default function Within (a: number, b: number, tolerance: number): boolean
+export function Within (a: number, b: number, tolerance: number): boolean
 {
     return (Math.abs(a - b) <= tolerance);
 }

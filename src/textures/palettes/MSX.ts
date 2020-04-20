@@ -12,7 +12,7 @@
  *
  * @type {Phaser.Types.Create.Palette}
  */
-export default {
+export const MSX = {
     0: '#000',
     1: '#191028',
     2: '#46af45',

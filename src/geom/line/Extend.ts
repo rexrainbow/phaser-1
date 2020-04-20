@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
-import Length from './Length';
+import { ILine } from './ILine';
+import { Length } from './Length';
 
 /**
  * Extends the start and end points of a Line by the given amounts.
@@ -26,7 +26,7 @@ import Length from './Length';
  *
  * @return {Phaser.Geom.Line} The modified Line instance.
  */
-export default function Extend (line: ILine, left: number, right: number = left): ILine
+export function Extend (line: ILine, left: number, right: number = left): ILine
 {
     const length = Length(line);
 

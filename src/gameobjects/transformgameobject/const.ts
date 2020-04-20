@@ -1,4 +1,4 @@
-export default {
+export const CONST = {
     POSITION_X: 0,
     POSITION_Y: 1,
     ORIGIN_X: 2,

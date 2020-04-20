@@ -5,11 +5,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import TriangleToTriangle from './TriangleToTriangle';
-import GetTriangleToLine from './GetTriangleToLine';
-import ITriangle from '../triangle/ITriangle';
-import Vec2 from '../../math/vec2/Vec2';
-import GetEdges from '../triangle/GetEdges';
+import { TriangleToTriangle } from './TriangleToTriangle';
+import { GetTriangleToLine } from './GetTriangleToLine';
+import { ITriangle } from '../triangle/ITriangle';
+import { Vec2 } from '../../math/vec2/Vec2';
+import { GetEdges } from '../triangle/GetEdges';
 
 /**
  * Checks if two Triangles intersect, and returns the intersection points as a Point object array.
@@ -25,7 +25,7 @@ import GetEdges from '../triangle/GetEdges';
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetTriangleToTriangle (triangleA: ITriangle, triangleB: ITriangle, out: Vec2[] = []): Vec2[]
+export function GetTriangleToTriangle (triangleA: ITriangle, triangleB: ITriangle, out: Vec2[] = []): Vec2[]
 {
     if (TriangleToTriangle(triangleA, triangleB))
     {

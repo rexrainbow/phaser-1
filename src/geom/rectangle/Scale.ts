@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Scales the width and height of this Rectangle by the given amounts.
@@ -20,7 +20,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The rectangle object with updated `width` and `height` properties as calculated from the scaling factor(s).
  */
-export default function Scale (rect: IRectangle, x: number, y: number = x): IRectangle
+export function Scale (rect: IRectangle, x: number, y: number = x): IRectangle
 {
     rect.width *= x;
     rect.height *= y;

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Compares the `x`, `y`, `width` and `height` properties of two rectangles.
@@ -17,7 +17,7 @@ import IRectangle from './IRectangle';
  *
  * @return {boolean} `true` if the rectangles' properties are an exact match, otherwise `false`.
  */
-export default function Equals (rect: IRectangle, toCompare: IRectangle): boolean
+export function Equals (rect: IRectangle, toCompare: IRectangle): boolean
 {
     return (
         rect.x === toCompare.x &&

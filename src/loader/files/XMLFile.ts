@@ -1,10 +1,10 @@
-import File from '../File';
-import XHRLoader from '../XHRLoader';
-import GetURL from '../GetURL';
-import ParseXML from '../../dom/ParseXML';
-import GameInstance from '../../GameInstance';
+import { File } from '../File';
+import { XHRLoader } from '../XHRLoader';
+import { GetURL } from '../GetURL';
+import { ParseXML } from '../../dom/ParseXML';
+import { GameInstance } from '../../GameInstance';
 
-export default function XMLFile (key: string, url?: string): File
+export function XMLFile (key: string, url?: string): File
 {
     const file = new File(key, url);
 

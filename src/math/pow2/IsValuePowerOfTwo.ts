@@ -14,7 +14,7 @@
  *
  * @return {boolean} Returns `true` if `value` is a power of two, otherwise `false`.
  */
-export default function IsValuePowerOfTwo (value: number): boolean
+export function IsValuePowerOfTwo (value: number): boolean
 {
     return (value > 0 && (value & (value - 1)) === 0);
 }

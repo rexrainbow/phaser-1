@@ -4,11 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import LineToCircle from './LineToCircle';
-import Contains from '../triangle/Contains';
-import ITriangle from '../triangle/ITriangle';
-import ICircle from '../circle/ICircle';
-import GetEdges from '../triangle/GetEdges';
+import { LineToCircle } from './LineToCircle';
+import { Contains } from '../triangle/Contains';
+import { ITriangle } from '../triangle/ITriangle';
+import { ICircle } from '../circle/ICircle';
+import { GetEdges } from '../triangle/GetEdges';
 
 /**
  * Checks if a Triangle and a Circle intersect.
@@ -23,7 +23,7 @@ import GetEdges from '../triangle/GetEdges';
  *
  * @return {boolean} `true` if the Triangle and the `Circle` intersect, otherwise `false`.
  */
-export default function TriangleToCircle (triangle: ITriangle, circle: ICircle): boolean
+export function TriangleToCircle (triangle: ITriangle, circle: ICircle): boolean
 {
     //  First the cheapest ones:
 

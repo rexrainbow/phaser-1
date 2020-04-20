@@ -1,6 +1,6 @@
-import GL from './GL';
+import { GL } from './GL';
 
-export default function DeleteFramebuffer (framebuffer: WebGLFramebuffer)
+export function DeleteFramebuffer (framebuffer: WebGLFramebuffer)
 {
     const gl = GL.get();
 

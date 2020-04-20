@@ -1,7 +1,7 @@
-import IMatrix2D from '../matrix2d/IMatrix2D';
-import Matrix2D from '../matrix2d/Matrix2D';
+import { IMatrix2D } from '../matrix2d/IMatrix2D';
+import { Matrix2D } from '../matrix2d/Matrix2D';
 
-export default function Append (mat1: IMatrix2D, mat2: IMatrix2D, out: Matrix2D = new Matrix2D()): Matrix2D
+export function Append (mat1: IMatrix2D, mat2: IMatrix2D, out: Matrix2D = new Matrix2D()): Matrix2D
 {
     const { a: a1, b: b1, c: c1, d: d1, tx: tx1, ty: ty1 } = mat1;
     const { a: a2, b: b2, c: c2, d: d2, tx: tx2, ty: ty2 } = mat2;

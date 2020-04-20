@@ -21,7 +21,7 @@
  *
  * @return {number} The percentage of interpolation, between 0 and 1.
  */
-export default function SmoothStep (x: number, min: number, max: number): number
+export function SmoothStep (x: number, min: number, max: number): number
 {
     if (x <= min)
     {

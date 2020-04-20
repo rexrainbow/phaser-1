@@ -1,10 +1,10 @@
-import IGameObject from '../IGameObject';
-import Texture from '../../textures/Texture';
+import { IGameObject } from '../gameobject/IGameObject';
+import { Texture } from '../../textures/Texture';
 import { WebGLRenderer } from '../..';
-import MultiTextureQuadShader from '../../renderer/MultiTextureQuadShader';
-import ISprite from '../sprite/ISprite';
+import { MultiTextureQuadShader } from '../../renderer/webgl1/shaders/MultiTextureQuadShader';
+import { ISprite } from '../sprite/ISprite';
 
-export default interface ISpriteBuffer extends IGameObject
+export interface ISpriteBuffer extends IGameObject
 {
     data: ArrayBuffer;
     vertexViewF32: Float32Array;

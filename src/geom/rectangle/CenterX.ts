@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
-export default function CenterX (rect: IRectangle): number
+export function CenterX (rect: IRectangle): number
 {
     return rect.x + (rect.width / 2);
 }

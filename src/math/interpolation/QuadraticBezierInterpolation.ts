@@ -45,7 +45,7 @@ function P2 (t: number, p: number)
  *
  * @return {number} The interpolated value.
  */
-export default function QuadraticBezierInterpolation (t: number, p0: number, p1: number, p2: number): number
+export function QuadraticBezierInterpolation (t: number, p0: number, p1: number, p2: number): number
 {
     return P0(t, p0) + P1(t, p1) + P2(t, p2);
 }

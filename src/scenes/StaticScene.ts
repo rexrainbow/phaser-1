@@ -1,10 +1,10 @@
-import Game from '../Game';
-import GameInstance from '../GameInstance';
-import StaticWorld from '../world/StaticWorld';
-import ISceneConfig from './ISceneConfig';
-import IStaticScene from './IStaticScene';
+import { Game } from '../Game';
+import { GameInstance } from '../GameInstance';
+import { StaticWorld } from '../world/StaticWorld';
+import { ISceneConfig } from './ISceneConfig';
+import { IStaticScene } from './IStaticScene';
 
-export default class StaticScene implements IStaticScene
+export class StaticScene implements IStaticScene
 {
     key: string;
     willUpdate: boolean = false;

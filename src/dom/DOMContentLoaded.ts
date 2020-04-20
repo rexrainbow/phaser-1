@@ -1,4 +1,4 @@
-export default function DOMContentLoaded (callback: () => void)
+export function DOMContentLoaded (callback: () => void)
 {
     const readyState = document.readyState;
 

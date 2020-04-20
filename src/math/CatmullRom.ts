@@ -18,7 +18,7 @@
  *
  * @return {number} The Catmull-Rom value.
  */
-export default function CatmullRom (t: number, p0: number, p1: number, p2: number, p3: number): number
+export function CatmullRom (t: number, p0: number, p1: number, p2: number, p3: number): number
 {
     const v0 = (p2 - p0) * 0.5;
     const v1 = (p3 - p1) * 0.5;

@@ -4,11 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Contains from '../triangle/Contains';
-import LineToLine from './LineToLine';
-import ITriangle from '../triangle/ITriangle';
-import ILine from '../line/ILine';
-import GetEdges from '../triangle/GetEdges';
+import { Contains } from '../triangle/Contains';
+import { LineToLine } from './LineToLine';
+import { ITriangle } from '../triangle/ITriangle';
+import { ILine } from '../line/ILine';
+import { GetEdges } from '../triangle/GetEdges';
 
 /**
  * Checks if a Triangle and a Line intersect.
@@ -23,7 +23,7 @@ import GetEdges from '../triangle/GetEdges';
  *
  * @return {boolean} `true` if the Triangle and the Line intersect, otherwise `false`.
  */
-export default function TriangleToLine (triangle: ITriangle, line: ILine): boolean
+export function TriangleToLine (triangle: ITriangle, line: ILine): boolean
 {
     const { x1, y1, x2, y2 } = line;
 

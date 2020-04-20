@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import Rectangle from './Rectangle';
-import Intersects from '../intersects/RectangleToRectangle';
+import { IRectangle } from './IRectangle';
+import { Rectangle } from './Rectangle';
+import { RectangleToRectangle } from '../intersects/RectangleToRectangle';
 
 /**
  * Takes two Rectangles and first checks to see if they intersect.
@@ -24,9 +24,9 @@ import Intersects from '../intersects/RectangleToRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The intersection result. If the width and height are zero, no intersection occurred.
  */
-export default function Intersection (rectA: IRectangle, rectB: IRectangle, out: Rectangle = new Rectangle()): Rectangle
+export function Intersection (rectA: IRectangle, rectB: IRectangle, out: Rectangle = new Rectangle()): Rectangle
 {
-    if (Intersects(rectA, rectB))
+    if (RectangleToRectangle(rectA, rectB))
     {
         out.set(
             Math.max(rectA.x, rectB.x),

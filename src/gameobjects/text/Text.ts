@@ -1,12 +1,12 @@
-import Sprite from '../sprite/Sprite';
-import CreateGLTexture from '../../renderer/webgl1/CreateGLTexture';
-import IContainer from '../container/IContainer';
-import CanvasTexture from '../../textures/types/CanvasTexture';
-import GameInstance from '../../GameInstance';
+import { Sprite } from '../sprite/Sprite';
+import { CreateGLTexture } from '../../renderer/webgl1/CreateGLTexture';
+import { IContainer } from '../container/IContainer';
+import { CanvasTexture } from '../../textures/types/CanvasTexture';
+import { GameInstance } from '../../GameInstance';
 
 export type VerticalTextAlignment = 'ascent' | 'lineheight';
 
-export default class Text extends Sprite
+export class Text extends Sprite
 {
     private _text: string;
 

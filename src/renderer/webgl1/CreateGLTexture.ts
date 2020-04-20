@@ -1,7 +1,7 @@
-import GL from './GL';
-import IsSizePowerOfTwo from '../../math/pow2/IsSizePowerOfTwo';
+import { GL } from './GL';
+import { IsSizePowerOfTwo } from '../../math/pow2/IsSizePowerOfTwo';
 
-export default function CreateGLTexture (source?: TexImageSource, width?: number, height?: number, potClamp: boolean = true, linear: boolean = true): WebGLTexture
+export function CreateGLTexture (source?: TexImageSource, width?: number, height?: number, potClamp: boolean = true, linear: boolean = true): WebGLTexture
 {
     const gl = GL.get();
     const glTexture: WebGLTexture = gl.createTexture();

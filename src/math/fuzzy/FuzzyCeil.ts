@@ -15,7 +15,7 @@
  *
  * @return {number} The fuzzy ceiling of the value.
  */
-export default function Ceil (value: number, epsilon: number = 0.0001): number
+export function FuzzyCeil (value: number, epsilon: number = 0.0001): number
 {
     return Math.ceil(value - epsilon);
 }

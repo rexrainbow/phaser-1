@@ -15,7 +15,7 @@
  *
  * @return {number} The positive difference of the two given numbers.
  */
-export default function Difference (a: number, b: number): number
+export function Difference (a: number, b: number): number
 {
     return Math.abs(a - b);
 }

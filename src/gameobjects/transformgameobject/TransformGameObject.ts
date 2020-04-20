@@ -1,9 +1,9 @@
-import GameObject from '../gameobject/GameObject';
-import CONST from './const';
-import Matrix2D from '../../math/matrix2d/Matrix2D';
-import Copy from '../../math/matrix2d/Copy';
+import { GameObject } from '../gameobject/GameObject';
+import { CONST } from './const';
+import { Matrix2D } from '../../math/matrix2d/Matrix2D';
+import { Copy } from '../../math/matrix2d/Copy';
 
-export default class TransformGameObject extends GameObject
+export class TransformGameObject extends GameObject
 {
     private transformBuffer: ArrayBuffer;
 

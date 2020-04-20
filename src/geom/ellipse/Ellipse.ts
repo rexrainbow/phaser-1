@@ -22,7 +22,7 @@
  * @param {number} [width=0] - The width of the ellipse.
  * @param {number} [height=0] - The height of the ellipse.
  */
-export default class Ellipse
+export class Ellipse
 {
     x: number;
     y: number;

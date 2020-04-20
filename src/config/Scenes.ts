@@ -1,4 +1,4 @@
-import ISceneConstructor from '../scenes/ISceneConstructor';
+import { ISceneConstructor } from '../scenes/ISceneConstructor';
 
 let _scenes: ISceneConstructor[] = [];
 

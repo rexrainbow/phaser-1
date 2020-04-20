@@ -15,7 +15,7 @@
  *
  * @return {?XMLDocument} The parsed XML data, or `null` if the data could not be parsed.
  */
-export default function ParseXML (data: string): XMLDocument | null
+export function ParseXML (data: string): XMLDocument | null
 {
     let xml: XMLDocument;
 

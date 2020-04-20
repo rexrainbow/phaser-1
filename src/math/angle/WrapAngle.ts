@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import MathWrap from '../Wrap';
+import { Wrap } from '../Wrap';
 
 /**
  * Wrap an angle.
@@ -18,7 +18,7 @@ import MathWrap from '../Wrap';
  *
  * @return {number} The wrapped angle, in radians.
  */
-export default function Wrap (angle: number): number
+export function WrapAngle (angle: number): number
 {
-    return MathWrap(angle, -Math.PI, Math.PI);
+    return Wrap(angle, -Math.PI, Math.PI);
 }

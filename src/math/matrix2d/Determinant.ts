@@ -1,8 +1,8 @@
-import IMatrix2D from './IMatrix2D';
+import { IMatrix2D } from './IMatrix2D';
 
 //  Return the determinant for the src Matrix.
 
-export default function Determinant (src: IMatrix2D): number
+export function Determinant (src: IMatrix2D): number
 {
     const { a, b, c, d } = src;
 

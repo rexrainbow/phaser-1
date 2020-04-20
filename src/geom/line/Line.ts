@@ -18,7 +18,7 @@
  * @param {number} [x2=0] - The x coordinate of the lines ending point.
  * @param {number} [y2=0] - The y coordinate of the lines ending point.
  */
-export default class Line
+export class Line
 {
     x1: number;
     y1: number;

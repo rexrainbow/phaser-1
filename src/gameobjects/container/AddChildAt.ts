@@ -1,8 +1,8 @@
-import IGameObject from '../gameobject/IGameObject';
-import IParent from './IParent';
-import SetParent from './SetParent';
+import { IGameObject } from '../gameobject/IGameObject';
+import { IParent } from './IParent';
+import { SetParent } from './SetParent';
 
-export default function AddChildAt (parent: IParent, index: number, ...child: IGameObject[])
+export function AddChildAt (parent: IParent, index: number, ...child: IGameObject[])
 {
     const children = parent.children;
 

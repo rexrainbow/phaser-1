@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
-import Vec2 from '../../math/vec2/Vec2';
-import IVec2 from '../../math/vec2/IVec2';
-import Contains from './Contains';
+import { ITriangle } from './ITriangle';
+import { Vec2 } from '../../math/vec2/Vec2';
+import { IVec2 } from '../../math/vec2/IVec2';
+import { Contains } from './Contains';
 
 /**
  * Filters an array of point-like objects to only those contained within a triangle.
@@ -29,7 +29,7 @@ import Contains from './Contains';
  *
  * @return {Phaser.Geom.Point[]} An array containing all the points from `points` that are within the triangle, if an array was provided as `out`, points will be appended to that array and it will also be returned here.
  */
-export default function ContainsArray (triangle: ITriangle, points: IVec2[], returnFirst: boolean = false, out: Vec2[] = []): Vec2[]
+export function ContainsArray (triangle: ITriangle, points: IVec2[], returnFirst: boolean = false, out: Vec2[] = []): Vec2[]
 {
     let skip: boolean = false;
 

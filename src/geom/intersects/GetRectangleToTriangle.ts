@@ -5,12 +5,12 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import RectangleToTriangle from './RectangleToTriangle';
-import GetLineToRectangle from './GetLineToRectangle';
-import IRectangle from '../rectangle/IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
-import GetEdges from '../triangle/GetEdges';
-import ITriangle from '../triangle/ITriangle';
+import { RectangleToTriangle } from './RectangleToTriangle';
+import { GetLineToRectangle } from './GetLineToRectangle';
+import { IRectangle } from '../rectangle/IRectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
+import { GetEdges } from '../triangle/GetEdges';
+import { ITriangle } from '../triangle/ITriangle';
 
 /**
  * Checks for intersection between Rectangle shape and Triangle shape,
@@ -25,7 +25,7 @@ import ITriangle from '../triangle/ITriangle';
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetRectangleToTriangle (rect: IRectangle, triangle: ITriangle, out: Vec2[] = []): Vec2[]
+export function GetRectangleToTriangle (rect: IRectangle, triangle: ITriangle, out: Vec2[] = []): Vec2[]
 {
     if (RectangleToTriangle(rect, triangle))
     {

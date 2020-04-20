@@ -1,8 +1,8 @@
-import ICamera from '../camera/ICamera';
-import IGameObject from '../gameobjects/gameobject/IGameObject';
-import ISprite from '../gameobjects/sprite/ISprite';
+import { ICamera } from '../camera/ICamera';
+import { IGameObject } from '../gameobjects/gameobject/IGameObject';
+import { ISprite } from '../gameobjects/sprite/ISprite';
 
-export default interface IWorld
+export interface IWorld
 {
     camera: ICamera;
     dirtyFrame: number;

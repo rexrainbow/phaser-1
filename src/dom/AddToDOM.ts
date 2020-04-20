@@ -1,6 +1,6 @@
-import GetElement from './GetElement';
+import { GetElement } from './GetElement';
 
-export default function AddToDOM (element: HTMLElement, parent?: string | HTMLElement): HTMLElement
+export function AddToDOM (element: HTMLElement, parent?: string | HTMLElement): HTMLElement
 {
     const target: HTMLElement = GetElement(parent);
 

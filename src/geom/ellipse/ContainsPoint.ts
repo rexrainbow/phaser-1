@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
-import IVec2 from '../../math/vec2/IVec2';
-import Contains from './Contains';
+import { IEllipse } from './IEllipse';
+import { IVec2 } from '../../math/vec2/IVec2';
+import { Contains } from './Contains';
 
 /**
  * Check to see if the Ellipse contains the given Point object.
@@ -19,7 +19,7 @@ import Contains from './Contains';
  *
  * @return {boolean} True if the Point coordinates are within the circle, otherwise false.
  */
-export default function ContainsPoint (ellipse: IEllipse, point: IVec2): boolean
+export function ContainsPoint (ellipse: IEllipse, point: IVec2): boolean
 {
     return Contains(ellipse, point.x, point.y);
 }

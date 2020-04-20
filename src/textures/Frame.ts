@@ -1,6 +1,6 @@
-import Texture from './Texture';
+import { Texture } from './Texture';
 
-export default class Frame
+export class Frame
 {
     texture: Texture;
     key: string | number;

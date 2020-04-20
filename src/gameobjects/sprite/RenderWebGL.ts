@@ -1,8 +1,8 @@
-import IShader from '../../renderer/webgl1/shaders/IShader';
-import WebGLRenderer from '../../renderer/webgl1/WebGLRenderer';
-import ISprite from './ISprite';
+import { IShader } from '../../renderer/webgl1/shaders/IShader';
+import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
+import { ISprite } from './ISprite';
 
-export default function RenderWebGL (sprite: ISprite, renderer: WebGLRenderer, shader: IShader, startActiveTexture: number)
+export function RenderWebGL (sprite: ISprite, renderer: WebGLRenderer, shader: IShader, startActiveTexture: number)
 {
     const texture = sprite.texture;
 

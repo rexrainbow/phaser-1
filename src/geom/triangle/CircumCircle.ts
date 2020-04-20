@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
-import Circle from '../Circle/Circle';
+import { ITriangle } from './ITriangle';
+import { Circle } from '../Circle/Circle';
 
 
 /**
@@ -24,7 +24,7 @@ import Circle from '../Circle/Circle';
  *
  * @return {Phaser.Geom.Circle} The updated `out` Circle, or a new Circle if none was provided.
  */
-export default function CircumCircle (triangle: ITriangle, out: Circle = new Circle()): Circle
+export function CircumCircle (triangle: ITriangle, out: Circle = new Circle()): Circle
 {
     const { x1, y1, x2, y2, x3, y3 } = triangle;
 

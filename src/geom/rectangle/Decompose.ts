@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { IRectangle } from './IRectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Create an array of points for each corner of a Rectangle
@@ -19,7 +19,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {array} Will return the array you specified or a new array containing the points of the Rectangle.
  */
-export default function Decompose (rect: IRectangle, out: Vec2[] = []): Vec2[]
+export function Decompose (rect: IRectangle, out: Vec2[] = []): Vec2[]
 {
     out.push(
         new Vec2(rect.x, rect.y),

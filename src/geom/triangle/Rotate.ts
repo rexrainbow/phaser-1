@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import RotateAroundXY from './RotateAroundXY';
-import InCenter from './InCenter';
-import ITriangle from './ITriangle';
+import { RotateAroundXY } from './RotateAroundXY';
+import { InCenter } from './InCenter';
+import { ITriangle } from './ITriangle';
 
 /**
  * Rotates a Triangle about its incenter, which is the point at which its three angle bisectors meet.
@@ -21,7 +21,7 @@ import ITriangle from './ITriangle';
  *
  * @return {Phaser.Geom.Triangle} The rotated Triangle.
  */
-export default function Rotate (triangle: ITriangle, angle: number): ITriangle
+export function Rotate (triangle: ITriangle, angle: number): ITriangle
 {
     const point = InCenter(triangle);
 

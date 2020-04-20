@@ -1,4 +1,4 @@
-import IAnimatedSprite from './IAnimatedSprite';
+import { IAnimatedSprite } from './IAnimatedSprite';
 
 export type AtlasFrameConfig = {
     key: string,
@@ -9,7 +9,7 @@ export type AtlasFrameConfig = {
     suffix?: string
 };
 
-export default function AddAnimationFromAtlas (config: AtlasFrameConfig, ...sprite: IAnimatedSprite[])
+export function AddAnimationFromAtlas (config: AtlasFrameConfig, ...sprite: IAnimatedSprite[])
 {
     const {
         key,

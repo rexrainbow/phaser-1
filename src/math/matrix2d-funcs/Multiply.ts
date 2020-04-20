@@ -1,9 +1,9 @@
-import IMatrix2D from '../matrix2d/IMatrix2D';
-import Matrix2D from '../matrix2d/Matrix2D';
+import { IMatrix2D } from '../matrix2d/IMatrix2D';
+import { Matrix2D } from '../matrix2d/Matrix2D';
 
 //  Multiplies matrix a by b and returns the result in a new Matrix2D.
 
-export default function Multiply (a: IMatrix2D, b: IMatrix2D): Matrix2D
+export function Multiply (a: IMatrix2D, b: IMatrix2D): Matrix2D
 {
     const { a: a0, b: b0, c: c0, d: d0, tx: tx0, ty: ty0 } = a;
     const { a: a1, b: b1, c: c1, d: d1, tx: tx1, ty: ty1 } = b;

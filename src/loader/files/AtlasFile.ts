@@ -1,11 +1,11 @@
-import File from '../File';
-import JSONFile from './JSONFile';
-import ImageFile from './ImageFile';
-import GameInstance from '../../GameInstance';
-import AtlasParser from '../../textures/parsers/AtlasParser';
-import GetURL from '../GetURL';
+import { File } from '../File';
+import { JSONFile } from './JSONFile';
+import { ImageFile } from './ImageFile';
+import { GameInstance } from '../../GameInstance';
+import { AtlasParser } from '../../textures/parsers/AtlasParser';
+import { GetURL } from '../GetURL';
 
-export default function AtlasFile (key: string, textureURL?: string, atlasURL?: string): File
+export function AtlasFile (key: string, textureURL?: string, atlasURL?: string): File
 {
     const json = JSONFile(key, atlasURL);
     const image = ImageFile(key, textureURL);

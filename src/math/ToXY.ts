@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Vec2 from './vec2/Vec2';
+import { Vec2 } from './vec2/Vec2';
 
 /**
  * Returns a Vector2 containing the x and y position of the given index in a `width` x `height` sized grid.
@@ -23,7 +23,7 @@ import Vec2 from './vec2/Vec2';
  *
  * @return {Vec2} A Vector2 where the x and y properties contain the given grid index.
  */
-export default function ToXY (index: number, width: number, height: number, out: Vec2 = new Vec2()): Vec2
+export function ToXY (index: number, width: number, height: number, out: Vec2 = new Vec2()): Vec2
 {
     let x = 0;
     let y = 0;

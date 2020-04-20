@@ -29,7 +29,7 @@ function generateSrc (maxIfs: number): string
     return src;
 }
 
-export default function CheckShaderMaxIfStatements (maxIfs: number, gl: WebGLRenderingContext): number
+export function CheckShaderMaxIfStatements (maxIfs: number, gl: WebGLRenderingContext): number
 {
     const shader = gl.createShader(gl.FRAGMENT_SHADER);
 

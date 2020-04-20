@@ -1,6 +1,6 @@
-import IAnimatedSprite from './IAnimatedSprite';
+import { IAnimatedSprite } from './IAnimatedSprite';
 
-export default function AddAnimation (key: string, frames: string[] | number[], ...sprite: IAnimatedSprite[])
+export function AddAnimation (key: string, frames: string[] | number[], ...sprite: IAnimatedSprite[])
 {
     sprite.forEach(entity => {
 

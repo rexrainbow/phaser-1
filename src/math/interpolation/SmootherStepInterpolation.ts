@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import SmootherStep from '../SmootherStep';
+import { SmootherStep } from '../SmootherStep';
 
 /**
  * A Smoother Step interpolation method.
@@ -19,7 +19,7 @@ import SmootherStep from '../SmootherStep';
  *
  * @return {number} The interpolated value.
  */
-export default function SmootherStepInterpolation (t: number, min: number, max: number): number
+export function SmootherStepInterpolation (t: number, min: number, max: number): number
 {
     return min + (max - min) * SmootherStep(t, 0, 1);
 }

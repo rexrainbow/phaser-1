@@ -18,7 +18,7 @@
  *
  * @return {boolean} `true` if the values are fuzzily equal, otherwise `false`.
  */
-export default function Equal (a: number, b: number, epsilon: number = 0.0001): boolean
+export function FuzzyEqual (a: number, b: number, epsilon: number = 0.0001): boolean
 {
     return Math.abs(a - b) < epsilon;
 }

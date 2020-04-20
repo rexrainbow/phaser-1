@@ -1,6 +1,6 @@
-import File from './File';
+import { File } from './File';
 
-export default function ImageTagLoader (file: File): Promise<File>
+export function ImageTagLoader (file: File): Promise<File>
 {
     file.data = new Image();
 

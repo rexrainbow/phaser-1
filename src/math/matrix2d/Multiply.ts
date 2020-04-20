@@ -1,8 +1,8 @@
-import IMatrix2D from './IMatrix2D';
+import { IMatrix2D } from './IMatrix2D';
 
 //  Multiplies the target Matrix by the src Matrix and returns the target.
 
-export default function Multiply (target: IMatrix2D, src: IMatrix2D): IMatrix2D
+export function Multiply (target: IMatrix2D, src: IMatrix2D): IMatrix2D
 {
     const { a: a0, b: b0, c: c0, d: d0, tx: tx0, ty: ty0 } = target;
     const { a: a1, b: b1, c: c1, d: d1, tx: tx1, ty: ty1 } = src;

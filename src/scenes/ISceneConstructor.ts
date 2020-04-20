@@ -1,7 +1,7 @@
-import IScene from './IScene';
-import ISceneConfig from './ISceneConfig';
+import { IScene } from './IScene';
+import { ISceneConfig } from './ISceneConfig';
 
-export default interface ISceneConstructor
+export interface ISceneConstructor
 {
     new (config?: string | ISceneConfig): IScene
 }

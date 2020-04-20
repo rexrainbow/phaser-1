@@ -1,6 +1,6 @@
-import IAnimatedSprite from './IAnimatedSprite';
+import { IAnimatedSprite } from './IAnimatedSprite';
 
-export default interface IAnimationPlayConfig
+export interface IAnimationPlayConfig
 {
     speed?: number;
     repeat?: number;

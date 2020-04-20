@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Centroid from './Centroid';
-import Offset from './Offset';
-import ITriangle from './ITriangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { Centroid } from './Centroid';
+import { Offset } from './Offset';
+import { ITriangle } from './ITriangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * @callback CenterFunction
@@ -34,7 +34,7 @@ type CenterFunction = (triangle: ITriangle) => Vec2;
  *
  * @return {Phaser.Geom.Triangle} The Triangle that was centered.
  */
-export default function CenterOn (triangle: ITriangle, x: number, y: number, centerFunc: CenterFunction = Centroid): ITriangle
+export function CenterOn (triangle: ITriangle, x: number, y: number, centerFunc: CenterFunction = Centroid): ITriangle
 {
     //  Get the center of the triangle
     const center = centerFunc(triangle);

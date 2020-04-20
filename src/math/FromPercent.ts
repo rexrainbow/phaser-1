@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Clamp from './Clamp';
+import { Clamp } from './Clamp';
 
 /**
  * Return a value based on the range between `min` and `max` and the percentage given.
@@ -18,7 +18,7 @@ import Clamp from './Clamp';
  *
  * @return {number} The value that is `percent` percent between `min` and `max`.
  */
-export default function FromPercent (percent: number, min: number, max?: number): number
+export function FromPercent (percent: number, min: number, max?: number): number
 {
     percent = Clamp(percent, 0, 1);
 

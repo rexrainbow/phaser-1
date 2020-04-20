@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
+import { ILine } from './ILine';
 
 /**
  * Center a line on the given coordinates.
@@ -18,7 +18,7 @@ import ILine from './ILine';
  *
  * @return {Phaser.Geom.Line} The centered line.
  */
-export default function CenterOn (line: ILine, x: number, y: number): ILine
+export function CenterOn (line: ILine, x: number, y: number): ILine
 {
     const tx = x - ((line.x1 + line.x2) / 2);
     const ty = y - ((line.y1 + line.y2) / 2);

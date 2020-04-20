@@ -1,4 +1,4 @@
-import GetElement from '../dom/GetElement';
+import { GetElement } from '../dom/GetElement';
 
 let _parent: HTMLElement = null;
 

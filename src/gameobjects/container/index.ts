@@ -1,31 +1,14 @@
-import AddChild from './AddChild';
-import AddChildAt from './AddChildAt';
-import AddChildren from './AddChildren';
-import Container from './Container';
-import DestroyChildren from './DestroyChildren';
-import GetChildAt from './GetChildAt';
-import GetChildIndex from './GetChildIndex';
-import RemoveChild from './RemoveChild';
-import RemoveChildAt from './RemoveChildAt';
-import RemoveChildren from './RemoveChildren';
-import RemoveChildrenBetween from './RemoveChildrenBetween';
-import ReparentChildren from './ReparentChildren';
-import SetParent from './SetParent';
-import SwapChildren from './SwapChildren';
-
-export {
-    AddChild,
-    AddChildAt,
-    AddChildren,
-    Container,
-    DestroyChildren,
-    GetChildAt,
-    GetChildIndex,
-    RemoveChild,
-    RemoveChildAt,
-    RemoveChildren,
-    RemoveChildrenBetween,
-    ReparentChildren,
-    SetParent,
-    SwapChildren
-}
+export * as AddChild from './AddChild';
+export * as AddChildAt from './AddChildAt';
+export * as AddChildren from './AddChildren';
+export * as Container from './Container';
+export * as DestroyChildren from './DestroyChildren';
+export * as GetChildAt from './GetChildAt';
+export * as GetChildIndex from './GetChildIndex';
+export * as RemoveChild from './RemoveChild';
+export * as RemoveChildAt from './RemoveChildAt';
+export * as RemoveChildren from './RemoveChildren';
+export * as RemoveChildrenBetween from './RemoveChildrenBetween';
+export * as ReparentChildren from './ReparentChildren';
+export * as SetParent from './SetParent';
+export * as SwapChildren from './SwapChildren';

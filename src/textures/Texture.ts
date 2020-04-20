@@ -1,11 +1,11 @@
-import Frame from './Frame';
-import SetGLTextureFilterMode from '../renderer/webgl1/SetGLTextureFilterMode';
-import DeleteGLTexture from '../renderer/webgl1/DeleteGLTexture';
-import DeleteFramebuffer from '../renderer/webgl1/DeleteFramebuffer';
-import CreateGLTexture from '../renderer/webgl1/CreateGLTexture';
-import UpdateGLTexture from '../renderer/webgl1/UpdateGLTexture';
+import { Frame } from './Frame';
+import { SetGLTextureFilterMode } from '../renderer/webgl1/SetGLTextureFilterMode';
+import { DeleteGLTexture } from '../renderer/webgl1/DeleteGLTexture';
+import { DeleteFramebuffer } from '../renderer/webgl1/DeleteFramebuffer';
+import { CreateGLTexture } from '../renderer/webgl1/CreateGLTexture';
+import { UpdateGLTexture } from '../renderer/webgl1/UpdateGLTexture';
 
-export default class Texture
+export class Texture
 {
     //  Unique identifier of this Texture, if stored in the Texture Manager
     key: string = '';

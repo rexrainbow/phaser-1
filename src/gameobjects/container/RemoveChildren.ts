@@ -1,8 +1,8 @@
-import IGameObject from '../gameobject/IGameObject';
-import IParent from './IParent';
-import RemoveChild from './RemoveChild';
+import { IGameObject } from '../gameobject/IGameObject';
+import { IParent } from './IParent';
+import { RemoveChild } from './RemoveChild';
 
-export default function RemoveChildren (parent: IParent, ...children: IGameObject[])
+export function RemoveChildren (parent: IParent, ...children: IGameObject[])
 {
     children.forEach(child => {
 

@@ -1,7 +1,7 @@
-import PackColors from '../../renderer/webgl1/PackColors';
-import ISprite from './ISprite';
+import { PackColors } from '../../renderer/webgl1/PackColors';
+import { ISprite } from './ISprite';
 
-export default function SetQuadAlpha (topLeft: number, topRight: number, bottomLeft: number, bottomRight: number, ...sprite: ISprite[])
+export function SetQuadAlpha (topLeft: number, topRight: number, bottomLeft: number, bottomRight: number, ...sprite: ISprite[])
 {
     sprite.forEach(entity => {
 

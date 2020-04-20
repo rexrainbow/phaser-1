@@ -4,16 +4,6 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Ceil from './SnapCeil';
-import Floor from './SnapFloor';
-import To from './SnapTo';
-
-/**
- * @namespace Phaser.Math.Snap
- */
-
-export {
-    Ceil,
-    Floor,
-    To
-}
+export * as SnapCeil from './SnapCeil';
+export * as SnapFloor from './SnapFloor';
+export * as SnapTo from './SnapTo';

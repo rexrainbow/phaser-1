@@ -1,12 +1,13 @@
-import GameObject from '../gameobject/GameObject';
-import Scene from '../../scenes/Scene';
-import Texture from '../../textures/Texture';
-import ISprite from '../sprite/ISprite';
-import WebGLRenderer from '../../renderer/WebGLRenderer';
-import MultiTextureQuadShader from '../../renderer/MultiTextureQuadShader';
-import DeleteGLBuffer from '../../renderer/DeleteGLBuffer';
+import { GameObject } from '../gameobject/GameObject';
+import { Scene } from '../../scenes/Scene';
+import { Texture } from '../../textures/Texture';
+import { ISprite } from '../sprite/ISprite';
+import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
+import { IShader } from '../../renderer/webgl1/shaders/IShader';
+import { DeleteGLBuffer } from '../../renderer/webgl1/DeleteGLBuffer';
+import { GameInstance } from '../../GameInstance';
 
-export default class SpriteBuffer extends GameObject
+export class SpriteBuffer extends GameObject
 {
     /**
      * The Array Buffer.
@@ -63,15 +64,17 @@ export default class SpriteBuffer extends GameObject
     texture: Texture;
     gl: WebGLRenderingContext;
     renderer: WebGLRenderer;
-    shader: MultiTextureQuadShader;
+    shader: IShader;
 
-    constructor (scene: Scene, maxSize: number)
+    constructor (maxSize: number)
     {
-        super(scene);
+        super();
 
-        this.setType('SpriteBuffer');
+        this.type = 'SpriteBuffer';
 
-        const renderer = scene.game.renderer;
+        const game = GameInstance.get();
+
+        const renderer = game.renderer;
 
         this.renderer = renderer;
         this.gl = renderer.gl;
@@ -148,7 +151,7 @@ export default class SpriteBuffer extends GameObject
         this.texture = null;
     }
 
-    renderWebGL (renderer: WebGLRenderer, shader: MultiTextureQuadShader, startActiveTexture: number)
+    renderWebGL (renderer: WebGLRenderer, shader: IShader, startActiveTexture: number)
     {
         shader.flush();
 
@@ -260,7 +263,7 @@ export default class SpriteBuffer extends GameObject
         DeleteGLBuffer(this.indexBuffer);
 
         //  Call before removing the Scene component :)
-        this.forceSceneRefresh();
+        // this.forceSceneRefresh();
 
         super.destroy();
     }

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Nudges (translates) the top left corner of a Rectangle by a given offset.
@@ -20,7 +20,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The adjusted Rectangle.
  */
-export default function Offset (rect: IRectangle, x: number, y: number): IRectangle
+export function Offset (rect: IRectangle, x: number, y: number): IRectangle
 {
     rect.x += x;
     rect.y += y;

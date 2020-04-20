@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
-import Vec2 from '../../math/vec2/Vec2';
+import { ILine } from './ILine';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns a random point on a given Line.
@@ -20,7 +20,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} A random Point on the Line.
  */
-export default function Random (line: ILine, out: Vec2 = new Vec2()): Vec2
+export function Random (line: ILine, out: Vec2 = new Vec2()): Vec2
 {
     const t = Math.random();
 

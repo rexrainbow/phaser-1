@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Length from '../line/Length';
-import ITriangle from './ITriangle';
-import Vec2 from '../../math/vec2/Vec2';
-import GetEdges from './GetEdges';
+import { Length } from '../line/Length';
+import { ITriangle } from './ITriangle';
+import { Vec2 } from '../../math/vec2/Vec2';
+import { GetEdges } from './GetEdges';
 
 /**
  * Returns a Point from around the perimeter of a Triangle.
@@ -23,7 +23,7 @@ import GetEdges from './GetEdges';
  *
  * @return {(Phaser.Geom.Point|object)} A Point object containing the given position from the perimeter of the triangle.
  */
-export default function GetPoint (triangle: ITriangle, position: number, out: Vec2 = new Vec2()): Vec2
+export function GetPoint (triangle: ITriangle, position: number, out: Vec2 = new Vec2()): Vec2
 {
     const [ line1, line2, line3 ] = GetEdges(triangle);
 

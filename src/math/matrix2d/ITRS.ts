@@ -1,8 +1,8 @@
-import IMatrix2D from './IMatrix2D';
+import { IMatrix2D } from './IMatrix2D';
 
 //  Apply the identity, translate, rotate and scale operations on the target Matrix then returns it.
 
-export default function ITRS (target: IMatrix2D, x: number, y: number, angle: number, scaleX: number, scaleY: number): IMatrix2D
+export function ITRS (target: IMatrix2D, x: number, y: number, angle: number, scaleX: number, scaleY: number): IMatrix2D
 {
     if (angle === 0)
     {

@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
-import Rectangle from '../rectangle/Rectangle';
+import { ICircle } from './ICircle';
+import { Rectangle } from '../rectangle/Rectangle';
 
 /**
  * Returns the bounds of the Circle object.
@@ -20,7 +20,7 @@ import Rectangle from '../rectangle/Rectangle';
  *
  * @return {(Phaser.Geom.Rectangle|object)} The Rectangle object containing the Circles bounds.
  */
-export default function GetBounds (circle: ICircle, out: Rectangle = new Rectangle()): Rectangle
+export function GetBounds (circle: ICircle, out: Rectangle = new Rectangle()): Rectangle
 {
     return out.set(
         circle.left,

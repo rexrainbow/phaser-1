@@ -1,4 +1,4 @@
-export default class StatsGraph
+export class StatsGraph
 {
     div: HTMLDivElement;
     title: HTMLParagraphElement;

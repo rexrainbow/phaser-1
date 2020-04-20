@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Normalize from './Normalize';
+import { NormalizeAngle } from './NormalizeAngle';
 
 /**
  * Reverse the given angle.
@@ -16,7 +16,7 @@ import Normalize from './Normalize';
  *
  * @return {number} The reversed angle, in radians.
  */
-export default function Reverse (angle: number): number
+export function ReverseAngle (angle: number): number
 {
-    return Normalize(angle + Math.PI);
+    return NormalizeAngle(angle + Math.PI);
 }

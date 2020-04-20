@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Linear from '../Linear';
+import { Linear } from '../Linear';
 
 /**
  * A linear interpolation method.
@@ -18,7 +18,7 @@ import Linear from '../Linear';
  *
  * @return {!number} The interpolated value.
  */
-export default function LinearInterpolation (v: number[], k: number): number
+export function LinearInterpolation (v: number[], k: number): number
 {
     const m = v.length - 1;
     const f = m * k;

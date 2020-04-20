@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Wrap from '../Wrap';
+import { Wrap } from '../Wrap';
 
 /**
  * Wrap an angle in degrees.
@@ -18,7 +18,7 @@ import Wrap from '../Wrap';
  *
  * @return {number} The wrapped angle, in degrees.
  */
-export default function WrapDegrees (angle: number): number
+export function WrapAngleDegrees (angle: number): number
 {
     return Wrap(angle, -180, 180);
 }

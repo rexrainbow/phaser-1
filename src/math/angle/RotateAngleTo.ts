@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import MATH_CONST from '../const';
+import { MATH_CONST } from '../const';
 
 /**
  * Rotates `currentAngle` towards `targetAngle`, taking the shortest rotation distance. The `lerp` argument is the amount to rotate by in this call.
@@ -18,7 +18,7 @@ import MATH_CONST from '../const';
  *
  * @return {number} The adjusted angle.
  */
-export default function RotateTo (currentAngle: number, targetAngle: number, lerp: number = 0.05): number
+export function RotateToAngle (currentAngle: number, targetAngle: number, lerp: number = 0.05): number
 {
     if (currentAngle === targetAngle)
     {

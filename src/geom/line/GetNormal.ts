@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import MATH_CONST from '../../math/const';
-import Angle from './Angle';
-import ILine from './ILine';
-import Vec2 from '../../math/vec2/Vec2';
+import { MATH_CONST } from '../../math/const';
+import { Angle } from './Angle';
+import { ILine } from './ILine';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Calculate the normal of the given line.
@@ -24,9 +24,9 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} The normal of the Line.
  */
-export default function GetNormal (line: ILine, out: Vec2 = new Vec2()): Vec2
+export function GetNormal (line: ILine, out: Vec2 = new Vec2()): Vec2
 {
-    const a = Angle(line) - MATH_CONST.TAU;
+    const a = Angle(line) - MATH_CONST.HALF_PI;
 
     out.x = Math.cos(a);
     out.y = Math.sin(a);

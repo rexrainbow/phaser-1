@@ -1,6 +1,6 @@
-import File from './File';
+import { File } from './File';
 
-export default function XHRLoader (file: File): Promise<File>
+export function XHRLoader (file: File): Promise<File>
 {
     const xhr = new XMLHttpRequest();
 

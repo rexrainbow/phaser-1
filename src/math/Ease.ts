@@ -271,7 +271,7 @@ const easeCache = {
 
 };
 
-export default function Ease (progress: number, easing: keyof typeof easeCache)
+export function Ease (progress: number, easing: keyof typeof easeCache)
 {
     if (easeCache[easing])
     {

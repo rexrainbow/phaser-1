@@ -4,11 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
-import CircumferencePoint from './CircumferencePoint';
-import FromPercent from '../../math/FromPercent';
-import MATH_CONST from '../../math/const';
-import Vec2 from '../../math/vec2/Vec2';
+import { ICircle } from './ICircle';
+import { CircumferencePoint } from './CircumferencePoint';
+import { FromPercent } from '../../math/FromPercent';
+import { MATH_CONST } from '../../math/const';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns a Point object containing the coordinates of a point on the circumference of the Circle
@@ -26,7 +26,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} A Point, or point-like object, containing the coordinates of the point around the circle.
  */
-export default function GetPoint (circle: ICircle, position: number, out: Vec2 = new Vec2()): Vec2
+export function GetPoint (circle: ICircle, position: number, out: Vec2 = new Vec2()): Vec2
 {
     const angle = FromPercent(position, 0, MATH_CONST.PI2);
 

@@ -16,7 +16,7 @@
  *
  * @return {number} The resulting value.
  */
-export default function MinSub (value: number, amount: number, min: number): number
+export function MinSub (value: number, amount: number, min: number): number
 {
     return Math.max(value - amount, min);
 }

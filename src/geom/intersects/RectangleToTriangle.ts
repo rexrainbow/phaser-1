@@ -4,14 +4,14 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import LineToLine from './LineToLine';
-import Contains from '../rectangle/Contains';
-import ContainsArray from '../triangle/ContainsArray';
-import Decompose from '../rectangle/Decompose';
-import IRectangle from '../rectangle/IRectangle';
-import ITriangle from '../triangle/ITriangle';
-import GetTriangleEdges from '../triangle/GetEdges';
-import GetRectangleEdges from '../Rectangle/GetEdges';
+import { LineToLine } from './LineToLine';
+import { Contains } from '../rectangle/Contains';
+import { ContainsArray } from '../triangle/ContainsArray';
+import { Decompose } from '../rectangle/Decompose';
+import { IRectangle } from '../rectangle/IRectangle';
+import { ITriangle } from '../triangle/ITriangle';
+import { GetEdges as GetTriangleEdges } from '../triangle/GetEdges';
+import { GetEdges as GetRectangleEdges } from '../Rectangle/GetEdges';
 
 /**
  * Checks for intersection between Rectangle shape and Triangle shape.
@@ -24,7 +24,7 @@ import GetRectangleEdges from '../Rectangle/GetEdges';
  *
  * @return {boolean} A value of `true` if objects intersect; otherwise `false`.
  */
-export default function RectangleToTriangle (rect: IRectangle, triangle: ITriangle): boolean
+export function RectangleToTriangle (rect: IRectangle, triangle: ITriangle): boolean
 {
     //  First the cheapest ones:
 

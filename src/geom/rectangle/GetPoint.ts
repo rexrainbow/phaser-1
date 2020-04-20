@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import Perimeter from './Perimeter';
-import Vec2 from '../../math/vec2/Vec2';
+import { IRectangle } from './IRectangle';
+import { Perimeter } from './Perimeter';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Calculates the coordinates of a point at a certain `position` on the Rectangle's perimeter.
@@ -26,7 +26,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {Phaser.Geom.Point} The updated `output` object, or a new Point if no `output` object was given.
  */
-export default function GetPoint (rectangle: IRectangle, position: number, out: Vec2 = new Vec2()): Vec2
+export function GetPoint (rectangle: IRectangle, position: number, out: Vec2 = new Vec2()): Vec2
 {
     if (position <= 0 || position >= 1)
     {

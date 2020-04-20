@@ -1,8 +1,8 @@
-import IMatrix2D from './IMatrix2D';
+import { IMatrix2D } from './IMatrix2D';
 
 //  Inverts the target Matrix and then returns it
 
-export default function Invert (target: IMatrix2D): IMatrix2D
+export function Invert (target: IMatrix2D): IMatrix2D
 {
     const { a, b, c, d, tx, ty } = target;
 

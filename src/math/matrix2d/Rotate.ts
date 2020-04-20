@@ -1,8 +1,8 @@
-import IMatrix2D from './IMatrix2D';
+import { IMatrix2D } from './IMatrix2D';
 
 //  Rotates the target Matrix by the angle (in radians), then returns the target Matrix.
 
-export default function Rotate (target: IMatrix2D, angle: number): IMatrix2D
+export function Rotate (target: IMatrix2D, angle: number): IMatrix2D
 {
     const { a, b, c, d, tx, ty } = target;
 

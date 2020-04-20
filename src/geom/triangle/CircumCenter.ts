@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { ITriangle } from './ITriangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 
 /**
@@ -46,7 +46,7 @@ function det (m00: number, m01: number, m10: number, m11: number): number
  *
  * @return {Phaser.Math.Vector2} A Vector2 object holding the coordinates of the circumcenter of the Triangle.
  */
-export default function CircumCenter (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
+export function CircumCenter (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
 {
     const cx = triangle.x3;
     const cy = triangle.y3;

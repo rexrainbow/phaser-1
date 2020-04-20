@@ -1,7 +1,7 @@
-import IParent from './IParent';
-import IGameObject from '../gameobject/IGameObject';
+import { IParent } from './IParent';
+import { IGameObject } from '../gameobject/IGameObject';
 
-export default function RemoveChildrenBetween (parent: IParent, beginIndex: number = 0, endIndex?: number): IGameObject[]
+export function RemoveChildrenBetween (parent: IParent, beginIndex: number = 0, endIndex?: number): IGameObject[]
 {
     const children = parent.children;
 

@@ -1,6 +1,6 @@
-import IText from './IText';
+import { IText } from './IText';
 
-export default function SetFillStyle (style: string | CanvasGradient | CanvasPattern, ...text: IText[])
+export function SetFillStyle (style: string | CanvasGradient | CanvasPattern, ...text: IText[])
 {
     text.forEach(entity => {
 

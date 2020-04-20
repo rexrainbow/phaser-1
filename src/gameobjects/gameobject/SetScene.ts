@@ -1,7 +1,7 @@
-import IScene from '../../scenes/IScene';
-import IGameObject from './IGameObject';
+import { IScene } from '../../scenes/IScene';
+import { IGameObject } from './IGameObject';
 
-export default function SetScene (scene: IScene, ...child: IGameObject[])
+export function SetScene (scene: IScene, ...child: IGameObject[])
 {
     child.forEach(entity => {
 

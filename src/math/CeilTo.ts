@@ -18,7 +18,7 @@
  *
  * @return {number} The rounded value.
  */
-export default function CeilTo (value: number, place: number = 0, base: number = 10): number
+export function CeilTo (value: number, place: number = 0, base: number = 10): number
 {
     const p = Math.pow(base, -place);
 

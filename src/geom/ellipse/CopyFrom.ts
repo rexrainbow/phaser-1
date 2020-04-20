@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
+import { IEllipse } from './IEllipse';
 
 /**
  * Copies the `x`, `y`, `width` and `height` properties from the `source` Ellipse
@@ -20,7 +20,7 @@ import IEllipse from './IEllipse';
  *
  * @return {Phaser.Geom.Ellipse} The destination Ellipse.
  */
-export default function CopyFrom (source: IEllipse, dest: IEllipse): IEllipse
+export function CopyFrom (source: IEllipse, dest: IEllipse): IEllipse
 {
     return dest.set(source.x, source.y, source.width, source.height);
 }

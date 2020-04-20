@@ -1,12 +1,12 @@
 import { GetScenes } from '../config';
-import Game from '../Game';
-import GameInstance from '../GameInstance';
-import GetConfigValue from './GetConfigValue';
-import IScene from './IScene';
-import ISceneConfig from './ISceneConfig';
+import { Game } from '../Game';
+import { GameInstance } from '../GameInstance';
+import { GetConfigValue } from './GetConfigValue';
+import { IScene } from './IScene';
+import { ISceneConfig } from './ISceneConfig';
 import { ISceneRenderData } from './ISceneRenderData';
 
-export default class SceneManager
+export class SceneManager
 {
     game: Game;
 

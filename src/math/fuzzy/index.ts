@@ -4,20 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Ceil from './Ceil';
-import Equal from './Equal';
-import Floor from './Floor';
-import GreaterThan from './GreaterThan';
-import LessThan from './LessThan';
-
-/**
- * @namespace Phaser.Math.Fuzzy
- */
-
-export {
-    Ceil,
-    Equal,
-    Floor,
-    GreaterThan,
-    LessThan
-}
+export * as FuzzyCeil from './FuzzyCeil';
+export * as FuzzyEqual from './FuzzyEqual';
+export * as FuzzyFloor from './FuzzyFloor';
+export * as FuzzyGreaterThan from './FuzzyGreaterThan';
+export * as FuzzyLessThan from './FuzzyLessThan';

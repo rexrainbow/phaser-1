@@ -1,6 +1,6 @@
-import ITransformGameObject from './ITransformGameObject';
+import { ITransformGameObject } from './ITransformGameObject';
 
-export default function SetSize (width: number, height: number, ...child: ITransformGameObject[])
+export function SetSize (width: number, height: number, ...child: ITransformGameObject[])
 {
     child.forEach(entity => {
 

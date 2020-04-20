@@ -16,7 +16,7 @@
  *
  * @return {number} The step t% of the way between p0 and p1.
  */
-export default function Linear (p0: number, p1: number, t: number): number
+export function Linear (p0: number, p1: number, t: number): number
 {
     return (p1 - p0) * t + p0;
 }

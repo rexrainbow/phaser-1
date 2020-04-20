@@ -16,7 +16,7 @@
  *
  * @return {number} The wrapped value.
  */
-export default function Wrap (value: number, min: number, max: number): number
+export function Wrap (value: number, min: number, max: number): number
 {
     const range = max - min;
 

@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import Perimeter from './Perimeter';
-import Vec2 from '../../math/vec2/Vec2';
+import { IRectangle } from './IRectangle';
+import { Perimeter } from './Perimeter';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns an array of points from the perimeter of the Rectangle, where each point is spaced out based
@@ -24,7 +24,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(array|Phaser.Geom.Point[])} An array containing the perimeter points from the Rectangle.
  */
-export default function MarchingAnts (rect: IRectangle, step?: number, quantity?: number, out: Vec2[] = []): Vec2[]
+export function MarchingAnts (rect: IRectangle, step?: number, quantity?: number, out: Vec2[] = []): Vec2[]
 {
     if (!step && !quantity)
     {

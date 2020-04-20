@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
+import { ICircle } from './ICircle';
 
 /**
  * Calculates the area of the circle.
@@ -16,7 +16,7 @@ import ICircle from './ICircle';
  *
  * @return {number} The area of the Circle.
  */
-export default function Area (circle: ICircle): number
+export function Area (circle: ICircle): number
 {
     return (circle.radius > 0) ? Math.PI * circle.radius * circle.radius : 0;
 }

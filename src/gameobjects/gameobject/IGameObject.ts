@@ -1,9 +1,9 @@
-import Rectangle from '../../geom/rectangle/Rectangle';
-import IInteractiveArea from '../../input/IInteractiveArea';
-import IScene from '../../scenes/IScene';
-import IParent from '../container/IParent';
+import { Rectangle } from '../../geom/rectangle/Rectangle';
+import { IInteractiveArea } from '../../input/IInteractiveArea';
+import { IScene } from '../../scenes/IScene';
+import { IParent } from '../container/IParent';
 
-export default interface IGameObject
+export interface IGameObject
 {
     scene: IScene;
     name: string;

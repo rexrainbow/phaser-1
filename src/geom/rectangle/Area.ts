@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Calculates the area of the given Rectangle object.
@@ -16,7 +16,7 @@ import IRectangle from './IRectangle';
  *
  * @return {number} The area of the Rectangle object.
  */
-export default function Area (rect: IRectangle): number
+export function Area (rect: IRectangle): number
 {
     return rect.width * rect.height;
 }

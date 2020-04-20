@@ -14,7 +14,7 @@
  *
  * @return {number} The nearest power of 2 to `value`.
  */
-export default function GetPowerOfTwo (value: number): number
+export function GetPowerOfTwo (value: number): number
 {
     var index = Math.log(value) / 0.6931471805599453;
 

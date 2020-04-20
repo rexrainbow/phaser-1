@@ -1,6 +1,6 @@
-import Loader from './Loader';
+import { Loader } from './Loader';
 
-export default class File
+export class File
 {
     key: string;
     url: string;

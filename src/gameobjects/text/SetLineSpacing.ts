@@ -1,6 +1,6 @@
-import IText from './IText';
+import { IText } from './IText';
 
-export default function SetLineSpacing (spacing: number, ...text: IText[])
+export function SetLineSpacing (spacing: number, ...text: IText[])
 {
     text.forEach(entity => {
 

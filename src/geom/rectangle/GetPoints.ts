@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import GetPoint from './GetPoint';
-import Perimeter from './Perimeter';
-import Vec2 from '../../math/vec2/Vec2';
+import { IRectangle } from './IRectangle';
+import { GetPoint } from './GetPoint';
+import { Perimeter } from './Perimeter';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Return an array of points from the perimeter of the rectangle, each spaced out based on the quantity or step required.
@@ -24,7 +24,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(array|Phaser.Geom.Point[])} An array of Points from the perimeter of the rectangle.
  */
-export default function GetPoints (rectangle: IRectangle, step: number, quantity: number = 0, out: Vec2[] = []): Vec2[]
+export function GetPoints (rectangle: IRectangle, step: number, quantity: number = 0, out: Vec2[] = []): Vec2[]
 {
     //  If quantity is a falsey value (false, null, 0, undefined, etc) then we calculate it based on the stepRate instead.
     if (!quantity)

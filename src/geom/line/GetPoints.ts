@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Length from './Length';
-import ILine from './ILine';
-import Vec2 from '../../math/vec2/Vec2';
+import { Length } from './Length';
+import { ILine } from './ILine';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Get a number of points along a line's length.
@@ -28,7 +28,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(array|Phaser.Geom.Point[])} An array of Points, or point-like objects, containing the coordinates of the points on the line.
  */
-export default function GetPoints (line: ILine, quantity: number, stepRate: number = 0, out: Vec2[] = []): Vec2[]
+export function GetPoints (line: ILine, quantity: number, stepRate: number = 0, out: Vec2[] = []): Vec2[]
 {
     //  If quantity is a falsey value (false, null, 0, undefined, etc) then we calculate it based on the stepRate instead.
     if (!quantity)

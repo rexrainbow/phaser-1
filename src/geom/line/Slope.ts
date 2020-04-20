@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
+import { ILine } from './ILine';
 
 /**
  * Calculate the slope of the given line.
@@ -16,7 +16,7 @@ import ILine from './ILine';
  *
  * @return {number} The slope of the line.
  */
-export default function Slope (line: ILine): number
+export function Slope (line: ILine): number
 {
     const { x1, y1, x2, y2 } = line;
 

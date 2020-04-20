@@ -1,6 +1,6 @@
-import IGameObject from './IGameObject';
+import { IGameObject } from './IGameObject';
 
-export default function SetVisible (visible: boolean, ...child: IGameObject[])
+export function SetVisible (visible: boolean, ...child: IGameObject[])
 {
     child.forEach(entity => {
 

@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Length from '../line/Length';
-import ITriangle from './ITriangle';
-import Vec2 from '../../math/vec2/Vec2';
-import GetEdges from './GetEdges';
+import { Length } from '../line/Length';
+import { ITriangle } from './ITriangle';
+import { Vec2 } from '../../math/vec2/Vec2';
+import { GetEdges } from './GetEdges';
 
 /**
  * Returns an array of evenly spaced points on the perimeter of a Triangle.
@@ -24,7 +24,7 @@ import GetEdges from './GetEdges';
  *
  * @return {(array|Phaser.Geom.Point[])} The modified `out` array, or a new array if none was provided.
  */
-export default function GetPoints (triangle: ITriangle, quantity: number, stepRate: number, out: Vec2[] = []): Vec2[]
+export function GetPoints (triangle: ITriangle, quantity: number, stepRate: number, out: Vec2[] = []): Vec2[]
 {
     const [ line1, line2, line3 ] = GetEdges(triangle);
 

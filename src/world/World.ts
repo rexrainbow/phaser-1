@@ -1,13 +1,13 @@
-import Camera from '../camera/Camera';
-import ICamera from '../camera/ICamera';
-import IContainer from '../gameobjects/container/IContainer';
-import IParent from '../gameobjects/container/IParent';
-import IGameObject from '../gameobjects/gameobject/IGameObject';
-import ISprite from '../gameobjects/sprite/ISprite';
-import RectangleToRectangle from '../geom/intersects/RectangleToRectangle';
-import Matrix2D from '../math/matrix2d/Matrix2D';
-import IScene from '../scenes/IScene';
-import IWorld from './IWorld';
+import { Camera } from '../camera/Camera';
+import { ICamera } from '../camera/ICamera';
+import { IContainer } from '../gameobjects/container/IContainer';
+import { IParent } from '../gameobjects/container/IParent';
+import { IGameObject } from '../gameobjects/gameobject/IGameObject';
+import { ISprite } from '../gameobjects/sprite/ISprite';
+import { RectangleToRectangle } from '../geom/intersects/RectangleToRectangle';
+import { Matrix2D } from '../math/matrix2d/Matrix2D';
+import { IScene } from '../scenes/IScene';
+import { IWorld } from './IWorld';
 
 export interface IWorldRenderResult {
     camera: ICamera;
@@ -15,7 +15,7 @@ export interface IWorldRenderResult {
     numRendered: number;
 }
 
-export default class World implements IWorld
+export class World implements IWorld
 {
     scene: IScene;
 

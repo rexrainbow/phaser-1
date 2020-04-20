@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Rounds a Rectangle's position and size down to the largest integer less than or equal to each current coordinate or dimension.
@@ -18,7 +18,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The adjusted Rectangle.
  */
-export default function FloorAll (rect: IRectangle): IRectangle
+export function FloorAll (rect: IRectangle): IRectangle
 {
     rect.x = Math.floor(rect.x);
     rect.y = Math.floor(rect.y);

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
+import { ICircle } from './ICircle';
 
 /**
  * Check to see if the Circle contains the given x / y coordinates.
@@ -18,7 +18,7 @@ import ICircle from './ICircle';
  *
  * @return {boolean} True if the coordinates are within the circle, otherwise false.
  */
-export default function Contains (circle: ICircle, x: number, y: number): boolean
+export function Contains (circle: ICircle, x: number, y: number): boolean
 {
     //  Check if x/y are within the bounds first
     if (circle.radius > 0 && x >= circle.left && x <= circle.right && y >= circle.top && y <= circle.bottom)

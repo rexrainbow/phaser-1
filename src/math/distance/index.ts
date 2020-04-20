@@ -4,24 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Between from './DistanceBetween';
-import BetweenPoints from './DistanceBetweenPoints';
-import BetweenPointsSquared from './DistanceBetweenPointsSquared';
-import Chebyshev from './DistanceChebyshev';
-import Power from './DistancePower';
-import Snake from './DistanceSnake';
-import Squared from './DistanceSquared';
-
-/**
- * @namespace Phaser.Math.Distance
- */
-
-export {
-    Between,
-    BetweenPoints,
-    BetweenPointsSquared,
-    Chebyshev,
-    Power,
-    Snake,
-    Squared
-}
+export * as DistanceBetween from './DistanceBetween';
+export * as DistanceBetweenPoints from './DistanceBetweenPoints';
+export * as DistanceBetweenPointsSquared from './DistanceBetweenPointsSquared';
+export * as ChebyshevDistance from './ChebyshevDistance';
+export * as DistancePower from './DistancePower';
+export * as SnakeDistance from './SnakeDistance';
+export * as DistanceSquared from './DistanceSquared';

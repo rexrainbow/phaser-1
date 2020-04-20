@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import GetAspectRatio from './GetAspectRatio';
-import CenterX from './CenterX';
-import CenterY from './CenterY';
+import { IRectangle } from './IRectangle';
+import { GetAspectRatio } from './GetAspectRatio';
+import { CenterX } from './CenterX';
+import { CenterY } from './CenterY';
 
 /**
  * Adjusts the target rectangle, changing its width, height and position,
@@ -26,7 +26,7 @@ import CenterY from './CenterY';
  *
  * @return {Phaser.Geom.Rectangle} The modified target rectangle instance.
  */
-export default function FitOutside (target: IRectangle, source: IRectangle): IRectangle
+export function FitOutside (target: IRectangle, source: IRectangle): IRectangle
 {
     const ratio = GetAspectRatio(target);
     let width = source.width;

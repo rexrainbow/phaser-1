@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Between from '../../math/Between';
-import ContainsRect from './ContainsRect';
-import IRectangle from './IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { Between } from '../../math/Between';
+import { ContainsRect } from './ContainsRect';
+import { IRectangle } from './IRectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Calculates a random point that lies within the `outer` Rectangle, but outside of the `inner` Rectangle.
@@ -24,7 +24,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {Phaser.Geom.Point} A Point object containing the random values in its `x` and `y` properties.
  */
-export default function RandomOutside (outer: IRectangle, inner: IRectangle, out: Vec2 = new Vec2()): Vec2
+export function RandomOutside (outer: IRectangle, inner: IRectangle, out: Vec2 = new Vec2()): Vec2
 {
     if (ContainsRect(outer, inner))
     {

@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Rectangle from './Rectangle';
-import IRectangle from './IRectangle';
+import { Rectangle } from './Rectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Creates a new Rectangle or repositions and/or resizes an existing Rectangle so that it encompasses the two given Rectangles, i.e. calculates their union.
@@ -21,7 +21,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The modified `out` Rectangle, or a new Rectangle if none was provided.
  */
-export default function Union (rectA: IRectangle, rectB: IRectangle, out: Rectangle = new Rectangle()): Rectangle
+export function Union (rectA: IRectangle, rectB: IRectangle, out: Rectangle = new Rectangle()): Rectangle
 {
     //  Cache vars so we can use one of the input rects as the output rect
     const x = Math.min(rectA.x, rectB.x);

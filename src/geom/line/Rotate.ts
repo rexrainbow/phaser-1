@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import RotateAroundXY from './RotateAroundXY';
-import ILine from './ILine';
+import { RotateAroundXY } from './RotateAroundXY';
+import { ILine } from './ILine';
 
 /**
  * Rotate a line around its midpoint by the given angle in radians.
@@ -20,7 +20,7 @@ import ILine from './ILine';
  *
  * @return {Phaser.Geom.Line} The rotated line.
  */
-export default function Rotate (line: ILine, angle: number): ILine
+export function Rotate (line: ILine, angle: number): ILine
 {
     const x = (line.x1 + line.x2) / 2;
     const y = (line.y1 + line.y2) / 2;

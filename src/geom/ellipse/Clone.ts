@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
-import Ellipse from './Ellipse';
+import { IEllipse } from './IEllipse';
+import { Ellipse } from './Ellipse';
 
 /**
  * Creates a new Ellipse instance based on the values contained in the given source.
@@ -17,7 +17,7 @@ import Ellipse from './Ellipse';
  *
  * @return {Phaser.Geom.Ellipse} A clone of the source Ellipse.
  */
-export default function Clone (source: IEllipse): Ellipse
+export function Clone (source: IEllipse): Ellipse
 {
     return new Ellipse(source.x, source.y, source.width, source.height);
 }

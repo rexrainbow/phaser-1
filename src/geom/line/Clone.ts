@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
-import Line from './Line';
+import { ILine } from './ILine';
+import { Line } from './Line';
 
 /**
  * Clone the given line.
@@ -17,7 +17,7 @@ import Line from './Line';
  *
  * @return {Phaser.Geom.Line} The cloned line.
  */
-export default function Clone (source: ILine): Line
+export function Clone (source: ILine): Line
 {
     return new Line(source.x1, source.y1, source.x2, source.y2);
 }

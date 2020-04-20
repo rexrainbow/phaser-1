@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Determines if the two objects (either Rectangles or Rectangle-like) have the same width and height values under strict equality.
@@ -17,7 +17,7 @@ import IRectangle from './IRectangle';
  *
  * @return {boolean} `true` if the objects have equivalent values for the `width` and `height` properties, otherwise `false`.
  */
-export default function SameDimensions (rect: IRectangle, toCompare: IRectangle): boolean
+export function SameDimensions (rect: IRectangle, toCompare: IRectangle): boolean
 {
     return (rect.width === toCompare.width && rect.height === toCompare.height);
 }

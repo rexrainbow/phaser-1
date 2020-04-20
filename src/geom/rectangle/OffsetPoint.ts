@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import IVec2 from '../../math/vec2/IVec2';
+import { IRectangle } from './IRectangle';
+import { IVec2 } from '../../math/vec2/IVec2';
 
 /**
  * Nudges (translates) the top-left corner of a Rectangle by the coordinates of a point (translation vector).
@@ -20,7 +20,7 @@ import IVec2 from '../../math/vec2/IVec2';
  *
  * @return {Phaser.Geom.Rectangle} The adjusted Rectangle.
  */
-export default function OffsetPoint (rect: IRectangle, point: IVec2): IRectangle
+export function OffsetPoint (rect: IRectangle, point: IVec2): IRectangle
 {
     rect.x += point.x;
     rect.y += point.y;

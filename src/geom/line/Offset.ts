@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
+import { ILine } from './ILine';
 
 /**
  * Offset a line by the given amount.
@@ -20,7 +20,7 @@ import ILine from './ILine';
  *
  * @return {Phaser.Geom.Line} The offset line.
  */
-export default function Offset (line: ILine, x: number, y: number): ILine
+export function Offset (line: ILine, x: number, y: number): ILine
 {
     line.x1 += x;
     line.y1 += y;

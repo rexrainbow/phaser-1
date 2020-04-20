@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { IRectangle } from './IRectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns the size of the Rectangle, expressed as a Point object.
@@ -21,7 +21,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} A Point object where `x` holds the width and `y` holds the height of the Rectangle.
  */
-export default function GetSize (rect: IRectangle, out: Vec2 = new Vec2()): Vec2
+export function GetSize (rect: IRectangle, out: Vec2 = new Vec2()): Vec2
 {
     return out.set(rect.width, rect.height);
 }

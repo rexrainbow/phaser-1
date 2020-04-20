@@ -1,9 +1,9 @@
-import Sprite from '../sprite/Sprite';
-import IAnimationData from './IAnimationData';
-import Frame from '../../textures/Frame';
-import IContainer from '../container/IContainer';
+import { Sprite } from '../sprite/Sprite';
+import { IAnimationData } from './IAnimationData';
+import { Frame } from '../../textures/Frame';
+import { IContainer } from '../container/IContainer';
 
-export default class AnimatedSprite extends Sprite
+export class AnimatedSprite extends Sprite
 {
     anims: Map<string, Frame[]>;
     animData: IAnimationData;

@@ -16,7 +16,7 @@
  *
  * @return {boolean} `true` if `width` and `height` are a power of two, otherwise `false`.
  */
-export default function IsSizePowerOfTwo (width: number, height: number): boolean
+export function IsSizePowerOfTwo (width: number, height: number): boolean
 {
     if (width < 1 || height < 1)
     {

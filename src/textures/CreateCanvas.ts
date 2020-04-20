@@ -1,4 +1,4 @@
-export default function CreateCanvas (width: number, height: number): CanvasRenderingContext2D
+export function CreateCanvas (width: number, height: number): CanvasRenderingContext2D
 {
     const canvas = document.createElement('canvas');
 

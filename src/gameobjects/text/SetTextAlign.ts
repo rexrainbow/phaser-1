@@ -1,6 +1,6 @@
-import IText from './IText';
+import { IText } from './IText';
 
-export default function SetTextAlign (align: CanvasTextAlign, ...text: IText[])
+export function SetTextAlign (align: CanvasTextAlign, ...text: IText[])
 {
     text.forEach(entity => {
 

@@ -1,8 +1,8 @@
-import Rectangle from '../geom/rectangle/Rectangle';
-import WebGLRenderer from '../renderer/webgl1/WebGLRenderer';
-import IScene from '../scenes/IScene';
+import { Rectangle } from '../geom/rectangle/Rectangle';
+import { WebGLRenderer } from '../renderer/webgl1/WebGLRenderer';
+import { IScene } from '../scenes/IScene';
 
-export default class StaticCamera // implements ICamera
+export class StaticCamera // implements ICamera
 {
     scene: IScene;
     matrix: Float32Array;

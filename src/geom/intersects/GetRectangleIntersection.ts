@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Rectangle from '../rectangle/Rectangle';
-import RectangleToRectangle from './RectangleToRectangle';
-import IRectangle from '../rectangle/IRectangle';
+import { Rectangle } from '../rectangle/Rectangle';
+import { RectangleToRectangle } from './RectangleToRectangle';
+import { IRectangle } from '../rectangle/IRectangle';
 
 /**
  * Checks if two Rectangle shapes intersect and returns the area of this intersection as Rectangle object.
@@ -26,7 +26,7 @@ import IRectangle from '../rectangle/IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} A rectangle object with intersection data.
  */
-export default function GetRectangleIntersection (rectA: IRectangle, rectB: IRectangle, out: Rectangle = new Rectangle()): Rectangle
+export function GetRectangleIntersection (rectA: IRectangle, rectB: IRectangle, out: Rectangle = new Rectangle()): Rectangle
 {
     if (RectangleToRectangle(rectA, rectB))
     {

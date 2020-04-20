@@ -1,8 +1,9 @@
-import Game from '../src/Game';
-import StaticScene from '../src/scenes/StaticScene';
-import AddChild from '../src/gameobjects/container/AddChild';
-import PixelTexture from '../src/textures/types/PixelTexture';
-import Sprite from '../src/gameobjects/sprite/Sprite';
+import { Game } from '../src/Game';
+import { StaticScene } from '../src/scenes/StaticScene';
+import { AddChild } from '../src/gameobjects/container/AddChild';
+import { AddChildren } from '../src/gameobjects/container/AddChildren';
+import { PixelTexture } from '../src/textures/types/PixelTexture';
+import { Sprite } from '../src/gameobjects/sprite/Sprite';
 import { Parent, Size, Scenes, BackgroundColor } from '../src/config';
 
 class Demo extends StaticScene
@@ -33,8 +34,9 @@ class Demo extends StaticScene
         const dudeTexture = PixelTexture({ data, pixelWidth: 8, pixelHeight: 8 });
 
         const dude = new Sprite(400, 300, dudeTexture);
+        const dude2 = new Sprite(500, 400, dudeTexture);
 
-        AddChild(this.world, dude);
+        AddChildren(this.world, dude, dude2);
     
         // const greet = new Text(100, 100, 'Hello World!!!');
 

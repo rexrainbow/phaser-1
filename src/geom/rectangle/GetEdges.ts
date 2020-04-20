@@ -1,7 +1,7 @@
-import IRectangle from './IRectangle';
-import Line from '../line/Line';
+import { IRectangle } from './IRectangle';
+import { Line } from '../line/Line';
 
-export default function GetEdges (rectangle: IRectangle): Line[]
+export function GetEdges (rectangle: IRectangle): Line[]
 {
     const { x, y, right, bottom } = rectangle;
 

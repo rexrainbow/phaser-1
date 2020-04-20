@@ -14,7 +14,7 @@
  *
  * @return {number} The factorial of the given number.
  */
-export default function Factorial (value: number): number
+export function Factorial (value: number): number
 {
     if (value === 0)
     {

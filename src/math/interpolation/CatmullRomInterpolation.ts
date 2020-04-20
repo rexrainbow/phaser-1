@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import CatmullRom from '../CatmullRom';
+import { CatmullRom } from '../CatmullRom';
 
 /**
  * A Catmull-Rom interpolation method.
@@ -17,7 +17,7 @@ import CatmullRom from '../CatmullRom';
  *
  * @return {number} The interpolated value.
  */
-export default function CatmullRomInterpolation (v: number[], k: number): number
+export function CatmullRomInterpolation (v: number[], k: number): number
 {
     const m = v.length - 1;
     let f = m * k;

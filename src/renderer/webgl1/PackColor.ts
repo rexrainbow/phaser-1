@@ -1,4 +1,4 @@
-export default function PackColor (rgb: number, alpha: number): number
+export function PackColor (rgb: number, alpha: number): number
 {
     let ua = ((alpha * 255) | 0) & 0xFF;
 

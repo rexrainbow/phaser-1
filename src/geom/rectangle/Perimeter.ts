@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Calculates the perimeter of a Rectangle.
@@ -16,7 +16,7 @@ import IRectangle from './IRectangle';
  *
  * @return {number} The perimeter of the Rectangle, equal to `(width * 2) + (height * 2)`.
  */
-export default function Perimeter (rect: IRectangle): number
+export function Perimeter (rect: IRectangle): number
 {
     return 2 * (rect.width + rect.height);
 }

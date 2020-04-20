@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
+import { ILine } from './ILine';
 
 /**
  * Compare two lines for strict equality.
@@ -17,7 +17,7 @@ import ILine from './ILine';
  *
  * @return {boolean} Whether the two lines are equal.
  */
-export default function Equals (line: ILine, toCompare: ILine): boolean
+export function Equals (line: ILine, toCompare: ILine): boolean
 {
     return (
         line.x1 === toCompare.x1 &&

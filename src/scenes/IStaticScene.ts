@@ -1,7 +1,7 @@
-import StaticWorld from '../world/StaticWorld';
-import IScene from './IScene';
+import { StaticWorld } from '../world/StaticWorld';
+import { IScene } from './IScene';
 
-export default interface IStaticScene extends IScene
+export interface IStaticScene extends IScene
 {
     world: StaticWorld;
 }

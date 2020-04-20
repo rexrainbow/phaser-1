@@ -1,7 +1,7 @@
-import IMatrix2D from '../matrix2d/IMatrix2D';
-import Matrix2D from '../matrix2d/Matrix2D';
+import { IMatrix2D } from '../matrix2d/IMatrix2D';
+import { Matrix2D } from '../matrix2d/Matrix2D';
 
-export default function Rotate (src: IMatrix2D, angle: number): Matrix2D
+export function Rotate (src: IMatrix2D, angle: number): Matrix2D
 {
     const { a, b, c, d } = src;
 

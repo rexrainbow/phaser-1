@@ -16,7 +16,7 @@
  *
  * @return {number} The resulting value.
  */
-export default function MaxAdd (value: number, amount: number, max: number): number
+export function MaxAdd (value: number, amount: number, max: number): number
 {
     return Math.min(value + amount, max);
 }

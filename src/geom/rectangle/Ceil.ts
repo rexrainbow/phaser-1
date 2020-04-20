@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Rounds a Rectangle's position up to the smallest integer greater than or equal to each current coordinate.
@@ -18,7 +18,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The adjusted Rectangle.
  */
-export default function Ceil (rect: IRectangle): IRectangle
+export function Ceil (rect: IRectangle): IRectangle
 {
     rect.x = Math.ceil(rect.x);
     rect.y = Math.ceil(rect.y);

@@ -1,8 +1,8 @@
-import IParent from './IParent';
-import GetChildAt from './GetChildAt';
-import IGameObject from '../gameobject/IGameObject';
+import { IParent } from './IParent';
+import { GetChildAt } from './GetChildAt';
+import { IGameObject } from '../gameobject/IGameObject';
 
-export default function RemoveChildAt (parent: IParent, ...index: number[]): IGameObject[]
+export function RemoveChildAt (parent: IParent, ...index: number[]): IGameObject[]
 {
     const children = parent.children;
     const removed: IGameObject[] = [];

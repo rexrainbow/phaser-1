@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
+import { IEllipse } from './IEllipse';
 
 /**
  * Returns the circumference of the given Ellipse.
@@ -16,7 +16,7 @@ import IEllipse from './IEllipse';
  *
  * @return {number} The circumference of th Ellipse.
  */
-export default function Circumference (ellipse: IEllipse): number
+export function Circumference (ellipse: IEllipse): number
 {
     const rx = ellipse.width / 2;
     const ry = ellipse.height / 2;

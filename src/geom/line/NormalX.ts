@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
-import MATH_CONST from '../../math/const';
-import Angle from './Angle';
+import { ILine } from './ILine';
+import { MATH_CONST } from '../../math/const';
+import { Angle } from './Angle';
 
 /**
  * Returns the x component of the normal vector of the given line.
@@ -18,7 +18,7 @@ import Angle from './Angle';
  *
  * @return {number} The x component of the normal vector of the line.
  */
-export default function NormalX (line: ILine): number
+export function NormalX (line: ILine): number
 {
-    return Math.cos(Angle(line) - MATH_CONST.TAU);
+    return Math.cos(Angle(line) - MATH_CONST.HALF_PI);
 }

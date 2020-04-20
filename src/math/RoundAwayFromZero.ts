@@ -14,7 +14,7 @@
  *
  * @return {number} The rounded number, rounded away from zero.
  */
-export default function RoundAwayFromZero (value: number): number
+export function RoundAwayFromZero (value: number): number
 {
     // "Opposite" of truncate.
     return (value > 0) ? Math.ceil(value) : Math.floor(value);

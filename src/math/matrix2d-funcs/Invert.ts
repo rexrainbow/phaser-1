@@ -1,9 +1,9 @@
-import IMatrix2D from '../matrix2d/IMatrix2D';
-import Matrix2D from '../matrix2d/Matrix2D';
+import { IMatrix2D } from '../matrix2d/IMatrix2D';
+import { Matrix2D } from '../matrix2d/Matrix2D';
 
 //  Inverts the src Matrix and returns the result in a new Matrix, or null.
 
-export default function Invert (src: IMatrix2D): Matrix2D | null
+export function Invert (src: IMatrix2D): Matrix2D | null
 {
     const { a, b, c, d, tx, ty } = src;
 

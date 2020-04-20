@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { IRectangle } from './IRectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Merges a Rectangle with a list of points by repositioning and/or resizing it such that all points are located on or within its bounds.
@@ -20,7 +20,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {Phaser.Geom.Rectangle} The modified Rectangle.
  */
-export default function MergePoints (target: IRectangle, points: Vec2[]): IRectangle
+export function MergePoints (target: IRectangle, points: Vec2[]): IRectangle
 {
     let minX = target.x;
     let maxX = target.right;

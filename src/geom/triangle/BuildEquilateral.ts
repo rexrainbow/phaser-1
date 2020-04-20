@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Triangle from './Triangle';
+import { Triangle } from './Triangle';
 
 /**
  * Builds an equilateral triangle. In the equilateral triangle, all the sides are the same length (congruent) and all the angles are the same size (congruent).
@@ -19,7 +19,7 @@ import Triangle from './Triangle';
  *
  * @return {Triangle} The Triangle object of the given size.
  */
-export default function BuildEquilateral (x: number, y: number, length: number): Triangle
+export function BuildEquilateral (x: number, y: number, length: number): Triangle
 {
     const height = length * (Math.sqrt(3) / 2);
 

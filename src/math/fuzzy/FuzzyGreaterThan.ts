@@ -18,7 +18,7 @@
  *
  * @return {boolean} `true` if `a` is fuzzily greater than than `b`, otherwise `false`.
  */
-export default function GreaterThan (a: number, b: number, epsilon: number = 0.0001): boolean
+export function FuzzyGreaterThan (a: number, b: number, epsilon: number = 0.0001): boolean
 {
     return a > b - epsilon;
 }

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
+import { ILine } from './ILine';
 
 /**
  * Set a line to a given position, angle and length.
@@ -22,7 +22,7 @@ import ILine from './ILine';
  *
  * @return {Phaser.Geom.Line} The updated line.
  */
-export default function SetToAngle (line: ILine, x: number, y: number, angle: number, length: number): ILine
+export function SetToAngle (line: ILine, x: number, y: number, angle: number, length: number): ILine
 {
     line.x1 = x;
     line.y1 = y;

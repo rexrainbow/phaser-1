@@ -1,6 +1,6 @@
-import IAnimatedSprite from './IAnimatedSprite';
+import { IAnimatedSprite } from './IAnimatedSprite';
 
-export default function ClearAnimations (...sprite: IAnimatedSprite[])
+export function ClearAnimations (...sprite: IAnimatedSprite[])
 {
     sprite.forEach(entity => {
 

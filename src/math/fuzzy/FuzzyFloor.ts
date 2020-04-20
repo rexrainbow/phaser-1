@@ -15,7 +15,7 @@
  *
  * @return {number} The floor of the value.
  */
-export default function Floor (value: number, epsilon: number = 0.0001): number
+export function FuzzyFloor (value: number, epsilon: number = 0.0001): number
 {
     return Math.floor(value + epsilon);
 }

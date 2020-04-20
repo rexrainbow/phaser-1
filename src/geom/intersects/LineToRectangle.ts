@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from '../line/ILine';
-import IRectangle from '../rectangle/IRectangle';
+import { ILine } from '../line/ILine';
+import { IRectangle } from '../rectangle/IRectangle';
 
 /**
  * Checks for intersection between the Line and a Rectangle shape, or a rectangle-like
@@ -26,7 +26,7 @@ import IRectangle from '../rectangle/IRectangle';
  *
  * @return {boolean} `true` if the Line and the Rectangle intersect, `false` otherwise.
  */
-export default function LineToRectangle (line: ILine, rect: IRectangle): boolean
+export function LineToRectangle (line: ILine, rect: IRectangle): boolean
 {
     const { x1, y1, x2, y2 } = line;
     const { x, y, right, bottom } = rect;

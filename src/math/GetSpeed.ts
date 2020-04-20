@@ -15,7 +15,7 @@
  *
  * @return {number} The speed, in distance per ms.
  */
-export default function GetSpeed (distance: number, time: number): number
+export function GetSpeed (distance: number, time: number): number
 {
     return (distance / time) / 1000;
 }

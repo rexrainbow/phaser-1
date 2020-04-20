@@ -1,6 +1,6 @@
-import IText from './IText';
+import { IText } from './IText';
 
-export default function SetBackgroundStyle (style: string | CanvasGradient | CanvasPattern, cornerRadius: number | null, ...text: IText[])
+export function SetBackgroundStyle (style: string | CanvasGradient | CanvasPattern, cornerRadius: number | null, ...text: IText[])
 {
     text.forEach(entity => {
 

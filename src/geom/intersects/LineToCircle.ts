@@ -4,11 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Contains from '../circle/Contains';
-import Vec2 from '../../math/vec2/Vec2';
-import ILine from '../line/ILine';
-import IVec2 from '../../math/vec2/IVec2';
-import ICircle from '../circle/ICircle';
+import { Contains } from '../circle/Contains';
+import { Vec2 } from '../../math/vec2/Vec2';
+import { ILine } from '../line/ILine';
+import { IVec2 } from '../../math/vec2/IVec2';
+import { ICircle } from '../circle/ICircle';
 
 let tmp: Vec2 = new Vec2();
 
@@ -26,7 +26,7 @@ let tmp: Vec2 = new Vec2();
  *
  * @return {boolean} `true` if the two objects intersect, otherwise `false`.
  */
-export default function LineToCircle (line: ILine, circle: ICircle, nearest?: IVec2): boolean
+export function LineToCircle (line: ILine, circle: ICircle, nearest?: IVec2): boolean
 {
     if (!nearest)
     {

@@ -1,5 +1,5 @@
-import Frame from '../Frame';
-import Texture from '../Texture';
+import { Frame } from '../Frame';
+import { Texture } from '../Texture';
 
 /**
  * Read an integer value from an XML Node.
@@ -39,7 +39,7 @@ type BitmapData = {
     chars: Record<number, BitmapCharacter>;
 };
 
-export default function BitmapTextParser (texture: Texture, xml: XMLDocument, frame?: Frame)
+export function BitmapTextParser (texture: Texture, xml: XMLDocument, frame?: Frame)
 {
     const xSpacing = 0;
     const ySpacing = 0;

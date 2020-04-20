@@ -4,6 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
+import { MATH_CONST } from '../const';
+
 /**
  * Normalize an angle to the [0, 2pi] range.
  *
@@ -14,9 +16,9 @@
  *
  * @return {number} The normalized angle, in radians.
  */
-export default function Normalize (angle: number): number
+export function NormalizeAngle (angle: number): number
 {
-    angle = angle % (2 * Math.PI);
+    angle = angle % MATH_CONST.PI2;
 
     if (angle >= 0)
     {
@@ -24,6 +26,6 @@ export default function Normalize (angle: number): number
     }
     else
     {
-        return angle + 2 * Math.PI;
+        return angle + MATH_CONST.PI2;
     }
 }

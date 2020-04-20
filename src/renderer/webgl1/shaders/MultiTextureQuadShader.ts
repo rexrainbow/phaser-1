@@ -1,4 +1,4 @@
-import WebGLRenderer from '../WebGLRenderer';
+import { WebGLRenderer } from '../WebGLRenderer';
 import { IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
@@ -47,7 +47,7 @@ void main (void)
 }`
 }
 
-export default class MultiTextureQuadShader
+export class MultiTextureQuadShader
 {
     renderer: WebGLRenderer;
     gl: WebGLRenderingContext;

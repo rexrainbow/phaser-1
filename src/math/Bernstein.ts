@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Factorial from './Factorial';
+import { Factorial } from './Factorial';
 
 /**
  * Calculates the Bernstein basis from the three factorial coefficients.
@@ -17,7 +17,7 @@ import Factorial from './Factorial';
  *
  * @return {number} The Bernstein basis of Factorial(n) / Factorial(i) / Factorial(n - i)
  */
-export default function Bernstein (n: number, i: number): number
+export function Bernstein (n: number, i: number): number
 {
     return Factorial(n) / Factorial(i) / Factorial(n - i);
 }

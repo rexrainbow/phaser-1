@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
-import Vec2 from '../../math/vec2/Vec2';
+import { ILine } from './ILine';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Get the midpoint of the given line.
@@ -20,7 +20,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} The midpoint of the Line.
  */
-export default function GetMidPoint (line: ILine, out: Vec2 = new Vec2()): Vec2
+export function GetMidPoint (line: ILine, out: Vec2 = new Vec2()): Vec2
 {
     out.x = (line.x1 + line.x2) / 2;
     out.y = (line.y1 + line.y2) / 2;

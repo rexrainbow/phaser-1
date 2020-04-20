@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Merges a Rectangle with a point by repositioning and/or resizing it so that the point is on or within its bounds.
@@ -20,7 +20,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The modified `target` Rectangle.
  */
-export default function MergeXY (target: IRectangle, x: number, y: number): IRectangle
+export function MergeXY (target: IRectangle, x: number, y: number): IRectangle
 {
     const minX = Math.min(target.x, x);
     const maxX = Math.max(target.right, x);

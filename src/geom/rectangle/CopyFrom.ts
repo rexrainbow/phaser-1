@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Copy the values of one Rectangle to a destination Rectangle.
@@ -19,7 +19,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The destination Rectangle.
  */
-export default function CopyFrom (source: IRectangle, dest: IRectangle): IRectangle
+export function CopyFrom (source: IRectangle, dest: IRectangle): IRectangle
 {
     return dest.set(source.x, source.y, source.width, source.height);
 }

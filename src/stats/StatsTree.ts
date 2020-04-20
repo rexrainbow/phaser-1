@@ -1,9 +1,9 @@
-import Stats from './Stats';
-import Game from '../Game';
-import Texture from '../textures/Texture';
-import Frame from '../textures/Frame';
-import IContainer from '../gameobjects/IContainer';
-import ISprite from '../gameobjects/ISprite';
+import { Stats } from './Stats';
+import { Game } from '../Game';
+import { Texture } from '../textures/Texture';
+import { Frame } from '../textures/Frame';
+import { IContainer } from '../gameobjects/IContainer';
+import { ISprite } from '../gameobjects/ISprite';
 
 const TreeCSS = `
 .treeContainer {
@@ -67,7 +67,7 @@ const TreeCSS = `
 }
 `;
 
-export default class StatsTree
+export class StatsTree
 {
     stats: Stats;
     game: Game;

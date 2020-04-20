@@ -12,7 +12,7 @@
  *
  * @type {Phaser.Types.Create.Palette}
  */
-export default {
+export const CGA = {
     0: '#000',
     1: '#2234d1',
     2: '#0c7e45',

@@ -18,7 +18,7 @@
  *
  * @return {number} The distance between each point.
  */
-export default function DistancePower (x1: number, y1: number, x2: number, y2: number, pow: number = 2): number
+export function DistancePower (x1: number, y1: number, x2: number, y2: number, pow: number = 2): number
 {
     return Math.sqrt(Math.pow(x2 - x1, pow) + Math.pow(y2 - y1, pow));
 }

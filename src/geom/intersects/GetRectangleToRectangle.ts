@@ -5,11 +5,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import GetLineToRectangle from './GetLineToRectangle';
-import RectangleToRectangle from './RectangleToRectangle';
-import IRectangle from '../rectangle/IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
-import GetEdges from '../Rectangle/GetEdges';
+import { GetLineToRectangle } from './GetLineToRectangle';
+import { RectangleToRectangle } from './RectangleToRectangle';
+import { IRectangle } from '../rectangle/IRectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
+import { GetEdges } from '../Rectangle/GetEdges';
 
 /**
  * Checks if two Rectangles intersect and returns the intersection points as a Point object array.
@@ -25,7 +25,7 @@ import GetEdges from '../Rectangle/GetEdges';
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetRectangleToRectangle (rectA: IRectangle, rectB: IRectangle, out: Vec2[] = []): Vec2[]
+export function GetRectangleToRectangle (rectA: IRectangle, rectB: IRectangle, out: Vec2[] = []): Vec2[]
 {
     if (RectangleToRectangle(rectA, rectB))
     {

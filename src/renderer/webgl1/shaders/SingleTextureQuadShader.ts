@@ -1,4 +1,4 @@
-import WebGLRenderer from '../WebGLRenderer';
+import { WebGLRenderer } from '../WebGLRenderer';
 import { IShaderAttributes as IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
@@ -46,7 +46,7 @@ void main (void)
 }`
 }
 
-export default class SingleTextureQuadShader
+export class SingleTextureQuadShader
 {
     renderer: WebGLRenderer;
     gl: WebGLRenderingContext;

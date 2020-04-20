@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import CenterX from './CenterX';
-import CenterY from './CenterY';
-import IRectangle from './IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { CenterX } from './CenterX';
+import { CenterY } from './CenterY';
+import { IRectangle } from './IRectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns the center of a Rectangle as a Point.
@@ -22,7 +22,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} The modified `out` object, or a new Point if none was provided.
  */
-export default function GetCenter (rect: IRectangle, out: Vec2 = new Vec2()): Vec2
+export function GetCenter (rect: IRectangle, out: Vec2 = new Vec2()): Vec2
 {
     return out.set(CenterX(rect), CenterY(rect));
 }

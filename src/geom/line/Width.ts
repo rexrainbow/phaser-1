@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
+import { ILine } from './ILine';
 
 /**
  * Calculate the width of the given line.
@@ -16,7 +16,7 @@ import ILine from './ILine';
  *
  * @return {number} The width of the line.
  */
-export default function Width (line: ILine): number
+export function Width (line: ILine): number
 {
     return Math.abs(line.x1 - line.x2);
 }

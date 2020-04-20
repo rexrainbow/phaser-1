@@ -1,7 +1,7 @@
 import { Game } from '..';
-import IWorld from '../world/IWorld';
+import { IWorld } from '../world/IWorld';
 
-export default interface IScene
+export interface IScene
 {
     key?: string;
     willUpdate?: boolean;

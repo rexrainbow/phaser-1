@@ -1,6 +1,6 @@
-import uPlot from 'uplot';
+import { uPlot } from 'uplot';
 
-export default class StatsGraphChartJS
+export class StatsGraphChartJS
 {
     div: HTMLDivElement;
     title: HTMLParagraphElement;

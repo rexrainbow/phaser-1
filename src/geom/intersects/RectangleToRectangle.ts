@@ -1,6 +1,6 @@
-import IRectangle from '../rectangle/IRectangle';
+import { IRectangle } from '../rectangle/IRectangle';
 
-export default function RectangleToRectangle (rectA: IRectangle, rectB: IRectangle): boolean
+export function RectangleToRectangle (rectA: IRectangle, rectB: IRectangle): boolean
 {
     if (rectA.width <= 0 || rectA.height <= 0 || rectB.width <= 0 || rectB.height <= 0)
     {

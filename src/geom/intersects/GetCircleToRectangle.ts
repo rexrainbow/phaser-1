@@ -5,12 +5,12 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import GetLineToCircle from './GetLineToCircle';
-import CircleToRectangle from './CircleToRectangle';
-import ICircle from '../circle/ICircle';
-import IRectangle from '../Rectangle/IRectangle';
-import Vec2 from '../../math/vec2/Vec2';
-import GetEdges from '../Rectangle/GetEdges';
+import { GetLineToCircle } from './GetLineToCircle';
+import { CircleToRectangle } from './CircleToRectangle';
+import { ICircle } from '../circle/ICircle';
+import { IRectangle } from '../Rectangle/IRectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
+import { GetEdges } from '../Rectangle/GetEdges';
 
 /**
  * Checks for intersection between a circle and a rectangle,
@@ -25,7 +25,7 @@ import GetEdges from '../Rectangle/GetEdges';
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetCircleToRectangle (circle: ICircle, rect: IRectangle, out: Vec2[] = []): Vec2[]
+export function GetCircleToRectangle (circle: ICircle, rect: IRectangle, out: Vec2[] = []): Vec2[]
 {
     if (CircleToRectangle(circle, rect))
     {

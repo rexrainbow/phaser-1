@@ -5,8 +5,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IVec2 from '../../math/vec2/IVec2';
-import ILine from '../line/ILine';
+import { IVec2 } from '../../math/vec2/IVec2';
+import { ILine } from '../line/ILine';
 
 /**
  * Checks if the a Point falls between the two end-points of a Line, based on the given line thickness.
@@ -22,7 +22,7 @@ import ILine from '../line/ILine';
  *
  * @return {boolean} `true` if the Point falls on the Line, otherwise `false`.
  */
-export default function PointToLine (point: IVec2, line: ILine, lineThickness: number = 1): boolean
+export function PointToLine (point: IVec2, line: ILine, lineThickness: number = 1): boolean
 {
     const { x1, y1, x2, y2 } = line;
     const { x: px, y: py } = point;

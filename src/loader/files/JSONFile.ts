@@ -1,9 +1,9 @@
-import File from '../File';
-import XHRLoader from '../XHRLoader';
-import GameInstance from '../../GameInstance';
-import GetURL from '../GetURL';
+import { File } from '../File';
+import { XHRLoader } from '../XHRLoader';
+import { GameInstance } from '../../GameInstance';
+import { GetURL } from '../GetURL';
 
-export default function JSONFile (key: string, url?: string): File
+export function JSONFile (key: string, url?: string): File
 {
     const file = new File(key, url);
 

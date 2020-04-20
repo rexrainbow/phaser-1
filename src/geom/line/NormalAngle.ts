@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
-import MATH_CONST from '../../math/const';
-import Wrap from '../../math/Wrap';
-import Angle from './Angle';
+import { ILine } from './ILine';
+import { MATH_CONST } from '../../math/const';
+import { Wrap } from '../../math/Wrap';
+import { Angle } from './Angle';
 
 /**
  * Get the angle of the normal of the given line in radians.
@@ -19,9 +19,9 @@ import Angle from './Angle';
  *
  * @return {number} The angle of the normal of the line in radians.
  */
-export default function NormalAngle (line: ILine): number
+export function NormalAngle (line: ILine): number
 {
-    const angle = Angle(line) - MATH_CONST.TAU;
+    const angle = Angle(line) - MATH_CONST.HALF_PI;
 
     return Wrap(angle, -Math.PI, Math.PI);
 }

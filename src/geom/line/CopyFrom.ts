@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
+import { ILine } from './ILine';
 
 /**
  * Copy the values of one line to a destination line.
@@ -19,7 +19,7 @@ import ILine from './ILine';
  *
  * @return {Phaser.Geom.Line} The destination line.
  */
-export default function CopyFrom (source: ILine, dest: ILine): ILine
+export function CopyFrom (source: ILine, dest: ILine): ILine
 {
     return dest.set(source.x1, source.y1, source.x2, source.y2);
 }

@@ -4,22 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ARNE16 from './Arne16';
-import C64 from './C64';
-import CGA from './CGA';
-import JMP from './JMP';
-import MSX from './MSX';
-import PICO8 from './PICO8';
-
-/**
- * @namespace Phaser.Create.Palettes
- */
-
-export {
-    ARNE16,
-    C64,
-    CGA,
-    JMP,
-    MSX,
-    PICO8
-}
+export * as Arne16 from './Arne16';
+export * as C64 from './C64';
+export * as CGA from './CGA';
+export * as JMP from './JMP';
+export * as MSX from './MSX';
+export * as PICO8 from './PICO8';

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import CONST from '../const';
+import { MATH_CONST as CONST } from '../const';
 
 /**
  * Takes an angle in Phasers default clockwise format and converts it so that
@@ -26,12 +26,12 @@ import CONST from '../const';
  *
  * @return {number} The converted angle, in radians.
  */
-export default function CounterClockwise (angle: number): number
+export function CounterClockwise (angle: number): number
 {
     if (angle > Math.PI)
     {
         angle -= CONST.PI2;
     }
 
-    return Math.abs((((angle + CONST.TAU) % CONST.PI2) - CONST.PI2) % CONST.PI2);
+    return Math.abs((((angle + CONST.HALF_PI) % CONST.PI2) - CONST.PI2) % CONST.PI2);
 }

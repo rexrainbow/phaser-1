@@ -1,12 +1,12 @@
-import Container from '../container/Container';
-import Texture from '../../textures/Texture';
-import Frame from '../../textures/Frame';
-import IContainer from '../container/IContainer';
-import Rectangle from '../../geom/rectangle/Rectangle';
-import SetTexture from './SetTexture';
-import SetFrame from './SetFrame';
+import { Container } from '../container/Container';
+import { Texture } from '../../textures/Texture';
+import { Frame } from '../../textures/Frame';
+import { IContainer } from '../container/IContainer';
+import { Rectangle } from '../../geom/rectangle/Rectangle';
+import { SetTexture } from './SetTexture';
+import { SetFrame } from './SetFrame';
 
-export default class Sprite extends Container
+export class Sprite extends Container
 {
     texture: Texture;
     frame: Frame;

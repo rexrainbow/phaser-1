@@ -20,7 +20,7 @@
  *
  * @return {number} A value between 0 and 1 representing the percentage.
  */
-export default function Percent (value: number, min: number, max?: number, upperMax?: number): number
+export function Percent (value: number, min: number, max?: number, upperMax?: number): number
 {
     if (max === undefined) { max = min + 1; }
 

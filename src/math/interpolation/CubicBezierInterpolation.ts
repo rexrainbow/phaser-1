@@ -56,7 +56,7 @@ function P3 (t: number, p: number)
  *
  * @return {number} The interpolated value.
  */
-export default function CubicBezierInterpolation (t: number, p0: number, p1: number, p2: number, p3: number): number
+export function CubicBezierInterpolation (t: number, p0: number, p1: number, p2: number, p3: number): number
 {
     return P0(t, p0) + P1(t, p1) + P2(t, p2) + P3(t, p3);
 }

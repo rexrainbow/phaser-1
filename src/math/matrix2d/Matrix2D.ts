@@ -8,7 +8,7 @@
 //  | tx | ty | 1  |
 //  |----|----|----|
 
-export default class Matrix2D
+export class Matrix2D
 {
     a: number;
     b: number;

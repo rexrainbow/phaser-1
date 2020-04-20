@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
+import { ICircle } from './ICircle';
 
 /**
  * Offsets the Circle by the values given.
@@ -20,7 +20,7 @@ import ICircle from './ICircle';
  *
  * @return {Phaser.Geom.Circle} The Circle that was offset.
  */
-export default function Offset (circle: ICircle, x: number, y: number): ICircle
+export function Offset (circle: ICircle, x: number, y: number): ICircle
 {
     circle.x += x;
     circle.y += y;

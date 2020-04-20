@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-export default {
+export const MATH_CONST = {
 
     /**
      * The value of PI * 2.
@@ -16,13 +16,13 @@ export default {
     PI2: Math.PI * 2,
 
     /**
-     * The value of PI * 0.5.
+     * The value of PI * 2.
      * 
-     * @name Phaser.Math.TAU
+     * @name Phaser.Math.HALF_PI
      * @type {number}
      * @since 3.0.0
      */
-    TAU: Math.PI * 0.5,
+    HALF_PI: Math.PI * 0.5,
 
     /**
      * An epsilon value (1.0e-6)

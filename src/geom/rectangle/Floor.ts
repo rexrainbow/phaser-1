@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Rounds down (floors) the top left X and Y coordinates of the given Rectangle to the largest integer less than or equal to them
@@ -18,7 +18,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The rectangle that was passed to this function with its coordinates floored.
  */
-export default function Floor (rect: IRectangle): IRectangle
+export function Floor (rect: IRectangle): IRectangle
 {
     rect.x = Math.floor(rect.x);
     rect.y = Math.floor(rect.y);

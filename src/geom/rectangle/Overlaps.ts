@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Checks if two Rectangles overlap. If a Rectangle is within another Rectangle, the two will be considered overlapping. Thus, the Rectangles are treated as "solid".
@@ -17,7 +17,7 @@ import IRectangle from './IRectangle';
  *
  * @return {boolean} `true` if the two Rectangles overlap, `false` otherwise.
  */
-export default function Overlaps (rectA: IRectangle, rectB: IRectangle): boolean
+export function Overlaps (rectA: IRectangle, rectB: IRectangle): boolean
 {
     return (
         rectA.x < rectB.right &&

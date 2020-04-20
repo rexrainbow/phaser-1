@@ -1,9 +1,9 @@
-import IMatrix2D from './IMatrix2D';
+import { IMatrix2D } from './IMatrix2D';
 
 // Copy the values from src Matrix to the given Canvas Rendering Context.
 // This will use the Context.transform method.
 
-export default function CopyToContext (src: IMatrix2D, context: CanvasRenderingContext2D): CanvasRenderingContext2D
+export function CopyToContext (src: IMatrix2D, context: CanvasRenderingContext2D): CanvasRenderingContext2D
 {
     const { a, b, c, d, tx, ty } = src;
 

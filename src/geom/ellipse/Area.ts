@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
+import { IEllipse } from './IEllipse';
 
 /**
  * Calculates the area of the Ellipse.
@@ -16,7 +16,7 @@ import IEllipse from './IEllipse';
  *
  * @return {number} The area of the Ellipse.
  */
-export default function Area (ellipse: IEllipse): number
+export function Area (ellipse: IEllipse): number
 {
     if ((ellipse.width <= 0 || ellipse.height <= 0))
     {

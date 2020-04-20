@@ -1,18 +1,18 @@
-import ICamera from '../camera/ICamera';
-import StaticCamera from '../camera/StaticCamera';
-import IContainer from '../gameobjects/container/IContainer';
-import IGameObject from '../gameobjects/gameobject/IGameObject';
-import ISprite from '../gameobjects/sprite/ISprite';
-import Matrix2D from '../math/matrix2d/Matrix2D';
-import StaticScene from '../scenes/StaticScene';
-import IWorld from './IWorld';
+import { ICamera } from '../camera/ICamera';
+import { StaticCamera } from '../camera/StaticCamera';
+import { IContainer } from '../gameobjects/container/IContainer';
+import { IGameObject } from '../gameobjects/gameobject/IGameObject';
+import { ISprite } from '../gameobjects/sprite/ISprite';
+import { Matrix2D } from '../math/matrix2d/Matrix2D';
+import { StaticScene } from '../scenes/StaticScene';
+import { IWorld } from './IWorld';
 
 //  A Static World is designed specifically to have a bounds of a fixed size
 //  and a camera that doesn't move at all (no scrolling, rotation, etc)
 //  Because it has a fixed size, there is no camera culling enabled.
 //  Games that use this kind of world include Pacman, Bejeweled and 2048.
 
-export default class StaticWorld implements IWorld
+export class StaticWorld implements IWorld
 {
     scene: StaticScene;
 

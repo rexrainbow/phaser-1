@@ -1,9 +1,9 @@
-import File from '../File';
-import ImageTagLoader from '../ImageTagLoader';
-import GameInstance from '../../GameInstance';
-import GetURL from '../GetURL';
+import { File } from '../File';
+import { ImageTagLoader } from '../ImageTagLoader';
+import { GameInstance } from '../../GameInstance';
+import { GetURL } from '../GetURL';
 
-export default function ImageFile (key: string, url?: string): File
+export function ImageFile (key: string, url?: string): File
 {
     const file = new File(key, url);
 

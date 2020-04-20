@@ -1,10 +1,10 @@
-import Game from '../Game';
-import AddToDOM from '../core/AddToDOM';
-import WebGLRenderer from '../renderer/WebGLRenderer';
-import StatsGraph from './StatsGraph';
-import StatsTree from './StatsTree';
-import StatsGraphChartJS from './StatsGraphChartJS';
-import Scene from '../Scene';
+import { Game } from '../Game';
+import { AddToDOM } from '../core/AddToDOM';
+import { WebGLRenderer } from '../renderer/WebGLRenderer';
+import { StatsGraph } from './StatsGraph';
+import { StatsTree } from './StatsTree';
+import { StatsGraphChartJS } from './StatsGraphChartJS';
+import { Scene } from '../Scene';
 
 const uPlotCSS = `
 .uplot,
@@ -137,7 +137,7 @@ const uPlotCSS = `
 }
 `;
 
-export default class Stats
+export class Stats
 {
     align: string;
     game: Game;

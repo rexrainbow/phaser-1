@@ -1,16 +1,16 @@
-import ICamera from '../../camera/ICamera';
+import { ICamera } from '../../camera/ICamera';
 import { GetBackgroundColor, GetHeight, GetResolution, GetWebGLContext, GetWidth } from '../../config';
-import SpriteRenderWebGL from '../../gameobjects/sprite/RenderWebGL';
-import Matrix2dEqual from '../../math/matrix2d-funcs/ExactEquals';
+import { RenderWebGL as SpriteRenderWebGL } from '../../gameobjects/sprite/RenderWebGL';
+import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
-import Texture from '../../textures/Texture';
-import GL from './GL';
-import Ortho from './Ortho';
-import CheckShaderMaxIfStatements from './shaders/CheckShaderMaxIfStatements';
-import IShader from './shaders/IShader';
-import MultiTextureQuadShader from './shaders/MultiTextureQuadShader';
+import { Texture } from '../../textures/Texture';
+import { GL } from './GL';
+import { Ortho } from './Ortho';
+import { CheckShaderMaxIfStatements } from './shaders/CheckShaderMaxIfStatements';
+import { IShader } from './shaders/IShader';
+import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 
-export default class WebGLRenderer
+export class WebGLRenderer
 {
     canvas: HTMLCanvasElement;
     gl: WebGLRenderingContext;

@@ -1,16 +1,15 @@
 let gl: WebGLRenderingContext;
 
-function get ()
-{
-    return gl;
-}
+export const GL = {
+    get: () => {
 
-function set (context: WebGLRenderingContext)
-{
-    gl = context;
-}
+        return gl;
 
-export default {
-    get,
-    set
+    },
+
+    set: (context: WebGLRenderingContext) => {
+
+        gl = context;
+
+    }
 }

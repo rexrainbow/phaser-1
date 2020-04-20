@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import CONST from './const';
+import { MATH_CONST } from './const';
 
 /**
  * Convert the given angle in radians, to the equivalent angle in degrees.
@@ -16,7 +16,7 @@ import CONST from './const';
  *
  * @return {number} The given angle converted to degrees.
  */
-export default function RadToDeg (radians: number): number
+export function RadToDeg (radians: number): number
 {
-    return radians * CONST.RAD_TO_DEG;
+    return radians * MATH_CONST.RAD_TO_DEG;
 }

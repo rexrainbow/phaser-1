@@ -5,10 +5,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import LineToCircle from './LineToCircle';
-import ILine from '../line/ILine';
-import ICircle from '../circle/ICircle';
-import Vec2 from '../../math/vec2/Vec2';
+import { LineToCircle } from './LineToCircle';
+import { ILine } from '../line/ILine';
+import { ICircle } from '../circle/ICircle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Checks for intersection between the line segment and circle,
@@ -23,7 +23,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetLineToCircle (line: ILine, circle: ICircle, out: Vec2[] = []): Vec2[]
+export function GetLineToCircle (line: ILine, circle: ICircle, out: Vec2[] = []): Vec2[]
 {
     if (LineToCircle(line, circle))
     {

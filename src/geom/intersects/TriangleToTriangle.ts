@@ -4,11 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ContainsArray from '../triangle/ContainsArray';
-import Decompose from '../triangle/Decompose';
-import LineToLine from './LineToLine';
-import ITriangle from '../triangle/ITriangle';
-import GetEdges from '../triangle/GetEdges';
+import { ContainsArray } from '../triangle/ContainsArray';
+import { Decompose } from '../triangle/Decompose';
+import { LineToLine } from './LineToLine';
+import { ITriangle } from '../triangle/ITriangle';
+import { GetEdges } from '../triangle/GetEdges';
 
 /**
  * Checks if two Triangles intersect.
@@ -23,7 +23,7 @@ import GetEdges from '../triangle/GetEdges';
  *
  * @return {boolean} `true` if the Triangles intersect, otherwise `false`.
  */
-export default function TriangleToTriangle (triangleA: ITriangle, triangleB: ITriangle): boolean
+export function TriangleToTriangle (triangleA: ITriangle, triangleB: ITriangle): boolean
 {
     //  First the cheapest ones:
     if (

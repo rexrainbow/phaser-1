@@ -1,10 +1,10 @@
-import GameInstance from '../../GameInstance';
-import Frame from '../../textures/Frame';
-import Texture from '../../textures/Texture';
-import ISprite from './ISprite';
-import SetFrame from './SetFrame';
+import { GameInstance } from '../../GameInstance';
+import { Frame } from '../../textures/Frame';
+import { Texture } from '../../textures/Texture';
+import { ISprite } from './ISprite';
+import { SetFrame } from './SetFrame';
 
-export default function SetTexture (key: string | Texture, frame: string | number | Frame, ...sprite: ISprite[])
+export function SetTexture (key: string | Texture, frame: string | number | Frame, ...sprite: ISprite[])
 {
     sprite.forEach(entity => {
 

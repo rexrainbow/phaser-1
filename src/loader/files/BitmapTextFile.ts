@@ -1,11 +1,11 @@
-import File from '../File';
-import XMLFile from './XMLFile';
-import ImageFile from './ImageFile';
-import GameInstance from '../../GameInstance';
-import BitmapTextParser from '../../textures/parsers/BitmapTextParser';
-import GetURL from '../GetURL';
+import { File } from '../File';
+import { XMLFile } from './XMLFile';
+import { ImageFile } from './ImageFile';
+import { GameInstance } from '../../GameInstance';
+import { BitmapTextParser } from '../../textures/parsers/BitmapTextParser';
+import { GetURL } from '../GetURL';
 
-export default function BitmapTextFile (key: string, textureURL?: string, fontDataURL?: string): File
+export function BitmapTextFile (key: string, textureURL?: string, fontDataURL?: string): File
 {
     const xml = XMLFile(key, fontDataURL);
     const image = ImageFile(key, textureURL);

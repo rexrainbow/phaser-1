@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Checks if a given point is inside a Rectangle's bounds.
@@ -18,7 +18,7 @@ import IRectangle from './IRectangle';
  *
  * @return {boolean} `true` if the point is within the Rectangle's bounds, otherwise `false`.
  */
-export default function Contains (rect: IRectangle, x: number, y: number): boolean
+export function Contains (rect: IRectangle, x: number, y: number): boolean
 {
     if (rect.width <= 0 || rect.height <= 0)
     {

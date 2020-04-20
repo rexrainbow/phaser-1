@@ -1,11 +1,13 @@
-import EventEmitter from '../core/EventEmitter';
-import Vec2 from '../math/vec2/Vec2';
-import GlobalToLocal from '../math/matrix2d/GlobalToLocal';
-import AppendMatrix2d from '../math/matrix2d-funcs/Append';
-import IGameObject from '../gameobjects/gameobject/IGameObject';
-import GameInstance from '../GameInstance';
+import { EventEmitter } from '../events/EventEmitter';
+import { Vec2 } from '../math/vec2/Vec2';
+import { GlobalToLocal } from '../math/matrix2d/GlobalToLocal';
+import { Append as AppendMatrix2d } from '../math/matrix2d-funcs/Append';
+import { IGameObject } from '../gameobjects/gameobject/IGameObject';
+import { GameInstance } from '../GameInstance';
+import { IParent } from '../gameobjects/container/IParent';
+import { ITransformGameObject } from '../gameobjects/transformgameobject/ITransformGameObject';
 
-export default class Mouse extends EventEmitter
+export class Mouse extends EventEmitter
 {
     primaryDown: boolean = false;
     auxDown: boolean = false;
@@ -131,7 +133,7 @@ export default class Mouse extends EventEmitter
         return local;
     }
 
-    getInteractiveChildren (parent: IGameObject & IContainerComponent, results: IGameObject[])
+    getInteractiveChildren (parent: ITransformGameObject & IParent, results: IGameObject[])
     {
         const children = parent.children;
 
@@ -146,12 +148,12 @@ export default class Mouse extends EventEmitter
 
             if (child.inputEnabledChildren && child.isParent)
             {
-                this.getInteractiveChildren(child as IGameObject & IContainerComponent, results);
+                this.getInteractiveChildren(child as ITransformGameObject & IParent, results);
             }
         }
     }
 
-    checkHitArea (entity: IGameObject, px: number, py: number): boolean
+    checkHitArea (entity: ITransformGameObject, px: number, py: number): boolean
     {
         if (entity.inputHitArea)
         {
@@ -173,7 +175,7 @@ export default class Mouse extends EventEmitter
         return false;
     }
 
-    hitTest (...entities: IGameObject[]): boolean
+    hitTest (...entities: ITransformGameObject[]): boolean
     {
         const localX = this.localPoint.x;
         const localY = this.localPoint.y;
@@ -197,7 +199,7 @@ export default class Mouse extends EventEmitter
         return false;
     }
 
-    hitTestChildren (container: IGameObject & IContainerComponent, topOnly: boolean = true): IGameObject[]
+    hitTestChildren (container: ITransformGameObject & IParent, topOnly: boolean = true): ITransformGameObject[]
     {
         const output = [];
 
@@ -207,7 +209,7 @@ export default class Mouse extends EventEmitter
         }
 
         //  Build a list of potential input candidates
-        const candidates: IGameObject[] = [];
+        const candidates: ITransformGameObject[] = [];
 
         if (container.inputEnabled)
         {

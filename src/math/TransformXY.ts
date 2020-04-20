@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Vec2 from './vec2/Vec2';
+import { Vec2 } from './vec2/Vec2';
 
 /**
  * Takes the `x` and `y` coordinates and transforms them into the same space as
@@ -24,7 +24,7 @@ import Vec2 from './vec2/Vec2';
  *
  * @return {Vec2} The translated point.
  */
-export default function TransformXY (x: number, y: number, positionX: number, positionY: number, rotation: number, scaleX: number, scaleY: number, output: Vec2 = new Vec2()): Vec2
+export function TransformXY (x: number, y: number, positionX: number, positionY: number, rotation: number, scaleX: number, scaleY: number, output: Vec2 = new Vec2()): Vec2
 {
     const radianSin = Math.sin(rotation);
     const radianCos = Math.cos(rotation);

@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
-import MATH_CONST from '../../math/const';
-import Angle from './Angle';
+import { ILine } from './ILine';
+import { MATH_CONST } from '../../math/const';
+import { Angle } from './Angle';
 
 /**
  * The Y value of the normal of the given line.
@@ -19,7 +19,7 @@ import Angle from './Angle';
  *
  * @return {number} The Y value of the normal of the Line.
  */
-export default function NormalY (line: ILine): number
+export function NormalY (line: ILine): number
 {
-    return Math.sin(Angle(line) - MATH_CONST.TAU);
+    return Math.sin(Angle(line) - MATH_CONST.HALF_PI);
 }

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
+import { ITriangle } from './ITriangle';
 
 /**
  * Rotates an entire Triangle at a given angle about a specific point.
@@ -21,7 +21,7 @@ import ITriangle from './ITriangle';
  *
  * @return {Phaser.Geom.Triangle} The rotated Triangle.
  */
-export default function RotateAroundXY (triangle: ITriangle, x: number, y: number, angle: number): ITriangle
+export function RotateAroundXY (triangle: ITriangle, x: number, y: number, angle: number): ITriangle
 {
     const { x1, y1, x2, y2, x3, y3 } = triangle;
 

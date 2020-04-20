@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Bernstein from '../Bernstein';
+import { Bernstein } from '../Bernstein';
 
 /**
  * A bezier interpolation method.
@@ -17,7 +17,7 @@ import Bernstein from '../Bernstein';
  *
  * @return {number} The interpolated value.
  */
-export default function BezierInterpolation (v: number[], k: number): number
+export function BezierInterpolation (v: number[], k: number): number
 {
     let b = 0;
     const n = v.length - 1;

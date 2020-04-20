@@ -1,6 +1,6 @@
-import IAnimatedSprite from './IAnimatedSprite';
+import { IAnimatedSprite } from './IAnimatedSprite';
 
-export default function Stop (...sprite: IAnimatedSprite[])
+export function Stop (...sprite: IAnimatedSprite[])
 {
     sprite.forEach(entity => {
 

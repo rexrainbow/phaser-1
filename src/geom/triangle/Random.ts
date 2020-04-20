@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { ITriangle } from './ITriangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns a random Point from within the area of the given Triangle.
@@ -20,7 +20,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {Phaser.Geom.Point} A Point object holding the coordinates of a random position within the Triangle.
  */
-export default function Random (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
+export function Random (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
 {
     const { x1, y1, x2, y2, x3, y3 } = triangle;
 

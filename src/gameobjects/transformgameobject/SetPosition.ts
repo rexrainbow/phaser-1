@@ -1,7 +1,7 @@
-import ITransformGameObject from './ITransformGameObject';
-import CONST from './const';
+import { ITransformGameObject } from './ITransformGameObject';
+import { CONST } from './const';
 
-export default function SetPosition (x: number, y: number, ...child: ITransformGameObject[])
+export function SetPosition (x: number, y: number, ...child: ITransformGameObject[])
 {
     child.forEach(entity => {
 

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Triangle from './Triangle';
+import { Triangle } from './Triangle';
 
 /**
  * Builds a right triangle, i.e. one which has a 90-degree angle and two acute angles.
@@ -21,7 +21,7 @@ import Triangle from './Triangle';
  *
  * @return {Triangle} The constructed right Triangle.
  */
-export default function BuildRight (x: number, y: number, width: number, height: number = width): Triangle
+export function BuildRight (x: number, y: number, width: number, height: number = width): Triangle
 {
     //  90 degree angle
     const x1 = x;

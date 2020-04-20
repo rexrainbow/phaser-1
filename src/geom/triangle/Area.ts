@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
+import { ITriangle } from './ITriangle';
 
 /**
  * Returns the 2D area of a triangle. The area value is always non-negative.
@@ -16,7 +16,7 @@ import ITriangle from './ITriangle';
  *
  * @return {number} The area of the Triangle, always non-negative.
  */
-export default function Area (triangle: ITriangle): number
+export function Area (triangle: ITriangle): number
 {
     const { x1, y1, x2, y2, x3, y3 } = triangle;
 

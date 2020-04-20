@@ -12,7 +12,7 @@
  *
  * @type {Phaser.Types.Create.Palette}
  */
-export default {
+export const C64 = {
     0: '#000',
     1: '#fff',
     2: '#8b4131',

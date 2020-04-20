@@ -1,7 +1,7 @@
-import IGameObject from '../gameobject/IGameObject';
-import IParent from './IParent';
+import { IGameObject } from '../gameobject/IGameObject';
+import { IParent } from './IParent';
 
-export default function RemoveChild (parent: IParent, child: IGameObject): IGameObject
+export function RemoveChild (parent: IParent, child: IGameObject): IGameObject
 {
     const children = parent.children;
 

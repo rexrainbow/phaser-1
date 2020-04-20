@@ -1,6 +1,6 @@
-import IText from './IText';
+import { IText } from './IText';
 
-export default function SetTextBaseline (baseline: CanvasTextBaseline, ...text: IText[])
+export function SetTextBaseline (baseline: CanvasTextBaseline, ...text: IText[])
 {
     text.forEach(entity => {
 

@@ -1,6 +1,6 @@
-import IText from './IText';
+import { IText } from './IText';
 
-export default function SetPadding (left: number, right: number, top: number, bottom: number, ...text: IText[])
+export function SetPadding (left: number, right: number, top: number, bottom: number, ...text: IText[])
 {
     text.forEach(entity => {
 

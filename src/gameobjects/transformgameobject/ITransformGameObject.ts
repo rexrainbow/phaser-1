@@ -1,7 +1,7 @@
-import IGameObject from '../gameobject/IGameObject';
-import Matrix2D from '../../math/matrix2d/Matrix2D';
+import { IGameObject } from '../gameobject/IGameObject';
+import { Matrix2D } from '../../math/matrix2d/Matrix2D';
 
-export default interface ITransformGameObject extends IGameObject
+export interface ITransformGameObject extends IGameObject
 {
     x: number;
     y: number;

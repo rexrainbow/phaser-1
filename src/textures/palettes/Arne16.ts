@@ -12,7 +12,7 @@
  *
  * @type {Phaser.Types.Create.Palette}
  */
-export default {
+export const Arne16 = {
     0: '#000',
     1: '#9D9D9D',
     2: '#FFF',

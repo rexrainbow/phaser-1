@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
-import Vec2 from '../../math/vec2/Vec2';
+import { IEllipse } from './IEllipse';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns a Point object containing the coordinates of a point on the circumference of the Ellipse based on the given angle.
@@ -21,7 +21,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} A Point object where the `x` and `y` properties are the point on the circumference.
  */
-export default function CircumferencePoint (ellipse: IEllipse, angle: number, out: Vec2 = new Vec2()): Vec2
+export function CircumferencePoint (ellipse: IEllipse, angle: number, out: Vec2 = new Vec2()): Vec2
 {
     const halfWidth = ellipse.width / 2;
     const halfHeight = ellipse.height / 2;

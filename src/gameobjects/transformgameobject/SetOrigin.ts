@@ -1,7 +1,7 @@
-import ITransformGameObject from './ITransformGameObject';
-import CONST from './const';
+import { ITransformGameObject } from './ITransformGameObject';
+import { CONST } from './const';
 
-export default function SetOrigin (originX: number, originY: number, ...child: ITransformGameObject[])
+export function SetOrigin (originX: number, originY: number, ...child: ITransformGameObject[])
 {
     child.forEach(entity => {
 

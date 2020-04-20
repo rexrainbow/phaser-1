@@ -23,7 +23,7 @@
  *
  * @return {number} The percentage of interpolation, between 0 and 1.
  */
-export default function SmootherStep (x: number, min: number, max: number): number
+export function SmootherStep (x: number, min: number, max: number): number
 {
     x = Math.max(0, Math.min(1, (x - min) / (max - min)));
 

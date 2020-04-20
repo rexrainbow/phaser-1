@@ -1,6 +1,6 @@
-import IText from './IText';
+import { IText } from './IText';
 
-export default function SetFont (font: string, ...text: IText[])
+export function SetFont (font: string, ...text: IText[])
 {
     text.forEach(entity => {
 

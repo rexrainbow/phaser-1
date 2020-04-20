@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
-import Triangle from './Triangle';
+import { ITriangle } from './ITriangle';
+import { Triangle } from './Triangle';
 
 
 /**
@@ -18,7 +18,7 @@ import Triangle from './Triangle';
  *
  * @return {Phaser.Geom.Triangle} A new Triangle identical to the given one but separate from it.
  */
-export default function Clone (source: ITriangle): Triangle
+export function Clone (source: ITriangle): Triangle
 {
     const { x1, y1, x2, y2, x3, y3 } = source;
 

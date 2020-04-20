@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
+import { ILine } from './ILine';
 
 /**
  * Rotate a line around the given coordinates by the given angle in radians.
@@ -21,7 +21,7 @@ import ILine from './ILine';
  *
  * @return {Phaser.Geom.Line} The rotated line.
  */
-export default function RotateAroundXY (line: ILine, x: number, y: number, angle: number): ILine
+export function RotateAroundXY (line: ILine, x: number, y: number, angle: number): ILine
 {
     const c = Math.cos(angle);
     const s = Math.sin(angle);

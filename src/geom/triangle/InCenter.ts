@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ITriangle from './ITriangle';
-import Vec2 from '../../math/vec2/Vec2';
+import { ITriangle } from './ITriangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 
 function getLength (x1: number, y1: number, x2: number, y2: number): number
@@ -32,7 +32,7 @@ function getLength (x1: number, y1: number, x2: number, y2: number): number
  *
  * @return {Phaser.Geom.Point} Point (x, y) of the center pixel of the triangle.
  */
-export default function InCenter (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
+export function InCenter (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
 {
     const { x1, y1, x2, y2, x3, y3 } = triangle;
 

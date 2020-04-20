@@ -12,7 +12,7 @@
  *
  * @type {Phaser.Types.Create.Palette}
  */
-export default {
+export const PICO8 = {
     0: '#000',
     1: '#1D2B53',
     2: '#7E2553',

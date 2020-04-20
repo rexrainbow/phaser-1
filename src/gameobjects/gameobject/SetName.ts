@@ -1,6 +1,6 @@
-import IGameObject from './IGameObject';
+import { IGameObject } from './IGameObject';
 
-export default function SetName (name: string, ...child: IGameObject[])
+export function SetName (name: string, ...child: IGameObject[])
 {
     child.forEach(entity => {
 

@@ -1,7 +1,7 @@
-import IFrameConfig from '../IFrameConfig';
-import Texture from '../Texture';
+import { IFrameConfig } from '../IFrameConfig';
+import { Texture } from '../Texture';
 
-export default function (texture: Texture, x: number, y: number, width: number, height: number, frameConfig: IFrameConfig)
+export function SpriteSheetParser (texture: Texture, x: number, y: number, width: number, height: number, frameConfig: IFrameConfig)
 {
     let {
         frameWidth = null,

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Moves the top-left corner of a Rectangle so that its center is at the given coordinates.
@@ -20,7 +20,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} The centered rectangle.
  */
-export default function CenterOn (rect: IRectangle, x: number, y: number): IRectangle
+export function CenterOn (rect: IRectangle, x: number, y: number): IRectangle
 {
     rect.x = x - (rect.width / 2);
     rect.y = y - (rect.height / 2);

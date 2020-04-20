@@ -1,7 +1,7 @@
-import GL from './GL';
-import CreateGLTexture from './CreateGLTexture';
+import { GL } from './GL';
+import { CreateGLTexture } from './CreateGLTexture';
 
-export default function CreateFramebuffer (width: number, height: number): [ WebGLTexture, WebGLFramebuffer ]
+export function CreateFramebuffer (width: number, height: number): [ WebGLTexture, WebGLFramebuffer ]
 {
     const gl = GL.get();
     const texture = CreateGLTexture(null, width, height);

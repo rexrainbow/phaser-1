@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
-import Contains from './Contains';
-import IRectangle from '../rectangle/IRectangle';
+import { ICircle } from './ICircle';
+import { Contains } from './Contains';
+import { IRectangle } from '../rectangle/IRectangle';
 
 /**
  * Check to see if the Circle contains all four points of the given Rectangle object.
@@ -19,7 +19,7 @@ import IRectangle from '../rectangle/IRectangle';
  *
  * @return {boolean} True if all of the Rectangle coordinates are within the circle, otherwise false.
  */
-export default function ContainsRect (circle: ICircle, rect: IRectangle): boolean
+export function ContainsRect (circle: ICircle, rect: IRectangle): boolean
 {
     return (
         Contains(circle, rect.x, rect.y) &&

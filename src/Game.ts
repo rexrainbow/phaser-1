@@ -1,12 +1,12 @@
 import { GetParent } from './config';
 import { AddToDOM, DOMContentLoaded } from './dom';
-import EventEmitter from './events/EventEmitter';
-import GameInstance from './GameInstance';
-import WebGLRenderer from './renderer/webgl1/WebGLRenderer';
-import SceneManager from './scenes/SceneManager';
-import TextureManager from './textures/TextureManager';
+import { EventEmitter } from './events/EventEmitter';
+import { GameInstance } from './GameInstance';
+import { WebGLRenderer } from './renderer/webgl1/WebGLRenderer';
+import { SceneManager } from './scenes/SceneManager';
+import { TextureManager } from './textures/TextureManager';
 
-export default class Game extends EventEmitter
+export class Game extends EventEmitter
 {
     VERSION: string = '4.0.0-beta1';
 

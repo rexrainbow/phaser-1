@@ -5,9 +5,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import CircleToCircle from './CircleToCircle';
-import ICircle from '../circle/ICircle';
-import Vec2 from '../../math/vec2/Vec2';
+import { CircleToCircle } from './CircleToCircle';
+import { ICircle } from '../circle/ICircle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Checks if two Circles intersect and returns the intersection points as a Point object array.
@@ -21,7 +21,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
  */
-export default function GetCircleToCircle (circleA: ICircle, circleB: ICircle, out: Vec2[] = []): Vec2[]
+export function GetCircleToCircle (circleA: ICircle, circleB: ICircle, out: Vec2[] = []): Vec2[]
 {
     if (CircleToCircle(circleA, circleB))
     {

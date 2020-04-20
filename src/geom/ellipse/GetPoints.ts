@@ -4,12 +4,12 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import Circumference from './Circumference';
-import CircumferencePoint from './CircumferencePoint';
-import FromPercent from '../../math/FromPercent';
-import MATH_CONST from '../../math/const';
-import IEllipse from './IEllipse';
-import Vec2 from '../../math/vec2/Vec2';
+import { Circumference } from './Circumference';
+import { CircumferencePoint } from './CircumferencePoint';
+import { FromPercent } from '../../math/FromPercent';
+import { MATH_CONST } from '../../math/const';
+import { IEllipse } from './IEllipse';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns an array of Point objects containing the coordinates of the points around the circumference of the Ellipse,
@@ -27,7 +27,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(array|Phaser.Geom.Point[])} An array of Point objects pertaining to the points around the circumference of the ellipse.
  */
-export default function GetPoints (ellipse: IEllipse, step: number, quantity: number = 0,  out: Vec2[] = []): Vec2[]
+export function GetPoints (ellipse: IEllipse, step: number, quantity: number = 0,  out: Vec2[] = []): Vec2[]
 {
     //  If quantity is a falsey value (false, null, 0, undefined, etc) then we calculate it based on the stepRate instead.
     if (!quantity)

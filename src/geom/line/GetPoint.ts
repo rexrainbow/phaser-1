@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ILine from './ILine';
-import Vec2 from '../../math/vec2/Vec2';
+import { ILine } from './ILine';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Get a point on a line that's a given percentage along its length.
@@ -21,7 +21,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} The point on the line.
  */
-export default function GetPoint (line: ILine, position: number, out: Vec2 = new Vec2()): Vec2
+export function GetPoint (line: ILine, position: number, out: Vec2 = new Vec2()): Vec2
 {
     out.x = line.x1 + (line.x2 - line.x1) * position;
     out.y = line.y1 + (line.y2 - line.y1) * position;

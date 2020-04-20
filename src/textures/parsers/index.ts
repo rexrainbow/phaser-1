@@ -1,9 +1,3 @@
-import AtlasParser from './AtlasParser';
-import BitmapTextParser from './BitmapTextParser';
-import SpriteSheetParser from './SpriteSheetParser';
-
-export {
-    AtlasParser,
-    BitmapTextParser,
-    SpriteSheetParser
-}
+export * as AtlasParser from './AtlasParser';
+export * as BitmapTextParser from './BitmapTextParser';
+export * as SpriteSheetParser from './SpriteSheetParser';

@@ -4,10 +4,10 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
-import CenterOn from './CenterOn';
-import CenterX from './CenterX';
-import CenterY from './CenterY';
+import { IRectangle } from './IRectangle';
+import { CenterOn } from './CenterOn';
+import { CenterX } from './CenterX';
+import { CenterY } from './CenterY';
 
 /**
  * Increases the size of a Rectangle by a specified amount.
@@ -25,7 +25,7 @@ import CenterY from './CenterY';
  *
  * @return {Phaser.Geom.Rectangle} The inflated Rectangle.
  */
-export default function Inflate (rect: IRectangle, x: number, y: number): IRectangle
+export function Inflate (rect: IRectangle, x: number, y: number): IRectangle
 {
     const cx = CenterX(rect);
     const cy = CenterY(rect);

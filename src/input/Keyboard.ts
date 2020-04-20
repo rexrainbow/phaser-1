@@ -1,6 +1,6 @@
-import EventEmitter from '../core/EventEmitter';
+import { EventEmitter } from '../events/EventEmitter';
 
-export default class Keyboard extends EventEmitter
+export class Keyboard extends EventEmitter
 {
     private keyMap: Object;
     private pressed: Object;

@@ -1,6 +1,6 @@
-import GL from './GL';
+import { GL } from './GL';
 
-export default function UpdateGLTexture (source: TexImageSource, dstTexture: WebGLTexture, flipY: boolean = false)
+export function UpdateGLTexture (source: TexImageSource, dstTexture: WebGLTexture, flipY: boolean = false)
 {
     const gl = GL.get();
     const width = source.width;

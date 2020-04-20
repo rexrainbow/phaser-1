@@ -4,8 +4,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from '../circle/ICircle';
-import IRectangle from '../Rectangle/IRectangle';
+import { ICircle } from '../circle/ICircle';
+import { IRectangle } from '../Rectangle/IRectangle';
 
 /**
  * Checks for intersection between a circle and a rectangle.
@@ -18,7 +18,7 @@ import IRectangle from '../Rectangle/IRectangle';
  *
  * @return {boolean} `true` if the two objects intersect, otherwise `false`.
  */
-export default function CircleToRectangle (circle: ICircle, rect: IRectangle): boolean
+export function CircleToRectangle (circle: ICircle, rect: IRectangle): boolean
 {
     const halfWidth = rect.width / 2;
     const halfHeight = rect.height / 2;

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import ICircle from './ICircle';
+import { ICircle } from './ICircle';
 
 /**
  * Returns the circumference of the given Circle.
@@ -16,7 +16,7 @@ import ICircle from './ICircle';
  *
  * @return {number} The circumference of the Circle.
  */
-export default function Circumference (circle: ICircle): number
+export function Circumference (circle: ICircle): number
 {
     return 2 * (Math.PI * circle.radius);
 }

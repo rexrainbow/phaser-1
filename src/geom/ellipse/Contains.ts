@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IEllipse from './IEllipse';
+import { IEllipse } from './IEllipse';
 
 /**
  * Check to see if the Ellipse contains the given x / y coordinates.
@@ -18,7 +18,7 @@ import IEllipse from './IEllipse';
  *
  * @return {boolean} True if the coordinates are within the ellipse, otherwise false.
  */
-export default function Contains (ellipse: IEllipse, x: number, y: number): boolean
+export function Contains (ellipse: IEllipse, x: number, y: number): boolean
 {
     if (ellipse.width <= 0 || ellipse.height <= 0)
     {

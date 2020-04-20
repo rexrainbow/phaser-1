@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import IRectangle from './IRectangle';
+import { IRectangle } from './IRectangle';
 
 /**
  * Merges the source rectangle into the target rectangle and returns the target.
@@ -20,7 +20,7 @@ import IRectangle from './IRectangle';
  *
  * @return {Phaser.Geom.Rectangle} Modified target rectangle that contains source rectangle.
  */
-export default function MergeRect (target: IRectangle, source: IRectangle): IRectangle
+export function MergeRect (target: IRectangle, source: IRectangle): IRectangle
 {
     const minX = Math.min(target.x, source.x);
     const maxX = Math.max(target.right, source.right);

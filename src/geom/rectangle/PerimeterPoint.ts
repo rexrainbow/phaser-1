@@ -4,11 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import DegToRad from '../../math/DegToRad';
-import IRectangle from './IRectangle';
-import CenterX from './CenterX';
-import CenterY from './CenterY';
-import Vec2 from '../../math/vec2/Vec2';
+import { DegToRad } from '../../math/DegToRad';
+import { IRectangle } from './IRectangle';
+import { CenterX } from './CenterX';
+import { CenterY } from './CenterY';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Returns a Point from the perimeter of a Rectangle based on the given angle.
@@ -24,7 +24,7 @@ import Vec2 from '../../math/vec2/Vec2';
  *
  * @return {Phaser.Geom.Point} A Point object holding the coordinates of the Rectangle perimeter.
  */
-export default function PerimeterPoint (rectangle: IRectangle, angle: number, out: Vec2 = new Vec2()): Vec2
+export function PerimeterPoint (rectangle: IRectangle, angle: number, out: Vec2 = new Vec2()): Vec2
 {
     angle = DegToRad(angle);
 
