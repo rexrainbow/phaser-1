@@ -130,19 +130,26 @@ export default class SceneManager
                 }
 
                 let renderListSize = this.renderResult.renderedWorlds.length;
-                if (renderListSize <= this.renderResult.numRenderedWorlds) {
+
+                if (renderListSize <= this.renderResult.numRenderedWorlds)
+                {
                     renderListSize++;
+
                     this.renderResult.renderedWorlds.push({
                         camera: world.camera,
                         rendered: world.rendered,
                         numRendered: world.numRendered
                     });
-                } else {
+                }
+                else
+                {
                     const renderData = this.renderResult.renderedWorlds[this.renderResult.numRenderedWorlds];
+
                     renderData.camera = world.camera;
                     renderData.rendered = world.rendered;
                     renderData.numRendered = world.numRendered;
                 }
+
                 this.renderResult.numRenderedWorlds++;
             }
         }

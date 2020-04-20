@@ -21,7 +21,6 @@ function GetScenes (): SceneClass[]
 }
 
 export {
-    Scenes,
-    GetScenes
-}
-
+	Scenes,
+	GetScenes
+};

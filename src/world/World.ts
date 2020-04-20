@@ -50,7 +50,7 @@ export default class World implements IWorld
     {
         const children = root.children;
 
-        for (let i: number = 0; i < children.length; i++)
+        for (let i = 0, numChildren = children.length; i < numChildren; i++)
         {
             this.buildRenderList(children[i], gameFrame);
         }
@@ -86,7 +86,7 @@ export default class World implements IWorld
     {
         const children = this.children;
 
-        for (let i = 0; i < children.length; i++)
+        for (let i = 0, numChildren = children.length; i < numChildren; i++)
         {
             let child = children[i];
 

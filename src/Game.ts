@@ -121,16 +121,14 @@ export default class Game extends EventEmitter
     
         this.emit('step', dt, now);
 
-        const sceneManager = this.scenes;
-
         if (!this.isPaused)
         {
-            sceneManager.update(dt, now);
+            this.scenes.update(dt, now);
         }
 
         this.emit('update', dt, now);
 
-        this.renderer.render(sceneManager.render(this.frame));
+        this.renderer.render(this.scenes.render(this.frame));
 
         this.emit('render', dt, now);
 

@@ -21,5 +21,7 @@ function GetParent (): string | HTMLElement | undefined
     return _parent;
 }
 
-export { Parent, GetParent };
-
+export {
+    Parent,
+    GetParent
+};
