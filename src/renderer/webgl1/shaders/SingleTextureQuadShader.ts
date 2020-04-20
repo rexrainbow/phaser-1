@@ -1,6 +1,6 @@
 import WebGLRenderer from '../WebGLRenderer';
 import { IShaderAttributes as IShaderAttributes } from './IShaderAttributes';
-import IShaderConfig from './IShaderConfig';
+import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
 
 const shaderSource = {
@@ -247,7 +247,7 @@ export default class SingleTextureQuadShader
         this.vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.DYNAMIC_DRAW);
-       
+
         this.indexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.index, gl.STATIC_DRAW);

@@ -1,6 +1,6 @@
 import WebGLRenderer from '../WebGLRenderer';
 import { IShaderAttributes } from './IShaderAttributes';
-import IShaderConfig from './IShaderConfig';
+import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
 
 const shaderSource = {
