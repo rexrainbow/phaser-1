@@ -1,10 +1,9 @@
 import { IAnimatedSprite } from './IAnimatedSprite';
 
-export function ClearAnimations (...sprite: IAnimatedSprite[])
+export function ClearAnimations (...sprite: IAnimatedSprite[]): void
 {
-    sprite.forEach(entity => {
-
+    sprite.forEach(entity =>
+    {
         entity.anims.clear();
-
     });
 }

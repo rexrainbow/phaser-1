@@ -6,8 +6,8 @@ export interface IAnimatedSprite extends ISprite
 {
     anims: Map<string, Frame[]>;
     animData: IAnimationData;
-    nextFrame (): this;
-    prevFrame (): this;
+    nextFrame (): void;
+    prevFrame (): void;
     isPlaying: boolean;
     isPlayingForward: boolean;
     currentAnimation: string;

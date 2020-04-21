@@ -15,7 +15,7 @@ export class AnimatedSprite extends Sprite
         this.type = 'AnimatedSprite';
 
         this.anims = new Map();
-    
+
         //  Holds all the data for the current animation only
         this.animData = {
             currentAnim: '',
@@ -36,7 +36,7 @@ export class AnimatedSprite extends Sprite
         };
     }
 
-    private stop ()
+    private stop (): void
     {
         const data = this.animData;
 
@@ -47,11 +47,9 @@ export class AnimatedSprite extends Sprite
         {
             data.onComplete(this, data.currentAnim);
         }
-
-        return this;
     }
 
-    nextFrame ()
+    nextFrame (): void
     {
         const data = this.animData;
 
@@ -92,11 +90,9 @@ export class AnimatedSprite extends Sprite
         this.setFrame(data.currentFrames[data.frameIndex]);
 
         data.nextFrameTime += data.animSpeed;
-
-        return this;
     }
 
-    prevFrame ()
+    prevFrame (): void
     {
         const data = this.animData;
 
@@ -133,11 +129,9 @@ export class AnimatedSprite extends Sprite
         this.setFrame(data.currentFrames[data.frameIndex]);
 
         data.nextFrameTime += data.animSpeed;
-
-        return this;
     }
 
-    update (delta: number, now: number)
+    update (delta: number, now: number): void
     {
         super.update(delta, now);
 
@@ -149,7 +143,7 @@ export class AnimatedSprite extends Sprite
         }
 
         data.nextFrameTime -= delta * 1000;
-        
+
         //  Clamp to zero, otherwise a huge delta could cause animation playback issues
         data.nextFrameTime = Math.max(data.nextFrameTime, 0);
 
@@ -193,7 +187,7 @@ export class AnimatedSprite extends Sprite
         return this.animData.currentAnim;
     }
 
-    destroy (reparentChildren?: IContainer)
+    destroy (reparentChildren?: IContainer): void
     {
         super.destroy(reparentChildren);
 

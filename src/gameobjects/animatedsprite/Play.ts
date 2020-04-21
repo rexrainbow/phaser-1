@@ -1,7 +1,7 @@
 import { IAnimationPlayConfig } from './IAnimationPlayConfig';
 import { IAnimatedSprite } from './IAnimatedSprite';
 
-export function Play (key: string, config: IAnimationPlayConfig = {}, ...sprite: IAnimatedSprite[])
+export function Play (key: string, config: IAnimationPlayConfig = {}, ...sprite: IAnimatedSprite[]): void
 {
     const {
         speed = 24,
@@ -16,8 +16,8 @@ export function Play (key: string, config: IAnimationPlayConfig = {}, ...sprite:
         forceRestart = false
     } = config;
 
-    sprite.forEach(entity => {
-
+    sprite.forEach(entity =>
+    {
         const data = entity.animData;
 
         if (data.isPlaying)
@@ -27,7 +27,7 @@ export function Play (key: string, config: IAnimationPlayConfig = {}, ...sprite:
                 //  Stop
                 data.isPlaying = false;
                 data.currentAnim = '';
-            
+
                 if (data.onComplete)
                 {
                     data.onComplete(entity, data.currentAnim);
@@ -39,7 +39,7 @@ export function Play (key: string, config: IAnimationPlayConfig = {}, ...sprite:
                 return;
             }
         }
-    
+
         if (entity.anims.has(key))
         {
             data.currentFrames = entity.anims.get(key);
@@ -56,12 +56,12 @@ export function Play (key: string, config: IAnimationPlayConfig = {}, ...sprite:
             data.onStart = onStart;
             data.onRepeat = onRepeat;
             data.onComplete = onComplete;
-    
+
             //  If there is no start delay, we set the first frame immediately
             if (delay === 0)
             {
                 entity.setFrame(data.currentFrames[data.frameIndex]);
-    
+
                 if (onStart)
                 {
                     onStart(entity, key);
