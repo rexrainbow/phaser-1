@@ -1,16 +1,16 @@
-let _width: number = 800;
-let _height: number = 600;
-let _resolution: number = 1;
+let _width = 800;
+let _height = 600;
+let _resolution = 1;
 
-function Size (width: number = 800, height: number = 600, resolution: number = 1)
+function Size (width: number = 800, height: number = 600, resolution: number = 1): () => void
 {
     if (resolution === 0)
     {
         resolution = window.devicePixelRatio;
     }
 
-    return () => {
-
+    return (): void =>
+    {
         _width = width;
         _height = height;
         _resolution = resolution;
@@ -38,4 +38,4 @@ export {
     GetWidth,
     GetHeight,
     GetResolution
-}
+};

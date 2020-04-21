@@ -1,6 +1,6 @@
 let bgColor = 0;
 
-function BackgroundColor (color: number = 0)
+function BackgroundColor (color: number = 0): () => void
 {
     return (): void =>
     {

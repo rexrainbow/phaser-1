@@ -1,23 +1,23 @@
 import { GetElement } from '../dom/GetElement';
 
-let _parent: HTMLElement = null;
+let parent: HTMLElement;
 
-function Parent (parent?: string | HTMLElement)
+function Parent (parentElement?: string | HTMLElement): () => void
 {
     return (): void =>
     {
         //  If this function was called and `null` *wasn't* given as the parent
         //  then we try to figure it out, or fallback to the document body
-        if (parent)
+        if (parentElement)
         {
-            _parent = GetElement(parent);
+            parent = GetElement(parentElement);
         }
     };
 }
 
 function GetParent (): string | HTMLElement | undefined
 {
-    return _parent;
+    return parent;
 }
 
 export {

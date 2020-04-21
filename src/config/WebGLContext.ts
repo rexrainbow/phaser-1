@@ -5,12 +5,11 @@ let _contextAttributes: WebGLContextAttributes = {
     premultipliedAlpha: false
 };
 
-function WebGLContext (contextAttributes: WebGLContextAttributes)
+function WebGLContext (contextAttributes: WebGLContextAttributes): () => void
 {
-    return () => {
-
+    return (): void =>
+    {
         _contextAttributes = contextAttributes;
-    
     };
 }
 
@@ -22,4 +21,4 @@ function GetWebGLContext (): WebGLContextAttributes
 export {
     WebGLContext,
     GetWebGLContext
-}
+};
