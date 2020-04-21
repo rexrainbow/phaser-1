@@ -1,9 +1,9 @@
 import { IText } from './IText';
 
-export function SetPadding (left: number, right: number, top: number, bottom: number, ...text: IText[])
+export function SetPadding (left: number, right: number, top: number, bottom: number, ...text: IText[]): void
 {
-    text.forEach(entity => {
-
+    text.forEach(entity =>
+    {
         const padding = entity.padding;
 
         padding.left = left;
@@ -12,6 +12,5 @@ export function SetPadding (left: number, right: number, top: number, bottom: nu
         padding.bottom = bottom;
 
         entity.updateText();
-
     });
 }

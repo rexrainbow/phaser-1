@@ -53,7 +53,7 @@ export class Texture
             return null;
         }
 
-        let frame = new Frame(this, key, x, y, width, height);
+        const frame = new Frame(this, key, x, y, width, height);
 
         this.frames.set(key, frame);
 
@@ -65,7 +65,7 @@ export class Texture
         return frame;
     }
 
-    get (key?: string | number | Frame)
+    get (key?: string | number | Frame): Frame
     {
         //  null, undefined, empty string, zero
         if (!key)
@@ -94,10 +94,9 @@ export class Texture
     {
         const output: Frame[] = [];
 
-        frames.forEach((key: string | number) => {
-
+        frames.forEach((key: string | number) =>
+        {
             output.push(this.get(key));
-
         });
 
         return output;
@@ -120,7 +119,7 @@ export class Texture
         return this.getFrames(frameKeys);
     }
 
-    setSize (width: number, height: number)
+    setSize (width: number, height: number): void
     {
         this.width = width;
         this.height = height;
@@ -130,12 +129,12 @@ export class Texture
         frame.setSize(width, height);
     }
 
-    setFilter (linear: boolean)
+    setFilter (linear: boolean): void
     {
         SetGLTextureFilterMode(this.glTexture, linear);
     }
     
-    createGL ()
+    createGL (): void
     {
         if (this.glTexture)
         {
@@ -145,7 +144,7 @@ export class Texture
         this.glTexture = CreateGLTexture(this.image);
     }
 
-    updateGL ()
+    updateGL (): void
     {
         if (!this.glTexture)
         {
@@ -157,7 +156,7 @@ export class Texture
         }
     }
 
-    destroy ()
+    destroy (): void
     {
         this.frames.clear();
 

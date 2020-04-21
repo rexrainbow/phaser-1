@@ -25,8 +25,8 @@ export function BresenhamPoints (line: ILine, stepRate: number = 1, results: Vec
 {
     let x1 = Math.round(line.x1);
     let y1 = Math.round(line.y1);
-    let x2 = Math.round(line.x2);
-    let y2 = Math.round(line.y2);
+    const x2 = Math.round(line.x2);
+    const y2 = Math.round(line.y2);
 
     const dx = Math.abs(x2 - x1);
     const dy = Math.abs(y2 - y1);
@@ -40,7 +40,7 @@ export function BresenhamPoints (line: ILine, stepRate: number = 1, results: Vec
 
     while (!((x1 === x2) && (y1 === y2)))
     {
-        var e2 = err << 1;
+        const e2 = err << 1;
 
         if (e2 > -dy)
         {

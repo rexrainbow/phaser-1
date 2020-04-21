@@ -21,23 +21,23 @@ export class Scene implements IScene
         this.game.scenes.init(this, config);
     }
 
-    boot ()
+    boot (): void
     {
     }
 
-    update ()
+    update (): void
     {
     }
 
-    render ()
+    render (): void
     {
     }
 
-    shutdown ()
+    shutdown (): void
     {
     }
 
-    destroy ()
+    destroy (): void
     {
         this.world.destroy();
 

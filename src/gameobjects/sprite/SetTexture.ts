@@ -4,10 +4,10 @@ import { Texture } from '../../textures/Texture';
 import { ISprite } from './ISprite';
 import { SetFrame } from './SetFrame';
 
-export function SetTexture (key: string | Texture, frame: string | number | Frame, ...sprite: ISprite[])
+export function SetTexture (key: string | Texture, frame: string | number | Frame, ...sprite: ISprite[]): void
 {
-    sprite.forEach(entity => {
-
+    sprite.forEach(entity =>
+    {
         if (!key)
         {
             return;
@@ -35,6 +35,5 @@ export function SetTexture (key: string | Texture, frame: string | number | Fram
 
             SetFrame(frame, entity);
         }
-
     });
 }

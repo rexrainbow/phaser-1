@@ -6,4 +6,4 @@ export {
     File,
     Files,
     Loader
-}
+};

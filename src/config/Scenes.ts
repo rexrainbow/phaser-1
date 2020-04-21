@@ -4,10 +4,9 @@ let _scenes: ISceneConstructor[] = [];
 
 function Scenes (scenes?: ISceneConstructor | Array<ISceneConstructor>): () => void
 {
-    return () => {
-
+    return (): void =>
+    {
         _scenes = [].concat(scenes);
-
     };
 }
 
@@ -17,6 +16,6 @@ function GetScenes (): ISceneConstructor[]
 }
 
 export {
-	Scenes,
-	GetScenes
+    Scenes,
+    GetScenes
 };

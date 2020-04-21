@@ -10,7 +10,7 @@ import { ILine } from '../line/ILine';
 import { IVec2 } from '../../math/vec2/IVec2';
 import { ICircle } from '../circle/ICircle';
 
-let tmp: Vec2 = new Vec2();
+const tmp: Vec2 = new Vec2();
 
 /**
  * Checks for intersection between the line segment and circle.

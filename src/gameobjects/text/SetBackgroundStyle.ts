@@ -1,9 +1,9 @@
 import { IText } from './IText';
 
-export function SetBackgroundStyle (style: string | CanvasGradient | CanvasPattern, cornerRadius: number | null, ...text: IText[])
+export function SetBackgroundStyle (style: string | CanvasGradient | CanvasPattern, cornerRadius: number | null, ...text: IText[]): void
 {
-    text.forEach(entity => {
-
+    text.forEach(entity =>
+    {
         entity.backgroundStyle = style;
 
         if (cornerRadius !== null)
@@ -12,6 +12,5 @@ export function SetBackgroundStyle (style: string | CanvasGradient | CanvasPatte
         }
 
         entity.updateText();
-
     });
 }

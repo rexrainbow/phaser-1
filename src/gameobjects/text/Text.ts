@@ -61,7 +61,7 @@ export class Text extends Sprite
         this.setText(text);
     }
 
-    private syncContext (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D)
+    private syncContext (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void
     {
         if (this.preRenderCallback)
         {
@@ -88,7 +88,7 @@ export class Text extends Sprite
         const ctx = this.context;
         const resolution = this.resolution;
 
-        let lines = this._text.split(this.splitRegExp);
+        const lines = this._text.split(this.splitRegExp);
 
         const padding = this.padding;
         const fillStyle = this.fillStyle;
@@ -106,25 +106,25 @@ export class Text extends Sprite
 
         //  Measure each line and add them together (note: measure text excludes stroke style!)
 
-        let maxWidth: number = 0;
-        let maxHeight: number = 0;
-        let y: number = 0;
+        let maxWidth = 0;
+        let maxHeight = 0;
+        let y = 0;
 
         const lineMetrics = [];
 
         const vAlignAscent: boolean = (this.verticalAlign === 'ascent');
 
         //  Work out an average line height for this font
-        let metrics = ctx.measureText('|MÉq');
+        const metrics = ctx.measureText('|MÉq');
 
         const averageLineHeight: number = Math.ceil(Math.abs(metrics.actualBoundingBoxAscent) + Math.abs(metrics.actualBoundingBoxDescent)) + strokeWidth;
 
-        for (let i: number = 0; i < lines.length; i++)
+        for (let i = 0; i < lines.length; i++)
         {
-            let metrics = ctx.measureText(lines[i]);
+            const metrics = ctx.measureText(lines[i]);
 
-            let left = metrics.actualBoundingBoxLeft;
-            let right = metrics.actualBoundingBoxRight;
+            const left = metrics.actualBoundingBoxLeft;
+            const right = metrics.actualBoundingBoxRight;
             let ascent = metrics.actualBoundingBoxAscent;
             let descent = metrics.actualBoundingBoxDescent;
 
@@ -135,8 +135,8 @@ export class Text extends Sprite
                 descent = 0;
             }
 
-            let lineWidth = Math.ceil(Math.abs(left) + Math.abs(right)) + strokeWidth;
-            let lineHeight = Math.ceil(Math.abs(ascent) + Math.abs(descent)) + strokeWidth;
+            const lineWidth = Math.ceil(Math.abs(left) + Math.abs(right)) + strokeWidth;
+            const lineHeight = Math.ceil(Math.abs(ascent) + Math.abs(descent)) + strokeWidth;
 
             if (vAlignAscent)
             {
@@ -221,13 +221,13 @@ export class Text extends Sprite
 
         const yOffset = ((displayHeight - maxHeight) / 2) + padding.top;
 
-        for (let i: number = 0; i < lines.length; i++)
+        for (let i = 0; i < lines.length; i++)
         {
-            let line = lines[i];
-            let metrics = lineMetrics[i];
+            const line = lines[i];
+            const metrics = lineMetrics[i];
 
             let tx = padding.left + metrics.left + strokeWidthHalf;
-            let ty = yOffset + metrics.y;
+            const ty = yOffset + metrics.y;
 
             if (isCenter)
             {
@@ -285,7 +285,7 @@ export class Text extends Sprite
         return this;
     }
 
-    destroy (reparentChildren?: IContainer)
+    destroy (reparentChildren?: IContainer): void
     {
         this.texture.destroy();
 

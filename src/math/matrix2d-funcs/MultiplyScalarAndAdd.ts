@@ -9,6 +9,6 @@ export function MultiplyScalarAndAdd (a: IMatrix2D, b: IMatrix2D, scale: number)
         a.c + (b.c * scale),
         a.d + (b.d * scale),
         a.tx + (b.tx * scale),
-        a.ty + (b.ty * scale),
+        a.ty + (b.ty * scale)
     );
 }

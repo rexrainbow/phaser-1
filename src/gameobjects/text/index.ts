@@ -28,4 +28,4 @@ export {
     SetTextAlign,
     SetTextBaseline,
     Text
-}
+};

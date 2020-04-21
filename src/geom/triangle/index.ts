@@ -56,4 +56,4 @@ export {
     RotateAroundPoint,
     RotateAroundXY,
     Triangle
-}
+};

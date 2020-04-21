@@ -30,7 +30,7 @@ export function Inflate (rect: IRectangle, x: number, y: number): IRectangle
     const cx = CenterX(rect);
     const cy = CenterY(rect);
 
-    rect.width = rect.width + (x * 2)
+    rect.width = rect.width + (x * 2);
     rect.height = rect.height + (y * 2);
 
     return CenterOn(rect, cx, cy);

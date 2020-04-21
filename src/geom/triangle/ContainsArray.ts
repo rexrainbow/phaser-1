@@ -31,10 +31,10 @@ import { Contains } from './Contains';
  */
 export function ContainsArray (triangle: ITriangle, points: IVec2[], returnFirst: boolean = false, out: Vec2[] = []): Vec2[]
 {
-    let skip: boolean = false;
+    let skip = false;
 
-    points.forEach(point => {
-
+    points.forEach(point =>
+    {
         if (skip)
         {
             return;
@@ -51,7 +51,6 @@ export function ContainsArray (triangle: ITriangle, points: IVec2[], returnFirst
                 skip = true;
             }
         }
-
     });
 
     return out;

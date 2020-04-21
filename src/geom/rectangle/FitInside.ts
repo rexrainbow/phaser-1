@@ -36,7 +36,7 @@ export function FitInside (target: IRectangle, source: IRectangle): IRectangle
     if (ratio < GetAspectRatio(source))
     {
         //  Taller than Wide
-        width = source.height * ratio
+        width = source.height * ratio;
     }
     else
     {

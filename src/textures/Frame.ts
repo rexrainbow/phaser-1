@@ -24,7 +24,7 @@ export class Frame
     spriteSourceSizeWidth: number;
     spriteSourceSizeHeight: number;
 
-    pivot: { x: number, y: number };
+    pivot: { x: number; y: number };
 
     u0: number;
     v0: number;
@@ -47,12 +47,12 @@ export class Frame
         this.updateUVs();
     }
 
-    setPivot (x: number, y: number)
+    setPivot (x: number, y: number): void
     {
         this.pivot = { x, y };
     }
 
-    setSize (width: number, height: number)
+    setSize (width: number, height: number): void
     {
         this.width = width;
         this.height = height;
@@ -62,13 +62,13 @@ export class Frame
         this.updateUVs();
     }
 
-    setSourceSize (width: number, height: number)
+    setSourceSize (width: number, height: number): void
     {
         this.sourceSizeWidth = width;
         this.sourceSizeHeight = height;
     }
 
-    setTrim (width: number, height: number, x: number, y: number, w: number, h: number)
+    setTrim (width: number, height: number, x: number, y: number, w: number, h: number): void
     {
         this.trimmed = true;
 
@@ -81,7 +81,7 @@ export class Frame
         this.spriteSourceSizeHeight = h;
     }
 
-    updateUVs ()
+    updateUVs (): void
     {
         const { x, y, width, height } = this;
 

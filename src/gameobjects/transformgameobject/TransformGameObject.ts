@@ -49,7 +49,7 @@ export class TransformGameObject extends GameObject
         this.updateCache();
     }
 
-    updateCache ()
+    updateCache (): this
     {
         const transform = this.localTransform;
 
@@ -67,7 +67,7 @@ export class TransformGameObject extends GameObject
         return this.updateTransform();
     }
 
-    updateTransform ()
+    updateTransform (): this
     {
         this.setDirtyRender();
 
@@ -101,7 +101,7 @@ export class TransformGameObject extends GameObject
         return this;
     }
 
-    setSize (width: number, height: number)
+    setSize (width: number, height: number): this
     {
         this.width = width;
         this.height = height;
@@ -109,7 +109,7 @@ export class TransformGameObject extends GameObject
         return this;
     }
 
-    setOrigin (originX: number, originY: number = originX)
+    setOrigin (originX: number, originY: number = originX): this
     {
         const data = this.transformData;
 
@@ -119,7 +119,7 @@ export class TransformGameObject extends GameObject
         return this;
     }
 
-    setPosition (x: number, y: number = x)
+    setPosition (x: number, y: number = x): this
     {
         const data = this.transformData;
 
@@ -129,7 +129,7 @@ export class TransformGameObject extends GameObject
         return this.updateTransform();
     }
 
-    setRotation (rotation: number)
+    setRotation (rotation: number): this
     {
         const data = this.transformData;
 
@@ -143,7 +143,7 @@ export class TransformGameObject extends GameObject
         return this;
     }
 
-    setScale (scaleX: number, scaleY: number = scaleX)
+    setScale (scaleX: number, scaleY: number = scaleX): this
     {
         const data = this.transformData;
 
@@ -153,7 +153,7 @@ export class TransformGameObject extends GameObject
         return this.updateCache();
     }
 
-    setSkew (skewX: number, skewY: number = skewX)
+    setSkew (skewX: number, skewY: number = skewX): this
     {
         const data = this.transformData;
 
@@ -163,7 +163,7 @@ export class TransformGameObject extends GameObject
         return this.updateCache();
     }
 
-    destroy ()
+    destroy (): void
     {
         super.destroy();
 

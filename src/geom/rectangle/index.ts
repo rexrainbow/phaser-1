@@ -88,4 +88,4 @@ export {
     SameDimensions,
     Scale,
     Union
-}
+};

@@ -10,4 +10,4 @@ export {
     SetQuadTint,
     SetTexture,
     Sprite
-}
+};

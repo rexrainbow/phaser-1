@@ -27,16 +27,17 @@ export class SceneManager
 
     constructor ()
     {
-        this.game = GameInstance.get()
+        this.game = GameInstance.get();
+
         this.game.once('boot', this.boot);
     }
 
-    boot = () =>
+    boot = (): void =>
     {
         GetScenes().forEach(scene => new scene());
-    }
+    };
 
-    init (scene: IScene, config: string | ISceneConfig = {})
+    init (scene: IScene, config: string | ISceneConfig = {}): void
     {
         const size = this.scenes.size;
         const sceneIndex = this.sceneIndex;
@@ -67,7 +68,7 @@ export class SceneManager
         }
     }
 
-    update (delta: number, now: number)
+    update (delta: number, now: number): void
     {
         for (const scene of this.scenes.values())
         {
@@ -89,11 +90,11 @@ export class SceneManager
         results.numDirtyCameras = 0;
         results.numRenderedWorlds = 0;
 
-        for (let scene of this.scenes.values())
+        for (const scene of this.scenes.values())
         {
             if (scene.willRender)
             {
-                let world = scene.world;
+                const world = scene.world;
 
                 results.numDirtyFrames += world.render(gameFrame);
                 results.numTotalFrames += world.numRendered;

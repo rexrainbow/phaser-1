@@ -7,7 +7,7 @@ export interface IText extends ISprite
     preRenderCallback: (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => void;
     wordWrapCallback: (text: string) => string;
     splitRegExp: RegExp;
-    padding: any;
+    padding: { left: number; right: number; top: number; bottom: number };
     verticalAlign: VerticalTextAlignment;
     lineSpacing: number;
     resolution: number;

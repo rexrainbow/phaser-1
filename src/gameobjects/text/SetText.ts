@@ -1,10 +1,9 @@
 import { IText } from './IText';
 
-export function SetText (value: string | string[], ...text: IText[])
+export function SetText (value: string | string[], ...text: IText[]): void
 {
-    text.forEach(entity => {
-
+    text.forEach(entity =>
+    {
         entity.setText(value);
-
     });
 }

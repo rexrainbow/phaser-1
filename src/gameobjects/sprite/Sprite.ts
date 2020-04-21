@@ -48,14 +48,14 @@ export class Sprite extends Container
         return this.bounds;
     }
 
-    setTexture (key: string | Texture, frame?: string | number)
+    setTexture (key: string | Texture, frame?: string | number): this
     {
         SetTexture(key, frame, this);
 
         return this;
     }
 
-    setFrame (key?: string | number | Frame)
+    setFrame (key?: string | number | Frame): this
     {
         SetFrame(key, this);
 
@@ -67,7 +67,7 @@ export class Sprite extends Container
         return (this.visible && this.willRender && this.hasTexture && this.alpha > 0);
     }
 
-    updateVertices ()
+    updateVertices (): void
     {
         const data = this.vertexData;
 
@@ -137,7 +137,7 @@ export class Sprite extends Container
         bounds.bottom = Math.max(y0, y1, y2, y3);
     }
 
-    uploadBuffers (F32: Float32Array, U32: Uint32Array, offset: number, setTexture: boolean = true)
+    uploadBuffers (F32: Float32Array, U32: Uint32Array, offset: number, setTexture: boolean = true): void
     {
         //  Skip all of this if not dirty
         if (this.dirtyRender)
@@ -171,7 +171,7 @@ export class Sprite extends Container
         U32[offset + 23] = color[1];
     }
 
-    destroy (reparentChildren?: IContainer)
+    destroy (reparentChildren?: IContainer): void
     {
         super.destroy(reparentChildren);
 

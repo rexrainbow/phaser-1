@@ -1,11 +1,11 @@
 import { Frame } from '../../textures/Frame';
 import { ISprite } from './ISprite';
 
-export function SetFrame (key?: string | number | Frame, ...sprite: ISprite[])
+export function SetFrame (key?: string | number | Frame, ...sprite: ISprite[]): void
 {
-    sprite.forEach(entity => {
-
-        let frame = entity.texture.get(key);
+    sprite.forEach(entity =>
+    {
+        const frame = entity.texture.get(key);
 
         if (frame === entity.frame)
         {
@@ -22,7 +22,7 @@ export function SetFrame (key?: string | number | Frame, ...sprite: ISprite[])
             entity.setOrigin(frame.pivot.x, frame.pivot.y);
         }
     
-        let data = entity.vertexData;
+        const data = entity.vertexData;
     
         //  This rarely changes, so we'll set it here, rather than every game step:
     
@@ -41,6 +41,5 @@ export function SetFrame (key?: string | number | Frame, ...sprite: ISprite[])
         entity.setDirtyRender();
     
         entity.hasTexture = true;
-
     });
 }

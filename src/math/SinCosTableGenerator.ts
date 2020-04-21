@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
- /**
+/**
  * @typedef {object} Phaser.Types.Math.SinCosTable
  * @since 3.0.0
  *
@@ -13,7 +13,7 @@
  * @property {number} length - The length.
  */
 
-type SinCosTable = { sin: number[], cos: number[], length: number };
+type SinCosTable = { sin: number[]; cos: number[]; length: number };
 
 /**
  * Generate a series of sine and cosine values.

@@ -47,7 +47,7 @@ export function GetLineToCircle (line: ILine, circle: ICircle, out: Vec2[] = [])
 
         if (lambda === 0)
         {
-            var root = -coefficientB / (2 * coefficientA);
+            const root = -coefficientB / (2 * coefficientA);
 
             x = x1 + root * lDirX;
             y = y1 + root * lDirY;
@@ -59,7 +59,7 @@ export function GetLineToCircle (line: ILine, circle: ICircle, out: Vec2[] = [])
         }
         else if (lambda > 0)
         {
-            var root1 = (-coefficientB - Math.sqrt(lambda)) / (2 * coefficientA);
+            const root1 = (-coefficientB - Math.sqrt(lambda)) / (2 * coefficientA);
 
             x = x1 + root1 * lDirX;
             y = y1 + root1 * lDirY;
@@ -69,7 +69,7 @@ export function GetLineToCircle (line: ILine, circle: ICircle, out: Vec2[] = [])
                 out.push(new Vec2(x, y));
             }
 
-            var root2 = (-coefficientB + Math.sqrt(lambda)) / (2 * coefficientA);
+            const root2 = (-coefficientB + Math.sqrt(lambda)) / (2 * coefficientA);
 
             x = x1 + root2 * lDirX;
             y = y1 + root2 * lDirY;

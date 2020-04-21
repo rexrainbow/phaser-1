@@ -24,7 +24,7 @@ import { Vec2 } from '../../math/vec2/Vec2';
  *
  * @return {number} the determinant.
  */
-function det (m00: number, m01: number, m10: number, m11: number): number
+function Det (m00: number, m01: number, m10: number, m11: number): number
 {
     return (m00 * m11) - (m01 * m10);
 }
@@ -57,9 +57,9 @@ export function CircumCenter (triangle: ITriangle, out: Vec2 = new Vec2()): Vec2
     const bx = triangle.x2 - cx;
     const by = triangle.y2 - cy;
 
-    const denom = 2 * det(ax, ay, bx, by);
-    const numx = det(ay, ax * ax + ay * ay, by, bx * bx + by * by);
-    const numy = det(ax, ax * ax + ay * ay, bx, bx * bx + by * by);
+    const denom = 2 * Det(ax, ay, bx, by);
+    const numx = Det(ay, ax * ax + ay * ay, by, bx * bx + by * by);
+    const numy = Det(ax, ax * ax + ay * ay, bx, bx * bx + by * by);
 
     return out.set(
         cx - numx / denom,

@@ -6,10 +6,10 @@ const fragTemplate = [
     'float test = 0.1;',
     '%forloop%',
     'gl_FragColor = vec4(0.0);',
-    '}',
+    '}'
 ].join('\n');
 
-function generateSrc (maxIfs: number): string
+function GenerateSrc (maxIfs: number): string
 {
     let src = '';
 
@@ -35,7 +35,7 @@ export function CheckShaderMaxIfStatements (maxIfs: number, gl: WebGLRenderingCo
 
     while (true)
     {
-        const fragmentSrc = fragTemplate.replace(/%forloop%/gi, generateSrc(maxIfs));
+        const fragmentSrc = fragTemplate.replace(/%forloop%/gi, GenerateSrc(maxIfs));
 
         gl.shaderSource(shader, fragmentSrc);
         gl.compileShader(shader);

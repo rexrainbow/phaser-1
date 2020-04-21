@@ -1,4 +1,5 @@
-export interface IShader {
+export interface IShader
+{
     gl: WebGLRenderingContext;
     program: WebGLProgram;
     batchSize: number;

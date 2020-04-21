@@ -54,4 +54,4 @@ export {
     TriangleToCircle,
     TriangleToLine,
     TriangleToTriangle
-}
+};

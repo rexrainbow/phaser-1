@@ -12,7 +12,7 @@ export class TextureManager
         this.createDefaultTextures();
     }
 
-    private createDefaultTextures ()
+    private createDefaultTextures (): void
     {
         this.add('__BLANK', new Texture(CreateCanvas(32, 32).canvas));
 
@@ -44,7 +44,7 @@ export class TextureManager
         return this.textures.has(key);
     }
 
-    add (key: string, source: Texture | HTMLImageElement)
+    add (key: string, source: Texture | HTMLImageElement): Texture
     {
         let texture: Texture;
 

@@ -26,7 +26,7 @@ export class Loader extends EventEmitter
         this.reset();
     }
 
-    reset ()
+    reset (): void
     {
         this.isLoading = false;
 
@@ -39,12 +39,11 @@ export class Loader extends EventEmitter
 
     add (...file: File[]): this
     {
-        file.forEach(entity => {
-
+        file.forEach(entity =>
+        {
             entity.loader = this;
 
             this.queue.add(entity);
-    
         });
 
         return this;
@@ -54,7 +53,7 @@ export class Loader extends EventEmitter
     {
         if (this.isLoading)
         {
-            return;
+            return this;
         }
 
         this.completed.clear();
@@ -82,7 +81,7 @@ export class Loader extends EventEmitter
         return this;
     }
 
-    nextFile ()
+    nextFile (): void
     {
         let limit = this.queue.size;
 
@@ -118,7 +117,7 @@ export class Loader extends EventEmitter
         }
     }
 
-    stop ()
+    stop (): void
     {
         this.isLoading = false;
 
@@ -129,7 +128,7 @@ export class Loader extends EventEmitter
         this.completed.clear();
     }
 
-    private updateProgress (file: File)
+    private updateProgress (file: File): void
     {
         this.inflight.delete(file);
         this.completed.add(file);
@@ -147,14 +146,14 @@ export class Loader extends EventEmitter
         this.nextFile();
     }
 
-    private fileComplete (file: File)
+    private fileComplete (file: File): void
     {
         this.emit('filecomplete', file);
 
         this.updateProgress(file);
     }
 
-    private fileError (file: File)
+    private fileError (file: File): void
     {
         this.emit('fileerror', file);
 

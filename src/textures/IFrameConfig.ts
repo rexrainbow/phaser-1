@@ -1,4 +1,5 @@
-export interface IFrameConfig {
+export interface IFrameConfig
+{
     frameWidth: number;
     frameHeight?: number;
     startFrame?: number;

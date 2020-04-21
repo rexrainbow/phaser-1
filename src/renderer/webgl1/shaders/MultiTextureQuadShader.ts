@@ -45,7 +45,7 @@ void main (void)
 
     gl_Position = uProjectionMatrix * uCameraMatrix * vec4(aVertexPosition, 0.0, 1.0);
 }`
-}
+};
 
 export class MultiTextureQuadShader
 {
@@ -227,12 +227,12 @@ export class MultiTextureQuadShader
         this.count = 0;
     }
 
-    createBuffers ()
+    createBuffers (): void
     {
         let ibo: number[] = [];
         
         //  Seed the index buffer
-        for (let i: number = 0; i < (this.batchSize * this.indexSize); i += this.indexSize)
+        for (let i = 0; i < (this.batchSize * this.indexSize); i += this.indexSize)
         {
             ibo.push(i + 0, i + 1, i + 2, i + 2, i + 3, i + 0);
         }
@@ -258,16 +258,16 @@ export class MultiTextureQuadShader
         ibo = [];
     }
 
-    createShaders (fragmentShaderSource: string, vertexShaderSource: string)
+    createShaders (fragmentShaderSource: string, vertexShaderSource: string): void
     {
         const gl = this.gl;
         const maxTextures = this.renderer.maxTextures;
 
-        let src: string = '';
+        let src = '';
 
         if (maxTextures > 1)
         {
-            for (let i: number = 0; i < maxTextures; i++)
+            for (let i = 0; i < maxTextures; i++)
             {
                 if (i > 0)
                 {
@@ -314,22 +314,22 @@ export class MultiTextureQuadShader
 
         this.program = program;
         
-        for (let key of Object.keys(this.attribs) as Array<keyof IShaderAttributes>)
+        for (const key of Object.keys(this.attribs) as Array<keyof IShaderAttributes>)
         {
-            let location = gl.getAttribLocation(program, key);
+            const location = gl.getAttribLocation(program, key);
 
             gl.enableVertexAttribArray(location);
 
             this.attribs[key] = location;
         }
 
-        for (let key of Object.keys(this.uniforms) as Array<keyof IShaderUniforms>)
+        for (const key of Object.keys(this.uniforms) as Array<keyof IShaderUniforms>)
         {
             this.uniforms[key] = gl.getUniformLocation(program, key);
         }
     }
 
-    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array)
+    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
     {
         const gl = this.gl;
         const renderer = this.renderer;
@@ -344,7 +344,7 @@ export class MultiTextureQuadShader
         this.bindBuffers(this.indexBuffer, this.vertexBuffer);
     }
 
-    bindBuffers (indexBuffer: WebGLBuffer, vertexBuffer: WebGLBuffer)
+    bindBuffers (indexBuffer: WebGLBuffer, vertexBuffer: WebGLBuffer): void
     {
         const gl = this.gl;
         const stride = this.vertexByteSize;
@@ -363,7 +363,7 @@ export class MultiTextureQuadShader
         this.count = 0;
     }
 
-    draw (count: number)
+    draw (count: number): void
     {
         const gl = this.gl;
         const offset = count * this.quadByteSize;
@@ -374,7 +374,7 @@ export class MultiTextureQuadShader
         }
         else
         {
-            let view = this.vertexViewF32.subarray(0, offset);
+            const view = this.vertexViewF32.subarray(0, offset);
 
             gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
         }
