@@ -1,4 +1,8 @@
-export function canPlayWAV (audioElement: HTMLAudioElement = document.createElement('audio')): boolean
+import { CanPlayType } from './CanPlayType';
+
+export function CanPlayWAV (audioElement?: HTMLAudioElement): boolean
 {
-    return (audioElement.canPlayType('audio/wav; codecs="1"') !== '');
+    return (
+        CanPlayType('audio/wav; codecs="1"', audioElement)
+    );
 }

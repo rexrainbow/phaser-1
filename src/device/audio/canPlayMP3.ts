@@ -1,4 +1,8 @@
-export function canPlayMP3 (audioElement: HTMLAudioElement = document.createElement('audio')): boolean
+import { CanPlayType } from './CanPlayType';
+
+export function CanPlayMP3 (audioElement?: HTMLAudioElement): boolean
 {
-    return (audioElement.canPlayType('audio/mpeg; codecs="mp3"') !== '');
+    return (
+        CanPlayType('audio/mpeg; codecs="mp3"', audioElement)
+    );
 }

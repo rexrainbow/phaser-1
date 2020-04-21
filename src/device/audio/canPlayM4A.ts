@@ -1,7 +1,9 @@
-export function canPlayM4A (audioElement: HTMLAudioElement = document.createElement('audio')): boolean
+import { CanPlayType } from './CanPlayType';
+
+export function CanPlayM4A (audioElement?: HTMLAudioElement): boolean
 {
     return (
-        (audioElement.canPlayType('audio/x-m4a') !== '') ||
-        (audioElement.canPlayType('audio/aac') !== '')
+        CanPlayType('audio/x-m4a', audioElement) ||
+        CanPlayType('audio/aac', audioElement)
     );
 }

@@ -1,7 +1,7 @@
-export function hasWebAudio (): boolean
+export function HasWebAudio (): boolean
 {
     return (
-        window.hasOwnProperty('AudioContext') ||
-        window.hasOwnProperty('webkitAudioContext')
+        Object.prototype.hasOwnProperty.call(window, 'AudioContext') ||
+        Object.prototype.hasOwnProperty.call(window, 'webkitAudioContext')
     );
 }

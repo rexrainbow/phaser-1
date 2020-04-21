@@ -1,7 +1,9 @@
-export function canPlayOpus (audioElement: HTMLAudioElement = document.createElement('audio')): boolean
+import { CanPlayType } from './CanPlayType';
+
+export function CanPlayOpus (audioElement?: HTMLAudioElement): boolean
 {
     return (
-        (audioElement.canPlayType('audio/ogg; codecs="opus"') !== '') ||
-        (audioElement.canPlayType('audio/webm; codecs="opus"') !== '')
+        CanPlayType('audio/ogg; codecs="opus"', audioElement) ||
+        CanPlayType('audio/webm; codecs="opus"', audioElement)
     );
 }
