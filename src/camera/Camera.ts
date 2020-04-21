@@ -21,7 +21,7 @@ export class Camera extends TransformGameObject implements ICamera
         this.reset();
     }
 
-    updateTransform ()
+    updateTransform (): this
     {
         if (!this.renderer)
         {
@@ -71,7 +71,7 @@ export class Camera extends TransformGameObject implements ICamera
         return this;
     }
 
-    reset ()
+    reset (): void
     {
         this.matrix = new Float32Array([ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ]);
 
@@ -82,7 +82,7 @@ export class Camera extends TransformGameObject implements ICamera
         this.setBounds(0, 0, width, height);
     }
 
-    destroy ()
+    destroy (): void
     {
         super.destroy();
 

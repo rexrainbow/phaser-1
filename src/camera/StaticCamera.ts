@@ -26,7 +26,7 @@ export class StaticCamera // implements ICamera
         this.reset();
     }
 
-    reset ()
+    reset (): void
     {
         const width = this.renderer.width;
         const height = this.renderer.height;
@@ -37,15 +37,15 @@ export class StaticCamera // implements ICamera
         this.bounds.set(0, 0, width, height);
     }
 
-    update (delta: number, time: number): void {
-        // TODO
+    update (): void
+    {
     }
 
-    render (gameFrame: number): void {
-        // TODO
+    render (): void
+    {
     }
 
-    destroy ()
+    destroy (): void
     {
         this.scene = null;
         this.renderer = null;

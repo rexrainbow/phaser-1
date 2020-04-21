@@ -1,20 +1,19 @@
-let _bgColor: number = 0;
+let bgColor = 0;
 
 function BackgroundColor (color: number = 0)
 {
-    return () => {
-
-        _bgColor = color;
-
+    return (): void =>
+    {
+        bgColor = color;
     };
 }
 
 function GetBackgroundColor (): number
 {
-    return _bgColor;
+    return bgColor;
 }
 
 export {
     BackgroundColor,
     GetBackgroundColor
-}
+};
