@@ -26,7 +26,7 @@
     "rules": {
         "indent": [ "off" ],
         "@typescript-eslint/indent": [ "error", 4, { "SwitchCase": 1 } ],
-        "sort-imports": [ "error", { "ignoreCase": true } ],
+        "sort-imports": [ "error", { "ignoreCase": false } ],
         "linebreak-style": [ "off" ],
         "brace-style": [ "off" ],
         "@typescript-eslint/brace-style": [ "error", "allman", { "allowSingleLine": true } ],
@@ -79,8 +79,24 @@
             },
             {
                 "selector": "variable",
-                "format": [ "camelCase", "UPPER_CASE" ],
+                "format": [ "camelCase", "UPPER_CASE", "PascalCase" ],
                 "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "property",
+                "format": [ "camelCase" ],
+                "leadingUnderscore": "forbid"
+            },
+            {
+                "selector": "property",
+                "modifiers": [ "private" ],
+                "format": [ "camelCase" ],
+                "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "property",
+                "modifiers": [ "readonly" ],
+                "format": [ "camelCase", "UPPER_CASE" ]
             },
             {
                 "selector": "parameter",
