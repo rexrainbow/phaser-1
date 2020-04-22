@@ -25,13 +25,12 @@
         "strictPropertyInitialization": false
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "dev/**/*"
     ],
     "exclude": [
         "src/input/",
         "src/stats/",
-        "src/gameobjects/animatedsprite/*",
         "src/gameobjects/spritebuffer/*",
-        "src/gameobjects/text/*"
     ]
 }
