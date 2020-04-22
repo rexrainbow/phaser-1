@@ -1,5 +1,6 @@
 import { ICamera } from '../camera/ICamera';
 import { IGameObject } from '../gameobjects/gameobject/IGameObject';
+import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { ISprite } from '../gameobjects/sprite/ISprite';
 
 export interface IWorld
@@ -12,7 +13,7 @@ export interface IWorld
     rendered: ISprite[];
     forceRefresh: boolean;
     update (delta?: number, time?: number): void;
-    render (gameFrame: number): number;
+    render (renderData: ISceneRenderData): void;
     shutdown (): void;
     destroy(): void;
 }

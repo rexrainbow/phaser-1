@@ -1,13 +1,16 @@
+import { On, Once } from '../events';
+
 import { Camera } from '../camera/Camera';
 import { ICamera } from '../camera/ICamera';
 import { IContainer } from '../gameobjects/container/IContainer';
-import { IParent } from '../gameobjects/container/IParent';
 import { IGameObject } from '../gameobjects/gameobject/IGameObject';
-import { ISprite } from '../gameobjects/sprite/ISprite';
-import { RectangleToRectangle } from '../geom/intersects/RectangleToRectangle';
-import { Matrix2D } from '../math/matrix2d/Matrix2D';
+import { IParent } from '../gameobjects/container/IParent';
 import { IScene } from '../scenes/IScene';
+import { ISceneRenderData } from '../scenes/ISceneRenderData';
+import { ISprite } from '../gameobjects/sprite/ISprite';
 import { IWorld } from './IWorld';
+import { Matrix2D } from '../math/matrix2d/Matrix2D';
+import { RectangleToRectangle } from '../geom/intersects/RectangleToRectangle';
 
 export interface IWorldRenderResult {
     camera: ICamera;
@@ -22,6 +25,8 @@ export class World implements IWorld
     children: IGameObject[] = [];
 
     camera: ICamera = new Camera();
+
+    //  TODO: Move stats into data object
 
     //  How many Game Objects were made dirty this frame?
     dirtyFrame: number = 0;
@@ -44,9 +49,14 @@ export class World implements IWorld
     constructor (scene: IScene)
     {
         this.scene = scene;
+
+        On(scene, 'update', (delta: number, time: number) => this.update(delta, time));
+        On(scene, 'render', (renderData: ISceneRenderData) => this.render(renderData));
+        On(scene, 'shutdown', () => this.shutdown());
+        Once(scene, 'destroy', () => this.destroy());
     }
 
-    private scanChildren (root: IContainer | World, gameFrame: number)
+    private scanChildren (root: IContainer | World, gameFrame: number): void
     {
         const children = root.children;
 
@@ -56,7 +66,7 @@ export class World implements IWorld
         }
     }
 
-    private buildRenderList (root: IGameObject, gameFrame: number)
+    private buildRenderList (root: IGameObject, gameFrame: number): void
     {
         if (root.isRenderable())
         {
@@ -82,13 +92,13 @@ export class World implements IWorld
         }
     }
 
-    update (delta?: number, time?: number)
+    update (delta: number, time: number): void
     {
         const children = this.children;
 
         for (let i = 0; i < children.length; i++)
         {
-            let child = children[i];
+            const child = children[i];
 
             if (child && child.willUpdate)
             {
@@ -97,13 +107,13 @@ export class World implements IWorld
         }
     }
 
-    render (gameFrame: number): number
+    render (renderData: ISceneRenderData): void
     {
         this.dirtyFrame = 0;
         this.numRendered = 0;
         this.numRenderable = 0;
 
-        this.scanChildren(this, gameFrame);
+        this.scanChildren(this, renderData.gameFrame);
 
         if (this.forceRefresh)
         {
@@ -111,10 +121,20 @@ export class World implements IWorld
             this.forceRefresh = false;
         }
 
-        return this.dirtyFrame;
+        renderData.numDirtyFrames += this.dirtyFrame;
+        renderData.numTotalFrames += this.numRendered;
+
+        if (this.camera.dirtyRender)
+        {
+            renderData.numDirtyCameras++;
+
+            this.camera.dirtyRender = false;
+        }
+
+        //  TODO - Add render list to renderedWorlds array
     }
 
-    shutdown ()
+    shutdown (): void
     {
         //  Clear the display list and reset the camera, but leave
         //  everything in place so we can return to this World again
@@ -127,7 +147,7 @@ export class World implements IWorld
         this.camera.reset();
     }
 
-    destroy (reparentChildren?: IParent)
+    destroy (): void
     {
         this.camera.destroy();
 

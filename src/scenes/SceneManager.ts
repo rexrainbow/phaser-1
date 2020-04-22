@@ -1,10 +1,13 @@
-import { GetScenes } from '../config';
+import { Emit, Once } from '../events';
+
+import { CreateSceneRenderData } from './CreateSceneRenderData';
 import { Game } from '../Game';
 import { GameInstance } from '../GameInstance';
-import { GetConfigValue } from './GetConfigValue';
+import { GetScenes } from '../config';
 import { IScene } from './IScene';
-import { ISceneConfig } from './ISceneConfig';
 import { ISceneRenderData } from './ISceneRenderData';
+import { ResetSceneRenderData } from './ResetSceneRenderData';
+import { SceneManagerInstance } from './SceneManagerInstance';
 
 export class SceneManager
 {
@@ -17,67 +20,27 @@ export class SceneManager
     //  Flush the cache
     flush: boolean = false;
 
-    renderResult: ISceneRenderData = {
-        numDirtyCameras: 0,
-        numDirtyFrames: 0,
-        numTotalFrames: 0,
-        renderedWorlds: [],
-        numRenderedWorlds: 0
-    };
+    renderResult: ISceneRenderData = CreateSceneRenderData();
 
     constructor ()
     {
         this.game = GameInstance.get();
 
-        this.game.once('boot', this.boot);
+        SceneManagerInstance.set(this);
+
+        Once(this.game, 'boot', () => this.boot());
     }
 
-    boot = (): void =>
+    boot (): void
     {
         GetScenes().forEach(scene => new scene());
-    };
-
-    init (scene: IScene, config: string | ISceneConfig = {}): void
-    {
-        const size = this.scenes.size;
-        const sceneIndex = this.sceneIndex;
-        const firstScene = (size === 0);
-
-        if (typeof config === 'string')
-        {
-            scene.key = config;
-        }
-        else if (config || (!config && firstScene))
-        {
-            scene.key = GetConfigValue(config, 'key', 'scene' + sceneIndex);
-            scene.willUpdate = GetConfigValue(config, 'willUpdate', firstScene);
-            scene.willRender = GetConfigValue(config, 'willRender', firstScene);
-        }
-
-        if (this.scenes.has(scene.key))
-        {
-            console.warn('Scene key already in use: ' + scene.key);
-        }
-        else
-        {
-            this.scenes.set(scene.key, scene);
-
-            this.flush = true;
-
-            this.sceneIndex++;
-        }
     }
 
     update (delta: number, now: number): void
     {
         for (const scene of this.scenes.values())
         {
-            if (scene.willUpdate)
-            {
-                scene.update.call(scene, delta, now);
-
-                scene.world.update(delta, now);
-            }
+            Emit(scene, 'update', delta, now);
         }
     }
 
@@ -85,16 +48,23 @@ export class SceneManager
     {
         const results = this.renderResult;
 
-        results.numTotalFrames = 0;
-        results.numDirtyFrames = 0;
-        results.numDirtyCameras = 0;
-        results.numRenderedWorlds = 0;
+        ResetSceneRenderData(results, gameFrame);
 
         for (const scene of this.scenes.values())
         {
+            Emit(scene, 'render', results);
+
+            /*
             if (scene.willRender)
             {
+                scene.render.call(scene, results);
+
                 const world = scene.world;
+
+                if (!world)
+                {
+                    continue;
+                }
 
                 results.numDirtyFrames += world.render(gameFrame);
                 results.numTotalFrames += world.numRendered;
@@ -134,6 +104,7 @@ export class SceneManager
 
                 results.numRenderedWorlds++;
             }
+            */
         }
 
         if (this.flush)
