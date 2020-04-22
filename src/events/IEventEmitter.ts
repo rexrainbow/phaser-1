@@ -1,11 +1,6 @@
 import { IEventInstance } from './IEventInstance';
 
-export class EventEmitter
+export interface IEventEmitter
 {
     events: Map<string, Set<IEventInstance>>;
-
-    constructor ()
-    {
-        this.events = new Map();
-    }
 }
