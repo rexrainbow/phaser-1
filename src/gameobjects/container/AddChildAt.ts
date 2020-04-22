@@ -2,20 +2,18 @@ import { IGameObject } from '../gameobject/IGameObject';
 import { IParent } from './IParent';
 import { SetParent } from './SetParent';
 
-export function AddChildAt (parent: IParent, index: number, ...child: IGameObject[]): void
+export function AddChildAt (parent: IParent, index: number, child: IGameObject): IGameObject
 {
     const children = parent.children;
 
     if (index >= 0 && index <= children.length)
     {
-        child.reverse().forEach(entity =>
-        {
-            SetParent(parent, entity);
+        SetParent(parent, child);
 
-            children.splice(index, 0, entity);
+        children.splice(index, 0, child);
 
-            entity.updateTransform();
-
-        });
+        child.updateTransform();
     }
+
+    return child;
 }

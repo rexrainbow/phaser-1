@@ -1,30 +1,21 @@
-import { IParent } from './IParent';
-import { GetChildAt } from './GetChildAt';
 import { IGameObject } from '../gameobject/IGameObject';
+import { IParent } from './IParent';
 
-export function RemoveChildAt (parent: IParent, ...index: number[]): IGameObject[]
+export function RemoveChildAt (parent: IParent, index: number): IGameObject | undefined
 {
     const children = parent.children;
-    const removed: IGameObject[] = [];
-    
-    //  Sort into numeric order
-    index.sort((a, b) => a - b);
+    let child: IGameObject;
 
-    //  Work through the array in reverse
-    index.reverse().forEach(entity => {
+    if (index >= 0 && index < children.length)
+    {
+        const removed = children.splice(index, 1);
 
-        let child = GetChildAt(parent, entity);
-
-        if (child)
+        if (removed[0])
         {
-            children.splice(entity, 1);
-
+            child = removed[0];
             child.parent = null;
-
-            removed.push(child);
         }
+    }
 
-    });
-
-    return removed;
+    return child;
 }

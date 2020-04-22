@@ -1,6 +1,7 @@
 export * as AddChild from './AddChild';
 export * as AddChildAt from './AddChildAt';
 export * as AddChildren from './AddChildren';
+export * as AddChildrenAt from './AddChildrenAt';
 export * as Container from './Container';
 export * as DestroyChildren from './DestroyChildren';
 export * as GetChildAt from './GetChildAt';

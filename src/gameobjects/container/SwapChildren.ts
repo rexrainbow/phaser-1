@@ -1,7 +1,7 @@
-import { IGameObject } from '../gameobject/IGameObject';
 import { GetChildIndex } from './GetChildIndex';
+import { IGameObject } from '../gameobject/IGameObject';
 
-export function SwapChildren (child1: IGameObject, child2: IGameObject)
+export function SwapChildren (child1: IGameObject, child2: IGameObject): void
 {
     if (child1.parent === child2.parent)
     {

@@ -5,7 +5,7 @@ export function RemoveChild (parent: IParent, child: IGameObject): IGameObject
 {
     const children = parent.children;
 
-    let index: number = children.indexOf(child);
+    const index: number = children.indexOf(child);
 
     if (index > -1)
     {

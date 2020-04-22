@@ -1,5 +1,5 @@
-import { IParent } from './IParent';
 import { IGameObject } from '../gameobject/IGameObject';
+import { IParent } from './IParent';
 
 export function GetChildAt (parent: IParent, index: number): IGameObject
 {

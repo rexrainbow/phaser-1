@@ -1,5 +1,5 @@
-import { IParent } from './IParent';
 import { IGameObject } from '../gameobject/IGameObject';
+import { IParent } from './IParent';
 
 export function RemoveChildrenBetween (parent: IParent, beginIndex: number = 0, endIndex?: number): IGameObject[]
 {
@@ -16,10 +16,9 @@ export function RemoveChildrenBetween (parent: IParent, beginIndex: number = 0, 
     {
         const removed = children.splice(beginIndex, range);
 
-        removed.forEach(child => {
-
+        removed.forEach(child =>
+        {
             child.parent = null;
-
         });
 
         return removed;
