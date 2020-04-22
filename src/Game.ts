@@ -1,17 +1,21 @@
-import { GetParent } from './config';
 import { AddToDOM, DOMContentLoaded } from './dom';
-import { EventEmitter } from './events/EventEmitter';
+import { Emit, EventEmitter } from './events';
+
 import { GameInstance } from './GameInstance';
-import { WebGLRenderer } from './renderer/webgl1/WebGLRenderer';
+import { GetParent } from './config';
 import { SceneManager } from './scenes/SceneManager';
 import { TextureManager } from './textures/TextureManager';
+import { WebGLRenderer } from './renderer/webgl1/WebGLRenderer';
 
 export class Game extends EventEmitter
 {
-    VERSION: string = '4.0.0-beta1';
+    readonly VERSION: string = '4.0.0-beta1';
 
-    isPaused: boolean = false;
     isBooted: boolean = false;
+    isPaused: boolean = false;
+
+    willUpdate: boolean = true;
+    willRender: boolean = true;
 
     private lastTick: number = 0;
     lifetime: number = 0;
@@ -24,10 +28,11 @@ export class Game extends EventEmitter
     textures: TextureManager;
     scenes: SceneManager;
 
+    //  TODO: This should be instance based, not defined here
     cache = {
-        json: new Map<string, any>(),
-        csv: new Map<string, any>(),
-        xml: new Map<string, any>(),
+        json: new Map<string, unknown>(),
+        csv: new Map<string, unknown>(),
+        xml: new Map<string, unknown>()
     };
 
     constructor (...settings: { (): void }[])
@@ -38,10 +43,10 @@ export class Game extends EventEmitter
 
         settings.forEach(setting => setting());
 
-        DOMContentLoaded(this.boot);
+        DOMContentLoaded(() => this.boot());
     }
 
-    boot = () =>
+    boot (): void
     {
         this.renderer = new WebGLRenderer();
         this.textures = new TextureManager();
@@ -56,11 +61,9 @@ export class Game extends EventEmitter
 
         this.banner(this.VERSION);
 
-        //  Visibility API
-        document.addEventListener('visibilitychange', () => {
-
-            this.emit('visibilitychange', document.hidden);
-
+        //  Visibility API = move to own function
+        document.addEventListener('visibilitychange', () =>
+        {
             if (document.hidden)
             {
                 this.pause();
@@ -69,7 +72,6 @@ export class Game extends EventEmitter
             {
                 this.resume();
             }
-
         });
 
         // window.addEventListener('blur', this.pause);
@@ -77,30 +79,14 @@ export class Game extends EventEmitter
 
         this.isBooted = true;
 
-        this.emit('boot');
+        Emit(this, 'boot');
 
         this.lastTick = performance.now();
 
-        requestAnimationFrame(this.step);
+        requestAnimationFrame(now => this.step(now));
     }
 
-    pause = () =>
-    {
-        this.isPaused = true;
-
-        this.emit('pause');
-    }
-
-    resume = () =>
-    {
-        this.isPaused = false;
-
-        this.lastTick = performance.now();
-
-        this.emit('resume');
-    }
-
-    banner (version: string)
+    banner (version: string): void
     {
         console.log(
             '%cPhaser v' + version + '%c https://phaser4.io',
@@ -109,7 +95,19 @@ export class Game extends EventEmitter
         );
     }
 
-    step = (now: number) =>
+    pause (): void
+    {
+        this.isPaused = true;
+    }
+
+    resume (): void
+    {
+        this.isPaused = false;
+
+        this.lastTick = performance.now();
+    }
+
+    step (now: number): void
     {
         const delta = now - this.lastTick;
 
@@ -118,27 +116,27 @@ export class Game extends EventEmitter
         this.lifetime += dt;
         this.elapsed = dt;
         this.lastTick = now;
-    
-        this.emit('step', dt, now);
 
         if (!this.isPaused)
         {
-            this.scenes.update(dt, now);
+            if (this.willUpdate)
+            {
+                this.scenes.update(dt, now);
+            }
+
+            if (this.willUpdate)
+            {
+                this.renderer.render(this.scenes.render(this.frame));
+            }
         }
-
-        this.emit('update', dt, now);
-
-        this.renderer.render(this.scenes.render(this.frame));
-
-        this.emit('render', dt, now);
 
         //  The frame always advances by 1 each step (even when paused)
         this.frame++;
 
-        requestAnimationFrame(this.step);
+        requestAnimationFrame(now => this.step(now));
     }
 
-    destroy ()
+    destroy (): void
     {
         //  TODO
     }
