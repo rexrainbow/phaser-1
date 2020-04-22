@@ -31,3 +31,13 @@ You can find all packages under the [@phaserjs](https://www.npmjs.com/settings/p
 | `distmajor` | Increment version by major, run a build then publish to npm |
 | `build-dev` | Build the `dev/index.ts` script to run a local test without publishing |
 | `watch-dev` | Build and watch the `dev/index.ts` script |
+
+## VS Code Extensions
+
+If you wish to help with development of Phaser, the following VS Code Extensions are useful:
+
+[Document This](https://github.com/joelday/vscode-docthis)
+[EditorConfig for VS Code](https://github.com/editorconfig/editorconfig-vscode)
+[ESLint](https://github.com/Microsoft/vscode-eslint)
+[sort-imports](https://github.com/amatiasq/vsc-sort-imports)
+
