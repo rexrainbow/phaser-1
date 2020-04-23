@@ -2,14 +2,11 @@ import { BackgroundColor, Parent, Scenes, Size } from '../src/config';
 
 import { AddChild } from '../src/gameobjects/container';
 import { Game } from '../src/Game';
+import { On } from '../src/events';
 import { Scene } from '../src/scenes/Scene';
 import { SolidColorTexture } from '../src/textures/types';
 import { Sprite } from '../src/gameobjects/sprite';
 import { World } from '../src/world/World';
-
-// import { On } from '../src/events';
-
-
 
 class Demo extends Scene
 {
@@ -17,25 +14,18 @@ class Demo extends Scene
     {
         super();
 
-        console.log('Demo Scene created');
-
         const world = new World(this);
 
-        const red = SolidColorTexture('#ff0000', 128, 128);
-
-        const block = new Sprite(100, 100, red);
+        const block = new Sprite(100, 100, SolidColorTexture('#ff0000', 128, 128));
 
         AddChild(world, block);
 
+        On(this, 'update', () => {
 
+            block.x += 1;
 
-        // On(this, 'update', () => this.update());
+        });
     }
-
-    // update (): void
-    // {
-
-    // }
 }
 
 export default function (): void
