@@ -6,7 +6,7 @@ interface IGetIOSResult
     iPad: boolean;
 }
 
-export function isiOS (): IGetIOSResult
+export function IsiOS (): IGetIOSResult
 {
     const ua: string = navigator.userAgent;
 
