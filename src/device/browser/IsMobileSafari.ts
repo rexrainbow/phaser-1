@@ -1,8 +1,8 @@
-import { isiOS } from '../os/isiOS';
+import { IsiOS } from '../os/IsiOS';
 
-export function isMobileSafari (): { mobileSafari: boolean }
+export function IsMobileSafari (): { mobileSafari: boolean }
 {
-    const { iOS } = isiOS();
+    const { iOS } = IsiOS();
 
     const mobileSafari = (navigator.userAgent.includes('AppleWebKit') && iOS);
 
