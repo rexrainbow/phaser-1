@@ -1,7 +1,7 @@
 import { GameInstance } from '../GameInstance';
+import { ICamera } from './ICamera';
 import { TransformGameObject } from '../gameobjects/transformgameobject/TransformGameObject';
 import { WebGLRenderer } from '../renderer/webgl1/WebGLRenderer';
-import { ICamera } from './ICamera';
 
 export class Camera extends TransformGameObject implements ICamera
 {

@@ -1,7 +1,7 @@
+import { IScene } from '../scenes/IScene';
 import { ITransformGameObject } from '../gameobjects/transformgameobject/ITransformGameObject';
 import { Rectangle } from '../geom/rectangle/Rectangle';
 import { WebGLRenderer } from '../renderer/webgl1/WebGLRenderer';
-import { IScene } from '../scenes/IScene';
 
 export interface ICamera extends ITransformGameObject
 {
