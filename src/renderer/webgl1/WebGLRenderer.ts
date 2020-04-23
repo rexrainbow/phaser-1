@@ -243,13 +243,11 @@ export class WebGLRenderer
 
         let prevCamera: ICamera;
 
-        const worlds = renderData.renderedWorlds;
-
-        // const { renderedWorlds } = renderData;
+        const worlds = renderData.worldData;
 
         for (let i: number = 0; i < worlds.length; i++)
         {
-            const { camera, rendered, numRendered } = worlds[i];
+            const { camera, renderList, numRendered } = worlds[i];
 
             //  This only needs rebinding if the camera matrix is different to before
             if (!prevCamera || !Matrix2dEqual(camera.worldTransform, prevCamera.worldTransform))
@@ -262,9 +260,9 @@ export class WebGLRenderer
             }
 
             //  Process the render list
-            for (let renderedIndex: number = 0; renderedIndex < numRendered; renderedIndex++)
+            for (let i: number = 0; i < numRendered; i++)
             {
-                SpriteRenderWebGL(rendered[renderedIndex], this, shader, this.startActiveTexture);
+                SpriteRenderWebGL(renderList[i], this, shader, this.startActiveTexture);
             }
         }
 
