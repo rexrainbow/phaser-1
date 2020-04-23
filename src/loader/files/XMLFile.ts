@@ -8,11 +8,13 @@ export function XMLFile (key: string, url?: string): File
 {
     const file = new File(key, url);
 
-    file.load = () => {
+    file.load = () =>
+    {
 
         file.url = GetURL(file.key, file.url, '.xml', file.loader);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) =>
+        {
 
             const game = GameInstance.get();
 
@@ -22,7 +24,8 @@ export function XMLFile (key: string, url?: string): File
             }
             else
             {
-                XHRLoader(file).then(file => {
+                XHRLoader(file).then(file =>
+                {
 
                     const xml = ParseXML(file.data);
 
@@ -42,7 +45,8 @@ export function XMLFile (key: string, url?: string): File
                         reject(file);
                     }
 
-                }).catch(file => {
+                }).catch(file =>
+                {
 
                     reject(file);
 

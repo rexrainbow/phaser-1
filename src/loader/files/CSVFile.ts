@@ -7,11 +7,13 @@ export function CSVFile (key: string, url?: string): File
 {
     const file = new File(key, url);
 
-    file.load = () => {
+    file.load = () =>
+    {
 
         file.url = GetURL(file.key, file.url, '.csv', file.loader);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) =>
+        {
 
             const game = GameInstance.get();
 
@@ -21,7 +23,8 @@ export function CSVFile (key: string, url?: string): File
             }
             else
             {
-                XHRLoader(file).then(file => {
+                XHRLoader(file).then(file =>
+                {
 
                     if (!file.skipCache)
                     {
@@ -30,7 +33,8 @@ export function CSVFile (key: string, url?: string): File
 
                     resolve(file);
 
-                }).catch(file => {
+                }).catch(file =>
+                {
 
                     reject(file);
 

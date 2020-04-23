@@ -1,4 +1,4 @@
 export function isLinux (): boolean
 {
-    return (/Linux/.test(navigator.userAgent));
+    return (navigator.userAgent.includes('Linux'));
 }

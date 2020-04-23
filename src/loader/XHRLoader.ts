@@ -9,9 +9,11 @@ export function XHRLoader (file: File): Promise<File>
     xhr.responseType = file.responseType;
 
     return new Promise(
-        (resolve, reject) => {
+        (resolve, reject) =>
+        {
 
-            xhr.onload = () => {
+            xhr.onload = () =>
+            {
 
                 file.data = xhr.responseText;
                 file.hasLoaded = true;
@@ -19,7 +21,8 @@ export function XHRLoader (file: File): Promise<File>
                 resolve(file);
             };
 
-            xhr.onerror = () => {
+            xhr.onerror = () =>
+            {
                 
                 file.hasLoaded = true;
 

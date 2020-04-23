@@ -1,6 +1,6 @@
 export function isSilk (): { silk: boolean }
 {
-    const silk = (/Silk/).test(navigator.userAgent);
+    const silk = navigator.userAgent.includes('Silk');
 
     return {
         silk

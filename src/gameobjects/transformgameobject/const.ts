@@ -9,4 +9,4 @@ export const CONST = {
     SCALE_Y: 7,
     ROTATION: 8,
     ANGLE: 9
-}
+};

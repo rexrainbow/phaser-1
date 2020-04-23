@@ -1,6 +1,6 @@
 export function isOpera (): { opera: boolean }
 {
-    const opera = (/Opera/).test(navigator.userAgent);
+    const opera = navigator.userAgent.includes('Opera');
 
     return {
         opera

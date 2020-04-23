@@ -3,7 +3,8 @@ import { ITransformGameObject } from './ITransformGameObject';
 
 export function SetOrigin (originX: number, originY: number, ...child: ITransformGameObject[]): void
 {
-    child.forEach(entity => {
+    child.forEach(entity =>
+    {
 
         const data = entity.transformData;
 

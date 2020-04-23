@@ -1,4 +1,5 @@
-interface IGetIOSResult {
+interface IGetIOSResult
+{
     iOS: boolean;
     iOSVersion: number;
     iPhone: boolean;
@@ -16,14 +17,14 @@ export function isiOS (): IGetIOSResult
         iPad: false
     };
 
-    if (/iP[ao]d|iPhone/i.test(ua))
+    if ((/iP[ao]d|iPhone/i).test(ua))
     {
         (navigator.appVersion).match(/OS (\d+)/);
 
         result.iOS = true;
         result.iOSVersion = parseInt(RegExp.$1, 10);
-        result.iPhone = (ua.toLowerCase().indexOf('iphone') !== -1);
-        result.iPad = (ua.toLowerCase().indexOf('ipad') !== -1);
+        result.iPhone = (ua.toLowerCase().includes('iphone'));
+        result.iPad = (ua.toLowerCase().includes('ipad'));
     }
 
     return result;

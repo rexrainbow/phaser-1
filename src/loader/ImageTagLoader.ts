@@ -10,9 +10,11 @@ export function ImageTagLoader (file: File): Promise<File>
     }
 
     return new Promise(
-        (resolve, reject) => {
+        (resolve, reject) =>
+        {
 
-            file.data.onload = () => {
+            file.data.onload = () =>
+            {
                 if (file.data.onload)
                 {
                     file.data.onload = null;
@@ -21,7 +23,8 @@ export function ImageTagLoader (file: File): Promise<File>
                 }
             };
 
-            file.data.onerror = (event: ErrorEvent) => {
+            file.data.onerror = (event: ErrorEvent) =>
+            {
                 if (file.data.onload)
                 {
                     file.data.onload = null;

@@ -1,4 +1,4 @@
 export function isAndroid (): boolean
 {
-    return (/Android/.test(navigator.userAgent));
+    return (navigator.userAgent.includes('Android'));
 }

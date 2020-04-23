@@ -1,4 +1,4 @@
 export function isWindows (): boolean
 {
-    return (/Windows/.test(navigator.userAgent));
+    return (navigator.userAgent.includes('Windows'));
 }

@@ -12,19 +12,23 @@ export function BitmapTextFile (key: string, textureURL?: string, fontDataURL?: 
 
     const file = new File(key, '');
 
-    file.load = () => {
+    file.load = () =>
+    {
 
         //  If called via a Loader, it has been set into the file const
         xml.url = GetURL(xml.key, xml.url, '.xml', file.loader);
         image.url = GetURL(image.key, image.url, '.png', file.loader);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) =>
+        {
 
             xml.skipCache = true;
 
-            xml.load().then(() => {
+            xml.load().then(() =>
+            {
 
-                image.load().then(() => {
+                image.load().then(() =>
+                {
 
                     //  By this stage, the XML and image are loaded and in the texture manager
                     const texture = GameInstance.get().textures.get(key);
@@ -35,13 +39,15 @@ export function BitmapTextFile (key: string, textureURL?: string, fontDataURL?: 
 
                     resolve(file);
 
-                }).catch(() => {
+                }).catch(() =>
+                {
 
                     reject(file);
 
                 });
 
-            }).catch(() => {
+            }).catch(() =>
+            {
 
                 reject(file);
 

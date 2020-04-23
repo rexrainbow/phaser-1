@@ -52,7 +52,7 @@ export function GetOS (): IDeviceOSResult
         result.windows = true;
     }
 
-    const silk: boolean = (/Silk/).test(ua);
+    const silk: boolean = ua.includes('Silk');
 
     if (result.windows || result.macOS || (result.linux && !silk) || result.chromeOS)
     {
@@ -60,7 +60,7 @@ export function GetOS (): IDeviceOSResult
     }
 
     //  Windows Phone / Table reset
-    if (result.windowsPhone || ((/Windows NT/i.test(ua)) && (/Touch/i.test(ua))))
+    if (result.windowsPhone || (((/Windows NT/i).test(ua)) && ((/Touch/i).test(ua))))
     {
         result.desktop = false;
     }

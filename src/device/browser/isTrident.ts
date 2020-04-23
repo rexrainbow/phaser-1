@@ -1,4 +1,4 @@
-export function isTrident (): { trident: boolean, tridentVersion: number, tridentIEVersion: number }
+export function isTrident (): { trident: boolean; tridentVersion: number; tridentIEVersion: number }
 {
     const trident = (/Trident\/(\d+\.\d+)(.*)rv:(\d+\.\d+)/).test(navigator.userAgent);
     const tridentVersion = (trident) ? parseInt(RegExp.$1, 10) : 0;

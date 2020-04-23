@@ -1,4 +1,5 @@
-export interface IDeviceOSResult {
+export interface IDeviceOSResult
+{
     android: boolean;
     chromeOS: boolean;
     cordova: boolean;

@@ -2,5 +2,5 @@ export function isMacOS (): boolean
 {
     const ua: string = navigator.userAgent;
 
-    return (/Mac OS/.test(ua) && !(/like Mac OS/.test(ua)));
+    return (ua.includes('Mac OS') && !(ua.includes('like Mac OS')));
 }

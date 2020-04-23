@@ -4,7 +4,7 @@ export function isMobileSafari (): { mobileSafari: boolean }
 {
     const { iOS } = isiOS();
 
-    const mobileSafari = ((/AppleWebKit/).test(navigator.userAgent) && iOS);
+    const mobileSafari = (navigator.userAgent.includes('AppleWebKit') && iOS);
 
     return {
         mobileSafari

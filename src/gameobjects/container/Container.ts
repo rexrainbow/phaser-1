@@ -23,7 +23,7 @@ export class Container extends TransformGameObject
 
         for (let i = 0, numChildren = children.length; i < numChildren; i++)
         {
-            let child = children[i];
+            const child = children[i];
 
             if (child && child.willUpdate)
             {

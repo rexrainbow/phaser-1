@@ -7,7 +7,8 @@ export function ImageFile (key: string, url?: string): File
 {
     const file = new File(key, url);
 
-    file.load = () => {
+    file.load = () =>
+    {
 
         file.url = GetURL(file.key, file.url, '.png', file.loader);
 
@@ -16,7 +17,8 @@ export function ImageFile (key: string, url?: string): File
             file.crossOrigin = file.loader.crossOrigin;
         }
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) =>
+        {
 
             const game = GameInstance.get();
 
@@ -26,13 +28,15 @@ export function ImageFile (key: string, url?: string): File
             }
             else
             {
-                ImageTagLoader(file).then(file => {
+                ImageTagLoader(file).then(file =>
+                {
 
                     game.textures.add(file.key, file.data);
 
                     resolve(file);
 
-                }).catch(file => {
+                }).catch(file =>
+                {
 
                     reject(file);
 

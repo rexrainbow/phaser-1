@@ -12,19 +12,23 @@ export function AtlasFile (key: string, textureURL?: string, atlasURL?: string):
 
     const file = new File(key, '');
 
-    file.load = () => {
+    file.load = () =>
+    {
 
         //  If called via a Loader, it has been set into the file const
         json.url = GetURL(json.key, json.url, '.json', file.loader);
         image.url = GetURL(image.key, image.url, '.png', file.loader);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) =>
+        {
 
             json.skipCache = true;
 
-            json.load().then(() => {
+            json.load().then(() =>
+            {
 
-                image.load().then(() => {
+                image.load().then(() =>
+                {
 
                     //  By this stage, the JSON and image are loaded and in the texture manager
 
@@ -32,13 +36,15 @@ export function AtlasFile (key: string, textureURL?: string, atlasURL?: string):
 
                     resolve(file);
 
-                }).catch(() => {
+                }).catch(() =>
+                {
 
                     reject(file);
 
                 });
 
-            }).catch(() => {
+            }).catch(() =>
+            {
 
                 reject(file);
 
