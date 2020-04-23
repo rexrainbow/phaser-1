@@ -2,6 +2,7 @@ import { AddToDOM, DOMContentLoaded } from './dom';
 import { Emit, EventEmitter } from './events';
 
 import { GameInstance } from './GameInstance';
+import { GetBanner } from './config/Banner';
 import { GetParent } from './config';
 import { SceneManager } from './scenes/SceneManager';
 import { TextureManager } from './textures/TextureManager';
@@ -62,24 +63,15 @@ export class Game extends EventEmitter
             AddToDOM(this.renderer.canvas, parent);
         }
 
-        this.banner(this.VERSION);
-
         this.isBooted = true;
+
+        GetBanner();
 
         Emit(this, 'boot');
 
         this.lastTick = performance.now();
 
         requestAnimationFrame(now => this.step(now));
-    }
-
-    banner (version: string): void
-    {
-        console.log(
-            '%cPhaser v' + version + '%c https://phaser4.io',
-            'padding: 4px 16px; color: #fff; background: linear-gradient(#3e0081 40%, #00bcc3)',
-            ''
-        );
     }
 
     pause (): void
