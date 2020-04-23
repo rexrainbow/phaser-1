@@ -1,14 +1,15 @@
-import { ICamera } from '../../camera/ICamera';
 import { GetBackgroundColor, GetHeight, GetResolution, GetWebGLContext, GetWidth } from '../../config';
-import { RenderWebGL as SpriteRenderWebGL } from '../../gameobjects/sprite/RenderWebGL';
-import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
-import { ISceneRenderData } from '../../scenes/ISceneRenderData';
-import { Texture } from '../../textures/Texture';
-import { GL } from './GL';
-import { Ortho } from './Ortho';
+
 import { CheckShaderMaxIfStatements } from './shaders/CheckShaderMaxIfStatements';
+import { GL } from './GL';
+import { ICamera } from '../../camera/ICamera';
+import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IShader } from './shaders/IShader';
+import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
+import { Ortho } from './Ortho';
+import { RenderWebGL as SpriteRenderWebGL } from '../../gameobjects/sprite/RenderWebGL';
+import { Texture } from '../../textures/Texture';
 
 export class WebGLRenderer
 {
@@ -38,6 +39,7 @@ export class WebGLRenderer
     autoResize: boolean = true;
 
     contextLost: boolean = false;
+
     elementIndexExtension: OES_element_index_uint;
 
     constructor ()
@@ -60,7 +62,7 @@ export class WebGLRenderer
         this.shader = new MultiTextureQuadShader(this);
     }
 
-    initContext ()
+    initContext (): void
     {
         const gl = this.canvas.getContext('webgl', GetWebGLContext());
 
@@ -83,43 +85,43 @@ export class WebGLRenderer
         this.resize(this.width, this.height, this.resolution);
     }
 
-    resize (width: number, height: number, resolution: number = 1)
+    resize (width: number, height: number, resolution: number = 1): void
     {
         this.width = width * resolution;
         this.height = height * resolution;
         this.resolution = resolution;
-    
+
         const canvas = this.canvas;
 
         canvas.width = this.width;
         canvas.height = this.height;
-    
+
         if (this.autoResize)
         {
             canvas.style.width = this.width / resolution + 'px';
             canvas.style.height = this.height / resolution + 'px';
         }
-    
+
         this.gl.viewport(0, 0, this.width, this.height);
 
         this.projectionMatrix = Ortho(width, height);
     }
 
-    onContextLost (event: Event)
+    onContextLost (event: Event): void
     {
         event.preventDefault();
 
         this.contextLost = true;
     }
 
-    onContextRestored ()
+    onContextRestored (): void
     {
         this.contextLost = false;
 
         this.initContext();
     }
 
-    setBackgroundColor (color: number)
+    setBackgroundColor (color: number): this
     {
         const clearColor = this.clearColor;
 
@@ -127,7 +129,7 @@ export class WebGLRenderer
         const g: number = color >> 8 & 0xFF;
         const b: number = color & 0xFF;
         const a: number = (color > 16777215) ? color >>> 24 : 255;
-    
+
         clearColor[0] = r / 255;
         clearColor[1] = g / 255;
         clearColor[2] = b / 255;
@@ -136,27 +138,26 @@ export class WebGLRenderer
         return this;
     }
 
-    private getMaxTextures ()
+    private getMaxTextures (): void
     {
         const gl = this.gl;
 
-        let maxTextures: number = CheckShaderMaxIfStatements(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS), gl);
+        const maxTextures: number = CheckShaderMaxIfStatements(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS), gl);
 
         const tempTextures = this.tempTextures;
 
         if (tempTextures.length)
         {
-            tempTextures.forEach(texture => {
-
+            tempTextures.forEach(texture =>
+            {
                 gl.deleteTexture(texture);
-
             });
         }
 
         //  Create temp textures to stop WebGL errors on mac os
         for (let texturesIndex: number = 0; texturesIndex < maxTextures; texturesIndex++)
         {
-            let tempTexture = gl.createTexture();
+            const tempTexture = gl.createTexture();
 
             gl.activeTexture(gl.TEXTURE0 + texturesIndex);
 
@@ -168,14 +169,14 @@ export class WebGLRenderer
         }
 
         this.maxTextures = maxTextures;
-        
+
         this.textureIndex = Array.from(Array(maxTextures).keys());
         this.activeTextures = Array(maxTextures);
 
         this.currentActiveTexture = 0;
     }
 
-    reset (framebuffer: WebGLFramebuffer = null, width: number = this.width, height: number = this.height)
+    reset (framebuffer: WebGLFramebuffer = null, width: number = this.width, height: number = this.height): void
     {
         const gl = this.gl;
 
@@ -190,7 +191,7 @@ export class WebGLRenderer
         this.flushTotal = 0;
     }
 
-    render (renderData: ISceneRenderData)
+    render (renderData: ISceneRenderData): void
     {
         if (this.contextLost)
         {
@@ -241,11 +242,14 @@ export class WebGLRenderer
         */
 
         let prevCamera: ICamera;
-        const { renderedWorlds, numRenderedWorlds } = renderData;
 
-        for (let renderedWorldsIndex: number = 0; renderedWorldsIndex < numRenderedWorlds; renderedWorldsIndex++)
+        const worlds = renderData.renderedWorlds;
+
+        // const { renderedWorlds } = renderData;
+
+        for (let i: number = 0; i < worlds.length; i++)
         {
-            const { camera, rendered, numRendered } = renderedWorlds[renderedWorldsIndex];
+            const { camera, rendered, numRendered } = worlds[i];
 
             //  This only needs rebinding if the camera matrix is different to before
             if (!prevCamera || !Matrix2dEqual(camera.worldTransform, prevCamera.worldTransform))
@@ -268,7 +272,7 @@ export class WebGLRenderer
         shader.flush();
     }
 
-    resetTextures (texture?: Texture)
+    resetTextures (texture?: Texture): void
     {
         const gl = this.gl;
         const active = this.activeTextures;
@@ -290,7 +294,7 @@ export class WebGLRenderer
         }
     }
 
-    requestTexture (texture: Texture)
+    requestTexture (texture: Texture): void
     {
         const gl = this.gl;
 
