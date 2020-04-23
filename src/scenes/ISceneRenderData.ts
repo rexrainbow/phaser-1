@@ -1,4 +1,4 @@
-import { IWorldRenderResult } from '../world/World';
+import { IWorldRenderData } from '../world/IWorldRenderData';
 
 export interface ISceneRenderData
 {
@@ -15,5 +15,5 @@ export interface ISceneRenderData
     numTotalFrames: number;
 
     //  An array of all the Worlds due to be rendered - safe to clear this every frame as it's such a tiny array
-    renderedWorlds: IWorldRenderResult[];
+    worldData: IWorldRenderData[];
 }

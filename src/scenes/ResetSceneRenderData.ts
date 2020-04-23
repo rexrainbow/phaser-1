@@ -6,5 +6,5 @@ export function ResetSceneRenderData (renderData: ISceneRenderData, gameFrame: n
     renderData.numTotalFrames = 0;
     renderData.numDirtyFrames = 0;
     renderData.numDirtyCameras = 0;
-    renderData.renderedWorlds.length = 0;
+    renderData.worldData.length = 0;
 }
