@@ -5,6 +5,8 @@ import { ISprite } from '../gameobjects/sprite/ISprite';
 
 export interface IWorld
 {
+    willRender: boolean;
+    willUpdate: boolean;
     camera: ICamera;
     dirtyFrame: number;
     numRendered: number;
