@@ -18,15 +18,15 @@ export class Game extends EventEmitter
     willRender: boolean = true;
 
     private lastTick: number = 0;
-    lifetime: number = 0;
-    elapsed: number = 0;
+    // lifetime: number = 0;
+    // elapsed: number = 0;
 
     //  The current game frame
     frame: number = 0;
 
     renderer: WebGLRenderer;
-    textures: TextureManager;
-    scenes: SceneManager;
+    textureManager: TextureManager;
+    sceneManager: SceneManager;
 
     //  TODO: This should be instance based, not defined here
     cache = {
@@ -41,41 +41,28 @@ export class Game extends EventEmitter
 
         GameInstance.set(this);
 
-        settings.forEach(setting => setting());
-
-        DOMContentLoaded(() => this.boot());
+        DOMContentLoaded(() => this.boot(settings));
     }
 
-    boot (): void
+    boot (settings: { (): void }[]): void
     {
+        //  Activate the settings post DOM Content Loaded
+        settings.forEach(setting => setting());
+
         this.renderer = new WebGLRenderer();
-        this.textures = new TextureManager();
-        this.scenes = new SceneManager();
+        this.textureManager = new TextureManager();
+        this.sceneManager = new SceneManager();
 
         //  Only add to the DOM if they either didn't set a Parent, or expressly set it to be non-null
         //  Otherwise we'll let them add the canvas to the DOM themselves
-        if (GetParent())
+        const parent = GetParent();
+
+        if (parent)
         {
-            AddToDOM(this.renderer.canvas, GetParent());
+            AddToDOM(this.renderer.canvas, parent);
         }
 
         this.banner(this.VERSION);
-
-        //  Visibility API = move to own function
-        document.addEventListener('visibilitychange', () =>
-        {
-            if (document.hidden)
-            {
-                this.pause();
-            }
-            else
-            {
-                this.resume();
-            }
-        });
-
-        // window.addEventListener('blur', this.pause);
-        // window.addEventListener('focus', this.resume);
 
         this.isBooted = true;
 
@@ -109,24 +96,23 @@ export class Game extends EventEmitter
 
     step (now: number): void
     {
-        const delta = now - this.lastTick;
+        //  Note that privacy.resistFingerprinting can round this value to 100ms or more!
+        const delta = (now - this.lastTick) / 1000;
 
-        const dt = delta / 1000;
-
-        this.lifetime += dt;
-        this.elapsed = dt;
+        // this.lifetime += delta;
+        // this.elapsed = delta;
         this.lastTick = now;
 
         if (!this.isPaused)
         {
             if (this.willUpdate)
             {
-                this.scenes.update(dt, now);
+                this.sceneManager.update(delta, now);
             }
 
-            if (this.willUpdate)
+            if (this.willRender)
             {
-                this.renderer.render(this.scenes.render(this.frame));
+                this.renderer.render(this.sceneManager.render(this.frame));
             }
         }
 
