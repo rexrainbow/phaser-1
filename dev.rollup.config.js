@@ -1,9 +1,10 @@
-import resolve from '@rollup/plugin-node-resolve';
-import typescript from 'rollup-plugin-typescript2';
 import clear from 'rollup-plugin-clear';
 import copy from 'rollup-plugin-copy';
-import serve from 'rollup-plugin-serve';
-import livereload from 'rollup-plugin-livereload';
+import resolve from '@rollup/plugin-node-resolve';
+import typescript from 'rollup-plugin-typescript2';
+
+// import serve from 'rollup-plugin-serve';
+// import livereload from 'rollup-plugin-livereload';
 
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
@@ -39,9 +40,9 @@ export default {
             ]
         }),
 
-        serve('dev/dist'),
+        // serve('dev/dist'),
 
-        livereload()
+        // livereload()
 
     ]
 
