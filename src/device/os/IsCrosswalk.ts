@@ -1,4 +1,4 @@
-export function isCrosswalk (): boolean
+export function IsCrosswalk (): boolean
 {
     return (navigator.userAgent.includes('Crosswalk'));
 }
