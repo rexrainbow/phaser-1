@@ -33,7 +33,8 @@
         "@typescript-eslint/brace-style": [ "error", "allman", { "allowSingleLine": true } ],
         "array-bracket-spacing": [ "error", "always" ],
         "block-spacing": [ "error", "always" ],
-        "camelcase": "error",
+        "camelcase": "off",
+        "@typescript-eslint/camelcase": "off",
         "comma-dangle": [ "error", "never" ],
         "comma-style": [ "error", "last" ],
         "eol-last": [ "error" ],
@@ -98,6 +99,11 @@
                 "selector": "property",
                 "modifiers": [ "readonly" ],
                 "format": [ "camelCase", "UPPER_CASE" ]
+            },
+            {
+                "selector": "property",
+                "prefix": [ "OES" ],
+                "format": null
             },
             {
                 "selector": "parameter",
