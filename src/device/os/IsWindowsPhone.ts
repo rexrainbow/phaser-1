@@ -1,4 +1,4 @@
-export function isWindowsPhone (): boolean
+export function IsWindowsPhone (): boolean
 {
     const ua: string = navigator.userAgent;
 
