@@ -1,6 +1,6 @@
-import { isWindowsPhone } from '../os/isWindowsPhone';
+import { IsWindowsPhone } from '../os/IsWindowsPhone';
 
-export function isSafari (): { safari: boolean; safariVersion: number }
+export function IsSafari (): { safari: boolean; safariVersion: number }
 {
     const ua: string = navigator.userAgent;
 
