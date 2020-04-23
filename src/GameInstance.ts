@@ -1,16 +1,16 @@
 import { Game } from './Game';
 
-let gameInstance: Game;
+let instance: Game;
 
 export const GameInstance =
 {
     get: (): Game =>
     {
-        return gameInstance;
+        return instance;
     },
 
     set: (game: Game | null): void =>
     {
-        gameInstance = game;
+        instance = game;
     }
 };
