@@ -27,13 +27,6 @@ export class Game extends EventEmitter
     textureManager: TextureManager;
     sceneManager: SceneManager;
 
-    //  TODO: This should be instance based, not defined here
-    // cache = {
-    //     json: new Map<string, unknown>(),
-    //     csv: new Map<string, unknown>(),
-    //     xml: new Map<string, unknown>()
-    // };
-
     constructor (...settings: { (): void }[])
     {
         super();
@@ -70,7 +63,6 @@ export class Game extends EventEmitter
         this.lastTick = performance.now();
 
         this.step(this.lastTick);
-        // requestAnimationFrame(now => this.step(now));
     }
 
     pause (): void
