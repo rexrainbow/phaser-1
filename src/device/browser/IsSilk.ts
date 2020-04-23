@@ -1,4 +1,4 @@
-export function isSilk (): { silk: boolean }
+export function IsSilk (): { silk: boolean }
 {
     const silk = navigator.userAgent.includes('Silk');
 
