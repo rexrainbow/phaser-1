@@ -1,10 +1,10 @@
 import { Container } from '../container/Container';
-import { Texture } from '../../textures/Texture';
 import { Frame } from '../../textures/Frame';
 import { IContainer } from '../container/IContainer';
 import { Rectangle } from '../../geom/rectangle/Rectangle';
-import { SetTexture } from './SetTexture';
 import { SetFrame } from './SetFrame';
+import { SetTexture } from './SetTexture';
+import { Texture } from '../../textures/Texture';
 
 export class Sprite extends Container
 {

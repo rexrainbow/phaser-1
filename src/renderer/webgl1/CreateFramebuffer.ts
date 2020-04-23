@@ -1,5 +1,5 @@
-import { GL } from './GL';
 import { CreateGLTexture } from './CreateGLTexture';
+import { GL } from './GL';
 
 export function CreateFramebuffer (width: number, height: number): [ WebGLTexture, WebGLFramebuffer ]
 {

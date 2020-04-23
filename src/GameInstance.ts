@@ -9,7 +9,7 @@ export const GameInstance =
         return instance;
     },
 
-    set: (game: Game | null): void =>
+    set: (game: Game | undefined): void =>
     {
         instance = game;
     }

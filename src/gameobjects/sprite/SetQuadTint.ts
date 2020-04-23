@@ -1,5 +1,5 @@
-import { PackColors } from '../../renderer/webgl1/PackColors';
 import { ISprite } from './ISprite';
+import { PackColors } from '../../renderer/webgl1/PackColors';
 
 export function SetQuadTint (topLeft: number, topRight: number, bottomLeft: number, bottomRight: number, ...sprite: ISprite[]): void
 {
@@ -11,7 +11,7 @@ export function SetQuadTint (topLeft: number, topRight: number, bottomLeft: numb
         tint[1] = topRight;
         tint[2] = bottomLeft;
         tint[3] = bottomRight;
-    
+
         PackColors(entity);
     });
 }

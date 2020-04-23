@@ -29,4 +29,4 @@ export const Arne16 = {
     D: '#005784',
     E: '#31A2F2',
     F: '#B2DCEF'
-}
+};

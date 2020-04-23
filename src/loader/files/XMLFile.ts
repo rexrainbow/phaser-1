@@ -1,8 +1,8 @@
 import { File } from '../File';
-import { XHRLoader } from '../XHRLoader';
+import { GameInstance } from '../../GameInstance';
 import { GetURL } from '../GetURL';
 import { ParseXML } from '../../dom/ParseXML';
-import { GameInstance } from '../../GameInstance';
+import { XHRLoader } from '../XHRLoader';
 
 export function XMLFile (key: string, url?: string): File
 {
@@ -41,11 +41,11 @@ export function XMLFile (key: string, url?: string): File
                     {
                         reject(file);
                     }
-        
+
                 }).catch(file => {
 
                     reject(file);
-        
+
                 });
             }
         });

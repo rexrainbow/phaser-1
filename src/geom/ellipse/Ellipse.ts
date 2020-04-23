@@ -34,7 +34,7 @@ export class Ellipse
         this.set(x, y, width, height);
     }
 
-    set (x: number = 0, y: number = 0, width: number = 0, height: number = 0)
+    set (x: number = 0, y: number = 0, width: number = 0, height: number = 0): this
     {
         this.x = x;
         this.y = y;

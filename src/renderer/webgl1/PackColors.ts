@@ -1,7 +1,7 @@
 import { ISprite } from '../../gameobjects/sprite/ISprite';
 import { PackColor } from './PackColor';
 
-export function PackColors (sprite: ISprite)
+export function PackColors (sprite: ISprite): ISprite
 {
     const alpha = sprite.vertexAlpha;
     const tint = sprite.vertexTint;

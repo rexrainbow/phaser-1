@@ -29,4 +29,4 @@ export const JMP = {
     D: '#d365c8',
     E: '#afaab9',
     F: '#f5f4eb'
-}
+};

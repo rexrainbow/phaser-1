@@ -29,4 +29,4 @@ export const MSX = {
     D: '#d365c8',
     E: '#afaab9',
     F: '#fff'
-}
+};

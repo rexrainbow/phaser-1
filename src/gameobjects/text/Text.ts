@@ -1,8 +1,8 @@
-import { Sprite } from '../sprite/Sprite';
-import { CreateGLTexture } from '../../renderer/webgl1/CreateGLTexture';
-import { IContainer } from '../container/IContainer';
 import { CanvasTexture } from '../../textures/types/CanvasTexture';
+import { CreateGLTexture } from '../../renderer/webgl1/CreateGLTexture';
 import { GameInstance } from '../../GameInstance';
+import { IContainer } from '../container/IContainer';
+import { Sprite } from '../sprite/Sprite';
 
 export type VerticalTextAlignment = 'ascent' | 'lineheight';
 
@@ -12,7 +12,7 @@ export class Text extends Sprite
 
     preRenderCallback: (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => void;
     wordWrapCallback: (text: string) => string;
-   
+
     canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     splitRegExp: RegExp = /(?:\r\n|\r|\n)/;
@@ -180,7 +180,7 @@ export class Text extends Sprite
         {
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
-    
+
             this.texture.setSize(displayWidth, displayHeight);
             this.setSize(displayWidth, displayHeight);
         }
@@ -205,7 +205,7 @@ export class Text extends Sprite
             if (cornerRadius)
             {
                 ctx.lineWidth = cornerRadius;
-                
+
                 ctx.strokeRect(halfRadius, halfRadius, displayWidth - cornerRadius, displayHeight - cornerRadius);
             }
 

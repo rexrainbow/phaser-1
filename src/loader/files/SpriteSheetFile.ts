@@ -1,8 +1,8 @@
 import { File } from '../File';
-import { ImageTagLoader } from '../ImageTagLoader';
-import { IFrameConfig } from '../../textures/IFrameConfig';
 import { GameInstance } from '../../GameInstance';
 import { GetURL } from '../GetURL';
+import { IFrameConfig } from '../../textures/IFrameConfig';
+import { ImageTagLoader } from '../ImageTagLoader';
 import { SpriteSheetParser } from '../../textures/parsers/SpriteSheetParser';
 
 export function SpriteSheetFile (key: string, url: string, frameConfig: IFrameConfig): File
@@ -42,11 +42,11 @@ export function SpriteSheetFile (key: string, url: string, frameConfig: IFrameCo
                     {
                         reject(file);
                     }
-        
+
                 }).catch(file => {
 
                     reject(file);
-        
+
                 });
             }
         });

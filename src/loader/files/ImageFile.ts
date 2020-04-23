@@ -1,7 +1,7 @@
 import { File } from '../File';
-import { ImageTagLoader } from '../ImageTagLoader';
 import { GameInstance } from '../../GameInstance';
 import { GetURL } from '../GetURL';
+import { ImageTagLoader } from '../ImageTagLoader';
 
 export function ImageFile (key: string, url?: string): File
 {
@@ -29,13 +29,13 @@ export function ImageFile (key: string, url?: string): File
                 ImageTagLoader(file).then(file => {
 
                     game.textures.add(file.key, file.data);
-    
+
                     resolve(file);
-        
+
                 }).catch(file => {
-    
+
                     reject(file);
-    
+
                 });
             }
 

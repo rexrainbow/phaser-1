@@ -29,4 +29,4 @@ export const CGA = {
     D: '#e23d69',
     E: '#ffd93f',
     F: '#fff'
-}
+};

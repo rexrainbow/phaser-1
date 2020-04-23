@@ -14,4 +14,4 @@ export {
     SetSize,
     SetSkew,
     TransformGameObject
-}
+};

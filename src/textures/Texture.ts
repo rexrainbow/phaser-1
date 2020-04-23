@@ -1,8 +1,8 @@
+import { CreateGLTexture } from '../renderer/webgl1/CreateGLTexture';
+import { DeleteFramebuffer } from '../renderer/webgl1/DeleteFramebuffer';
+import { DeleteGLTexture } from '../renderer/webgl1/DeleteGLTexture';
 import { Frame } from './Frame';
 import { SetGLTextureFilterMode } from '../renderer/webgl1/SetGLTextureFilterMode';
-import { DeleteGLTexture } from '../renderer/webgl1/DeleteGLTexture';
-import { DeleteFramebuffer } from '../renderer/webgl1/DeleteFramebuffer';
-import { CreateGLTexture } from '../renderer/webgl1/CreateGLTexture';
 import { UpdateGLTexture } from '../renderer/webgl1/UpdateGLTexture';
 
 export class Texture
@@ -24,7 +24,7 @@ export class Texture
 
     frames: Map<string | number, Frame>;
 
-    data: any;
+    data: unknown;
 
     constructor (image?: TexImageSource, width?: number, height?: number)
     {
@@ -133,7 +133,7 @@ export class Texture
     {
         SetGLTextureFilterMode(this.glTexture, linear);
     }
-    
+
     createGL (): void
     {
         if (this.glTexture)

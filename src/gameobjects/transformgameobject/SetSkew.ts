@@ -1,5 +1,5 @@
-import { ITransformGameObject } from './ITransformGameObject';
 import { CONST } from './const';
+import { ITransformGameObject } from './ITransformGameObject';
 
 export function SetSkew (skewX: number, skewY: number, ...child: ITransformGameObject[]): void
 {

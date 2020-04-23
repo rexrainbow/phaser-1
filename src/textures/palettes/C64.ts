@@ -29,4 +29,4 @@ export const C64 = {
     D: '#acee8b',
     E: '#7b73de',
     F: '#acacac'
-}
+};

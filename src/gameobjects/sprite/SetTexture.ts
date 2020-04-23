@@ -1,8 +1,8 @@
-import { GameInstance } from '../../GameInstance';
 import { Frame } from '../../textures/Frame';
-import { Texture } from '../../textures/Texture';
 import { ISprite } from './ISprite';
 import { SetFrame } from './SetFrame';
+import { Texture } from '../../textures/Texture';
+import { TextureManagerInstance } from '../../textures/TextureManagerInstance';
 
 export function SetTexture (key: string | Texture, frame: string | number | Frame, ...sprite: ISprite[]): void
 {
@@ -12,16 +12,16 @@ export function SetTexture (key: string | Texture, frame: string | number | Fram
         {
             return;
         }
-    
+
         if (key instanceof Texture)
         {
             entity.texture = key;
         }
         else
         {
-            entity.texture = GameInstance.get().textures.get(key);
+            entity.texture = TextureManagerInstance.get().get(key);
         }
-    
+
         if (!entity.texture)
         {
             console.warn('Invalid Texture key: ' + key);

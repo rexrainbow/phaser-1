@@ -1,6 +1,6 @@
 import { GL } from './GL';
 
-export function DeleteGLTexture (texture: WebGLTexture)
+export function DeleteGLTexture (texture: WebGLTexture): void
 {
     const gl = GL.get();
 

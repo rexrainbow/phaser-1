@@ -29,4 +29,4 @@ export const PICO8 = {
     D: '#83769C',
     E: '#FF77A8',
     F: '#FFCCAA'
-}
+};

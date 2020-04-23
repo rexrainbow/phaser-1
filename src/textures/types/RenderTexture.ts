@@ -1,9 +1,9 @@
-import { ISprite } from '../../gameobjects/sprite/ISprite';
-import { RenderWebGL } from '../../gameobjects/sprite/RenderWebGL';
 import { CreateFramebuffer } from '../../renderer/webgl1/CreateFramebuffer';
+import { ISprite } from '../../gameobjects/sprite/ISprite';
 import { Ortho } from '../../renderer/webgl1/Ortho';
-import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
+import { RenderWebGL } from '../../gameobjects/sprite/RenderWebGL';
 import { Texture } from '../Texture';
+import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
 
 export class RenderTexture extends Texture
 {
@@ -26,7 +26,7 @@ export class RenderTexture extends Texture
         this.cameraMatrix = new Float32Array([ 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, height, 0, 1 ]);
     }
 
-    cls ()
+    cls (): this
     {
         const renderer = this.renderer;
         const gl = renderer.gl;
@@ -41,7 +41,7 @@ export class RenderTexture extends Texture
         return this;
     }
 
-    batchStart ()
+    batchStart (): this
     {
         const renderer = this.renderer;
 
@@ -52,7 +52,7 @@ export class RenderTexture extends Texture
         return this;
     }
 
-    batchDraw (sprites: ISprite[])
+    batchDraw (sprites: ISprite[]): this
     {
         const renderer = this.renderer;
         const shader = renderer.shader;
@@ -65,7 +65,7 @@ export class RenderTexture extends Texture
         return this;
     }
 
-    batchEnd ()
+    batchEnd (): this
     {
         const renderer = this.renderer;
         const shader = renderer.shader;
@@ -77,7 +77,7 @@ export class RenderTexture extends Texture
         return this;
     }
 
-    draw (...sprites: ISprite[])
+    draw (...sprites: ISprite[]): this
     {
         this.batchStart();
         this.batchDraw(sprites);

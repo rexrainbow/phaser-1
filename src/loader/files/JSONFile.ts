@@ -1,7 +1,7 @@
 import { File } from '../File';
-import { XHRLoader } from '../XHRLoader';
 import { GameInstance } from '../../GameInstance';
 import { GetURL } from '../GetURL';
+import { XHRLoader } from '../XHRLoader';
 
 export function JSONFile (key: string, url?: string): File
 {
@@ -31,11 +31,11 @@ export function JSONFile (key: string, url?: string): File
                     }
 
                     resolve(file);
-        
+
                 }).catch(file => {
 
                     reject(file);
-        
+
                 });
             }
         });

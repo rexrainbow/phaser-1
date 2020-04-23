@@ -1,7 +1,7 @@
 import { File } from '../File';
-import { XHRLoader } from '../XHRLoader';
 import { GameInstance } from '../../GameInstance';
 import { GetURL } from '../GetURL';
+import { XHRLoader } from '../XHRLoader';
 
 export function CSVFile (key: string, url?: string): File
 {
@@ -27,13 +27,13 @@ export function CSVFile (key: string, url?: string): File
                     {
                         game.cache.csv.set(file.key, file.data);
                     }
-    
+
                     resolve(file);
-        
+
                 }).catch(file => {
-    
+
                     reject(file);
-        
+
                 });
             }
 
