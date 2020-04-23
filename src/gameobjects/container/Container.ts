@@ -1,6 +1,7 @@
 import { DestroyChildren } from './DestroyChildren';
 import { IGameObject } from '../gameobject/IGameObject';
 import { IParent } from './IParent';
+import { Rectangle } from '../../geom/rectangle/Rectangle';
 import { ReparentChildren } from './ReparentChildren';
 import { TransformGameObject } from '../transformgameobject/TransformGameObject';
 
@@ -17,6 +18,11 @@ export class Container extends TransformGameObject
         this.children = [];
         this.isParent = true;
         this.type = 'Container';
+    }
+
+    getBounds (includeChildren: boolean = false): Rectangle
+    {
+        return this.bounds;
     }
 
     update (delta?: number, time?: number): void
