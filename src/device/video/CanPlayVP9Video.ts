@@ -1,4 +1,6 @@
-export function CanPlayVP9Video (videoElement: HTMLVideoElement = document.createElement('video')): boolean
+import { CanPlayVideoType } from './CanPlayVideoType';
+
+export function CanPlayVP9Video (videoElement?: HTMLVideoElement): boolean
 {
-    return (videoElement.canPlayType('video/webm; codecs="vp9"') !== '');
+    return CanPlayVideoType('video/webm; codecs="vp9"', videoElement);
 }

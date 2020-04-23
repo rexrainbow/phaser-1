@@ -1,6 +1,6 @@
 let _audioElement: HTMLAudioElement;
 
-export function CanPlayType (type: string, audioElement?: HTMLAudioElement): boolean
+export function CanPlayAudioType (type: string, audioElement?: HTMLAudioElement): boolean
 {
     if (!audioElement)
     {
@@ -12,5 +12,5 @@ export function CanPlayType (type: string, audioElement?: HTMLAudioElement): boo
         audioElement = _audioElement;
     }
 
-    return (audioElement.canPlayType(type) !== '');
+    return (audioElement && audioElement.canPlayType(type) !== '');
 }

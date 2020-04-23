@@ -1,4 +1,6 @@
-export function CanPlayH264Video (videoElement: HTMLVideoElement = document.createElement('video')): boolean
+import { CanPlayVideoType } from './CanPlayVideoType';
+
+export function CanPlayH264Video (videoElement?: HTMLVideoElement): boolean
 {
-    return (videoElement.canPlayType('video/mp4; codecs="avc1.42E01E"') !== '');
+    return CanPlayVideoType('video/mp4; codecs="avc1.42E01E"', videoElement);
 }

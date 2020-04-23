@@ -1,4 +1,6 @@
-export function CanPlayOGGVideo (videoElement: HTMLVideoElement = document.createElement('video')): boolean
+import { CanPlayVideoType } from './CanPlayVideoType';
+
+export function CanPlayOGGVideo (videoElement?: HTMLVideoElement): boolean
 {
-    return (videoElement.canPlayType('video/ogg; codecs="theora"') !== '');
+    return CanPlayVideoType('video/ogg; codecs="theora"', videoElement);
 }
