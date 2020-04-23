@@ -15,6 +15,7 @@ export class SceneManager
 
     scenes: Map<string, IScene>  = new Map();
 
+    //  Used by Install to assign default scene keys when not specified
     sceneIndex: number = 0;
 
     //  Flush the cache
@@ -36,11 +37,11 @@ export class SceneManager
         GetScenes().forEach(scene => new scene());
     }
 
-    update (delta: number, now: number): void
+    update (delta: number, time: number): void
     {
         for (const scene of this.scenes.values())
         {
-            Emit(scene, 'update', delta, now);
+            Emit(scene, 'update', delta, time);
         }
     }
 
@@ -53,58 +54,6 @@ export class SceneManager
         for (const scene of this.scenes.values())
         {
             Emit(scene, 'render', results);
-
-            /*
-            if (scene.willRender)
-            {
-                scene.render.call(scene, results);
-
-                const world = scene.world;
-
-                if (!world)
-                {
-                    continue;
-                }
-
-                results.numDirtyFrames += world.render(gameFrame);
-                results.numTotalFrames += world.numRendered;
-
-                if (world.rendered.length === 0)
-                {
-                    continue;
-                }
-
-                if (world.camera.dirtyRender)
-                {
-                    results.numDirtyCameras++;
-
-                    world.camera.dirtyRender = false;
-                }
-
-                let renderListSize = results.renderedWorlds.length;
-
-                if (renderListSize <= results.numRenderedWorlds)
-                {
-                    renderListSize++;
-
-                    results.renderedWorlds.push({
-                        camera: world.camera,
-                        rendered: world.rendered,
-                        numRendered: world.numRendered
-                    });
-                }
-                else
-                {
-                    const renderData = results.renderedWorlds[results.numRenderedWorlds];
-
-                    renderData.camera = world.camera;
-                    renderData.rendered = world.rendered;
-                    renderData.numRendered = world.numRendered;
-                }
-
-                results.numRenderedWorlds++;
-            }
-            */
         }
 
         if (this.flush)
