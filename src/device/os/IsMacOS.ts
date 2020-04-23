@@ -1,4 +1,4 @@
-export function isMacOS (): boolean
+export function IsMacOS (): boolean
 {
     const ua: string = navigator.userAgent;
 
