@@ -82,7 +82,7 @@ export class Sprite extends Container
         let h0: number;
         let h1: number;
 
-        const [ a, b, c, d, tx, ty ] = this.worldTransform;
+        const { a, b, c, d, tx, ty } = this.worldTransform;
 
         if (frame.trimmed)
         {
