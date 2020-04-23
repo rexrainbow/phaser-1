@@ -1,6 +1,7 @@
 import { On, Once } from '../events';
 
 import { Camera } from '../camera/Camera';
+import { CreateWorldRenderData } from './CreateWorldRenderData';
 import { ICamera } from '../camera/ICamera';
 import { IContainer } from '../gameobjects/container/IContainer';
 import { IGameObject } from '../gameobjects/gameobject/IGameObject';
@@ -8,23 +9,12 @@ import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { ISprite } from '../gameobjects/sprite/ISprite';
 import { IWorld } from './IWorld';
+import { IWorldRenderData } from './IWorldRenderData';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
+import { MergeRenderData } from './MergeRenderData';
 import { RectangleToRectangle } from '../geom/intersects/RectangleToRectangle';
-
-// import { IParent } from '../gameobjects/container/IParent';
-
-
-
-
-
-
-
-export interface IWorldRenderResult
-{
-    camera: ICamera;
-    rendered: ISprite[];
-    numRendered: number;
-}
+import { RemoveChildren } from '../gameobjects/container';
+import { ResetWorldRenderData } from './ResetWorldRenderData';
 
 export class World implements IWorld
 {
@@ -38,19 +28,7 @@ export class World implements IWorld
 
     willUpdate: boolean = true;
 
-    //  TODO: Move stats into data object
-
-    //  How many Game Objects were made dirty this frame?
-    dirtyFrame: number = 0;
-
-    //  How many Game Objects will be rendered this frame? (are in-bounds)
-    numRendered: number = 0;
-
-    //  How many Game Objects passed `willRender` this frame? (but may not have been in bounds)
-    numRenderable: number = 0;
-
-    //  A list of Game Objects that will be rendered in the next pass
-    rendered: ISprite[] = [];
+    renderData: IWorldRenderData;
 
     forceRefresh: boolean = false;
 
@@ -62,23 +40,25 @@ export class World implements IWorld
     {
         this.scene = scene;
 
+        this.renderData = CreateWorldRenderData(this.camera);
+
         On(scene, 'update', (delta: number, time: number) => this.update(delta, time));
         On(scene, 'render', (renderData: ISceneRenderData) => this.render(renderData));
         On(scene, 'shutdown', () => this.shutdown());
         Once(scene, 'destroy', () => this.destroy());
     }
 
-    private scanChildren (root: IContainer | World, gameFrame: number): void
+    private scanChildren (root: IContainer | World, renderData: IWorldRenderData): void
     {
         const children = root.children;
 
         for (let i = 0; i < children.length; i++)
         {
-            this.buildRenderList(children[i], gameFrame);
+            this.buildRenderList(children[i], renderData);
         }
     }
 
-    private buildRenderList (root: IGameObject, gameFrame: number): void
+    private buildRenderList (root: IGameObject, renderData: IWorldRenderData): void
     {
         if (root.isRenderable())
         {
@@ -86,21 +66,21 @@ export class World implements IWorld
 
             if (!cull || (cull && RectangleToRectangle(root.getBounds(), this.camera.bounds)))
             {
-                this.numRendered++;
-                this.rendered.push(root as ISprite);
+                renderData.numRendered++;
+                renderData.renderList.push(root as ISprite);
 
-                if (root.dirtyFrame >= gameFrame)
+                if (root.dirtyFrame >= renderData.gameFrame)
                 {
-                    this.dirtyFrame++;
+                    renderData.dirtyFrame++;
                 }
             }
 
-            this.numRenderable++;
+            renderData.numRenderable++;
         }
 
         if (root.isParent && root.visible)
         {
-            this.scanChildren(root as IContainer, gameFrame);
+            this.scanChildren(root as IContainer, renderData);
         }
     }
 
@@ -124,41 +104,29 @@ export class World implements IWorld
         }
     }
 
-    render (renderData: ISceneRenderData): void
+    render (sceneRenderData: ISceneRenderData): void
     {
-        this.dirtyFrame = 0;
-        this.numRendered = 0;
-        this.numRenderable = 0;
-        this.rendered.length = 0;
+        const renderData = this.renderData;
+
+        ResetWorldRenderData(renderData, sceneRenderData.gameFrame);
 
         if (!this.willRender)
         {
             return;
         }
 
-        this.scanChildren(this, renderData.gameFrame);
+        this.scanChildren(this, renderData);
 
         if (this.forceRefresh)
         {
-            this.dirtyFrame++;
+            renderData.dirtyFrame++;
+
             this.forceRefresh = false;
         }
 
-        renderData.numDirtyFrames += this.dirtyFrame;
-        renderData.numTotalFrames += this.numRendered;
+        MergeRenderData(sceneRenderData, renderData);
 
-        if (this.camera.dirtyRender)
-        {
-            renderData.numDirtyCameras++;
-
-            this.camera.dirtyRender = false;
-        }
-
-        renderData.renderedWorlds.push({
-            camera: this.camera,
-            rendered: this.rendered,
-            numRendered: this.numRendered
-        });
+        this.camera.dirtyRender = false;
     }
 
     shutdown (): void
@@ -167,9 +135,9 @@ export class World implements IWorld
         //  everything in place so we can return to this World again
         //  at a later stage
 
-        // this.removeChildren();
+        RemoveChildren(this);
 
-        this.rendered = [];
+        this.renderData.renderList.length = 0;
 
         this.camera.reset();
     }
@@ -177,9 +145,10 @@ export class World implements IWorld
     destroy (): void
     {
         this.camera.destroy();
+        this.renderData.renderList.length = 0;
 
         this.camera = null;
-        this.rendered = null;
+        this.renderData = null;
     }
 
     get numChildren (): number
