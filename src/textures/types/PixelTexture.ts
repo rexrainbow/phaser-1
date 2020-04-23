@@ -6,7 +6,6 @@
 
 import { Arne16 } from '../palettes/Arne16';
 import { CreateCanvas } from '../CreateCanvas';
-import { IPalette } from '../palettes/IPalette';
 import { Texture } from '../Texture';
 
 /**
@@ -35,7 +34,7 @@ import { Texture } from '../Texture';
 export type PixelTextureConfig = {
     data: string[];
     canvas?: HTMLCanvasElement;
-    palette?: IPalette;
+    palette?: string[];
     pixelWidth?: number;
     pixelHeight?: number;
     resizeCanvas?: boolean;
@@ -139,8 +138,7 @@ export function PixelTexture (config: PixelTextureConfig): Texture
 
             if (d !== '.' && d !== ' ')
             {
-                // eslint-disable-next-line
-                ctx.fillStyle = palette[d];
+                ctx.fillStyle = palette[parseInt('0x' + d.toUpperCase())];
                 ctx.fillRect(x * pixelWidth, y * pixelHeight, pixelWidth, pixelHeight);
             }
         }
