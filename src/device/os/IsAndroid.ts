@@ -1,4 +1,4 @@
-export function isAndroid (): boolean
+export function IsAndroid (): boolean
 {
     return (navigator.userAgent.includes('Android'));
 }
