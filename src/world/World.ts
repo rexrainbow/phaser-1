@@ -4,7 +4,6 @@ import { Camera } from '../camera/Camera';
 import { ICamera } from '../camera/ICamera';
 import { IContainer } from '../gameobjects/container/IContainer';
 import { IGameObject } from '../gameobjects/gameobject/IGameObject';
-import { IParent } from '../gameobjects/container/IParent';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { ISprite } from '../gameobjects/sprite/ISprite';
@@ -12,7 +11,16 @@ import { IWorld } from './IWorld';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
 import { RectangleToRectangle } from '../geom/intersects/RectangleToRectangle';
 
-export interface IWorldRenderResult {
+// import { IParent } from '../gameobjects/container/IParent';
+
+
+
+
+
+
+
+export interface IWorldRenderResult
+{
     camera: ICamera;
     rendered: ISprite[];
     numRendered: number;
@@ -25,6 +33,10 @@ export class World implements IWorld
     children: IGameObject[] = [];
 
     camera: ICamera = new Camera();
+
+    willRender: boolean = true;
+
+    willUpdate: boolean = true;
 
     //  TODO: Move stats into data object
 
@@ -94,6 +106,11 @@ export class World implements IWorld
 
     update (delta: number, time: number): void
     {
+        if (!this.willUpdate)
+        {
+            return;
+        }
+
         const children = this.children;
 
         for (let i = 0; i < children.length; i++)
@@ -112,6 +129,12 @@ export class World implements IWorld
         this.dirtyFrame = 0;
         this.numRendered = 0;
         this.numRenderable = 0;
+        this.rendered.length = 0;
+
+        if (!this.willRender)
+        {
+            return;
+        }
 
         this.scanChildren(this, renderData.gameFrame);
 
@@ -131,7 +154,11 @@ export class World implements IWorld
             this.camera.dirtyRender = false;
         }
 
-        //  TODO - Add render list to renderedWorlds array
+        renderData.renderedWorlds.push({
+            camera: this.camera,
+            rendered: this.rendered,
+            numRendered: this.numRendered
+        });
     }
 
     shutdown (): void
