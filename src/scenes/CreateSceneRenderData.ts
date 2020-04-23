@@ -7,7 +7,6 @@ export function CreateSceneRenderData (): ISceneRenderData
         numTotalFrames: 0,
         numDirtyFrames: 0,
         numDirtyCameras: 0,
-        numRenderedWorlds: 0,
         renderedWorlds: []
     };
 }

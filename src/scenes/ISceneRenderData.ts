@@ -14,8 +14,6 @@ export interface ISceneRenderData
     //  How many Game Objects were processed this frame across all Scenes?
     numTotalFrames: number;
 
+    //  An array of all the Worlds due to be rendered - safe to clear this every frame as it's such a tiny array
     renderedWorlds: IWorldRenderResult[];
-
-    //  How many objects inside the circular array renderList?
-    numRenderedWorlds: number;
 }
