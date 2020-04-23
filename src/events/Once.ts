@@ -1,5 +1,5 @@
 import { IEventEmitter } from './IEventEmitter';
-import { On } from '.';
+import { On } from './On';
 
 export function Once (emitter: IEventEmitter, event: string, callback: Function, context: unknown = emitter): IEventEmitter
 {
