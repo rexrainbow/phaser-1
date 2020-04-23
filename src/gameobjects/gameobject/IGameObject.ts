@@ -1,7 +1,7 @@
-import { Rectangle } from '../../geom/rectangle/Rectangle';
 import { IInteractiveArea } from '../../input/IInteractiveArea';
-import { IScene } from '../../scenes/IScene';
 import { IParent } from '../container/IParent';
+import { IScene } from '../../scenes/IScene';
+import { Rectangle } from '../../geom/rectangle/Rectangle';
 
 export interface IGameObject
 {
