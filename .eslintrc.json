@@ -24,6 +24,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-prototype-builtins": [ "off" ],
         "indent": [ "off" ],
         "@typescript-eslint/indent": [ "error", 4, { "SwitchCase": 1 } ],
         "sort-imports": [ "error", { "ignoreCase": false } ],
