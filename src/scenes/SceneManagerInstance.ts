@@ -1,16 +1,16 @@
 import { SceneManager } from './SceneManager';
 
-let managerInstance: SceneManager;
+let instance: SceneManager;
 
 export const SceneManagerInstance =
 {
     get: (): SceneManager =>
     {
-        return managerInstance;
+        return instance;
     },
 
     set: (manager: SceneManager | null): void =>
     {
-        managerInstance = manager;
+        instance = manager;
     }
 };
