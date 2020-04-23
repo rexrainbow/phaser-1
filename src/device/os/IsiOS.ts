@@ -19,10 +19,10 @@ export function IsiOS (): IGetIOSResult
 
     if ((/iP[ao]d|iPhone/i).test(ua))
     {
-        (navigator.appVersion).match(/OS (\d+)/);
+        const match = (/OS (\d+)/).exec(navigator.appVersion);
 
         result.iOS = true;
-        result.iOSVersion = parseInt(RegExp.$1, 10);
+        result.iOSVersion = parseInt(match[0], 10);
         result.iPhone = (ua.toLowerCase().includes('iphone'));
         result.iPad = (ua.toLowerCase().includes('ipad'));
     }

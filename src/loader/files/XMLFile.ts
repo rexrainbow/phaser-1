@@ -1,5 +1,5 @@
+import { Cache } from '../../cache/Cache';
 import { File } from '../File';
-import { GameInstance } from '../../GameInstance';
 import { GetURL } from '../GetURL';
 import { ParseXML } from '../../dom/ParseXML';
 import { XHRLoader } from '../XHRLoader';
@@ -8,17 +8,15 @@ export function XMLFile (key: string, url?: string): File
 {
     const file = new File(key, url);
 
-    file.load = () =>
+    file.load = (): Promise<File> =>
     {
-
         file.url = GetURL(file.key, file.url, '.xml', file.loader);
 
         return new Promise((resolve, reject) =>
         {
+            const cache = Cache.get('XML');
 
-            const game = GameInstance.get();
-
-            if (!file.skipCache && game.cache.xml.has(file.key))
+            if (!file.skipCache && cache.has(file.key))
             {
                 resolve(file);
             }
@@ -26,7 +24,6 @@ export function XMLFile (key: string, url?: string): File
             {
                 XHRLoader(file).then(file =>
                 {
-
                     const xml = ParseXML(file.data);
 
                     if (xml !== null)
@@ -35,7 +32,7 @@ export function XMLFile (key: string, url?: string): File
 
                         if (!file.skipCache)
                         {
-                            game.cache.xml.set(file.key, xml);
+                            cache.set(file.key, xml);
                         }
 
                         resolve(file);
@@ -47,9 +44,7 @@ export function XMLFile (key: string, url?: string): File
 
                 }).catch(file =>
                 {
-
                     reject(file);
-
                 });
             }
         });

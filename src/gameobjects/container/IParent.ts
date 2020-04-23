@@ -1,6 +1,6 @@
-import { Matrix2D } from '../../math/matrix2d/Matrix2D';
-import { IScene } from '../../scenes/IScene';
 import { IGameObject } from '../gameobject/IGameObject';
+import { IScene } from '../../scenes/IScene';
+import { Matrix2D } from '../../math/matrix2d/Matrix2D';
 
 export interface IParent
 {

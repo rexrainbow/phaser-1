@@ -4,7 +4,6 @@ import { IsChromeOS } from './IsChromeOS';
 import { IsCordova } from './IsCordova';
 import { IsCrosswalk } from './IsCrosswalk';
 import { IsEjecta } from './IsEjecta';
-import { IsElectron } from './IsElectron';
 import { IsKindle } from './IsKindle';
 import { IsLinux } from './IsLinux';
 import { IsMacOS } from './IsMacOS';
@@ -22,7 +21,6 @@ export {
     IsCordova,
     IsCrosswalk,
     IsEjecta,
-    IsElectron,
     IsiOS,
     IsKindle,
     IsLinux,

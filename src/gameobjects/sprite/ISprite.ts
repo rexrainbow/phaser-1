@@ -1,6 +1,6 @@
 import { Frame } from '../../textures/Frame';
-import { Texture } from '../../textures/Texture';
 import { IContainer } from '../container/IContainer';
+import { Texture } from '../../textures/Texture';
 
 export interface ISprite extends IContainer
 {

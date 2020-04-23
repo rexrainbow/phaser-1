@@ -1,5 +1,5 @@
+import { Cache } from '../../cache/Cache';
 import { File } from '../File';
-import { GameInstance } from '../../GameInstance';
 import { GetURL } from '../GetURL';
 import { XHRLoader } from '../XHRLoader';
 
@@ -7,17 +7,15 @@ export function CSVFile (key: string, url?: string): File
 {
     const file = new File(key, url);
 
-    file.load = () =>
+    file.load = (): Promise<File> =>
     {
-
         file.url = GetURL(file.key, file.url, '.csv', file.loader);
 
         return new Promise((resolve, reject) =>
         {
+            const cache = Cache.get('CSV');
 
-            const game = GameInstance.get();
-
-            if (!file.skipCache && game.cache.csv.has(file.key))
+            if (!file.skipCache && cache.has(file.key))
             {
                 resolve(file);
             }
@@ -25,22 +23,18 @@ export function CSVFile (key: string, url?: string): File
             {
                 XHRLoader(file).then(file =>
                 {
-
                     if (!file.skipCache)
                     {
-                        game.cache.csv.set(file.key, file.data);
+                        cache.set(file.key, file.data);
                     }
 
                     resolve(file);
 
                 }).catch(file =>
                 {
-
                     reject(file);
-
                 });
             }
-
         });
     };
 

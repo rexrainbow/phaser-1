@@ -6,7 +6,10 @@ export class File
     url: string;
     responseType: XMLHttpRequestResponseType = 'text';
     crossOrigin: string | undefined = undefined;
-    data: unknown;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any;
+
     error: ErrorEvent | undefined;
     config: unknown;
     skipCache: boolean = false;

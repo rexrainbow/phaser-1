@@ -1,7 +1,7 @@
-import { Rectangle } from '../../geom/rectangle/Rectangle';
 import { IInteractiveArea } from '../../input/IInteractiveArea';
-import { IScene } from '../../scenes/IScene';
 import { IParent } from '../container/IParent';
+import { IScene } from '../../scenes/IScene';
+import { Rectangle } from '../../geom/rectangle/Rectangle';
 
 //  The Base Game Object which all Scene entites extend
 
@@ -30,16 +30,12 @@ export class GameObject
     fixBounds: boolean = false;
     bounds: Rectangle = new Rectangle();
 
-    constructor ()
-    {
-    }
-
     isRenderable (): boolean
     {
         return (this.visible && this.willRender);
     }
 
-    setDirtyRender (setFrame: boolean = true)
+    setDirtyRender (setFrame: boolean = true): this
     {
         this.dirtyRender = true;
 
@@ -53,39 +49,39 @@ export class GameObject
         return this;
     }
 
-    setDirtyUpdate ()
+    setDirtyUpdate (): this
     {
         this.dirtyUpdate = true;
 
         return this;
     }
 
-    getBounds (includeChildren: boolean = false): Rectangle
+    getBounds (): Rectangle
     {
         return this.bounds;
     }
 
-    setBounds (x: number, y: number, width: number, height: number)
+    setBounds (x: number, y: number, width: number, height: number): this
     {
         this.bounds.set(x, y, width, height);
 
         return this;
     }
 
-    update ()
+    update (): void
     {
     }
 
-    updateTransform ()
+    updateTransform (): this
     {
         return this;
     }
 
-    render ()
+    render (): void
     {
     }
 
-    destroy (reparentChildren?: IParent)
+    destroy (): void
     {
         this.scene = null;
     }

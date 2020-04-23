@@ -1,6 +1,8 @@
+import { DestroyChildren } from './DestroyChildren';
 import { IGameObject } from '../gameobject/IGameObject';
-import { TransformGameObject } from '../transformgameobject/TransformGameObject';
 import { IParent } from './IParent';
+import { ReparentChildren } from './ReparentChildren';
+import { TransformGameObject } from '../transformgameobject/TransformGameObject';
 
 export class Container extends TransformGameObject
 {
@@ -17,7 +19,7 @@ export class Container extends TransformGameObject
         this.type = 'Container';
     }
 
-    update (delta?: number, time?: number)
+    update (delta?: number, time?: number): void
     {
         const children = this.children;
 
@@ -32,16 +34,16 @@ export class Container extends TransformGameObject
         }
     }
 
-    destroy (reparentChildren?: IParent)
+    destroy (reparentChildren?: IParent): void
     {
-        // if (reparentChildren)
-        // {
-        //     this.reparentChildren(reparentChildren);
-        // }
-        // else
-        // {
-        //     this.destroyChildren();
-        // }
+        if (reparentChildren)
+        {
+            ReparentChildren(this, reparentChildren);
+        }
+        else
+        {
+            DestroyChildren(this);
+        }
 
         this.children = null;
 
