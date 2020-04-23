@@ -19,8 +19,6 @@ export class Game extends EventEmitter
     willRender: boolean = true;
 
     private lastTick: number = 0;
-    // lifetime: number = 0;
-    // elapsed: number = 0;
 
     //  The current game frame
     frame: number = 0;
@@ -30,11 +28,11 @@ export class Game extends EventEmitter
     sceneManager: SceneManager;
 
     //  TODO: This should be instance based, not defined here
-    cache = {
-        json: new Map<string, unknown>(),
-        csv: new Map<string, unknown>(),
-        xml: new Map<string, unknown>()
-    };
+    // cache = {
+    //     json: new Map<string, unknown>(),
+    //     csv: new Map<string, unknown>(),
+    //     xml: new Map<string, unknown>()
+    // };
 
     constructor (...settings: { (): void }[])
     {
@@ -71,7 +69,8 @@ export class Game extends EventEmitter
 
         this.lastTick = performance.now();
 
-        requestAnimationFrame(now => this.step(now));
+        this.step(this.lastTick);
+        // requestAnimationFrame(now => this.step(now));
     }
 
     pause (): void
@@ -86,20 +85,18 @@ export class Game extends EventEmitter
         this.lastTick = performance.now();
     }
 
-    step (now: number): void
+    step (time: number): void
     {
         //  Note that privacy.resistFingerprinting can round this value to 100ms or more!
-        const delta = (now - this.lastTick) / 1000;
+        const delta = time - this.lastTick;
 
-        // this.lifetime += delta;
-        // this.elapsed = delta;
-        this.lastTick = now;
+        this.lastTick = time;
 
         if (!this.isPaused)
         {
             if (this.willUpdate)
             {
-                this.sceneManager.update(delta, now);
+                this.sceneManager.update(delta, time);
             }
 
             if (this.willRender)
