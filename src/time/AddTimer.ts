@@ -3,7 +3,7 @@ import { ITimerEventConfig } from './ITimerEventConfig';
 import { IWorld } from '../world/IWorld';
 import { NOOP } from './NOOP';
 
-export function AddTimerEvent (world: IWorld, config: ITimerEventConfig): void
+export function AddTimer (world: IWorld, config: ITimerEventConfig): void
 {
     const {
         duration = 0,

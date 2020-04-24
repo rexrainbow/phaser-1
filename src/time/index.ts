@@ -1,11 +1,11 @@
 import { AddDelayedCall } from './AddDelayedCall';
-import { AddTimerEvent } from './AddTimerEvent';
+import { AddTimer } from './AddTimer';
 import { Clock } from './Clock';
 import { NOOP } from './NOOP';
 
 export {
     AddDelayedCall,
-    AddTimerEvent,
+    AddTimer,
     Clock,
     NOOP
 };
