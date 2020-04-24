@@ -31,3 +31,9 @@ export interface IGameObject
     render (gameFrame: number): void;
     destroy (reparentChildren?: IParent): void;
 }
+
+//  Merge 3 dirty properties into one object
+//  Move set and get bounds to functions
+//  Move setDirtyRender and setDirtyUpdate to functions
+//  Merge 3 input properties into one object
+//  Bounds = new Bounds component with fix etc inside it
