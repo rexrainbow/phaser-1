@@ -6,34 +6,41 @@ import { TextureManagerInstance } from '../../textures/TextureManagerInstance';
 
 export function SetTexture (key: string | Texture, frame: string | number | Frame, ...sprite: ISprite[]): void
 {
-    sprite.forEach(entity =>
+    if (!key)
     {
-        if (!key)
+        return;
+    }
+
+    let texture: Texture;
+
+    if (key instanceof Texture)
+    {
+        texture = key;
+    }
+    else
+    {
+        texture = TextureManagerInstance.get().get(key);
+    }
+
+    if (!texture)
+    {
+        console.warn('Invalid Texture key: ' + key);
+
+        return;
+    }
+    else
+    {
+        //  TODO - Move this to the render process
+        if (!texture.glTexture)
         {
-            return;
+            texture.createGL();
         }
 
-        if (key instanceof Texture)
+        sprite.forEach(entity =>
         {
-            entity.texture = key;
-        }
-        else
-        {
-            entity.texture = TextureManagerInstance.get().get(key);
-        }
+            entity.texture = texture;
 
-        if (!entity.texture)
-        {
-            console.warn('Invalid Texture key: ' + key);
-        }
-        else
-        {
-            if (!entity.texture.glTexture)
-            {
-                entity.texture.createGL();
-            }
-
-            SetFrame(frame, entity);
-        }
-    });
+            SetFrame(texture, frame, entity);
+        });
+    }
 }
