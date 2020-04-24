@@ -1,12 +1,11 @@
 import { AddToDOM, DOMContentLoaded } from './dom';
 import { Emit, EventEmitter } from './events';
+import { GetBanner, GetParent, GetRenderer, GetResolution } from './config';
 
 import { GameInstance } from './GameInstance';
-import { GetBanner } from './config/Banner';
-import { GetParent } from './config';
+import { IRenderer } from './renderer/IRenderer';
 import { SceneManager } from './scenes/SceneManager';
 import { TextureManager } from './textures/TextureManager';
-import { WebGLRenderer } from './renderer/webgl1/WebGLRenderer';
 
 export class Game extends EventEmitter
 {
@@ -23,7 +22,7 @@ export class Game extends EventEmitter
     //  The current game frame
     frame: number = 0;
 
-    renderer: WebGLRenderer;
+    renderer: IRenderer;
     textureManager: TextureManager;
     sceneManager: SceneManager;
 
@@ -41,7 +40,9 @@ export class Game extends EventEmitter
         //  Activate the settings post DOM Content Loaded
         settings.forEach(setting => setting());
 
-        this.renderer = new WebGLRenderer();
+        const renderer = GetRenderer();
+
+        this.renderer = new renderer();
         this.textureManager = new TextureManager();
         this.sceneManager = new SceneManager();
 

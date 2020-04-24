@@ -1,15 +1,15 @@
 import { GameInstance } from '../GameInstance';
+import { IRenderer } from '../renderer/IRenderer';
 import { IStaticCamera } from './IStaticCamera';
 import { IWorld } from '../world/IWorld';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
 import { Rectangle } from '../geom/rectangle/Rectangle';
-import { WebGLRenderer } from '../renderer/webgl1/WebGLRenderer';
 
 export class StaticCamera implements IStaticCamera
 {
     world: IWorld;
     matrix: Float32Array;
-    renderer: WebGLRenderer;
+    renderer: IRenderer;
     type: string;
 
     width: number;

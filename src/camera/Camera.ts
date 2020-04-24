@@ -1,12 +1,12 @@
 import { GameInstance } from '../GameInstance';
 import { ICamera } from './ICamera';
+import { IRenderer } from '../renderer/IRenderer';
 import { TransformGameObject } from '../gameobjects/transformgameobject/TransformGameObject';
-import { WebGLRenderer } from '../renderer/webgl1/WebGLRenderer';
 
 export class Camera extends TransformGameObject implements ICamera
 {
     matrix: Float32Array;
-    renderer: WebGLRenderer;
+    renderer: IRenderer;
 
     constructor (x: number = 0, y: number = 0)
     {
