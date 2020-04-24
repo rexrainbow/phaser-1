@@ -6,6 +6,7 @@ import { On } from '../src/events';
 import { Scene } from '../src/scenes/Scene';
 import { SolidColorTexture } from '../src/textures/types';
 import { Sprite } from '../src/gameobjects/sprite';
+import { StaticWorld } from '../src/world/StaticWorld';
 import { World } from '../src/world/World';
 
 class Demo extends Scene
@@ -15,6 +16,7 @@ class Demo extends Scene
         super();
 
         const world = new World(this);
+        // const world = new StaticWorld(this);
 
         const block = new Sprite(100, 100, SolidColorTexture('#ff0000', 128, 128));
 
