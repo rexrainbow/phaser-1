@@ -4,6 +4,7 @@ export function SetScale (scaleX: number, scaleY: number, ...child: ITransformGa
 {
     child.forEach(entity =>
     {
-        entity.setScale(scaleX, scaleY);
+        entity.scaleX = scaleX;
+        entity.scaleY = scaleY;
     });
 }

@@ -4,6 +4,7 @@ export function SetSkew (skewX: number, skewY: number, ...child: ITransformGameO
 {
     child.forEach(entity =>
     {
-        entity.setSkew(skewX, skewY);
+        entity.skewX = skewX;
+        entity.skewY = skewY;
     });
 }

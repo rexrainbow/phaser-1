@@ -4,7 +4,6 @@ export function SetSize (width: number, height: number, ...child: ITransformGame
 {
     child.forEach(entity =>
     {
-        entity.width = width;
-        entity.height = height;
+        entity.setSize(width, height);
     });
 }

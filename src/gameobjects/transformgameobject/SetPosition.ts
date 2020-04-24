@@ -4,6 +4,7 @@ export function SetPosition (x: number, y: number, ...child: ITransformGameObjec
 {
     child.forEach(entity =>
     {
-        entity.setPosition(x, y);
+        entity.x = x;
+        entity.y = y;
     });
 }

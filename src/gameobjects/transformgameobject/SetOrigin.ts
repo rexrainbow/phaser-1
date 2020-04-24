@@ -4,6 +4,7 @@ export function SetOrigin (originX: number, originY: number, ...child: ITransfor
 {
     child.forEach(entity =>
     {
-        entity.setOrigin(originX, originY);
+        entity.originX = originX;
+        entity.originY = originY;
     });
 }

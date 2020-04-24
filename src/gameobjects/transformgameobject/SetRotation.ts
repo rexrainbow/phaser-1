@@ -4,6 +4,6 @@ export function SetRotation (rotation: number, ...child: ITransformGameObject[])
 {
     child.forEach(entity =>
     {
-        entity.setRotation(rotation);
+        entity.rotation = rotation;
     });
 }
