@@ -29,6 +29,7 @@ export default {
         clear('dev/dist'),
 
         typescript({
+            include: [ './src/**/*', './dev/*.ts' ],
             tsconfig: './fastdev.tsconfig.json'
         }),
 
