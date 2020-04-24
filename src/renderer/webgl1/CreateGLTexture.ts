@@ -4,6 +4,12 @@ import { IsSizePowerOfTwo } from '../../math/pow2/IsSizePowerOfTwo';
 export function CreateGLTexture (source?: TexImageSource, width?: number, height?: number, potClamp: boolean = true, linear: boolean = true): WebGLTexture
 {
     const gl = GL.get();
+
+    if (!gl)
+    {
+        return;
+    }
+
     const glTexture: WebGLTexture = gl.createTexture();
 
     gl.activeTexture(gl.TEXTURE0);
