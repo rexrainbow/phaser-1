@@ -1,8 +1,9 @@
+import { AddChild, AddChildren } from '../src/gameobjects/container';
 import { BackgroundColor, Parent, Scenes, Size } from '../src/config';
 
-import { AddChild } from '../src/gameobjects/container';
+import { AddDelayedCall } from '../src/time/AddDelayedCall';
 import { Game } from '../src/Game';
-import { On } from '../src/events';
+import { MoveToPosition } from '../src/gameobjects/transformgameobject/MoveToPosition';
 import { Scene } from '../src/scenes/Scene';
 import { SolidColorTexture } from '../src/textures/types';
 import { Sprite } from '../src/gameobjects/sprite';
@@ -15,18 +16,37 @@ class Demo extends Scene
     {
         super();
 
-        const world = new World(this);
-        // const world = new StaticWorld(this);
+        // const world = new World(this);
+        const world = new StaticWorld(this);
 
-        const block = new Sprite(100, 100, SolidColorTexture('#ff0000', 128, 128));
+        const block1 = new Sprite(100, 100, SolidColorTexture('#ff0000', 64, 64));
+        const block2 = new Sprite(700, 100, SolidColorTexture('#ff0000', 64, 64));
+        const block3 = new Sprite(100, 500, SolidColorTexture('#ff0000', 64, 64));
 
-        AddChild(world, block);
+        AddChildren(world, block1, block2, block3);
 
-        On(this, 'update', () => {
+        // AddDelayedCall(world, 2000, () => { console.log('hello?'); });
 
-            block.x += 1;
+        AddDelayedCall(world, 2000, () => MoveToPosition(500, 500, 5000, block1, block2, block3));
 
+        // MoveToPosition(500, 500, 5000, block1, block2, block3);
+
+        /*
+        AddTimerEvent(world, {
+            delay: 2000,
+            duration: 2000,
+            repeat: 2,
+            onStart: () => {
+                console.log('Timer start');
+            },
+            onRepeat: () => {
+                console.log('Timer repeat');
+            },
+            onComplete: () => {
+                console.log('Timer complete');
+            }
         });
+        */
     }
 }
 
