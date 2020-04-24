@@ -1,4 +1,4 @@
-import { BackgroundColor, Parent, Scenes, Size } from '../src/config';
+import { BackgroundColor, CanvasRenderer, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 
 import { AddChild } from '../src/gameobjects/container';
 import { Game } from '../src/Game';
@@ -24,6 +24,7 @@ class Demo extends Scene
 export default function (): void
 {
     new Game(
+        WebGLRenderer(),
         Size(800, 600),
         Parent('gameParent'),
         BackgroundColor(0x2d2d2d),
