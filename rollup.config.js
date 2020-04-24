@@ -1,13 +1,13 @@
 // Can't use official plugin because: https://github.com/rollup/plugins/issues/287 >:-(
 // import typescript from '@rollup/plugin-typescript';
 
-import clear from 'rollup-plugin-clear';
-import resolve from '@rollup/plugin-node-resolve';
-import typescript from 'rollup-plugin-typescript2';
-import { terser } from 'rollup-plugin-terser';
+import copy from 'rollup-plugin-copy';
+import del from 'rollup-plugin-delete';
 import filesize from 'rollup-plugin-filesize';
 import fs from 'fs-extra';
-import copy from 'rollup-plugin-copy';
+import resolve from '@rollup/plugin-node-resolve';
+import { terser } from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript2';
 
 // Another crashing plugin that used to work (and hopefully will again!):
 // import visualizer from 'rollup-plugin-visualizer';
@@ -93,9 +93,9 @@ export default {
 
     plugins: [
 
-        clear({
+        del({
             targets: [ './dist', './stats.html' ],
-            watch: true
+            runOnce: true
         }),
 
         resolve({

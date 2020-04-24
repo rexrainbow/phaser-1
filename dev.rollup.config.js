@@ -1,10 +1,9 @@
-import clear from 'rollup-plugin-clear';
 import copy from 'rollup-plugin-copy';
+import del from 'rollup-plugin-delete';
+import livereload from 'rollup-plugin-livereload';
 import resolve from '@rollup/plugin-node-resolve';
+import serve from 'rollup-plugin-serve';
 import typescript from 'rollup-plugin-typescript2';
-
-// import serve from 'rollup-plugin-serve';
-// import livereload from 'rollup-plugin-livereload';
 
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
@@ -28,7 +27,7 @@ export default {
             extensions
         }),
 
-        clear('dev/dist'),
+        del({ targets: './dev/dist/*', runOnce: true }),
 
         typescript({
             tsconfig: './dev.tsconfig.json'
@@ -40,9 +39,9 @@ export default {
             ]
         }),
 
-        // serve('dev/dist'),
+        serve('dev/dist'),
 
-        // livereload()
+        livereload()
 
     ]
 
