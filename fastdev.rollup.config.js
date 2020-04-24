@@ -1,5 +1,6 @@
 import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
+import filesize from 'rollup-plugin-filesize';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 
@@ -16,7 +17,10 @@ export default {
             file: './dev/dist/index.js',
             format: 'iife',
             name: 'Phaser4Example',
-            sourcemap: true
+            sourcemap: true,
+            plugins: [
+                filesize()
+            ]
         }
     ],
 
