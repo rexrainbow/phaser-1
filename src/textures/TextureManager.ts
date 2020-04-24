@@ -21,15 +21,11 @@ export class TextureManager
 
         const missing = CreateCanvas(32, 32);
 
-        missing.fillStyle = '#0f0';
-        missing.font = '700 32px monospace';
-        missing.fillText('?', 8, 8);
-
-        // missing.strokeStyle = '#0f0';
-        // missing.moveTo(0, 0);
-        // missing.lineTo(32, 32);
-        // missing.stroke();
-        // missing.strokeRect(0.5, 0.5, 31, 31);
+        missing.strokeStyle = '#0f0';
+        missing.moveTo(0, 0);
+        missing.lineTo(32, 32);
+        missing.stroke();
+        missing.strokeRect(0.5, 0.5, 31, 31);
 
         this.add('__MISSING', new Texture(missing.canvas));
     }
