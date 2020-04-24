@@ -4,6 +4,7 @@ import * as Events from './events/';
 import * as GameObjects from './gameobjects/';
 import * as Math from './math/';
 import * as Textures from './textures/';
+import * as Time from './time/';
 
 import { Game } from './Game';
 import { Loader } from './loader/Loader';
@@ -20,5 +21,6 @@ export {
     Loader,
     Math,
     WebGLRenderer,
-    Textures
+    Textures,
+    Time
 };
