@@ -22,6 +22,12 @@ export class Container extends TransformGameObject
 
     getBounds (includeChildren: boolean = false): Rectangle
     {
+        if (includeChildren)
+        {
+            //  TODO
+            return this.bounds;
+        }
+
         return this.bounds;
     }
 
