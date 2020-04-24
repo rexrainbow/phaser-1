@@ -1,7 +1,9 @@
-import { GetBackgroundColor, GetHeight, GetResolution, GetWebGLContext, GetWidth } from '../../config';
+import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
 import { CheckShaderMaxIfStatements } from './shaders/CheckShaderMaxIfStatements';
 import { GL } from './GL';
+import { GetBackgroundColor } from '../../config/BackgroundColor';
+import { GetWebGLContext } from '../../config/WebGLContext';
 import { ICamera } from '../../camera/ICamera';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IShader } from './shaders/IShader';
