@@ -15,9 +15,7 @@ export function SetFrame (texture: Texture, key?: string | number | Frame, ...sp
 
         entity.frame = frame;
 
-        entity.width = frame.sourceSizeWidth;
-        entity.height = frame.sourceSizeHeight;
-
+        entity.setSize(frame.sourceSizeWidth, frame.sourceSizeHeight);
         entity.setBounds(entity.x, entity.y, entity.width, entity.height);
 
         if (frame.pivot)

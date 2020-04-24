@@ -16,5 +16,6 @@ export interface ITransformGameObject extends IGameObject
     originY: number;
     localTransform?: Matrix2D;
     worldTransform?: Matrix2D;
+    setSize (width: number, height: number): this;
     updateCache (): this;
 }

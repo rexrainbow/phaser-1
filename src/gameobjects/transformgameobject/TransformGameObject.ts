@@ -8,8 +8,8 @@ export class TransformGameObject extends GameObject
     localTransform: Matrix2D;
     worldTransform: Matrix2D;
 
-    width: number;
-    height: number;
+    width: number = 0;
+    height: number = 0;
 
     private _position: Vec2 = new Vec2();
     private _origin: Vec2 = new Vec2(0.5, 0.5);
@@ -26,10 +26,15 @@ export class TransformGameObject extends GameObject
 
         this._position.set(x, y);
 
-        this.width = 0;
-        this.height = 0;
-
         this.updateCache();
+    }
+
+    setSize (width: number, height: number): this
+    {
+        this.width = width;
+        this.height = height;
+
+        return this;
     }
 
     updateCache (): this
