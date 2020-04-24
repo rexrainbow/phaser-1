@@ -37,6 +37,10 @@ export function AddTimerEvent (world: IWorld, config: ITimerEventConfig): void
             {
                 timer.delay = 0;
             }
+            else
+            {
+                return false;
+            }
         }
 
         if (timer.delay === 0)
