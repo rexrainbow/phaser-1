@@ -13,6 +13,8 @@
         "distmajor": "npm version major && npm run build && cd dist && npm publish --ignore-scripts",
         "build-dev": "rollup -c dev.rollup.config.js",
         "watch-dev": "rollup --watch -c dev.rollup.config.js",
+        "build-fastdev": "rollup -c fastdev.rollup.config.js",
+        "watch-fastdev": "rollup --watch -c fastdev.rollup.config.js",
         "ts": "tsc --noEmit",
         "lint": "eslint ./src --fix --ext .ts"
     },

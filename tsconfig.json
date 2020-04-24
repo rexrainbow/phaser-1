@@ -25,13 +25,11 @@
         "strictPropertyInitialization": false
     },
     "include": [
-        "src/**/*",
-        "dev/**/*"
+        "src/**/*"
     ],
     "exclude": [
         "src/input/",
         "src/stats/",
-        "src/gameobjects/spritebuffer/*",
-        "src/world/StaticWorld.ts"
+        "src/gameobjects/spritebuffer/*"
     ]
 }
