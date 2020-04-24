@@ -1,11 +1,11 @@
 import { IInteractiveArea } from '../../input/IInteractiveArea';
 import { IParent } from '../container/IParent';
-import { IScene } from '../../scenes/IScene';
+import { IWorld } from '../../world/IWorld';
 import { Rectangle } from '../../geom/rectangle/Rectangle';
 
 export interface IGameObject
 {
-    scene: IScene;
+    world: IWorld;
     name: string;
     type: string;
     willRender: boolean;

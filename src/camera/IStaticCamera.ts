@@ -1,11 +1,11 @@
 import { IMatrix2D } from '../math/matrix2d/IMatrix2D';
 import { IRectangle } from '../geom/rectangle/IRectangle';
-import { IScene } from '../scenes/IScene';
+import { IWorld } from '../world/IWorld';
 import { WebGLRenderer } from '../renderer/webgl1/WebGLRenderer';
 
 export interface IStaticCamera
 {
-    scene: IScene;
+    world: IWorld;
     matrix: Float32Array;
     renderer: WebGLRenderer;
     type: string;

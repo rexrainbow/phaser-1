@@ -1,13 +1,13 @@
 import { GameInstance } from '../GameInstance';
-import { IScene } from '../scenes/IScene';
 import { IStaticCamera } from './IStaticCamera';
+import { IWorld } from '../world/IWorld';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
 import { Rectangle } from '../geom/rectangle/Rectangle';
 import { WebGLRenderer } from '../renderer/webgl1/WebGLRenderer';
 
 export class StaticCamera implements IStaticCamera
 {
-    scene: IScene;
+    world: IWorld;
     matrix: Float32Array;
     renderer: WebGLRenderer;
     type: string;
@@ -51,7 +51,7 @@ export class StaticCamera implements IStaticCamera
 
     destroy (): void
     {
-        this.scene = null;
+        this.world = null;
         this.renderer = null;
         this.matrix = null;
         this.bounds = null;

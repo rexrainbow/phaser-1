@@ -11,7 +11,7 @@ export function SetParent (parent: IParent, ...child: IGameObject[]): void
             RemoveChild(entity.parent, entity);
         }
 
-        entity.scene = parent.scene;
+        entity.world = parent.world;
         entity.parent = parent;
     });
 }

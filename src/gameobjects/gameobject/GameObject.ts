@@ -1,13 +1,14 @@
+import { GameInstance } from '../../GameInstance';
 import { IInteractiveArea } from '../../input/IInteractiveArea';
 import { IParent } from '../container/IParent';
-import { IScene } from '../../scenes/IScene';
+import { IWorld } from '../../world/IWorld';
 import { Rectangle } from '../../geom/rectangle/Rectangle';
 
-//  The Base Game Object which all Scene entites extend
+//  The Base Game Object which all World entites extend
 
 export class GameObject
 {
-    scene: IScene;
+    world: IWorld;
     name: string = '';
     type: string = 'GameObject';
 
@@ -39,11 +40,11 @@ export class GameObject
     {
         this.dirtyRender = true;
 
-        const scene = this.scene;
-
-        if (setFrame && scene)
+        if (setFrame)
         {
-            this.dirtyFrame = scene.game.frame;
+            const game = GameInstance.get();
+
+            this.dirtyFrame = game.frame;
         }
 
         return this;
@@ -83,6 +84,6 @@ export class GameObject
 
     destroy (): void
     {
-        this.scene = null;
+        this.world = null;
     }
 }
