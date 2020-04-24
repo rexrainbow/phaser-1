@@ -1,11 +1,20 @@
+import { On, Once } from '../events';
+
+import { CreateWorldRenderData } from './CreateWorldRenderData';
 import { ICamera } from '../camera/ICamera';
-import { StaticCamera } from '../camera/StaticCamera';
 import { IContainer } from '../gameobjects/container/IContainer';
 import { IGameObject } from '../gameobjects/gameobject/IGameObject';
+import { IScene } from '../scenes/IScene';
+import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { ISprite } from '../gameobjects/sprite/ISprite';
-import { Matrix2D } from '../math/matrix2d/Matrix2D';
-import { StaticScene } from '../scenes/StaticScene';
+import { IStaticCamera } from '../camera/IStaticCamera';
 import { IWorld } from './IWorld';
+import { IWorldRenderData } from './IWorldRenderData';
+import { Matrix2D } from '../math/matrix2d/Matrix2D';
+import { MergeRenderData } from './MergeRenderData';
+import { RemoveChildren } from '../gameobjects/container';
+import { ResetWorldRenderData } from './ResetWorldRenderData';
+import { StaticCamera } from '../camera/StaticCamera';
 
 //  A Static World is designed specifically to have a bounds of a fixed size
 //  and a camera that doesn't move at all (no scrolling, rotation, etc)
@@ -14,67 +23,71 @@ import { IWorld } from './IWorld';
 
 export class StaticWorld implements IWorld
 {
-    scene: StaticScene;
-
-    camera: ICamera;
+    scene: IScene;
 
     children: IGameObject[] = [];
 
-    //  How many Game Objects were made dirty this frame?
-    dirtyFrame: number = 0;
+    camera: IStaticCamera = new StaticCamera();
 
-    //  How many Game Objects will be rendered this frame? (are in-bounds)
-    numRendered: number = 0;
+    willRender: boolean = true;
 
-    //  How many Game Objects passed `willRender` this frame? (but may not have been in bounds)
-    numRenderable: number = 0;
+    willUpdate: boolean = true;
 
-    //  A list of Game Objects that will be rendered in the next pass
-    rendered: ISprite[] = [];
+    renderData: IWorldRenderData;
 
     forceRefresh: boolean = false;
 
     worldTransform: Matrix2D = new Matrix2D();
 
-    constructor (scene: StaticScene)
+    constructor (scene: IScene)
     {
         this.scene = scene;
-        this.camera = new StaticCamera(scene) as ICamera; // TODO: Remove this as ICamera onnce StaticCamera is finished
+
+        this.renderData = CreateWorldRenderData(this.camera);
+
+        On(scene, 'update', (delta: number, time: number) => this.update(delta, time));
+        On(scene, 'render', (renderData: ISceneRenderData) => this.render(renderData));
+        On(scene, 'shutdown', () => this.shutdown());
+        Once(scene, 'destroy', () => this.destroy());
     }
 
-    private scanChildren (root: IContainer | StaticWorld, gameFrame: number)
+    private scanChildren (root: IContainer | StaticWorld, renderData: IWorldRenderData): void
     {
         const children = root.children;
 
         for (let i = 0; i < children.length; i++)
         {
-            this.buildRenderList(children[i], gameFrame);
+            this.buildRenderList(children[i], renderData);
         }
     }
 
-    private buildRenderList (root: IGameObject, gameFrame: number)
+    private buildRenderList (root: IGameObject, renderData: IWorldRenderData): void
     {
         if (root.isRenderable())
         {
-            this.numRendered++;
-            this.rendered.push(root as ISprite);
+            renderData.numRendered++;
+            renderData.numRenderable++;
+            renderData.renderList.push(root as ISprite);
 
-            if (root.dirtyFrame >= gameFrame)
+            if (root.dirtyFrame >= renderData.gameFrame)
             {
-                this.dirtyFrame++;
+                renderData.dirtyFrame++;
             }
-
-            this.numRenderable++;
         }
 
         if (root.isParent && root.visible)
         {
-            this.scanChildren(root as IContainer, gameFrame);
+            this.scanChildren(root as IContainer, renderData);
         }
     }
 
-    update (delta?: number, time?: number)
+    update (delta?: number, time?: number): void
     {
+        if (!this.willUpdate)
+        {
+            return;
+        }
+
         const children = this.children;
 
         for (let i = 0; i < children.length; i++)
@@ -88,42 +101,51 @@ export class StaticWorld implements IWorld
         }
     }
 
-    render (gameFrame: number): number
+    render (sceneRenderData: ISceneRenderData): void
     {
-        this.dirtyFrame = 0;
-        this.numRendered = 0;
-        this.numRenderable = 0;
+        const renderData = this.renderData;
 
-        this.scanChildren(this, gameFrame);
+        ResetWorldRenderData(renderData, sceneRenderData.gameFrame);
+
+        if (!this.willRender)
+        {
+            return;
+        }
+
+        this.scanChildren(this, renderData);
 
         if (this.forceRefresh)
         {
-            this.dirtyFrame++;
+            renderData.dirtyFrame++;
+
             this.forceRefresh = false;
         }
 
-        return this.dirtyFrame;
+        MergeRenderData(sceneRenderData, renderData);
+
+        this.camera.dirtyRender = false;
     }
 
-    shutdown ()
+    shutdown (): void
     {
         //  Clear the display list and reset the camera, but leave
         //  everything in place so we can return to this World again
         //  at a later stage
 
-        // this.removeChildren();
+        RemoveChildren(this);
 
-        this.rendered = [];
+        this.renderData.renderList.length = 0;
 
         this.camera.reset();
     }
 
-    destroy ()
+    destroy (): void
     {
         this.camera.destroy();
+        this.renderData.renderList.length = 0;
 
         this.camera = null;
-        this.rendered = null;
+        this.renderData = null;
     }
 
     get numChildren (): number

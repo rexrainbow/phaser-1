@@ -1,13 +1,14 @@
 import { ICamera } from '../camera/ICamera';
 import { IGameObject } from '../gameobjects/gameobject/IGameObject';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
+import { IStaticCamera } from '../camera/IStaticCamera';
 import { IWorldRenderData } from './IWorldRenderData';
 
 export interface IWorld
 {
     willRender: boolean;
     willUpdate: boolean;
-    camera: ICamera;
+    camera: ICamera | IStaticCamera;
     renderData: IWorldRenderData;
     children: IGameObject[];
     forceRefresh: boolean;

@@ -78,7 +78,9 @@ export class Camera extends TransformGameObject implements ICamera
         const width = this.renderer.width;
         const height = this.renderer.height;
 
-        this.setSize(width, height);
+        this.width = width;
+        this.height = height;
+
         this.setBounds(0, 0, width, height);
     }
 

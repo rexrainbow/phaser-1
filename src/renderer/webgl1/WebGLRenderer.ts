@@ -5,6 +5,7 @@ import { GL } from './GL';
 import { ICamera } from '../../camera/ICamera';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IShader } from './shaders/IShader';
+import { IStaticCamera } from '../../camera/IStaticCamera';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './Ortho';
@@ -241,7 +242,7 @@ export class WebGLRenderer
         }
         */
 
-        let prevCamera: ICamera;
+        let prevCamera: (ICamera | IStaticCamera);
 
         const worlds = renderData.worldData;
 
@@ -260,9 +261,9 @@ export class WebGLRenderer
             }
 
             //  Process the render list
-            for (let i: number = 0; i < numRendered; i++)
+            for (let s: number = 0; s < numRendered; s++)
             {
-                SpriteRenderWebGL(renderList[i], this, shader, this.startActiveTexture);
+                SpriteRenderWebGL(renderList[s], this, shader, this.startActiveTexture);
             }
         }
 
