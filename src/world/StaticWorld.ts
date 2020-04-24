@@ -1,5 +1,6 @@
 import { On, Once } from '../events';
 
+import { Clock } from '../time/Clock';
 import { CreateWorldRenderData } from './CreateWorldRenderData';
 import { ICamera } from '../camera/ICamera';
 import { IContainer } from '../gameobjects/container/IContainer';
@@ -23,7 +24,11 @@ import { StaticCamera } from '../camera/StaticCamera';
 
 export class StaticWorld implements IWorld
 {
+    world: IWorld;
+
     scene: IScene;
+
+    clock: Clock;
 
     children: IGameObject[] = [];
 
@@ -41,7 +46,11 @@ export class StaticWorld implements IWorld
 
     constructor (scene: IScene)
     {
+        this.world = this;
+
         this.scene = scene;
+
+        this.clock = new Clock(this);
 
         this.renderData = CreateWorldRenderData(this.camera);
 
@@ -87,6 +96,8 @@ export class StaticWorld implements IWorld
         {
             return;
         }
+
+        this.clock.update(delta, time);
 
         const children = this.children;
 
