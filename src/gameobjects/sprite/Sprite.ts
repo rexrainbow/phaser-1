@@ -57,7 +57,7 @@ export class Sprite extends Container
 
     setFrame (key?: string | number | Frame): this
     {
-        SetFrame(key, this);
+        SetFrame(this.texture, key, this);
 
         return this;
     }
