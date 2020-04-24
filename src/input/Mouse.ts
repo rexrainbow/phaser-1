@@ -1,11 +1,12 @@
-import { EventEmitter } from '../events/EventEmitter';
-import { Vec2 } from '../math/vec2/Vec2';
-import { GlobalToLocal } from '../math/matrix2d/GlobalToLocal';
+import { Emit, EventEmitter } from '../events';
+
 import { Append as AppendMatrix2d } from '../math/matrix2d-funcs/Append';
-import { IGameObject } from '../gameobjects/gameobject/IGameObject';
 import { GameInstance } from '../GameInstance';
+import { GlobalToLocal } from '../math/matrix2d/GlobalToLocal';
+import { IGameObject } from '../gameobjects/gameobject/IGameObject';
 import { IParent } from '../gameobjects/container/IParent';
 import { ITransformGameObject } from '../gameobjects/transformgameobject/ITransformGameObject';
+import { Vec2 } from '../math/vec2/Vec2';
 
 export class Mouse extends EventEmitter
 {
@@ -87,7 +88,7 @@ export class Mouse extends EventEmitter
         this.auxDown = (event.button === 1);
         this.secondaryDown = (event.button === 2);
 
-        this.emit('pointerdown', this.localPoint.x, this.localPoint.y, event.button, event);
+        Emit(this, 'pointerdown', this.localPoint.x, this.localPoint.y, event.button, event);
     }
 
     private onMouseUp (event: MouseEvent)
@@ -98,14 +99,14 @@ export class Mouse extends EventEmitter
         this.auxDown = !(event.button === 1);
         this.secondaryDown = !(event.button === 2);
 
-        this.emit('pointerup', this.localPoint.x, this.localPoint.y, event.button, event);
+        Emit(this, 'pointerup', this.localPoint.x, this.localPoint.y, event.button, event);
     }
 
     private onMouseMove (event: MouseEvent)
     {
         this.positionToPoint(event);
 
-        this.emit('pointermove', this.localPoint.x, this.localPoint.y, event);
+        Emit(this, 'pointermove', this.localPoint.x, this.localPoint.y, event);
     }
 
     positionToPoint (event: MouseEvent): Vec2
@@ -125,7 +126,7 @@ export class Mouse extends EventEmitter
             const width = this.target.hasAttribute('width') ? this.target['width'] : 0;
             const height = this.target.hasAttribute('height') ? this.target['height'] : 0;
             const multiplier = 1 / this.resolution;
-    
+
             local.x = ((event.clientX - rect.left) * (width / rect.width)) * multiplier;
             local.y = ((event.clientY - rect.top) * (height / rect.height)) * multiplier;
         }
@@ -168,7 +169,7 @@ export class Mouse extends EventEmitter
             const right: number = left + entity.width;
             const top: number = -(entity.height * entity.originY);
             const bottom: number = top + entity.height;
-    
+
             return (px >= left && px <= right && py >= top && py <= bottom);
         }
 
