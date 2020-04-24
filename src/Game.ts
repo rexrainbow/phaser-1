@@ -18,7 +18,7 @@ export class Game extends EventEmitter
     willUpdate: boolean = true;
     willRender: boolean = true;
 
-    private lastTick: number = 0;
+    lastTick: number = 0;
 
     //  The current game frame
     frame: number = 0;
