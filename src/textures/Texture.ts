@@ -90,6 +90,7 @@ export class Texture
         return frame;
     }
 
+    //  TODO - Move outside of this class
     getFrames (frames: string[] | number[]): Frame[]
     {
         const output: Frame[] = [];
@@ -102,6 +103,7 @@ export class Texture
         return output;
     }
 
+    //  TODO - Move outside of this class
     getFramesInRange (prefix: string, start: number, end: number, zeroPad: number = 0, suffix: string = ''): Frame[]
     {
         const frameKeys = [];
@@ -129,11 +131,13 @@ export class Texture
         frame.setSize(width, height);
     }
 
+    //  TODO - Move outside of this class
     setFilter (linear: boolean): void
     {
         SetGLTextureFilterMode(this.glTexture, linear);
     }
 
+    //  TODO - Move outside of this class
     createGL (): void
     {
         if (this.glTexture)
@@ -144,6 +148,7 @@ export class Texture
         this.glTexture = CreateGLTexture(this.image);
     }
 
+    //  TODO - Move outside of this class
     updateGL (): void
     {
         if (!this.glTexture)
