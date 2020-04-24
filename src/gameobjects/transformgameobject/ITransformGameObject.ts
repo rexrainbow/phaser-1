@@ -14,14 +14,7 @@ export interface ITransformGameObject extends IGameObject
     skewY: number;
     originX: number;
     originY: number;
-    transformData: Float32Array;
     localTransform?: Matrix2D;
     worldTransform?: Matrix2D;
-    setPosition (x: number, y?: number): this;
-    setRotation (value: number): this;
-    setScale (scaleX: number, scaleY?: number): this;
-    setSkew (skewX: number, skewY?: number): this;
-    setOrigin (originX: number, originY?: number): this;
-    setSize (width: number, height: number): this;
     updateCache (): this;
 }

@@ -1,47 +1,30 @@
-import { CONST } from './const';
 import { Copy } from '../../math/matrix2d/Copy';
 import { GameObject } from '../gameobject/GameObject';
 import { Matrix2D } from '../../math/matrix2d/Matrix2D';
+import { Vec2 } from '../../math/vec2';
 
 export class TransformGameObject extends GameObject
 {
-    private transformBuffer: ArrayBuffer;
-
-    transformData: Float32Array;
     localTransform: Matrix2D;
     worldTransform: Matrix2D;
 
     width: number;
     height: number;
 
+    private _position: Vec2 = new Vec2();
+    private _origin: Vec2 = new Vec2(0.5, 0.5);
+    private _skew: Vec2 = new Vec2(0, 0);
+    private _scale: Vec2 = new Vec2(1, 1);
+    private _rotation: number = 0;
+
     constructor (x: number = 0, y: number = 0)
     {
         super();
 
-        const byte = Float32Array.BYTES_PER_ELEMENT;
-
-        const buffer = new ArrayBuffer(10 * byte);
-
-        this.transformBuffer = buffer;
-
-        /**
-         * transformData:
-         * 0 = position x
-         * 1 = position y
-         * 2 = origin x
-         * 3 = origin y
-         * 4 = skew x
-         * 5 = skew y
-         * 6 = scale x
-         * 7 = scale y
-         * 8 = rotation
-         * 9 = angle
-         */
-        this.transformData = new Float32Array(buffer, 0, 10);
         this.localTransform = new Matrix2D();
         this.worldTransform = new Matrix2D();
 
-        this.transformData.set([ x, y, 0.5, 0.5, 0, 0, 1, 1, 0, 0 ]);
+        this._position.set(x, y);
 
         this.width = 0;
         this.height = 0;
@@ -101,129 +84,67 @@ export class TransformGameObject extends GameObject
         return this;
     }
 
-    setSize (width: number, height: number): this
-    {
-        this.width = width;
-        this.height = height;
-
-        return this;
-    }
-
-    setOrigin (originX: number, originY: number = originX): this
-    {
-        const data = this.transformData;
-
-        data[CONST.ORIGIN_X] = originX;
-        data[CONST.ORIGIN_Y] = originY;
-
-        return this;
-    }
-
-    setPosition (x: number, y: number = x): this
-    {
-        const data = this.transformData;
-
-        data[CONST.POSITION_X] = x;
-        data[CONST.POSITION_Y] = y;
-
-        return this.updateTransform();
-    }
-
-    setRotation (rotation: number): this
-    {
-        const data = this.transformData;
-
-        if (rotation !== data[CONST.ROTATION])
-        {
-            data[CONST.ROTATION] = rotation;
-
-            this.updateCache();
-        }
-
-        return this;
-    }
-
-    setScale (scaleX: number, scaleY: number = scaleX): this
-    {
-        const data = this.transformData;
-
-        data[CONST.SCALE_X] = scaleX;
-        data[CONST.SCALE_Y] = scaleY;
-
-        return this.updateCache();
-    }
-
-    setSkew (skewX: number, skewY: number = skewX): this
-    {
-        const data = this.transformData;
-
-        data[CONST.SKEW_X] = skewX;
-        data[CONST.SKEW_Y] = skewY;
-
-        return this.updateCache();
-    }
-
     destroy (): void
     {
         super.destroy();
 
         this.localTransform = null;
         this.worldTransform = null;
-        this.transformBuffer = null;
-        this.transformData = null;
+        this._position = null;
+        this._origin = null;
+        this._scale = null;
+        this._skew = null;
     }
 
     set x (value: number)
     {
-        this.transformData[CONST.POSITION_X] = value;
+        this._position.x = value;
 
         this.updateTransform();
     }
 
     get x (): number
     {
-        return this.transformData[CONST.POSITION_X];
+        return this._position.x;
     }
 
     set y (value: number)
     {
-        this.transformData[CONST.POSITION_Y] = value;
+        this._position.y = value;
 
         this.updateTransform();
     }
 
     get y (): number
     {
-        return this.transformData[CONST.POSITION_Y];
-    }
-
-    get originX (): number
-    {
-        return this.transformData[CONST.ORIGIN_X];
+        return this._position.y;
     }
 
     set originX (value: number)
     {
-        this.transformData[CONST.ORIGIN_X] = value;
+        this._origin.x = value;
     }
 
-    get originY (): number
+    get originX (): number
     {
-        return this.transformData[CONST.ORIGIN_Y];
+        return this._origin.x;
     }
 
     set originY (value: number)
     {
-        this.transformData[CONST.ORIGIN_Y] = value;
+        this._origin.y = value;
+    }
+
+    get originY (): number
+    {
+        return this._origin.y;
     }
 
     set skewX (value: number)
     {
-        const data = this.transformData;
-
-        if (value !== data[CONST.SKEW_X])
+        if (value !== this._skew.x)
         {
-            data[CONST.SKEW_X] = value;
+            this._skew.x = value;
 
             this.updateCache();
         }
@@ -231,16 +152,14 @@ export class TransformGameObject extends GameObject
 
     get skewX (): number
     {
-        return this.transformData[CONST.SKEW_X];
+        return this._skew.x;
     }
 
     set skewY (value: number)
     {
-        const data = this.transformData;
-
-        if (value !== data[CONST.SKEW_Y])
+        if (value !== this._skew.y)
         {
-            data[CONST.SKEW_Y] = value;
+            this._skew.y = value;
 
             this.updateCache();
         }
@@ -248,16 +167,14 @@ export class TransformGameObject extends GameObject
 
     get skewY (): number
     {
-        return this.transformData[CONST.SKEW_Y];
+        return this._skew.y;
     }
 
     set scaleX (value: number)
     {
-        const data = this.transformData;
-
-        if (value !== data[CONST.SCALE_X])
+        if (value !== this._scale.x)
         {
-            data[CONST.SCALE_X] = value;
+            this._scale.x = value;
 
             this.updateCache();
         }
@@ -265,16 +182,14 @@ export class TransformGameObject extends GameObject
 
     get scaleX (): number
     {
-        return this.transformData[CONST.SCALE_X];
+        return this._scale.x;
     }
 
     set scaleY (value: number)
     {
-        const data = this.transformData;
-
-        if (value !== data[CONST.SCALE_Y])
+        if (value !== this._scale.y)
         {
-            data[CONST.SCALE_Y] = value;
+            this._scale.y = value;
 
             this.updateCache();
         }
@@ -282,16 +197,14 @@ export class TransformGameObject extends GameObject
 
     get scaleY (): number
     {
-        return this.transformData[CONST.SCALE_Y];
+        return this._scale.y;
     }
 
     set rotation (value: number)
     {
-        const data = this.transformData;
-
-        if (value !== data[CONST.ROTATION])
+        if (value !== this._rotation)
         {
-            data[CONST.ROTATION] = value;
+            this._rotation = value;
 
             this.updateCache();
         }
@@ -299,6 +212,6 @@ export class TransformGameObject extends GameObject
 
     get rotation (): number
     {
-        return this.transformData[CONST.ROTATION];
+        return this._rotation;
     }
 }
