@@ -1,4 +1,4 @@
-import { AddTimerEvent } from '../../time';
+import { AddTimer } from '../../time';
 import { AngleBetween } from '../../math/angle';
 import { DistanceBetween } from '../../math/distance';
 import { ITransformGameObject } from './ITransformGameObject';
@@ -28,7 +28,7 @@ export function MoveToPosition (x: number, y: number, duration: number, ...child
 
         if (world)
         {
-            AddTimerEvent(world, {
+            AddTimer(world, {
                 duration,
                 onUpdate: moveHandler
             });
