@@ -1,5 +1,5 @@
-import { Copy } from '../../math/matrix2d/Copy';
-import { IGameObject } from './IGameObject';
+import { Copy } from '../../../math/matrix2d/Copy';
+import { IGameObject } from '../../IGameObject';
 
 export function UpdateWorldTransform (gameObject: IGameObject): void
 {

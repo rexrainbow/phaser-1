@@ -1,4 +1,4 @@
-import { IGameObject } from './IGameObject';
+import { IGameObject } from '../../IGameObject';
 
 export interface IDirtyComponent
 {

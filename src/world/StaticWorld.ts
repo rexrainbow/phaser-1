@@ -2,7 +2,7 @@ import { On, Once } from '../events';
 
 import { Clock } from '../time/Clock';
 import { CreateWorldRenderData } from './CreateWorldRenderData';
-import { GameObject } from '../gameobjects/gameobject';
+import { GameObject } from '../gameobjects/GameObject';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';

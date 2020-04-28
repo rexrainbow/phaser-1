@@ -1,12 +1,13 @@
 import { BoundsComponent, DirtyComponent, InputComponent, TransformComponent } from './components';
-import { DestroyChildren, ReparentChildren } from '.';
 
+import { DestroyChildren } from './DestroyChildren';
 import { IBoundsComponent } from './components/bounds/IBoundsComponent';
 import { IDirtyComponent } from './components/dirty/IDirtyComponent';
 import { IGameObject } from './IGameObject';
 import { IInputComponent } from './components/input/IInputComponent';
 import { ITransformComponent } from './components/transform/ITransformComponent';
 import { IWorld } from '../world/IWorld';
+import { ReparentChildren } from './ReparentChildren';
 
 export class GameObject
 {

@@ -1,4 +1,4 @@
-import { IGameObject } from './IGameObject';
+import { IGameObject } from '../../IGameObject';
 import { UpdateWorldTransform } from './UpdateWorldTransform';
 
 export function UpdateLocalTransform (gameObject: IGameObject): void

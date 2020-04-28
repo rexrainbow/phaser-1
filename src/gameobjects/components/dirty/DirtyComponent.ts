@@ -1,6 +1,6 @@
-import { GameInstance } from '../../GameInstance';
+import { GameInstance } from '../../../GameInstance';
 import { IDirtyComponent } from './IDirtyComponent';
-import { IGameObject } from './IGameObject';
+import { IGameObject } from '../../IGameObject';
 
 export class DirtyComponent implements IDirtyComponent
 {

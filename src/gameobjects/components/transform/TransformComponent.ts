@@ -1,6 +1,6 @@
-import { IGameObject } from './IGameObject';
+import { IGameObject } from '../../IGameObject';
 import { ITransformComponent } from './ITransformComponent';
-import { Matrix2D } from '../../math/matrix2d/Matrix2D';
+import { Matrix2D } from '../../../math/matrix2d/Matrix2D';
 import { UpdateLocalTransform } from './UpdateLocalTransform';
 import { UpdateWorldTransform } from './UpdateWorldTransform';
 

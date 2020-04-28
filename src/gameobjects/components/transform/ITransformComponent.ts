@@ -1,5 +1,5 @@
-import { IGameObject } from './IGameObject';
-import { Matrix2D } from '../../math/matrix2d/Matrix2D';
+import { IGameObject } from '../../IGameObject';
+import { Matrix2D } from '../../../math/matrix2d/Matrix2D';
 
 export interface ITransformComponent
 {
