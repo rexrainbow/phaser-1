@@ -1,5 +1,11 @@
-import { CanPlayM4A, CanPlayMP3, CanPlayOGG, CanPlayOpus, CanPlayWAV, CanPlayWebM, HasAudio, HasWebAudio } from '.';
-
+import { CanPlayM4A } from './CanPlayM4A';
+import { CanPlayMP3 } from './CanPlayMP3';
+import { CanPlayOGG } from './CanPlayOGG';
+import { CanPlayOpus } from './CanPlayOpus';
+import { CanPlayWAV } from './CanPlayWAV';
+import { CanPlayWebM } from './CanPlayWebM';
+import { HasAudio } from './HasAudio';
+import { HasWebAudio } from './HasWebAudio';
 import { IDeviceAudioResult } from './IDeviceAudioResult';
 
 export function GetAudio (): IDeviceAudioResult
