@@ -28,8 +28,8 @@
         "src/**/*"
     ],
     "exclude": [
+        "src/_wip/",
         "src/input/",
-        "src/stats/",
-        "src/gameobjects/spritebuffer/*"
+        "src/stats/"
     ]
 }
