@@ -1,7 +1,6 @@
-import { IParent } from './IParent';
-import { ITransformGameObject } from '../transformgameobject/ITransformGameObject';
+import { IGameObject } from '../gameobject/IGameObject';
 
-export interface IContainer extends ITransformGameObject, IParent
+export interface IContainer extends IGameObject
 {
     alpha: number;
     // setAlpha (value?: number): this;

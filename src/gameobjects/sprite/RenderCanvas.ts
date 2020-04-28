@@ -4,7 +4,7 @@ export function RenderCanvas (sprite: ISprite, ctx: CanvasRenderingContext2D): v
 {
     const frame = sprite.frame;
 
-    const { a, b, c, d, tx, ty } = sprite.worldTransform;
+    const { a, b, c, d, tx, ty } = sprite.transform.world;
 
     ctx.save();
 

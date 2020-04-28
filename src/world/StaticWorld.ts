@@ -2,8 +2,7 @@ import { On, Once } from '../events';
 
 import { Clock } from '../time/Clock';
 import { CreateWorldRenderData } from './CreateWorldRenderData';
-import { ICamera } from '../camera/ICamera';
-import { IContainer } from '../gameobjects/container/IContainer';
+import { GameObject } from '../gameobjects/gameobject';
 import { IGameObject } from '../gameobjects/gameobject/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
@@ -11,7 +10,6 @@ import { ISprite } from '../gameobjects/sprite/ISprite';
 import { IStaticCamera } from '../camera/IStaticCamera';
 import { IWorld } from './IWorld';
 import { IWorldRenderData } from './IWorldRenderData';
-import { Matrix2D } from '../math/matrix2d/Matrix2D';
 import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren } from '../gameobjects/container';
 import { ResetWorldRenderData } from './ResetWorldRenderData';
@@ -22,30 +20,22 @@ import { StaticCamera } from '../camera/StaticCamera';
 //  Because it has a fixed size, there is no camera culling enabled.
 //  Games that use this kind of world include Pacman, Bejeweled and 2048.
 
-export class StaticWorld implements IWorld
+export class StaticWorld extends GameObject implements IWorld
 {
-    world: IWorld;
-
     scene: IScene;
 
     clock: Clock;
 
-    children: IGameObject[] = [];
-
     camera: IStaticCamera = new StaticCamera();
-
-    willRender: boolean = true;
-
-    willUpdate: boolean = true;
 
     renderData: IWorldRenderData;
 
     forceRefresh: boolean = false;
 
-    worldTransform: Matrix2D = new Matrix2D();
-
     constructor (scene: IScene)
     {
+        super();
+
         this.world = this;
 
         this.scene = scene;
@@ -60,7 +50,7 @@ export class StaticWorld implements IWorld
         Once(scene, 'destroy', () => this.destroy());
     }
 
-    private scanChildren (root: IContainer | StaticWorld, renderData: IWorldRenderData): void
+    private scanChildren (root: IGameObject, renderData: IWorldRenderData): void
     {
         const children = root.children;
 
@@ -78,19 +68,19 @@ export class StaticWorld implements IWorld
             renderData.numRenderable++;
             renderData.renderList.push(root as ISprite);
 
-            if (root.dirtyFrame >= renderData.gameFrame)
+            if (root.dirty.frame >= renderData.gameFrame)
             {
                 renderData.dirtyFrame++;
             }
         }
 
-        if (root.isParent && root.visible)
+        if (root.visible && root.numChildren)
         {
-            this.scanChildren(root as IContainer, renderData);
+            this.scanChildren(root, renderData);
         }
     }
 
-    update (delta?: number, time?: number): void
+    update (delta: number, time: number): void
     {
         if (!this.willUpdate)
         {
@@ -99,17 +89,7 @@ export class StaticWorld implements IWorld
 
         this.clock.update(delta, time);
 
-        const children = this.children;
-
-        for (let i = 0; i < children.length; i++)
-        {
-            let child = children[i];
-
-            if (child && child.willUpdate)
-            {
-                child.update(delta, time);
-            }
-        }
+        super.update(delta, time);
     }
 
     render (sceneRenderData: ISceneRenderData): void
@@ -152,15 +132,12 @@ export class StaticWorld implements IWorld
 
     destroy (): void
     {
+        super.destroy();
+
         this.camera.destroy();
         this.renderData.renderList.length = 0;
 
         this.camera = null;
         this.renderData = null;
-    }
-
-    get numChildren (): number
-    {
-        return this.children.length;
     }
 }

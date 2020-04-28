@@ -4,7 +4,6 @@ import { CheckShaderMaxIfStatements } from './shaders/CheckShaderMaxIfStatements
 import { GL } from './GL';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetWebGLContext } from '../../config/WebGLContext';
-import { ICamera } from '../../camera/ICamera';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IShader } from './shaders/IShader';
 import { IStaticCamera } from '../../camera/IStaticCamera';
@@ -244,7 +243,7 @@ export class WebGLRenderer
         }
         */
 
-        let prevCamera: (ICamera | IStaticCamera);
+        let prevCamera: IStaticCamera;
 
         const worlds = renderData.worldData;
 

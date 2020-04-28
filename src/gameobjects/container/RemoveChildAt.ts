@@ -1,7 +1,6 @@
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
-export function RemoveChildAt (parent: IParent, index: number): IGameObject | undefined
+export function RemoveChildAt (parent: IGameObject, index: number): IGameObject | undefined
 {
     const children = parent.children;
     let child: IGameObject;

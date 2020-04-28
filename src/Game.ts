@@ -101,6 +101,8 @@ export class Game extends EventEmitter
         //  The frame always advances by 1 each step (even when paused)
         this.frame++;
 
+        GameInstance.setFrame(this.frame);
+
         requestAnimationFrame(now => this.step(now));
     }
 

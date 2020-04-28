@@ -1,8 +1,7 @@
 import { GetChildIndex } from './GetChildIndex';
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
-export function MoveChildDown (parent: IParent, child: IGameObject): IGameObject
+export function MoveChildDown (parent: IGameObject, child: IGameObject): IGameObject
 {
     const parentChildren = parent.children;
 
@@ -16,8 +15,8 @@ export function MoveChildDown (parent: IParent, child: IGameObject): IGameObject
         parentChildren[currentIndex] = child2;
         parentChildren[index2] = child;
 
-        child.setDirtyRender(true);
-        child2.setDirtyRender(true);
+        child.dirty.setRender();
+        child2.dirty.setRender();
     }
 
     return child;

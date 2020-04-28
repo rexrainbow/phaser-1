@@ -253,7 +253,7 @@ export class Text extends Sprite
 
         this.texture.updateGL();
 
-        this.setDirtyRender(true);
+        this.dirty.setRender();
 
         return this;
     }

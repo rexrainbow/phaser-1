@@ -1,5 +1,4 @@
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
 /**
  * Get all children from the given parent.
@@ -10,12 +9,12 @@ import { IParent } from './IParent';
  * You can optionally provide a property and value to match against.
  *
  * @export
- * @param {IParent} parent
+ * @param {IGameObject} parent
  * @param {string} [property]
  * @param {never} [value]
  * @returns {IGameObject[]}
  */
-export function GetChildren (parent: IParent, property?: string | symbol, value?: never): IGameObject[]
+export function GetChildren (parent: IGameObject, property?: string | symbol, value?: never): IGameObject[]
 {
     const children = parent.children;
 

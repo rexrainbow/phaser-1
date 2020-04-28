@@ -1,8 +1,8 @@
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 import { SetParent } from './SetParent';
+import { UpdateWorldTransform } from '../gameobject';
 
-export function AddChildren (parent: IParent, ...children: IGameObject[]): IGameObject[]
+export function AddChildren (parent: IGameObject, ...children: IGameObject[]): IGameObject[]
 {
     children.forEach(child =>
     {
@@ -10,7 +10,7 @@ export function AddChildren (parent: IParent, ...children: IGameObject[]): IGame
 
         parent.children.push(child);
 
-        child.updateTransform();
+        UpdateWorldTransform(child);
     });
 
     return children;

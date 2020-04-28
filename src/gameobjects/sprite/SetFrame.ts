@@ -15,13 +15,15 @@ export function SetFrame (texture: Texture, key?: string | number | Frame, ...sp
 
         entity.frame = frame;
 
-        entity.setSize(frame.sourceSizeWidth, frame.sourceSizeHeight);
-        entity.setBounds(entity.x, entity.y, entity.width, entity.height);
+        entity.transform.setSize(frame.sourceSizeWidth, frame.sourceSizeHeight);
 
-        if (frame.pivot)
+        entity.bounds.setArea(entity.x, entity.y, entity.width, entity.height);
+
+        const pivot = frame.pivot;
+
+        if (pivot)
         {
-            entity.originX = frame.pivot.x;
-            entity.originY = frame.pivot.y;
+            entity.transform.setOrigin(pivot.x, pivot.y);
         }
 
         const data = entity.vertexData;
@@ -40,7 +42,7 @@ export function SetFrame (texture: Texture, key?: string | number | Frame, ...sp
         data[20] = frame.u1;
         data[21] = frame.v0;
 
-        entity.setDirtyRender();
+        entity.dirty.setRender();
 
         entity.hasTexture = true;
     });

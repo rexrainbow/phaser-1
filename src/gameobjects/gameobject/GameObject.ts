@@ -1,10 +1,15 @@
-import { GameInstance } from '../../GameInstance';
-import { IInteractiveArea } from '../../input/IInteractiveArea';
-import { IParent } from '../container/IParent';
-import { IWorld } from '../../world/IWorld';
-import { Rectangle } from '../../geom/rectangle/Rectangle';
+import { DestroyChildren, ReparentChildren } from '../container';
 
-//  The Base Game Object which all World entites extend
+import { BoundsComponent } from './BoundsComponent';
+import { DirtyComponent } from './DirtyComponent';
+import { IBoundsComponent } from './IBoundsComponent';
+import { IDirtyComponent } from './IDirtyComponent';
+import { IGameObject } from './IGameObject';
+import { IInputComponent } from './IInputComponent';
+import { ITransformComponent } from './ITransformComponent';
+import { IWorld } from '../../world/IWorld';
+import { InputComponent } from './InputComponent';
+import { TransformComponent } from './TransformComponent';
 
 export class GameObject
 {
@@ -12,78 +17,185 @@ export class GameObject
     name: string = '';
     type: string = 'GameObject';
 
+    parent: IGameObject;
+    children: IGameObject[];
+
     willRender: boolean = true;
     willUpdate: boolean = true;
 
-    dirtyRender: boolean = true;
-    dirtyUpdate: boolean = true;
-    dirtyFrame: number = 0;
-
-    parent: IParent;
-    isParent: boolean = false;
+    transform: ITransformComponent;
+    dirty: IDirtyComponent;
+    bounds: IBoundsComponent;
+    input: IInputComponent;
 
     visible: boolean = true;
 
-    inputEnabled: boolean = false;
-    inputEnabledChildren: boolean = true;
-    inputHitArea: IInteractiveArea;
+    constructor (x: number = 0, y: number = 0)
+    {
+        this.children = [];
 
-    fixBounds: boolean = false;
-    bounds: Rectangle = new Rectangle();
+        this.dirty = new DirtyComponent(this);
+        this.transform = new TransformComponent(this, x, y);
+        this.bounds = new BoundsComponent(this);
+        this.input = new InputComponent(this);
+    }
 
     isRenderable (): boolean
     {
         return (this.visible && this.willRender);
     }
 
-    setDirtyRender (setFrame: boolean = true): this
+    update (delta: number, time: number): void
     {
-        this.dirtyRender = true;
-
-        if (setFrame)
+        if (this.willUpdate)
         {
-            const game = GameInstance.get();
+            const children = this.children;
 
-            this.dirtyFrame = game.frame;
+            for (let i = 0; i < children.length; i++)
+            {
+                const child = children[i];
+
+                if (child && child.willUpdate)
+                {
+                    child.update(delta, time);
+                }
+            }
+        }
+    }
+
+    get numChildren (): number
+    {
+        return this.children.length;
+    }
+
+    set width (value: number)
+    {
+        this.transform.setWidth(value);
+    }
+
+    get width (): number
+    {
+        return this.transform.width;
+    }
+
+    set height (value: number)
+    {
+        this.transform.setHeight(value);
+    }
+
+    get height (): number
+    {
+        return this.transform.height;
+    }
+
+    set x (value: number)
+    {
+        this.transform.setX(value);
+    }
+
+    get x (): number
+    {
+        return this.transform.x;
+    }
+
+    set y (value: number)
+    {
+        this.transform.setY(value);
+    }
+
+    get y (): number
+    {
+        return this.transform.y;
+    }
+
+    set originX (value: number)
+    {
+        this.transform.setOriginX(value);
+    }
+
+    get originX (): number
+    {
+        return this.transform.originX;
+    }
+
+    set originY (value: number)
+    {
+        this.transform.setOriginY(value);
+    }
+
+    get originY (): number
+    {
+        return this.transform.originY;
+    }
+
+    set skewX (value: number)
+    {
+        this.transform.setSkewX(value);
+    }
+
+    get skewX (): number
+    {
+        return this.transform.skewX;
+    }
+
+    set skewY (value: number)
+    {
+        this.transform.setSkewY(value);
+    }
+
+    get skewY (): number
+    {
+        return this.transform.skewY;
+    }
+
+    set scaleX (value: number)
+    {
+        this.transform.setScaleX(value);
+    }
+
+    get scaleX (): number
+    {
+        return this.transform.scaleX;
+    }
+
+    set scaleY (value: number)
+    {
+        this.transform.setScaleY(value);
+    }
+
+    get scaleY (): number
+    {
+        return this.transform.scaleY;
+    }
+
+    set rotation (value: number)
+    {
+        this.transform.setRotation(value);
+    }
+
+    get rotation (): number
+    {
+        return this.transform.rotation;
+    }
+
+    destroy (reparentChildren?: IGameObject): void
+    {
+        if (reparentChildren)
+        {
+            ReparentChildren(this, reparentChildren);
+        }
+        else
+        {
+            DestroyChildren(this);
         }
 
-        return this;
-    }
+        this.transform.destroy();
+        this.dirty.destroy();
+        this.bounds.destroy();
+        this.input.destroy();
 
-    setDirtyUpdate (): this
-    {
-        this.dirtyUpdate = true;
-
-        return this;
-    }
-
-    getBounds (): Rectangle
-    {
-        return this.bounds;
-    }
-
-    setBounds (x: number, y: number, width: number, height: number): this
-    {
-        this.bounds.set(x, y, width, height);
-
-        return this;
-    }
-
-    update (): void
-    {
-    }
-
-    updateTransform (): this
-    {
-        return this;
-    }
-
-    render (): void
-    {
-    }
-
-    destroy (): void
-    {
         this.world = null;
+        this.parent = null;
+        this.children = null;
     }
 }

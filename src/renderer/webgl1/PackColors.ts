@@ -13,5 +13,7 @@ export function PackColors (sprite: ISprite): ISprite
     color[2] = PackColor(tint[2], alpha[2]);
     color[3] = PackColor(tint[3], alpha[3]);
 
-    return sprite.setDirtyRender();
+    sprite.dirty.setRender();
+
+    return sprite;
 }

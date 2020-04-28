@@ -1,7 +1,6 @@
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
-export function RotateChildrenLeft (parent: IParent, total: number = 1): IGameObject
+export function RotateChildrenLeft (parent: IGameObject, total: number = 1): IGameObject
 {
     const parentChildren = parent.children;
 
@@ -13,7 +12,7 @@ export function RotateChildrenLeft (parent: IParent, total: number = 1): IGameOb
 
         parentChildren.push(child);
 
-        child.setDirtyRender(true);
+        child.dirty.setRender();
     }
 
     return child;

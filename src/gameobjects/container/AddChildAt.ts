@@ -1,8 +1,8 @@
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 import { SetParent } from './SetParent';
+import { UpdateWorldTransform } from '../gameobject';
 
-export function AddChildAt (parent: IParent, index: number, child: IGameObject): IGameObject
+export function AddChildAt (parent: IGameObject, index: number, child: IGameObject): IGameObject
 {
     const children = parent.children;
 
@@ -12,7 +12,7 @@ export function AddChildAt (parent: IParent, index: number, child: IGameObject):
 
         children.splice(index, 0, child);
 
-        child.updateTransform();
+        UpdateWorldTransform(child);
     }
 
     return child;

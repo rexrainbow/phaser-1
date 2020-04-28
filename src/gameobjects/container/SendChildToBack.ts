@@ -1,8 +1,7 @@
 import { GetChildIndex } from './GetChildIndex';
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
-export function SendChildToBack (parent: IParent, child: IGameObject): IGameObject
+export function SendChildToBack (parent: IGameObject, child: IGameObject): IGameObject
 {
     const parentChildren = parent.children;
 
@@ -13,7 +12,7 @@ export function SendChildToBack (parent: IParent, child: IGameObject): IGameObje
         parentChildren.splice(currentIndex, 1);
         parentChildren.unshift(child);
 
-        child.setDirtyRender(true);
+        child.dirty.setRender();
     }
 
     return child;

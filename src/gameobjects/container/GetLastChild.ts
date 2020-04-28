@@ -1,7 +1,6 @@
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
-export function GetLastChild (parent: IParent, property: string | symbol, value?: never): IGameObject | undefined
+export function GetLastChild (parent: IGameObject, property: string | symbol, value?: never): IGameObject | undefined
 {
     const children = parent.children;
 

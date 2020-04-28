@@ -1,7 +1,6 @@
 import { Container } from '../container/Container';
 import { Frame } from '../../textures/Frame';
-import { IContainer } from '../container/IContainer';
-import { Rectangle } from '../../geom/rectangle/Rectangle';
+import { IGameObject } from '../gameobject/IGameObject';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
 import { Texture } from '../../textures/Texture';
@@ -18,8 +17,9 @@ export class Sprite extends Container
     vertexAlpha: Float32Array;
     vertexTint: Uint32Array;
 
+    prevTextureID: number = -1;
+
     private _tint: number = 0xffffff;
-    private _prevTextureID: number = -1;
 
     constructor (x: number, y: number, texture: string | Texture, frame?: string | number)
     {
@@ -33,9 +33,11 @@ export class Sprite extends Container
 
         this.type = 'Sprite';
         this.setTexture(texture, frame);
-        this.setBounds(x, y, this.width, this.height);
+
+        this.bounds.setArea(x, y, this.width, this.height);
     }
 
+    /*
     getBounds (includeChildren: boolean = false): Rectangle
     {
         if (this.dirtyRender)
@@ -47,6 +49,7 @@ export class Sprite extends Container
 
         return this.bounds;
     }
+    */
 
     setTexture (key: string | Texture, frame?: string | number): this
     {
@@ -71,7 +74,7 @@ export class Sprite extends Container
     {
         const data = this.vertexData;
 
-        this.dirtyRender = false;
+        this.dirty.render = false;
 
         const frame = this.frame;
         const originX = this.originX;
@@ -82,7 +85,7 @@ export class Sprite extends Container
         let h0: number;
         let h1: number;
 
-        const { a, b, c, d, tx, ty } = this.worldTransform;
+        const { a, b, c, d, tx, ty } = this.transform.world;
 
         if (frame.trimmed)
         {
@@ -129,59 +132,12 @@ export class Sprite extends Container
         data[18] = x3;
         data[19] = y3;
 
-        const bounds = this.bounds;
+        const boundsX = Math.min(x0, x1, x2, x3);
+        const boundsY = Math.min(y0, y1, y2, y3);
+        const boundsRight = Math.max(x0, x1, x2, x3);
+        const boundsBottom = Math.max(y0, y1, y2, y3);
 
-        bounds.x = Math.min(x0, x1, x2, x3);
-        bounds.y = Math.min(y0, y1, y2, y3);
-        bounds.right = Math.max(x0, x1, x2, x3);
-        bounds.bottom = Math.max(y0, y1, y2, y3);
-    }
-
-    uploadBuffers (F32: Float32Array, U32: Uint32Array, offset: number, setTexture: boolean = true): void
-    {
-        //  Skip all of this if not dirty
-        if (this.dirtyRender)
-        {
-            this.updateVertices();
-        }
-
-        const data = this.vertexData;
-        const textureIndex = this.texture.glIndex;
-
-        //  Do we have a different texture ID?
-        if (setTexture && textureIndex !== this._prevTextureID)
-        {
-            this._prevTextureID = textureIndex;
-
-            data[4] = textureIndex;
-            data[10] = textureIndex;
-            data[16] = textureIndex;
-            data[22] = textureIndex;
-        }
-
-        //  Copy the data to the array buffer
-        F32.set(data, offset);
-
-        const color = this.vertexColor;
-
-        //  Copy the vertex colors to the Uint32 view (as the data copy above overwrites them)
-        U32[offset + 5] = color[0];
-        U32[offset + 11] = color[2];
-        U32[offset + 17] = color[3];
-        U32[offset + 23] = color[1];
-    }
-
-    destroy (reparentChildren?: IContainer): void
-    {
-        super.destroy(reparentChildren);
-
-        this.texture = null;
-        this.frame = null;
-        this.hasTexture = false;
-        this.vertexData = null;
-        this.vertexColor = null;
-        this.vertexAlpha = null;
-        this.vertexTint = null;
+        this.bounds.setArea(boundsX, boundsY, boundsRight, boundsBottom);
     }
 
     get tint (): number
@@ -194,6 +150,19 @@ export class Sprite extends Container
         this._tint = value;
 
         // this.setTint(value);
+    }
+
+    destroy (reparentChildren?: IGameObject): void
+    {
+        super.destroy(reparentChildren);
+
+        this.texture = null;
+        this.frame = null;
+        this.hasTexture = false;
+        this.vertexData = null;
+        this.vertexColor = null;
+        this.vertexAlpha = null;
+        this.vertexTint = null;
     }
 }
 

@@ -1,14 +1,14 @@
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 import { SetParent } from './SetParent';
+import { UpdateWorldTransform } from '../gameobject/UpdateWorldTransform';
 
-export function AddChild (parent: IParent, child: IGameObject): IGameObject
+export function AddChild (parent: IGameObject, child: IGameObject): IGameObject
 {
     SetParent(parent, child);
 
     parent.children.push(child);
 
-    child.updateTransform();
+    UpdateWorldTransform(child);
 
     return child;
 }

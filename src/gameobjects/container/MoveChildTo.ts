@@ -1,8 +1,7 @@
 import { GetChildIndex } from './GetChildIndex';
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
-export function MoveChildTo (parent: IParent, child: IGameObject, index: number): IGameObject
+export function MoveChildTo (parent: IGameObject, child: IGameObject, index: number): IGameObject
 {
     const parentChildren = parent.children;
 
@@ -21,7 +20,7 @@ export function MoveChildTo (parent: IParent, child: IGameObject, index: number)
         //  Add in new location
         parentChildren.splice(index, 0, child);
 
-        child.setDirtyRender(true);
+        child.dirty.setRender();
     }
 
     return child;

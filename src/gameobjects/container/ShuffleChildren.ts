@@ -1,7 +1,6 @@
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
-export function ShuffleChildren (parent: IParent): IGameObject[]
+export function ShuffleChildren (parent: IGameObject): IGameObject[]
 {
     const children = parent.children;
 
@@ -13,7 +12,7 @@ export function ShuffleChildren (parent: IParent): IGameObject[]
         children[i] = children[j];
         children[j] = temp;
 
-        temp.setDirtyRender(true);
+        temp.dirty.setRender();
     }
 
     return children;

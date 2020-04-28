@@ -1,5 +1,6 @@
 import { IShader } from '../../renderer/webgl1/shaders/IShader';
 import { ISprite } from './ISprite';
+import { UploadBuffers } from './UploadBuffers';
 import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
 
 export function RenderWebGL (sprite: ISprite, renderer: WebGLRenderer, shader: IShader, startActiveTexture: number): void
@@ -16,7 +17,7 @@ export function RenderWebGL (sprite: ISprite, renderer: WebGLRenderer, shader: I
         shader.flush();
     }
 
-    sprite.uploadBuffers(shader.vertexViewF32, shader.vertexViewU32, shader.count * shader.quadElementSize);
+    UploadBuffers(sprite, shader.vertexViewF32, shader.vertexViewU32, shader.count * shader.quadElementSize);
 
     shader.count++;
 }

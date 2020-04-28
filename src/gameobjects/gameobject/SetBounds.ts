@@ -4,6 +4,6 @@ export function SetBounds (x: number, y: number, width: number, height: number, 
 {
     child.forEach(entity =>
     {
-        entity.bounds.set(x, y, width, height);
+        entity.bounds.setArea(x, y, width, height);
     });
 }

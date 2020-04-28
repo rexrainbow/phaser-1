@@ -1,6 +1,6 @@
-import { IParent } from './IParent';
+import { IGameObject } from '../gameobject/IGameObject';
 
-export function CountMatchingChildren (parent: IParent, property: string | symbol, value?: never): number
+export function CountMatchingChildren (parent: IGameObject, property: string | symbol, value?: never): number
 {
     const children = parent.children;
 

@@ -1,11 +1,11 @@
-import { GameObject } from '../gameobject/GameObject';
-import { Scene } from '../../scenes/Scene';
-import { Texture } from '../../textures/Texture';
-import { ISprite } from '../sprite/ISprite';
-import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
-import { IShader } from '../../renderer/webgl1/shaders/IShader';
 import { DeleteGLBuffer } from '../../renderer/webgl1/DeleteGLBuffer';
 import { GameInstance } from '../../GameInstance';
+import { GameObject } from '../gameobject/GameObject';
+import { IShader } from '../../renderer/webgl1/shaders/IShader';
+import { ISprite } from '../sprite/ISprite';
+import { Scene } from '../../scenes/Scene';
+import { Texture } from '../../textures/Texture';
+import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
 
 export class SpriteBuffer extends GameObject
 {
@@ -110,7 +110,7 @@ export class SpriteBuffer extends GameObject
         }
 
         let ibo: number[] = [];
-        
+
         //  Seed the index buffer
         for (let i: number = 0; i < (maxSize * indexSize); i += indexSize)
         {
@@ -136,7 +136,7 @@ export class SpriteBuffer extends GameObject
         this.vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.STATIC_DRAW);
-       
+
         this.indexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.index, gl.STATIC_DRAW);
@@ -177,14 +177,14 @@ export class SpriteBuffer extends GameObject
 
     /**
      * Adds a new entry into this SpriteBuffer.
-     * 
+     *
      * A SpriteBuffer can only use one single Texture for all of its entries.
      * However, they can use any frame from that texture.
-     * 
+     *
      * The most recent sprite added to this Sprite Buffer will determine the
      * Texture for all of the rest.
-     * 
-     * @param sprites 
+     *
+     * @param sprites
      */
     add (...sprites: ISprite[]): this
     {
@@ -197,15 +197,15 @@ export class SpriteBuffer extends GameObject
             if (this.size < this.maxSize)
             {
                 sprite.uploadBuffers(F32, U32, this.size * quadSize, false);
-        
+
                 this.texture = sprite.texture;
-        
+
                 this.size++;
             }
-    
+
         });
 
-        this.setDirtyRender(true);
+        this.dirty.setRender();
 
         return this;
     }
@@ -223,7 +223,7 @@ export class SpriteBuffer extends GameObject
             if (index < this.maxSize)
             {
                 sprite.uploadBuffers(F32, U32, index * quadSize, false);
-        
+
                 this.texture = sprite.texture;
 
                 index++;
@@ -233,10 +233,10 @@ export class SpriteBuffer extends GameObject
                     this.size++;
                 }
             }
-    
+
         });
 
-        this.setDirtyRender(true);
+        this.dirty.setRender();
 
         return this;
     }

@@ -1,8 +1,7 @@
 import { GetChildAt } from './GetChildAt';
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
-export function RemoveChildrenAt (parent: IParent, ...index: number[]): IGameObject[]
+export function RemoveChildrenAt (parent: IGameObject, ...index: number[]): IGameObject[]
 {
     const children = parent.children;
     const removed: IGameObject[] = [];

@@ -1,7 +1,6 @@
 import { IGameObject } from '../gameobject/IGameObject';
-import { IParent } from './IParent';
 
-export function GetChildAt (parent: IParent, index: number): IGameObject
+export function GetChildAt (parent: IGameObject, index: number): IGameObject
 {
     const children = parent.children;
 
