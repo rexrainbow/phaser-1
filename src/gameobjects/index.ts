@@ -21,6 +21,7 @@ import { GetRandomChild } from './GetRandomChild';
 import { MoveChildDown } from './MoveChildDown';
 import { MoveChildTo } from './MoveChildTo';
 import { MoveChildUp } from './MoveChildUp';
+import { MoveToPosition } from './MoveToPosition';
 import { RemoveChild } from './RemoveChild';
 import { RemoveChildAt } from './RemoveChildAt';
 import { RemoveChildren } from './RemoveChildren';
@@ -71,6 +72,7 @@ export {
     MoveChildDown,
     MoveChildTo,
     MoveChildUp,
+    MoveToPosition,
     RemoveChild,
     RemoveChildAt,
     RemoveChildren,
