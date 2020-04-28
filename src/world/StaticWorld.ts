@@ -3,7 +3,7 @@ import { On, Once } from '../events';
 import { Clock } from '../time/Clock';
 import { CreateWorldRenderData } from './CreateWorldRenderData';
 import { GameObject } from '../gameobjects/gameobject';
-import { IGameObject } from '../gameobjects/gameobject/IGameObject';
+import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { ISprite } from '../gameobjects/sprite/ISprite';
@@ -11,7 +11,7 @@ import { IStaticCamera } from '../camera/IStaticCamera';
 import { IWorld } from './IWorld';
 import { IWorldRenderData } from './IWorldRenderData';
 import { MergeRenderData } from './MergeRenderData';
-import { RemoveChildren } from '../gameobjects/container';
+import { RemoveChildren } from '../gameobjects/RemoveChildren';
 import { ResetWorldRenderData } from './ResetWorldRenderData';
 import { StaticCamera } from '../camera/StaticCamera';
 

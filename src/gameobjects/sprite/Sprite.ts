@@ -1,6 +1,6 @@
 import { Container } from '../container/Container';
 import { Frame } from '../../textures/Frame';
-import { IGameObject } from '../gameobject/IGameObject';
+import { IGameObject } from '../IGameObject';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
 import { Texture } from '../../textures/Texture';

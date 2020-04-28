@@ -5,6 +5,7 @@ import { SetQuadAlpha } from './SetQuadAlpha';
 import { SetQuadTint } from './SetQuadTint';
 import { SetTexture } from './SetTexture';
 import { Sprite } from './Sprite';
+import { UploadBuffers } from './UploadBuffers';
 
 export {
     RenderCanvas,
@@ -13,5 +14,6 @@ export {
     SetQuadAlpha,
     SetQuadTint,
     SetTexture,
-    Sprite
+    Sprite,
+    UploadBuffers
 };

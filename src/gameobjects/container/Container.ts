@@ -1,4 +1,4 @@
-import { GameObject } from '../gameobject';
+import { GameObject } from '../GameObject';
 
 export class Container extends GameObject
 {

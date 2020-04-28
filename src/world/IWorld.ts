@@ -1,5 +1,5 @@
 import { Clock } from '../time/Clock';
-import { IGameObject } from '../gameobjects/gameobject/IGameObject';
+import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IStaticCamera } from '../camera/IStaticCamera';
