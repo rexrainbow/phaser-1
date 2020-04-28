@@ -109,6 +109,7 @@ export default {
         copy({
             targets: [
                 { src: 'LICENSE', dest: 'dist', copyOnce: true },
+                { src: 'logo.png', dest: 'dist', copyOnce: true },
                 { src: 'README.dist.md', dest: 'dist', rename: 'README.md', copyOnce: true }
             ]
         }),

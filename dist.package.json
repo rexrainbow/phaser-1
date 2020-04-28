@@ -5,8 +5,8 @@
     "publishConfig": {
         "access": "public"
     },
-    "main": "index.js",
-    "module": "index.js",
+    "main": "Phaser4.js",
+    "module": "Phaser4.esm.js",
     "types": "index.d.ts",
     "repository": {
         "type": "git",
