@@ -2,6 +2,10 @@ import { AddChild } from './AddChild';
 import { AddChildAt } from './AddChildAt';
 import { AddChildren } from './AddChildren';
 import { AddChildrenAt } from './AddChildrenAt';
+import { AddPosition } from './AddPosition';
+import { AddRotation } from './AddRotation';
+import { AddScale } from './AddScale';
+import { AddSkew } from './AddSkew';
 import { AnimatedSprite } from './animatedsprite/AnimatedSprite';
 import { BringChildToTop } from './BringChildToTop';
 import { Container } from './container/Container';
@@ -28,7 +32,13 @@ import { RotateChildrenRight } from './RotateChildrenRight';
 import { SendChildToBack } from './SendChildToBack';
 import { SetBounds } from './SetBounds';
 import { SetName } from './SetName';
+import { SetOrigin } from './SetOrigin';
 import { SetParent } from './SetParent';
+import { SetPosition } from './SetPosition';
+import { SetRotation } from './SetRotation';
+import { SetScale } from './SetScale';
+import { SetSize } from './SetSize';
+import { SetSkew } from './SetSkew';
 import { SetType } from './SetType';
 import { SetVisible } from './SetVisible';
 import { SetWorld } from './SetWorld';
@@ -42,6 +52,10 @@ export {
     AddChildAt,
     AddChildren,
     AddChildrenAt,
+    AddPosition,
+    AddRotation,
+    AddScale,
+    AddSkew,
     AnimatedSprite,
     BringChildToTop,
     Container,
@@ -68,7 +82,13 @@ export {
     SendChildToBack,
     SetBounds,
     SetName,
+    SetOrigin,
     SetParent,
+    SetPosition,
+    SetRotation,
+    SetScale,
+    SetSize,
+    SetSkew,
     SetType,
     SetVisible,
     SetWorld,

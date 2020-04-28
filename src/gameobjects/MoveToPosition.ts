@@ -1,9 +1,9 @@
-import { AddTimer } from '../../time';
-import { AngleBetween } from '../../math/angle';
-import { DistanceBetween } from '../../math/distance';
-import { ITransformGameObject } from './ITransformGameObject';
+import { AddTimer } from '../time/AddTimer';
+import { AngleBetween } from '../math/angle';
+import { DistanceBetween } from '../math/distance';
+import { IGameObject } from './IGameObject';
 
-export function MoveToPosition (x: number, y: number, duration: number, ...child: ITransformGameObject[]): void
+export function MoveToPosition (x: number, y: number, duration: number, ...child: IGameObject[]): void
 {
     child.forEach(entity =>
     {
