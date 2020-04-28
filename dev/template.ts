@@ -1,10 +1,9 @@
+import { AddChild, AddChildren, Sprite } from '../src/gameobjects/';
 import { BackgroundColor, CanvasRenderer, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 
-import { AddChild } from '../src/gameobjects/container';
 import { Game } from '../src/Game';
 import { Scene } from '../src/scenes/Scene';
 import { SolidColorTexture } from '../src/textures/types';
-import { Sprite } from '../src/gameobjects/sprite';
 import { StaticWorld } from '../src/world/StaticWorld';
 
 class Demo extends Scene
@@ -15,9 +14,11 @@ class Demo extends Scene
 
         const world = new StaticWorld(this);
 
-        const block = new Sprite(100, 100, SolidColorTexture('#ff0000', 128, 128));
+        const block1 = new Sprite(100, 100, SolidColorTexture('#f00', 128, 128));
+        const block2 = new Sprite(300, 100, SolidColorTexture('#0f0', 128, 128));
+        const block3 = new Sprite(500, 100, SolidColorTexture('#00f', 128, 128));
 
-        AddChild(world, block);
+        AddChildren(world, block1, block2, block3);
     }
 }
 

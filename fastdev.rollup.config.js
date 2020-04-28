@@ -35,16 +35,9 @@ export default {
         typescript({
             include: [ './src/**/*', './dev/*.ts' ],
             exclude: [
-                './dev/new world.ts',
                 './src/_wip/**/*',
-                './src/camera/Camera.ts',
-                './src/world/World.ts',
                 './src/input/**/*',
-                './src/stats/**/*',
-                './src/gameobjects/animatedsprite/**/*',
-                './src/gameobjects/text/**/*',
-                './src/gameobjects/transformgameobject/**/*',
-                './src/gameobjects/spritebuffer/**/*'
+                './src/stats/**/*'
             ],
             tsconfig: './fastdev.tsconfig.json'
         }),
