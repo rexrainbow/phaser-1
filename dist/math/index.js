@@ -1,6 +1,6 @@
-import './matrix2d/Matrix2D.js';
 import './matrix2d-funcs/ExactEquals.js';
 import './pow2/IsSizePowerOfTwo.js';
+import './matrix2d/Matrix2D.js';
 import './matrix2d/Copy.js';
 import './angle/AngleBetween.js';
 import './angle/AngleBetweenPoints.js';

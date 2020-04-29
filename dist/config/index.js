@@ -1,5 +1,6 @@
-import '../GameInstance.js';
+import '../dom/GetElement.js';
 export { BackgroundColor, GetBackgroundColor } from './BackgroundColor.js';
+import '../GameInstance.js';
 export { Banner, GetBanner } from './Banner.js';
 export { CanvasContext, GetCanvasContext } from './CanvasContext.js';
 export { GetHeight, GetResolution, GetWidth, Size } from './Size.js';
@@ -7,7 +8,6 @@ import '../gameobjects/sprite/RenderCanvas.js';
 import '../renderer/canvas/CanvasRenderer.js';
 export { GetRenderer, SetRenderer } from './SetRenderer.js';
 export { CanvasRenderer } from './CanvasRenderer.js';
-import '../dom/GetElement.js';
 export { GetParent, Parent } from './Parent.js';
 export { GetScenes, Scenes } from './Scenes.js';
 export { GetWebGLContext, WebGLContext } from './WebGLContext.js';

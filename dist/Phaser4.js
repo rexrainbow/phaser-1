@@ -4326,7 +4326,5 @@ void main (void)
     exports.Time = index$m;
     exports.WebGLRenderer = WebGLRenderer;
 
-    Object.defineProperty(exports, '__esModule', { value: true });
-
 })));
 //# sourceMappingURL=Phaser4.js.map

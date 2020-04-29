@@ -1,9 +1,9 @@
-import { GameInstance } from '../GameInstance.js';
-import { GetScenes } from '../config/Scenes.js';
 import { Emit } from '../events/Emit.js';
 import '../events/EventInstance.js';
 import '../events/On.js';
 import { Once } from '../events/Once.js';
+import { GameInstance } from '../GameInstance.js';
+import { GetScenes } from '../config/Scenes.js';
 import { CreateSceneRenderData } from './CreateSceneRenderData.js';
 import { ResetSceneRenderData } from './ResetSceneRenderData.js';
 import { SceneManagerInstance } from './SceneManagerInstance.js';

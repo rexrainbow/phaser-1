@@ -7,13 +7,13 @@ import './RemoveChild.js';
 import './SetParent.js';
 import '../math/matrix2d/Copy.js';
 import './components/transform/UpdateWorldTransform.js';
+import './RemoveChildrenBetween.js';
+import { DestroyChildren } from './DestroyChildren.js';
 import { BoundsComponent } from './components/bounds/BoundsComponent.js';
 import { DirtyComponent } from './components/dirty/DirtyComponent.js';
 import { InputComponent } from './components/input/InputComponent.js';
 import './components/transform/UpdateLocalTransform.js';
 import { TransformComponent } from './components/transform/TransformComponent.js';
-import './RemoveChildrenBetween.js';
-import { DestroyChildren } from './DestroyChildren.js';
 import { ReparentChildren } from './ReparentChildren.js';
 
 class GameObject {

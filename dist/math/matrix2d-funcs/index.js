@@ -1,5 +1,5 @@
-import '../matrix2d/Matrix2D.js';
 export { ExactEquals } from './ExactEquals.js';
+import '../matrix2d/Matrix2D.js';
 export { Add } from './Add.js';
 export { Append } from './Append.js';
 export { Clone } from './Clone.js';
