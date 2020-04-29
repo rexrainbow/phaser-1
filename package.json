@@ -5,6 +5,7 @@
     "scripts": {
         "prepublishOnly": "echo \"Error: Don't run 'npm publish' in root. Use 'npm run dist' instead.\" && exit 1",
         "debug": "rollup -c rollup.debug.config.js",
+        "roll": "rollup -c rollup.config.js",
         "build": "npm run ts && rollup -c rollup.config.js",
         "watch": "rollup -c rollup.debug.config.js --watch",
         "testdist": "npm version patch --no-git-tag-version && npm run build",

@@ -46,7 +46,11 @@ const DistPackagePlugin = {
 
 const filterConfig = {
     extensions: /\.ts/,
-    exclude: /src\\_wip/
+    exclude: [
+        /src\\_wip/,
+        /src\\input/,
+        /src\\stats/
+    ]
 };
 
 const ESMInputBundle = {};
@@ -71,7 +75,7 @@ dirTree('src', filterConfig, (item, path) =>
         //  Now we need to actually check inside the file *sigh*
         const fileContents = fs.readFileSync(item.path, 'utf8');
 
-        if (fileContents.includes('export interface'))
+        if (fileContents.includes('export interface') || fileContents.includes('export type'))
         {
             // console.log('Ignoring interface ' + item.name);
             return;
@@ -93,12 +97,15 @@ dirTree('src', filterConfig, (item, path) =>
 
     const entryPoint = (dir === '') ? name : dir + '/' + name;
 
-    ESMInputBundle[entryPoint] = itemPath;
+    ESMInputBundle[entryPoint] = item.path;
 
     // console.log(entryPoint);
 });
 
+console.log(ESMInputBundle);
+
 export default [
+    /*
     {
         //  UMD Bundle
         input: './src/index.ts',
@@ -181,11 +188,17 @@ export default [
 
         ]
     },
+    */
     {
         //  ESM Multiple Entry Point Package
         input: ESMInputBundle,
 
         plugins: [
+
+            del({
+                targets: [ './dist' ],
+                runOnce: true
+            }),
 
             resolve({
                 extensions
@@ -205,3 +218,20 @@ export default [
         ]
     }
 ];
+
+/*
+Only these files cause this, why???
+
+Probably: https://github.com/rollup/rollup/issues/3150
+
+(!) The emitted file "geom\rectangle\GetEdges.d.ts" overwrites a previously emitted file of the same name.
+(!) The emitted file "geom\rectangle\GetEdges.d.ts.map" overwrites a previously emitted file of the same name.
+(!) The emitted file "geom\circle\Circle.d.ts" overwrites a previously emitted file of the same name.
+(!) The emitted file "geom\circle\Circle.d.ts.map" overwrites a previously emitted file of the same name.
+(!) The emitted file "geom\rectangle\Rectangle.d.ts" overwrites a previously emitted file of the same name.
+(!) The emitted file "geom\rectangle\Rectangle.d.ts.map" overwrites a previously emitted file of the same name.
+(!) The emitted file "geom\rectangle\Contains.d.ts" overwrites a previously emitted file of the same name.
+(!) The emitted file "geom\rectangle\Contains.d.ts.map" overwrites a previously emitted file of the same name.
+(!) The emitted file "geom\circle\Contains.d.ts" overwrites a previously emitted file of the same name.
+(!) The emitted file "geom\circle\Contains.d.ts.map" overwrites a previously emitted file of the same name.
+*/
