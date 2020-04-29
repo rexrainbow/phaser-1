@@ -207,11 +207,6 @@ export default [
 
         plugins: [
 
-            del({
-                targets: [ './dist' ],
-                runOnce: true
-            }),
-
             resolve({
                 extensions
             }),
