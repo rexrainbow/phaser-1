@@ -1,12 +1,14 @@
 {
     "name": "@phaserjs/phaser",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "description": "Phaser 4",
     "publishConfig": {
         "access": "public"
     },
-    "main": "Phaser4.js",
+    "main": "Phaser4.esm.js",
     "module": "Phaser4.esm.js",
+    "jsnext:main": "Phaser4.esm.js",
+    "browser": "Phaser4.js",
     "types": "index.d.ts",
     "repository": {
         "type": "git",
