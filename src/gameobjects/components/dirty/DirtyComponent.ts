@@ -7,6 +7,7 @@ export class DirtyComponent implements IDirtyComponent
     parent: IGameObject;
     render: boolean = true;
     update: boolean = true;
+    colors: boolean = true;
     frame: number = 0;
 
     constructor (parent: IGameObject)
@@ -23,6 +24,12 @@ export class DirtyComponent implements IDirtyComponent
     setUpdate (): void
     {
         this.update = true;
+    }
+
+    setColors (): void
+    {
+        this.colors = true;
+        this.frame = GameInstance.getFrame();
     }
 
     destroy (): void
