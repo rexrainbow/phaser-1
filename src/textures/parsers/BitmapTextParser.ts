@@ -104,7 +104,7 @@ export function BitmapTextParser (texture: Texture, xml: XMLDocument, frame?: Fr
             kerning: {}
         };
 
-        texture.add(charCode, x, y, width, height);
+        texture.addFrame(charCode, x, y, width, height);
     }
 
     /*

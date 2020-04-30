@@ -35,7 +35,7 @@ export function AtlasParser (texture: Texture, data: any): void
             const src = frames[i];
 
             //  The frame values are the exact coordinates to cut the frame out of the atlas from
-            newFrame = texture.add(src.filename, src.frame.x, src.frame.y, src.frame.w, src.frame.h);
+            newFrame = texture.addFrame(src.filename, src.frame.x, src.frame.y, src.frame.w, src.frame.h);
 
             //  These are the original (non-trimmed) sprite values
             if (src.trimmed)

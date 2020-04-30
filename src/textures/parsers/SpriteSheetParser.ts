@@ -74,7 +74,7 @@ export function SpriteSheetParser (texture: Texture, x: number, y: number, width
             ay = h - height;
         }
 
-        texture.add(i, x + fx, y + fy, frameWidth - ax, frameHeight - ay);
+        texture.addFrame(i, x + fx, y + fy, frameWidth - ax, frameHeight - ay);
 
         fx += frameWidth + spacing;
 
