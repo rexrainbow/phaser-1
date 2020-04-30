@@ -1,3 +1,4 @@
+import { BindingQueue } from '../renderer/BindingQueue';
 import { Frame } from './Frame';
 import { IGLTextureBinding } from './IGLTextureBinding';
 import { ITexture } from './ITexture';
@@ -38,6 +39,8 @@ export class Texture implements ITexture
         this.data = {};
 
         this.addFrame('__BASE', 0, 0, width, height);
+
+        BindingQueue.add(this);
     }
 
     addFrame (key: string | number, x: number, y: number, width: number, height: number): Frame
