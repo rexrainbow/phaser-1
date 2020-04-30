@@ -1,8 +1,8 @@
 import { Frame } from '../../textures/Frame';
-import { IContainer } from '../container/IContainer';
+import { IGameObject } from '../IGameObject';
 import { Texture } from '../../textures/Texture';
 
-export interface ISprite extends IContainer
+export interface ISprite extends IGameObject
 {
     texture: Texture;
     frame: Frame;
@@ -11,9 +11,8 @@ export interface ISprite extends IContainer
     vertexColor: Uint32Array;
     vertexAlpha: Float32Array;
     vertexTint: Uint32Array;
+    alpha: number;
     tint: number;
-    prevTextureID: number;
-    updateVertices (): void;
     setTexture (key: string | Texture, frame?: string | number): this;
     setFrame (key?: string | number | Frame): this;
 }
