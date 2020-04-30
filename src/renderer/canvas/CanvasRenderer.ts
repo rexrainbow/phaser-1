@@ -1,5 +1,6 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
+import { BindingQueue } from '../BindingQueue';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetCanvasContext } from '../../config/CanvasContext';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
@@ -87,6 +88,8 @@ export class CanvasRenderer
 
     render (renderData: ISceneRenderData): void
     {
+        BindingQueue.clear();
+
         const ctx = this.ctx;
 
         //  Cache 1 - Nothing dirty? Display the previous frame

@@ -1,7 +1,9 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
+import { BindingQueue } from '../BindingQueue';
 import { CheckShaderMaxIfStatements } from './shaders/CheckShaderMaxIfStatements';
 import { GL } from './GL';
+import { GLTextureBinding } from '../../textures';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetWebGLContext } from '../../config/WebGLContext';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
@@ -201,6 +203,20 @@ export class WebGLRenderer
         }
 
         const gl = this.gl;
+
+        const queue = BindingQueue.get();
+
+        for (let i = 0; i < queue.length; i++)
+        {
+            const texture = queue[i];
+
+            if (!texture.binding)
+            {
+                texture.binding = new GLTextureBinding(texture);
+            }
+        }
+
+        BindingQueue.clear();
 
         //  This is only here because if we don't do _something_ with the context, GL Spector can't see it.
         //  Technically, we could move it below the dirty bail-out below.
