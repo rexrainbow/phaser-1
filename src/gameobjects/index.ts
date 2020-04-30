@@ -17,6 +17,7 @@ import { GetChildIndex } from './GetChildIndex';
 import { GetChildren } from './GetChildren';
 import { GetFirstChild } from './GetFirstChild';
 import { GetLastChild } from './GetLastChild';
+import { GetParents } from './GetParents';
 import { GetRandomChild } from './GetRandomChild';
 import { MoveChildDown } from './MoveChildDown';
 import { MoveChildTo } from './MoveChildTo';
@@ -68,6 +69,7 @@ export {
     GetChildren,
     GetFirstChild,
     GetLastChild,
+    GetParents,
     GetRandomChild,
     MoveChildDown,
     MoveChildTo,
