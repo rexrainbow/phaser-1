@@ -15,7 +15,9 @@ import { GameObject } from './GameObject';
 import { GetChildAt } from './GetChildAt';
 import { GetChildIndex } from './GetChildIndex';
 import { GetChildren } from './GetChildren';
+import { GetClosestChild } from './GetClosestChild';
 import { GetFirstChild } from './GetFirstChild';
+import { GetFurthestChild } from './GetFurthestChild';
 import { GetLastChild } from './GetLastChild';
 import { GetParents } from './GetParents';
 import { GetRandomChild } from './GetRandomChild';
@@ -67,7 +69,9 @@ export {
     GetChildAt,
     GetChildIndex,
     GetChildren,
+    GetClosestChild,
     GetFirstChild,
+    GetFurthestChild,
     GetLastChild,
     GetParents,
     GetRandomChild,
