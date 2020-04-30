@@ -6,9 +6,11 @@ export function ReparentChildren (parent: IGameObject, newParent: IGameObject, b
 {
     const moved = RemoveChildrenBetween(parent, beginIndex, endIndex);
 
+    SetParent(newParent, ...moved);
+
     moved.forEach(child =>
     {
-        SetParent(newParent, child);
+        child.transform.updateWorld();
     });
 
     return moved;

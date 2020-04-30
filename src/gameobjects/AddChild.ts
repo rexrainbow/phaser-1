@@ -1,6 +1,5 @@
 import { IGameObject } from './IGameObject';
 import { SetParent } from './SetParent';
-import { UpdateWorldTransform } from './components/transform/UpdateWorldTransform';
 
 export function AddChild <T extends IGameObject> (parent: IGameObject, child: T): T
 {
@@ -8,7 +7,7 @@ export function AddChild <T extends IGameObject> (parent: IGameObject, child: T)
 
     parent.children.push(child);
 
-    UpdateWorldTransform(child);
+    child.transform.updateWorld();
 
     return child;
 }

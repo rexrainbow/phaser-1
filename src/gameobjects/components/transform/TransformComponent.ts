@@ -8,7 +8,9 @@ export class TransformComponent implements ITransformComponent
 {
     parent: IGameObject;
 
+    //  This should be treated as read-only, it is always perfectly in sync with the properties in this class
     local: Matrix2D;
+
     world: Matrix2D;
 
     x: number = 0;
@@ -44,6 +46,42 @@ export class TransformComponent implements ITransformComponent
         this.y = y;
     }
 
+    update (): void
+    {
+        this.updateLocal();
+        this.updateWorld();
+    }
+
+    updateLocal (): void
+    {
+        this.parent.dirty.setRender();
+
+        UpdateLocalTransform(this);
+    }
+
+    updateWorld (): void
+    {
+        this.parent.dirty.setRender();
+
+        UpdateWorldTransform(this.parent);
+
+        this.updateChildren();
+    }
+
+    updateChildren (): void
+    {
+        //  Sweep all children - by this point our local and world transforms are correct
+        const children = this.parent.children;
+
+        for (let i = 0; i < children.length; i++)
+        {
+            const child = children[i];
+
+            child.transform.updateWorld();
+        }
+    }
+
+    //  The area covered by this transform component + origin + texture frame (if used)
     setExtent (left: number, right: number, top: number, bottom: number): void
     {
         this.left = left;
@@ -73,21 +111,21 @@ export class TransformComponent implements ITransformComponent
         this.x = x;
         this.y = y;
 
-        UpdateWorldTransform(this.parent);
+        this.update();
     }
 
     setX (value: number): void
     {
         this.x = value;
 
-        UpdateWorldTransform(this.parent);
+        this.update();
     }
 
     setY (value: number): void
     {
         this.y = value;
 
-        UpdateWorldTransform(this.parent);
+        this.update();
     }
 
     setOrigin (x: number, y: number): void
@@ -117,7 +155,7 @@ export class TransformComponent implements ITransformComponent
         this.skewX = x;
         this.skewY = y;
 
-        UpdateLocalTransform(this.parent);
+        this.update();
     }
 
     setSkewX (value: number): void
@@ -126,7 +164,7 @@ export class TransformComponent implements ITransformComponent
         {
             this.skewX = value;
 
-            UpdateLocalTransform(this.parent);
+            this.update();
         }
     }
 
@@ -136,7 +174,7 @@ export class TransformComponent implements ITransformComponent
         {
             this.skewY = value;
 
-            UpdateLocalTransform(this.parent);
+            this.update();
         }
     }
 
@@ -145,7 +183,7 @@ export class TransformComponent implements ITransformComponent
         this.scaleX = x;
         this.scaleY = y;
 
-        UpdateLocalTransform(this.parent);
+        this.update();
     }
 
     setScaleX (value: number): void
@@ -154,7 +192,7 @@ export class TransformComponent implements ITransformComponent
         {
             this.scaleX = value;
 
-            UpdateLocalTransform(this.parent);
+            this.update();
         }
     }
 
@@ -164,7 +202,7 @@ export class TransformComponent implements ITransformComponent
         {
             this.scaleY = value;
 
-            UpdateLocalTransform(this.parent);
+            this.update();
         }
     }
 
@@ -174,7 +212,7 @@ export class TransformComponent implements ITransformComponent
         {
             this.rotation = value;
 
-            UpdateLocalTransform(this.parent);
+            this.update();
         }
     }
 

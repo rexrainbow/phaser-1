@@ -1,12 +1,10 @@
-import { IGameObject } from '../../IGameObject';
-import { UpdateWorldTransform } from './UpdateWorldTransform';
+import { ITransformComponent } from './ITransformComponent';
 
-export function UpdateLocalTransform (gameObject: IGameObject): void
+export function UpdateLocalTransform (transform: ITransformComponent): void
 {
-    const transformComponent = gameObject.transform;
-    const local = transformComponent.local;
+    const local = transform.local;
 
-    const { rotation, skewX, skewY, scaleX, scaleY, x, y } = transformComponent;
+    const { rotation, skewX, skewY, scaleX, scaleY, x, y } = transform;
 
     local.set(
         Math.cos(rotation + skewY) * scaleX,
@@ -16,6 +14,4 @@ export function UpdateLocalTransform (gameObject: IGameObject): void
         x,
         y
     );
-
-    UpdateWorldTransform(gameObject);
 }

@@ -21,6 +21,10 @@ export interface ITransformComponent
     bottom: number;
     local: Matrix2D;
     world: Matrix2D;
+    update (): void;
+    updateLocal (): void;
+    updateWorld (): void;
+    updateChildren (): void;
     setExtent (left: number, right: number, top: number, bottom: number): void;
     setSize (width: number, height: number): void;
     setWidth (value: number): void;

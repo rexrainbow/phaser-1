@@ -37,6 +37,8 @@ export class GameObject
         this.transform = new TransformComponent(this, x, y);
         this.bounds = new BoundsComponent(this);
         this.input = new InputComponent(this);
+
+        this.transform.update();
     }
 
     isRenderable (): boolean

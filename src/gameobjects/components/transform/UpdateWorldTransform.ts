@@ -3,16 +3,11 @@ import { IGameObject } from '../../IGameObject';
 
 export function UpdateWorldTransform (gameObject: IGameObject): void
 {
-    gameObject.dirty.setRender();
-
     const parent = gameObject.parent;
     const transform = gameObject.transform;
 
     const lt = transform.local;
     const wt = transform.world;
-
-    lt.tx = transform.x;
-    lt.ty = transform.y;
 
     if (!parent)
     {
