@@ -1,4 +1,5 @@
 import { CreateFramebuffer } from '../../renderer/webgl1/CreateFramebuffer';
+import { GLTextureBinding } from '../GLTextureBinding';
 import { ISprite } from '../../gameobjects/sprite/ISprite';
 import { Ortho } from '../../renderer/webgl1/Ortho';
 import { RenderWebGL } from '../../gameobjects/sprite/RenderWebGL';
@@ -19,8 +20,10 @@ export class RenderTexture extends Texture
 
         const [ texture, framebuffer ] = CreateFramebuffer(width, height);
 
-        this.glTexture = texture;
-        this.glFramebuffer = framebuffer;
+        this.binding = new GLTextureBinding(this);
+
+        this.binding.texture = texture;
+        this.binding.framebuffer = framebuffer;
 
         this.projectionMatrix = Ortho(width, height);
         this.cameraMatrix = new Float32Array([ 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, height, 0, 1 ]);
@@ -31,7 +34,7 @@ export class RenderTexture extends Texture
         const renderer = this.renderer;
         const gl = renderer.gl;
 
-        renderer.reset(this.glFramebuffer, this.width, this.height);
+        renderer.reset(this.binding.framebuffer, this.width, this.height);
 
         gl.clearColor(0, 0, 0, 0);
         gl.clear(gl.COLOR_BUFFER_BIT);
@@ -45,7 +48,7 @@ export class RenderTexture extends Texture
     {
         const renderer = this.renderer;
 
-        renderer.reset(this.glFramebuffer, this.width, this.height);
+        renderer.reset(this.binding.framebuffer, this.width, this.height);
 
         renderer.shader.bind(this.projectionMatrix, this.cameraMatrix);
 
