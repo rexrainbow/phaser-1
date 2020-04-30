@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function SetSkew (skewX: number, skewY: number, ...child: IGameObject[]): void
+export function SetSkew <T extends IGameObject> (skewX: number, skewY: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.transform.setSkew(skewX, skewY);
+        child.transform.setSkew(skewX, skewY);
     });
+
+    return children;
 }

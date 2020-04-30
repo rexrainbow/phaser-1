@@ -2,7 +2,7 @@ import { IGameObject } from './IGameObject';
 import { SetParent } from './SetParent';
 import { UpdateWorldTransform } from './components/transform/UpdateWorldTransform';
 
-export function AddChildrenAt (parent: IGameObject, index: number, ...children: IGameObject[]): IGameObject[]
+export function AddChildrenAt <T extends IGameObject> (parent: IGameObject, index: number, ...children: T[]): T[]
 {
     const parentChildren = parent.children;
 

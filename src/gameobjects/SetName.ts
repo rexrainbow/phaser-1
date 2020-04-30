@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function SetName (name: string, ...child: IGameObject[]): void
+export function SetName <T extends IGameObject> (name: string, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.name = name;
+        child.name = name;
     });
+
+    return children;
 }

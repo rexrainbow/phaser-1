@@ -1,7 +1,7 @@
 import { GetChildIndex } from './GetChildIndex';
 import { IGameObject } from './IGameObject';
 
-export function BringChildToTop (parent: IGameObject, child: IGameObject): IGameObject
+export function BringChildToTop <T extends IGameObject> (parent: IGameObject, child: T): T
 {
     const parentChildren = parent.children;
 

@@ -1,10 +1,12 @@
 import { IGameObject } from './IGameObject';
 import { IWorld } from '../world/IWorld';
 
-export function SetWorld (world: IWorld, ...child: IGameObject[]): void
+export function SetWorld <T extends IGameObject> (world: IWorld, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.world = world;
+        child.world = world;
     });
+
+    return children;
 }

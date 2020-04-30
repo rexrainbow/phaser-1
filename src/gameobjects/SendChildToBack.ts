@@ -1,7 +1,7 @@
 import { GetChildIndex } from './GetChildIndex';
 import { IGameObject } from './IGameObject';
 
-export function SendChildToBack (parent: IGameObject, child: IGameObject): IGameObject
+export function SendChildToBack <T extends IGameObject> (parent: IGameObject, child: T): T
 {
     const parentChildren = parent.children;
 

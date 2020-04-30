@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function SetType (type: string, ...child: IGameObject[]): void
+export function SetType <T extends IGameObject> (type: string, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.type = type;
+        child.type = type;
     });
+
+    return children;
 }

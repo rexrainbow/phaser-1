@@ -3,12 +3,12 @@ import { AngleBetween } from '../math/angle';
 import { DistanceBetween } from '../math/distance';
 import { IGameObject } from './IGameObject';
 
-export function MoveToPosition (x: number, y: number, duration: number, ...child: IGameObject[]): void
+export function MoveToPosition <T extends IGameObject> (x: number, y: number, duration: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        const px = entity.x;
-        const py = entity.y;
+        const px = child.x;
+        const py = child.y;
 
         const azimuth = AngleBetween(px, py, x, y);
         const speed = DistanceBetween(px, py, x, y) / (duration / 1000);
@@ -20,11 +20,11 @@ export function MoveToPosition (x: number, y: number, duration: number, ...child
         {
             delta /= 1000;
 
-            entity.x += incX * delta;
-            entity.y += incY * delta;
+            child.x += incX * delta;
+            child.y += incY * delta;
         };
 
-        const world = entity.world;
+        const world = child.world;
 
         if (world)
         {
@@ -34,4 +34,6 @@ export function MoveToPosition (x: number, y: number, duration: number, ...child
             });
         }
     });
+
+    return children;
 }

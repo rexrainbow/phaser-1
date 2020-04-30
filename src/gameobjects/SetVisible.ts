@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function SetVisible (visible: boolean, ...child: IGameObject[]): void
+export function SetVisible <T extends IGameObject> (visible: boolean, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.visible = visible;
+        child.visible = visible;
     });
+
+    return children;
 }

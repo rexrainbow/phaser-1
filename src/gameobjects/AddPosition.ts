@@ -1,10 +1,12 @@
 import { IGameObject } from './IGameObject';
 
-export function AddPosition (x: number, y: number, ...child: IGameObject[]): void
+export function AddPosition <T extends IGameObject> (x: number, y: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.x += x;
-        entity.y += y;
+        child.x += x;
+        child.y += y;
     });
+
+    return children;
 }

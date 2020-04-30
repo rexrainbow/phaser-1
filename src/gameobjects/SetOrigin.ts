@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function SetOrigin (originX: number, originY: number, ...child: IGameObject[]): void
+export function SetOrigin <T extends IGameObject> (originX: number, originY: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.transform.setOrigin(originX, originY);
+        child.transform.setOrigin(originX, originY);
     });
+
+    return children;
 }

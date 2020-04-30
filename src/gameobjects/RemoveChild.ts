@@ -1,7 +1,7 @@
 import { GetChildIndex } from './GetChildIndex';
 import { IGameObject } from './IGameObject';
 
-export function RemoveChild (parent: IGameObject, child: IGameObject): IGameObject
+export function RemoveChild <T extends IGameObject> (parent: IGameObject, child: T): T
 {
     const children = parent.children;
 

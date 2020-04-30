@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function AddRotation (rotation: number, ...child: IGameObject[]): void
+export function AddRotation <T extends IGameObject> (rotation: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.rotation += rotation;
+        child.rotation += rotation;
     });
+
+    return children;
 }

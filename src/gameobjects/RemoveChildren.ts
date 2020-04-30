@@ -1,10 +1,12 @@
 import { IGameObject } from './IGameObject';
 import { RemoveChild } from './RemoveChild';
 
-export function RemoveChildren (parent: IGameObject, ...children: IGameObject[]): void
+export function RemoveChildren <T extends IGameObject> (parent: IGameObject, ...children: T[]): T[]
 {
     children.forEach(child =>
     {
         RemoveChild(parent, child);
     });
+
+    return children;
 }

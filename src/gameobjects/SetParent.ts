@@ -1,16 +1,18 @@
 import { IGameObject } from './IGameObject';
 import { RemoveChild } from './RemoveChild';
 
-export function SetParent (parent: IGameObject, ...child: IGameObject[]): void
+export function SetParent <T extends IGameObject> (parent: IGameObject, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        if (entity.parent)
+        if (child.parent)
         {
-            RemoveChild(entity.parent, entity);
+            RemoveChild(child.parent, child);
         }
 
-        entity.world = parent.world;
-        entity.parent = parent;
+        child.world = parent.world;
+        child.parent = parent;
     });
+
+    return children;
 }

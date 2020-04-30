@@ -1,10 +1,12 @@
 import { IGameObject } from './IGameObject';
 
-export function AddScale (scaleX: number, scaleY: number, ...child: IGameObject[]): void
+export function AddScale <T extends IGameObject> (scaleX: number, scaleY: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.scaleX += scaleX;
-        entity.scaleY += scaleY;
+        child.scaleX += scaleX;
+        child.scaleY += scaleY;
     });
+
+    return children;
 }

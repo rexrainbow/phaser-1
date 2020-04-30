@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function SetPosition (x: number, y: number, ...child: IGameObject[]): void
+export function SetPosition <T extends IGameObject> (x: number, y: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.transform.setPosition(x, y);
+        child.transform.setPosition(x, y);
     });
+
+    return children;
 }

@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function SetSize (width: number, height: number, ...child: IGameObject[]): void
+export function SetSize <T extends IGameObject> (width: number, height: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.transform.setSize(width, height);
+        child.transform.setSize(width, height);
     });
+
+    return children;
 }

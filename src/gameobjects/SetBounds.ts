@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function SetBounds (x: number, y: number, width: number, height: number, ...child: IGameObject[]): void
+export function SetBounds <T extends IGameObject> (x: number, y: number, width: number, height: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.bounds.setArea(x, y, width, height);
+        child.bounds.setArea(x, y, width, height);
     });
+
+    return children;
 }

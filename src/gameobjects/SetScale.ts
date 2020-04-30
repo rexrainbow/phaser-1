@@ -1,9 +1,11 @@
 import { IGameObject } from './IGameObject';
 
-export function SetScale (scaleX: number, scaleY: number, ...child: IGameObject[]): void
+export function SetScale <T extends IGameObject> (scaleX: number, scaleY: number, ...children: T[]): T[]
 {
-    child.forEach(entity =>
+    children.forEach(child =>
     {
-        entity.transform.setScale(scaleX, scaleY);
+        child.transform.setScale(scaleX, scaleY);
     });
+
+    return children;
 }
