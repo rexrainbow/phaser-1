@@ -12,8 +12,8 @@ import { ReparentChildren } from './ReparentChildren';
 export class GameObject
 {
     world: IWorld;
+    type: string;
     name: string = '';
-    type: string = 'GameObject';
 
     parent: IGameObject;
     children: IGameObject[];
@@ -28,8 +28,9 @@ export class GameObject
 
     visible: boolean = true;
 
-    constructor (x: number = 0, y: number = 0)
+    constructor (x: number = 0, y: number = 0, type: string = 'GameObject')
     {
+        this.type = type;
         this.children = [];
 
         this.dirty = new DirtyComponent(this);

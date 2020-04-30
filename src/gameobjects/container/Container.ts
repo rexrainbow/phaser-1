@@ -6,9 +6,7 @@ export class Container extends GameObject
 
     constructor (x: number = 0, y: number = 0)
     {
-        super(x, y);
-
-        this.type = 'Container';
+        super(x, y, 'Container');
     }
 
     get alpha (): number
@@ -22,7 +20,7 @@ export class Container extends GameObject
         {
             this._alpha = value;
 
-            // this.setDirtyRender();
+            this.dirty.setRender();
         }
     }
 }
