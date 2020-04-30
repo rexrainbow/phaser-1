@@ -67,11 +67,6 @@ export class TextureManager
 
             texture.key = key;
 
-            if (!texture.glTexture)
-            {
-                texture.createGL();
-            }
-
             textures.set(key, texture);
         }
 
