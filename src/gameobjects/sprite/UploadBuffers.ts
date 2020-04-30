@@ -21,7 +21,7 @@ export function UploadBuffers (sprite: ISprite, F32: Float32Array, U32: Uint32Ar
     }
 
     const data = sprite.vertexData;
-    const textureIndex = sprite.texture.glIndex;
+    const textureIndex = sprite.texture.binding.index;
 
     //  Inject the texture ID
     data[4] = textureIndex;

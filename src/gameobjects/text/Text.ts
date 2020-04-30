@@ -46,7 +46,7 @@ export class Text extends Sprite
         this.canvas = this.texture.image as HTMLCanvasElement;
         this.context = this.canvas.getContext('2d');
 
-        this.texture.glTexture = CreateGLTexture(this.canvas, 32, 32, false, this.antialias);
+        // this.texture.glTexture = CreateGLTexture(this.canvas, 32, 32, false, this.antialias);
 
         if (font)
         {
@@ -251,7 +251,10 @@ export class Text extends Sprite
 
         ctx.restore();
 
-        this.texture.updateGL();
+        if (this.texture.binding)
+        {
+            this.texture.binding.update();
+        }
 
         this.dirty.setRender();
 

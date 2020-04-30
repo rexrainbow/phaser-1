@@ -288,7 +288,7 @@ export class WebGLRenderer
             active[0] = texture;
 
             gl.activeTexture(gl.TEXTURE0);
-            gl.bindTexture(gl.TEXTURE_2D, texture.glTexture);
+            gl.bindTexture(gl.TEXTURE_2D, texture.binding.texture);
 
             this.currentActiveTexture = 1;
         }
@@ -297,18 +297,19 @@ export class WebGLRenderer
     requestTexture (texture: Texture): void
     {
         const gl = this.gl;
+        const binding = texture.binding;
 
-        texture.glIndexCounter = this.startActiveTexture;
+        binding.indexCounter = this.startActiveTexture;
 
         if (this.currentActiveTexture < this.maxTextures)
         {
             //  Make this texture active
             this.activeTextures[this.currentActiveTexture] = texture;
 
-            texture.glIndex = this.currentActiveTexture;
+            binding.index = this.currentActiveTexture;
 
             gl.activeTexture(gl.TEXTURE0 + this.currentActiveTexture);
-            gl.bindTexture(gl.TEXTURE_2D, texture.glTexture);
+            gl.bindTexture(gl.TEXTURE_2D, binding.texture);
 
             this.currentActiveTexture++;
         }
