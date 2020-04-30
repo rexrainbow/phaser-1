@@ -2,31 +2,31 @@ import { Frame } from '../../textures/Frame';
 import { ISprite } from './ISprite';
 import { Texture } from '../../textures';
 
-export function SetFrame (texture: Texture, key?: string | number | Frame, ...sprite: ISprite[]): void
+export function SetFrame <T extends ISprite> (texture: Texture, key?: string | number | Frame, ...children: T[]): T[]
 {
     const frame = texture.get(key);
 
-    sprite.forEach(entity =>
+    children.forEach(child =>
     {
-        if (frame === entity.frame)
+        if (frame === child.frame)
         {
             return;
         }
 
-        entity.frame = frame;
+        child.frame = frame;
 
-        entity.transform.setSize(frame.sourceSizeWidth, frame.sourceSizeHeight);
+        child.transform.setSize(frame.sourceSizeWidth, frame.sourceSizeHeight);
 
-        entity.bounds.setArea(entity.x, entity.y, entity.width, entity.height);
+        child.bounds.setArea(child.x, child.y, child.width, child.height);
 
         const pivot = frame.pivot;
 
         if (pivot)
         {
-            entity.transform.setOrigin(pivot.x, pivot.y);
+            child.transform.setOrigin(pivot.x, pivot.y);
         }
 
-        const data = entity.vertexData;
+        const data = child.vertexData;
 
         //  This rarely changes, so we'll set it here, rather than every game step:
 
@@ -42,8 +42,12 @@ export function SetFrame (texture: Texture, key?: string | number | Frame, ...sp
         data[20] = frame.u1;
         data[21] = frame.v0;
 
-        entity.dirty.setRender();
+        child.frame.setExtent(child);
 
-        entity.hasTexture = true;
+        child.dirty.setRender();
+
+        child.hasTexture = true;
     });
+
+    return children;
 }
