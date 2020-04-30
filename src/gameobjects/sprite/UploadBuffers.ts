@@ -1,10 +1,23 @@
 import { ISprite } from './ISprite';
+import { PackColors } from '../../renderer/webgl1/PackColors';
+import { UpdateVertices } from './UpdateVertices';
 
 export function UploadBuffers (sprite: ISprite, F32: Float32Array, U32: Uint32Array, offset: number, setTexture: boolean = true): void
 {
-    if (sprite.dirty.render)
+    const dirty = sprite.dirty;
+
+    if (dirty.colors)
     {
-        sprite.updateVertices();
+        PackColors(sprite);
+
+        dirty.colors = false;
+    }
+
+    if (dirty.render)
+    {
+        UpdateVertices(sprite);
+
+        dirty.render = false;
     }
 
     const data = sprite.vertexData;
