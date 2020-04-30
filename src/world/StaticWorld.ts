@@ -11,7 +11,7 @@ import { IStaticCamera } from '../camera/IStaticCamera';
 import { IWorld } from './IWorld';
 import { IWorldRenderData } from './IWorldRenderData';
 import { MergeRenderData } from './MergeRenderData';
-import { RemoveChildren } from '../gameobjects/RemoveChildren';
+import { RemoveChildren } from '../display/RemoveChildren';
 import { ResetWorldRenderData } from './ResetWorldRenderData';
 import { StaticCamera } from '../camera/StaticCamera';
 

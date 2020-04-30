@@ -1,5 +1,6 @@
 import * as DOM from './dom/';
 import * as Device from './device/';
+import * as Display from './display/';
 import * as Events from './events/';
 import * as GameObjects from './gameobjects/';
 import * as Math from './math/';
@@ -14,6 +15,7 @@ import { WebGLRenderer } from './renderer/webgl1/WebGLRenderer';
 export {
     Device,
     DOM,
+    Display,
     Events,
     Game,
     Scene,
