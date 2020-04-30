@@ -1,9 +1,8 @@
 import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
+import filesize from 'rollup-plugin-filesize';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
-
-// import filesize from 'rollup-plugin-filesize';
 
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
@@ -20,7 +19,7 @@ export default {
             name: 'Phaser4Example',
             sourcemap: true,
             plugins: [
-                // filesize()
+                filesize()
             ]
         }
     ],
@@ -34,7 +33,6 @@ export default {
         del({ targets: './dev/dist/*', runOnce: true }),
 
         typescript({
-            include: [ './src/**/*', './dev/*.ts' ],
             exclude: [
                 './src/_wip/**/*',
                 './src/input/**/*',
