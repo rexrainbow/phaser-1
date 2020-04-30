@@ -1,10 +1,27 @@
 import { ISprite } from './ISprite';
+import { UpdateVertices } from './UpdateVertices';
 
 export function RenderCanvas (sprite: ISprite, ctx: CanvasRenderingContext2D): void
 {
+    const dirty = sprite.dirty;
+
+    if (dirty.render)
+    {
+        UpdateVertices(sprite);
+
+        dirty.render = false;
+    }
+
     const frame = sprite.frame;
 
-    const { a, b, c, d, tx, ty } = sprite.transform.world;
+    if (!frame)
+    {
+        return;
+    }
+
+    const transform = sprite.transform;
+
+    const { a, b, c, d, tx, ty } = transform.world;
 
     ctx.save();
 
@@ -12,7 +29,7 @@ export function RenderCanvas (sprite: ISprite, ctx: CanvasRenderingContext2D): v
 
     ctx.globalAlpha = sprite.alpha;
 
-    ctx.drawImage(frame.texture.image as HTMLImageElement, frame.x, frame.y, frame.width, frame.height, 0, 0, frame.width, frame.height);
+    ctx.drawImage(frame.texture.image as HTMLImageElement, frame.x, frame.y, frame.width, frame.height, transform.left, transform.top, frame.width, frame.height);
 
     ctx.restore();
 }
