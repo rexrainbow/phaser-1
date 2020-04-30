@@ -35,12 +35,6 @@ export function SetTexture <T extends ISprite> (key: string | Texture, frame: st
         }
         else
         {
-            //  TODO - Move this to the render process
-            // if (!texture.glTexture)
-            // {
-            //     texture.createGL();
-            // }
-
             children.forEach(child =>
             {
                 child.texture = texture;
