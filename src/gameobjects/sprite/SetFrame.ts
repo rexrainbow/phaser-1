@@ -4,7 +4,7 @@ import { Texture } from '../../textures';
 
 export function SetFrame <T extends ISprite> (texture: Texture, key?: string | number | Frame, ...children: T[]): T[]
 {
-    const frame = texture.get(key);
+    const frame = texture.getFrame(key);
 
     children.forEach(child =>
     {
