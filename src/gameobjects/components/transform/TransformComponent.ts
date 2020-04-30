@@ -28,6 +28,11 @@ export class TransformComponent implements ITransformComponent
     width: number = 0;
     height: number = 0;
 
+    left: number = 0;
+    right: number = 0;
+    top: number = 0;
+    bottom: number = 0;
+
     constructor (parent: IGameObject, x: number = 0, y: number = 0)
     {
         this.parent = parent;
@@ -37,6 +42,14 @@ export class TransformComponent implements ITransformComponent
 
         this.x = x;
         this.y = y;
+    }
+
+    setExtent (left: number, right: number, top: number, bottom: number): void
+    {
+        this.left = left;
+        this.right = right;
+        this.top = top;
+        this.bottom = bottom;
     }
 
     setSize (width: number, height: number): void
@@ -81,16 +94,22 @@ export class TransformComponent implements ITransformComponent
     {
         this.originX = x;
         this.originY = y;
+
+        this.parent.dirty.setRender();
     }
 
     setOriginX (value: number): void
     {
         this.originX = value;
+
+        this.parent.dirty.setRender();
     }
 
     setOriginY (value: number): void
     {
         this.originX = value;
+
+        this.parent.dirty.setRender();
     }
 
     setSkew (x: number, y: number): void

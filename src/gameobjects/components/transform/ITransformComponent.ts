@@ -15,8 +15,13 @@ export interface ITransformComponent
     skewY: number;
     originX: number;
     originY: number;
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
     local: Matrix2D;
     world: Matrix2D;
+    setExtent (left: number, right: number, top: number, bottom: number): void;
     setSize (width: number, height: number): void;
     setWidth (value: number): void;
     setHeight (value: number): void;
