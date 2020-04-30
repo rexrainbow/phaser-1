@@ -17,6 +17,7 @@ export class Texture
 
     glTexture: WebGLTexture;
     glIndex: number = 0;
+    glPrevIndex: number = -1;
     glIndexCounter: number = -1;
     glFramebuffer: WebGLFramebuffer;
 
