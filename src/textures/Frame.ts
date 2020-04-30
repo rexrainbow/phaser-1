@@ -1,3 +1,4 @@
+import { IGameObject } from '../gameobjects/IGameObject';
 import { Texture } from './Texture';
 
 export class Frame
@@ -79,6 +80,41 @@ export class Frame
         this.spriteSourceSizeY = y;
         this.spriteSourceSizeWidth = w;
         this.spriteSourceSizeHeight = h;
+    }
+
+    setExtent (child: IGameObject): void
+    {
+        const transform = child.transform;
+
+        const originX = transform.originX;
+        const originY = transform.originY;
+
+        const sourceSizeWidth = this.sourceSizeWidth;
+        const sourceSizeHeight = this.sourceSizeHeight;
+
+        let left: number;
+        let right: number;
+        let top: number;
+        let bottom: number;
+
+        if (this.trimmed)
+        {
+            left = this.spriteSourceSizeX - (originX * sourceSizeWidth);
+            right = left + this.spriteSourceSizeWidth;
+
+            top = this.spriteSourceSizeY - (originY * sourceSizeHeight);
+            bottom = top + this.spriteSourceSizeHeight;
+        }
+        else
+        {
+            left = -originX * sourceSizeWidth;
+            right = left + sourceSizeWidth;
+
+            top = -originY * sourceSizeHeight;
+            bottom = top + sourceSizeHeight;
+        }
+
+        transform.setExtent(left, right, top, bottom);
     }
 
     updateUVs (): void
