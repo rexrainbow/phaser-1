@@ -1,3 +1,4 @@
+import { GetVertices } from '../components/transform/GetVertices';
 import { ISprite } from './ISprite';
 
 /*
@@ -36,26 +37,7 @@ export function UpdateVertices <T extends ISprite> (sprite: T): T
 {
     const data = sprite.vertexData;
 
-    const transform = sprite.transform;
-
-    const { a, b, c, d, tx, ty } = transform.world;
-
-    const w1 = transform.left;
-    const w0 = transform.right;
-    const h1 = transform.top;
-    const h0 = transform.bottom;
-
-    const x0 = (w1 * a) + (h1 * c) + tx;
-    const y0 = (w1 * b) + (h1 * d) + ty;
-
-    const x1 = (w1 * a) + (h0 * c) + tx;
-    const y1 = (w1 * b) + (h0 * d) + ty;
-
-    const x2 = (w0 * a) + (h0 * c) + tx;
-    const y2 = (w0 * b) + (h0 * d) + ty;
-
-    const x3 = (w0 * a) + (h1 * c) + tx;
-    const y3 = (w0 * b) + (h1 * d) + ty;
+    const { x0, y0, x1, y1, x2, y2, x3, y3 } = GetVertices(sprite.transform);
 
     //  top left
     data[0] = x0;
@@ -72,13 +54,6 @@ export function UpdateVertices <T extends ISprite> (sprite: T): T
     //  top right
     data[18] = x3;
     data[19] = y3;
-
-    const boundsX = Math.min(x0, x1, x2, x3);
-    const boundsY = Math.min(y0, y1, y2, y3);
-    const boundsRight = Math.max(x0, x1, x2, x3);
-    const boundsBottom = Math.max(y0, y1, y2, y3);
-
-    sprite.bounds.setArea(boundsX, boundsY, boundsRight, boundsBottom);
 
     return sprite;
 }
