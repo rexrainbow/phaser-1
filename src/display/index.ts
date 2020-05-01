@@ -24,6 +24,7 @@ import { MoveChildDown } from './MoveChildDown';
 import { MoveChildTo } from './MoveChildTo';
 import { MoveChildUp } from './MoveChildUp';
 import { MoveToPosition } from './MoveToPosition';
+import { Overlap } from './Overlap';
 import { RemoveChild } from './RemoveChild';
 import { RemoveChildAt } from './RemoveChildAt';
 import { RemoveChildren } from './RemoveChildren';
@@ -75,6 +76,7 @@ export {
     MoveChildTo,
     MoveChildUp,
     MoveToPosition,
+    Overlap,
     RemoveChild,
     RemoveChildAt,
     RemoveChildren,
