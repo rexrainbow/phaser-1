@@ -3,6 +3,7 @@ import * as Device from './device/';
 import * as Display from './display/';
 import * as Events from './events/';
 import * as GameObjects from './gameobjects/';
+import * as Input from './input/';
 import * as Math from './math/';
 import * as Textures from './textures/';
 import * as Time from './time/';
@@ -20,6 +21,7 @@ export {
     Game,
     Scene,
     GameObjects,
+    Input,
     Loader,
     Math,
     WebGLRenderer,
