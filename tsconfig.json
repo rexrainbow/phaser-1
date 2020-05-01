@@ -29,7 +29,6 @@
     ],
     "exclude": [
         "src/_wip/",
-        "src/input/",
         "src/stats/"
     ]
 }

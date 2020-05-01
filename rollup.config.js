@@ -48,10 +48,8 @@ const filterConfig = {
     extensions: /\.ts/,
     exclude: [
         /src\\_wip/,
-        /src\\input/,
         /src\\stats/,
         /src\/_wip/,
-        /src\/input/,
         /src\/stats/
     ]
 };

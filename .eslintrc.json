@@ -29,9 +29,6 @@
         "src/_wip/",
         "/dist/*",
         "/dev/*",
-        "/src/input/*",
-        "/src/world/StaticWorld.ts",
-        "/src/gameobjects/spritebuffer/*",
         "/src/textures/parsers/BitmapTextParser.ts"
     ],
     "rules": {
