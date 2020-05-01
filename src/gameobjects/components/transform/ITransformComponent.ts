@@ -1,5 +1,6 @@
 import { IGameObject } from '../../IGameObject';
 import { Matrix2D } from '../../../math/matrix2d/Matrix2D';
+import { Vec2 } from '../../../math/vec2/Vec2';
 
 export interface ITransformComponent
 {
@@ -25,6 +26,8 @@ export interface ITransformComponent
     updateLocal (): void;
     updateWorld (): void;
     updateChildren (): void;
+    globalToLocal (x: number, y: number, out?: Vec2): Vec2;
+    localToGlobal (x: number, y: number, out?: Vec2): Vec2;
     setExtent (left: number, right: number, top: number, bottom: number): void;
     setSize (width: number, height: number): void;
     setWidth (value: number): void;
