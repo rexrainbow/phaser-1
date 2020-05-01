@@ -4,15 +4,15 @@ import { IGameObject } from '../../IGameObject';
 
 export class DirtyComponent implements IDirtyComponent
 {
-    parent: IGameObject;
+    entity: IGameObject;
     render: boolean = true;
     update: boolean = true;
     colors: boolean = true;
     frame: number = 0;
 
-    constructor (parent: IGameObject)
+    constructor (entity: IGameObject)
     {
-        this.parent = parent;
+        this.entity = entity;
     }
 
     setRender (): void
@@ -34,6 +34,6 @@ export class DirtyComponent implements IDirtyComponent
 
     destroy (): void
     {
-        this.parent = null;
+        this.entity = null;
     }
 }

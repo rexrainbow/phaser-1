@@ -4,7 +4,7 @@ import { Vec2 } from '../../../math/vec2/Vec2';
 
 export interface ITransformComponent
 {
-    parent: IGameObject;
+    entity: IGameObject;
     x: number;
     y: number;
     width: number;

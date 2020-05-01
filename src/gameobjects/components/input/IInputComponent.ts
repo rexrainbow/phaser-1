@@ -3,7 +3,7 @@ import { IInteractiveArea } from '../../../input/IInteractiveArea';
 
 export interface IInputComponent
 {
-    parent: IGameObject;
+    entity: IGameObject;
     enabled: boolean;
     enabledChildren: boolean;
     hitArea?: IInteractiveArea;

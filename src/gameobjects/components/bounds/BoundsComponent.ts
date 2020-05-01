@@ -5,9 +5,9 @@ import { Rectangle } from '../../../geom/rectangle/Rectangle';
 
 export class BoundsComponent implements IBoundsComponent
 {
-    parent: IGameObject;
+    entity: IGameObject;
 
-    //  The bounds of the parent calculated in world space
+    //  The bounds of the entity calculated in world space
     private area: Rectangle;
 
     dirty: boolean = true;
@@ -18,11 +18,16 @@ export class BoundsComponent implements IBoundsComponent
 
     visibleOnly: boolean = true;
 
-    constructor (parent: IGameObject)
+    constructor (entity: IGameObject)
     {
-        this.parent = parent;
+        this.entity = entity;
 
         this.area = new Rectangle();
+    }
+
+    setDirty (): void
+    {
+        this.dirty = true;
     }
 
     set (x: number, y: number, width: number, height: number): void
@@ -42,7 +47,7 @@ export class BoundsComponent implements IBoundsComponent
 
     updateLocal (): Rectangle
     {
-        const { x0, y0, x1, y1, x2, y2, x3, y3 } = GetVertices(this.parent.transform);
+        const { x0, y0, x1, y1, x2, y2, x3, y3 } = GetVertices(this.entity.transform);
 
         const x = Math.min(x0, x1, x2, x3);
         const y = Math.min(y0, y1, y2, y3);
@@ -64,13 +69,13 @@ export class BoundsComponent implements IBoundsComponent
 
         this.dirty = false;
 
-        if (!this.includeChildren || !this.parent.numChildren)
+        if (!this.includeChildren || !this.entity.numChildren)
         {
             return bounds;
         }
 
         const visibleOnly = this.visibleOnly;
-        const children = this.parent.children;
+        const children = this.entity.children;
 
         let x = bounds.x;
         let y = bounds.y;
@@ -119,7 +124,7 @@ export class BoundsComponent implements IBoundsComponent
 
     destroy (): void
     {
-        this.parent = null;
+        this.entity = null;
         this.area = null;
     }
 }

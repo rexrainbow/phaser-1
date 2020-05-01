@@ -2,7 +2,7 @@ import { IGameObject } from '../../IGameObject';
 
 export interface IDirtyComponent
 {
-    parent: IGameObject;
+    entity: IGameObject;
     render: boolean;
     update: boolean;
     colors: boolean;

@@ -4,19 +4,19 @@ import { IInteractiveArea } from '../../../input/IInteractiveArea';
 
 export class InputComponent implements IInputComponent
 {
-    parent: IGameObject;
+    entity: IGameObject;
     enabled: boolean = false;
     enabledChildren: boolean = true;
     hitArea: IInteractiveArea;
 
-    constructor (parent: IGameObject)
+    constructor (entity: IGameObject)
     {
-        this.parent = parent;
+        this.entity = entity;
     }
 
     destroy (): void
     {
-        this.parent = null;
+        this.entity = null;
         this.hitArea = null;
     }
 }

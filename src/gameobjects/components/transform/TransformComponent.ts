@@ -9,7 +9,7 @@ import { Vec2 } from '../../../math/vec2';
 
 export class TransformComponent implements ITransformComponent
 {
-    parent: IGameObject;
+    entity: IGameObject;
 
     //  This should be treated as read-only, it is always perfectly in sync with the properties in this class
     local: Matrix2D;
@@ -38,9 +38,9 @@ export class TransformComponent implements ITransformComponent
     top: number = 0;
     bottom: number = 0;
 
-    constructor (parent: IGameObject, x: number = 0, y: number = 0)
+    constructor (entity: IGameObject, x: number = 0, y: number = 0)
     {
-        this.parent = parent;
+        this.entity = entity;
 
         this.local = new Matrix2D();
         this.world = new Matrix2D();
@@ -60,24 +60,33 @@ export class TransformComponent implements ITransformComponent
 
     updateLocal (): void
     {
-        this.parent.dirty.setRender();
+        const entity = this.entity;
+
+        entity.dirty.setRender();
+        entity.bounds.setDirty();
 
         UpdateLocalTransform(this);
     }
 
     updateWorld (): void
     {
-        this.parent.dirty.setRender();
+        const entity = this.entity;
 
-        UpdateWorldTransform(this.parent);
+        entity.dirty.setRender();
+        entity.bounds.setDirty();
 
-        this.updateChildren();
+        UpdateWorldTransform(entity);
+
+        if (entity.numChildren)
+        {
+            this.updateChildren();
+        }
     }
 
     updateChildren (): void
     {
         //  Sweep all children - by this point our local and world transforms are correct
-        const children = this.parent.children;
+        const children = this.entity.children;
 
         for (let i = 0; i < children.length; i++)
         {
@@ -120,21 +129,21 @@ export class TransformComponent implements ITransformComponent
         this.width = left + right;
         this.height = top + bottom;
 
-        this.parent.dirty.setRender();
-        this.parent.bounds.dirty = true;
+        this.entity.dirty.setRender();
+        this.entity.bounds.setDirty();
     }
 
     updateExtent (): void
     {
-        const { originX, originY, width, height, parent } = this;
+        const { originX, originY, width, height, entity } = this;
 
         this.left = -originX * width;
         this.right = this.left + width;
         this.top = -originY * height;
         this.bottom = this.top + height;
 
-        parent.dirty.setRender();
-        parent.bounds.dirty = true;
+        entity.dirty.setRender();
+        entity.bounds.setDirty();
     }
 
     setSize (width: number, height: number): void
@@ -271,7 +280,7 @@ export class TransformComponent implements ITransformComponent
 
     destroy (): void
     {
-        this.parent = null;
+        this.entity = null;
         this.local = null;
         this.world = null;
     }
