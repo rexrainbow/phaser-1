@@ -6,47 +6,41 @@ export function SetFrame <T extends ISprite> (texture: Texture, key?: string | n
 {
     const frame = texture.getFrame(key);
 
+    const { u0, u1, v0, v1, pivot } = frame;
+
     children.forEach(child =>
     {
-        if (frame === child.frame)
+        if (!child || frame === child.frame)
         {
             return;
         }
 
         child.frame = frame;
 
-        child.transform.setSize(frame.sourceSizeWidth, frame.sourceSizeHeight);
-
-        child.bounds.setArea(child.x, child.y, child.width, child.height);
-
-        const pivot = frame.pivot;
-
         if (pivot)
         {
             child.transform.setOrigin(pivot.x, pivot.y);
         }
 
+        child.frame.setExtent(child);
+
+        child.hasTexture = true;
+
         const data = child.vertexData;
 
         //  This rarely changes, so we'll set it here, rather than every game step:
 
-        data[2] = frame.u0;
-        data[3] = frame.v0;
+        data[2] = u0;
+        data[3] = v0;
 
-        data[8] = frame.u0;
-        data[9] = frame.v1;
+        data[8] = u0;
+        data[9] = v1;
 
-        data[14] = frame.u1;
-        data[15] = frame.v1;
+        data[14] = u1;
+        data[15] = v1;
 
-        data[20] = frame.u1;
-        data[21] = frame.v0;
-
-        child.frame.setExtent(child);
-
-        child.dirty.setRender();
-
-        child.hasTexture = true;
+        data[20] = u1;
+        data[21] = v0;
     });
 
     return children;

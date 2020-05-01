@@ -109,29 +109,54 @@ export class TransformComponent implements ITransformComponent
         return out;
     }
 
-    //  The area covered by this transform component + origin + texture frame (if used)
+    //  The area covered by this transform component + origin + size (usually from a Frame)
     setExtent (left: number, right: number, top: number, bottom: number): void
     {
         this.left = left;
         this.right = right;
         this.top = top;
         this.bottom = bottom;
+
+        this.width = left + right;
+        this.height = top + bottom;
+
+        this.parent.dirty.setRender();
+        this.parent.bounds.dirty = true;
+    }
+
+    updateExtent (): void
+    {
+        const { originX, originY, width, height, parent } = this;
+
+        this.left = -originX * width;
+        this.right = this.left + width;
+        this.top = -originY * height;
+        this.bottom = this.top + height;
+
+        parent.dirty.setRender();
+        parent.bounds.dirty = true;
     }
 
     setSize (width: number, height: number): void
     {
         this.width = width;
         this.height = height;
+
+        this.updateExtent();
     }
 
     setWidth (value: number): void
     {
         this.width = value;
+
+        this.updateExtent();
     }
 
     setHeight (value: number): void
     {
         this.height = value;
+
+        this.updateExtent();
     }
 
     setPosition (x: number, y: number): void
@@ -161,21 +186,21 @@ export class TransformComponent implements ITransformComponent
         this.originX = x;
         this.originY = y;
 
-        this.parent.dirty.setRender();
+        this.updateExtent();
     }
 
     setOriginX (value: number): void
     {
         this.originX = value;
 
-        this.parent.dirty.setRender();
+        this.updateExtent();
     }
 
     setOriginY (value: number): void
     {
         this.originX = value;
 
-        this.parent.dirty.setRender();
+        this.updateExtent();
     }
 
     setSkew (x: number, y: number): void

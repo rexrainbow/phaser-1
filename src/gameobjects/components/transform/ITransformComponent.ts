@@ -29,6 +29,7 @@ export interface ITransformComponent
     globalToLocal (x: number, y: number, out?: Vec2): Vec2;
     localToGlobal (x: number, y: number, out?: Vec2): Vec2;
     setExtent (left: number, right: number, top: number, bottom: number): void;
+    updateExtent (): void;
     setSize (width: number, height: number): void;
     setWidth (value: number): void;
     setHeight (value: number): void;
