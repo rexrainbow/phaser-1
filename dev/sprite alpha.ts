@@ -1,4 +1,4 @@
-import { AddChild, AddChildren, MoveToPosition, Sprite } from '../src/gameobjects/';
+import { AddChild, AddChildren, MoveToPosition } from '../src/display/';
 import { BackgroundColor, CanvasRenderer, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 
 import { Game } from '../src/Game';
@@ -6,6 +6,7 @@ import { ISprite } from '../src/gameobjects/sprite/ISprite';
 import { ImageFile } from '../src/loader/files/ImageFile';
 import { Loader } from '../src/loader/Loader';
 import { Scene } from '../src/scenes/Scene';
+import { Sprite } from '../src/gameobjects/';
 import { StaticWorld } from '../src/world/StaticWorld';
 
 class Demo extends Scene

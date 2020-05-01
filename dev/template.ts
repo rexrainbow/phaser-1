@@ -1,9 +1,10 @@
-import { AddChild, AddChildren, Sprite } from '../src/gameobjects/';
+import { AddChild, AddChildren } from '../src/display/';
 import { BackgroundColor, CanvasRenderer, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 
 import { Game } from '../src/Game';
 import { Scene } from '../src/scenes/Scene';
 import { SolidColorTexture } from '../src/textures/types';
+import { Sprite } from '../src/gameobjects/';
 import { StaticWorld } from '../src/world/StaticWorld';
 
 class Demo extends Scene
