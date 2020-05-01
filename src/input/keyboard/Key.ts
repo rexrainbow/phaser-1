@@ -1,4 +1,6 @@
-export class Key
+import { IKey } from './IKey';
+
+export class Key implements IKey
 {
     //  The KeyEvent.key identifier
     readonly value: string;
@@ -27,12 +29,17 @@ export class Key
     //  The game time this key was last released
     timeUp: number = 0;
 
-    downCallback: (key: Key) => void;
-    upCallback: (key: Key) => void;
+    downCallback: (key: IKey) => void;
+    upCallback: (key: IKey) => void;
 
     constructor (value: string)
     {
         this.value = value;
+    }
+
+    getValue (): string
+    {
+        return this.value;
     }
 
     down (event: KeyboardEvent): void
@@ -104,5 +111,11 @@ export class Key
         this.isDown = false;
         this.timeUpdated = this.timeDown;
         this.timeUp = this.timeDown;
+    }
+
+    destroy (): void
+    {
+        this.downCallback = null;
+        this.upCallback = null;
     }
 }

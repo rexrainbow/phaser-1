@@ -1,10 +1,10 @@
 import { Emit, EventEmitter } from '../../events';
 
-import { Key } from './Key';
+import { IKey } from './IKey';
 
 export class Keyboard extends EventEmitter
 {
-    keys: Map<string, Key>;
+    keys: Map<string, IKey>;
 
     private keydownHandler: { (event: KeyboardEvent): void; (this: Window, ev: KeyboardEvent): void };
     private keyupHandler: { (event: KeyboardEvent): void; (this: Window, ev: KeyboardEvent): void };
@@ -45,11 +45,11 @@ export class Keyboard extends EventEmitter
         this.keys = new Map();
     }
 
-    addKeys (...keys: Key[]): void
+    addKeys (...keys: IKey[]): void
     {
         keys.forEach(key =>
         {
-            this.keys.set(key.value, key);
+            this.keys.set(key.getValue(), key);
         });
     }
 
@@ -61,6 +61,10 @@ export class Keyboard extends EventEmitter
     private onBlur (): void
     {
         //  Iterate Keys and reset their state
+        this.keys.forEach(key =>
+        {
+            key.reset();
+        });
     }
 
     private getKeyValue (key: string): string
@@ -116,5 +120,7 @@ export class Keyboard extends EventEmitter
         window.removeEventListener('keydown', this.keydownHandler);
         window.removeEventListener('keyup', this.keyupHandler);
         window.removeEventListener('blur', this.blurHandler);
+
+        Emit(this, 'destroy');
     }
 }
