@@ -1,6 +1,6 @@
 import { AddToDOM, DOMContentLoaded } from './dom';
 import { Emit, EventEmitter } from './events';
-import { GetBanner, GetParent, GetRenderer, GetResolution } from './config';
+import { GetBanner, GetParent, GetRenderer } from './config';
 
 import { GameInstance } from './GameInstance';
 import { IRenderer } from './renderer/IRenderer';

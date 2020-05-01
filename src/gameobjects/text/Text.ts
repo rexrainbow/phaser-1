@@ -1,5 +1,4 @@
 import { CanvasTexture } from '../../textures/types/CanvasTexture';
-import { CreateGLTexture } from '../../renderer/webgl1/CreateGLTexture';
 import { GameInstance } from '../../GameInstance';
 import { IContainer } from '../container/IContainer';
 import { Sprite } from '../sprite/Sprite';
