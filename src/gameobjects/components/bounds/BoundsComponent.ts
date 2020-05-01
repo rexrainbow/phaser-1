@@ -1,3 +1,4 @@
+import { GetVertices } from '../transform/GetVertices';
 import { IBoundsComponent } from './IBoundsComponent';
 import { IGameObject } from '../../IGameObject';
 import { Rectangle } from '../../../geom/rectangle/Rectangle';
@@ -5,8 +6,17 @@ import { Rectangle } from '../../../geom/rectangle/Rectangle';
 export class BoundsComponent implements IBoundsComponent
 {
     parent: IGameObject;
-    area: Rectangle;
+
+    //  The bounds of the parent calculated in world space
+    private area: Rectangle;
+
+    dirty: boolean = true;
+
     fixed: boolean = false;
+
+    includeChildren: boolean = true;
+
+    visibleOnly: boolean = true;
 
     constructor (parent: IGameObject)
     {
@@ -15,9 +25,96 @@ export class BoundsComponent implements IBoundsComponent
         this.area = new Rectangle();
     }
 
-    setArea (x: number, y: number, width: number, height: number): void
+    set (x: number, y: number, width: number, height: number): void
     {
         this.area.set(x, y, width, height);
+    }
+
+    get (): Rectangle
+    {
+        if (this.dirty && !this.fixed)
+        {
+            this.update();
+        }
+
+        return this.area;
+    }
+
+    updateLocal (): Rectangle
+    {
+        const { x0, y0, x1, y1, x2, y2, x3, y3 } = GetVertices(this.parent.transform);
+
+        const x = Math.min(x0, x1, x2, x3);
+        const y = Math.min(y0, y1, y2, y3);
+        const right = Math.max(x0, x1, x2, x3);
+        const bottom = Math.max(y0, y1, y2, y3);
+
+        return this.area.set(
+            x,
+            y,
+            right - x,
+            bottom - y
+        );
+    }
+
+    update (): Rectangle
+    {
+        //  First we get the bounds for this Game Object
+        const bounds = this.updateLocal();
+
+        this.dirty = false;
+
+        if (!this.includeChildren || !this.parent.numChildren)
+        {
+            return bounds;
+        }
+
+        const visibleOnly = this.visibleOnly;
+        const children = this.parent.children;
+
+        let x = bounds.x;
+        let y = bounds.y;
+        let right = bounds.right;
+        let bottom = bounds.bottom;
+
+        for (let i = 0; i < children.length; i++)
+        {
+            const child = children[i];
+
+            if (!child || (visibleOnly && !child.visible))
+            {
+                continue;
+            }
+
+            const childBounds = child.bounds.get();
+
+            if (childBounds.x < x)
+            {
+                x = childBounds.x;
+            }
+
+            if (childBounds.y < y)
+            {
+                y = childBounds.y;
+            }
+
+            if (childBounds.right > right)
+            {
+                right = childBounds.right;
+            }
+
+            if (childBounds.bottom > bottom)
+            {
+                bottom = childBounds.bottom;
+            }
+        }
+
+        return bounds.set(
+            x,
+            y,
+            right - x,
+            bottom - y
+        );
     }
 
     destroy (): void

@@ -4,8 +4,13 @@ import { Rectangle } from '../../../geom/rectangle';
 export interface IBoundsComponent
 {
     parent: IGameObject;
-    area: Rectangle;
     fixed: boolean;
-    setArea (x: number, y: number, width: number, height: number): void;
+    dirty: boolean;
+    includeChildren: boolean;
+    visibleOnly: boolean;
+    set (x: number, y: number, width: number, height: number): void;
+    get (): Rectangle;
+    update (): Rectangle;
+    updateLocal (): Rectangle;
     destroy (): void;
 }
