@@ -38,7 +38,6 @@ export default {
         typescript({
             exclude: [
                 './src/_wip/**/*',
-                './src/input/**/*',
                 './src/stats/**/*'
             ],
             tsconfig: './fastdev.tsconfig.json'
