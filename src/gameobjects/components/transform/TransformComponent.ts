@@ -1,3 +1,5 @@
+import { originX, originY } from '../../../config/DefaultOrigin';
+
 import { IGameObject } from '../../IGameObject';
 import { ITransformComponent } from './ITransformComponent';
 import { Matrix2D } from '../../../math/matrix2d/Matrix2D';
@@ -24,8 +26,8 @@ export class TransformComponent implements ITransformComponent
     skewX: number = 0;
     skewY: number = 0;
 
-    originX: number = 0.5;
-    originY: number = 0.5;
+    originX: number;
+    originY: number;
 
     width: number = 0;
     height: number = 0;
@@ -44,6 +46,9 @@ export class TransformComponent implements ITransformComponent
 
         this.x = x;
         this.y = y;
+
+        this.originX = originX;
+        this.originY = originY;
     }
 
     update (): void
