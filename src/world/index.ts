@@ -9,6 +9,6 @@ export {
     CreateWorldRenderData,
     MergeRenderData,
     ResetWorldRenderData,
-    StaticWorld,
+    StaticWorld
     // World
 };
