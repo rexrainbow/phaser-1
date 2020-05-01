@@ -26,6 +26,7 @@
     "ignorePatterns": [
         "**/*.js",
         "src/stats/",
+        "src/_wip/",
         "/dist/*",
         "/dev/*",
         "/src/input/*",
