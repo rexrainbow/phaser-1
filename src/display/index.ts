@@ -9,6 +9,8 @@ import { AddSkew } from './AddSkew';
 import { BringChildToTop } from './BringChildToTop';
 import { CountMatchingChildren } from './CountMatchingChildren';
 import { DestroyChildren } from './DestroyChildren';
+import { FindChildByName } from './FindChildByName';
+import { FindChildrenByName } from './FindChildrenByName';
 import { GetChildAt } from './GetChildAt';
 import { GetChildIndex } from './GetChildIndex';
 import { GetChildren } from './GetChildren';
@@ -58,6 +60,8 @@ export {
     BringChildToTop,
     CountMatchingChildren,
     DestroyChildren,
+    FindChildByName,
+    FindChildrenByName,
     GetChildAt,
     GetChildIndex,
     GetChildren,
