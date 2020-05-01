@@ -4,7 +4,7 @@ export function SetBounds <T extends IGameObject> (x: number, y: number, width: 
 {
     children.forEach(child =>
     {
-        child.bounds.setArea(x, y, width, height);
+        child.bounds.set(x, y, width, height);
     });
 
     return children;
