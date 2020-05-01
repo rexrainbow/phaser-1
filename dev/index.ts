@@ -6,7 +6,9 @@
 // import runTest from './default origin test 1';
 // import runTest from './bounds test 1';
 // import runTest from './bounds test 2';
+// import runTest from './overlap test 1';
+// import runTest from './keys test 1';
 
-import runTest from './overlap test 1';
+import runTest from './keys test 2';
 
 runTest();
