@@ -18,6 +18,7 @@ export class GLTextureBinding implements IGLTextureBinding
     index: number = 0;
     indexCounter: number = -1;
 
+    dirtyIndex: boolean = true;
     unpackPremultiplyAlpha: boolean = true;
 
     minFilter: GLenum;
@@ -80,6 +81,12 @@ export class GLTextureBinding implements IGLTextureBinding
         {
             return UpdateGLTexture(this);
         }
+    }
+
+    setIndex (index: number): void
+    {
+        this.dirtyIndex = (index !== this.index);
+        this.index = index;
     }
 
     destroy (): void

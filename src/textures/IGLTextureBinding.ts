@@ -15,7 +15,9 @@ export interface IGLTextureBinding
     flipY: boolean;
     isPOT: boolean;
     generateMipmap: boolean;
+    dirtyIndex: boolean;
     setFilter (linear: boolean): void;
+    setIndex (index: number): void;
     create (): WebGLTexture;
     update (): WebGLTexture;
     destroy (): void;
