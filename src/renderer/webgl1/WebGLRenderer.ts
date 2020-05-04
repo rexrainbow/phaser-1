@@ -8,11 +8,11 @@ import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetWebGLContext } from '../../config/WebGLContext';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IShader } from './shaders/IShader';
+import { ISprite } from '../../gameobjects/sprite/ISprite';
 import { IStaticCamera } from '../../camera/IStaticCamera';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './Ortho';
-import { RenderWebGL as SpriteRenderWebGL } from '../../gameobjects/sprite/RenderWebGL';
 import { Texture } from '../../textures/Texture';
 
 export class WebGLRenderer
@@ -280,7 +280,7 @@ export class WebGLRenderer
             //  Process the render list
             for (let s: number = 0; s < numRendered; s++)
             {
-                SpriteRenderWebGL(renderList[s], this, shader, this.startActiveTexture);
+                renderList[s].render(this);
             }
         }
 
@@ -336,5 +336,47 @@ export class WebGLRenderer
 
             this.resetTextures(texture);
         }
+    }
+
+    renderSprite <T extends ISprite> (sprite: T): void
+    {
+        const texture = sprite.texture;
+        const shader = this.shader;
+        const binding = texture.binding;
+
+        if (binding.indexCounter < this.startActiveTexture)
+        {
+            this.requestTexture(texture);
+        }
+
+        if (shader.count === shader.batchSize)
+        {
+            shader.flush();
+        }
+
+        const data = sprite.vertexData;
+        const textureIndex = binding.index;
+
+        //  Inject the texture ID
+        data[4] = textureIndex;
+        data[10] = textureIndex;
+        data[16] = textureIndex;
+        data[22] = textureIndex;
+
+        const offset = shader.count * shader.quadElementSize;
+
+        //  Copy the data to the array buffer
+        shader.vertexViewF32.set(data, offset);
+
+        const color = sprite.vertexColor;
+        const U32 = shader.vertexViewU32;
+
+        //  Copy the vertex colors to the Uint32 view (as the data copy above overwrites them)
+        U32[offset + 5] = color[0];
+        U32[offset + 11] = color[2];
+        U32[offset + 17] = color[3];
+        U32[offset + 23] = color[1];
+
+        shader.count++;
     }
 }

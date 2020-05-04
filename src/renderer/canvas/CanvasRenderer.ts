@@ -4,7 +4,7 @@ import { BindingQueue } from '../BindingQueue';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetCanvasContext } from '../../config/CanvasContext';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
-import { RenderCanvas as SpriteRenderCanvas } from '../../gameobjects/sprite/RenderCanvas';
+import { ISprite } from '../../gameobjects/sprite/ISprite';
 
 export class CanvasRenderer
 {
@@ -120,8 +120,35 @@ export class CanvasRenderer
             //  Process the render list
             for (let s: number = 0; s < numRendered; s++)
             {
-                SpriteRenderCanvas(renderList[s], ctx);
+                renderList[s].render(this);
             }
         }
+    }
+
+    renderSprite <T extends ISprite> (renderable: T): void
+    {
+        const frame = renderable.frame;
+
+        if (!frame)
+        {
+            return;
+        }
+
+        const ctx = this.ctx;
+
+        const transform = renderable.transform;
+
+        const { a, b, c, d, tx, ty } = transform.world;
+        const { x, y } = transform.extent;
+
+        ctx.save();
+
+        ctx.setTransform(a, b, c, d, tx, ty);
+
+        ctx.globalAlpha = renderable.alpha;
+
+        ctx.drawImage(frame.texture.image as HTMLImageElement, frame.x, frame.y, frame.width, frame.height, x, y, frame.width, frame.height);
+
+        ctx.restore();
     }
 }
