@@ -1,10 +1,13 @@
 import { Container } from '../container/Container';
 import { Frame } from '../../textures/Frame';
 import { IGameObject } from '../IGameObject';
+import { IRenderer } from '../../renderer/IRenderer';
 import { ISprite } from './ISprite';
+import { PackColors } from '../../renderer/webgl1/PackColors';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
 import { Texture } from '../../textures/Texture';
+import { UpdateVertices } from './UpdateVertices';
 
 export class Sprite extends Container implements ISprite
 {
@@ -54,21 +57,26 @@ export class Sprite extends Container implements ISprite
         return (this.visible && this.willRender && this.hasTexture && this.alpha > 0);
     }
 
-    /*
-    set originX (value: number)
+    render <T extends IRenderer> (renderer: T): void
     {
-    }
+        const dirty = this.dirty;
 
-    set originY (value: number)
-    {
-        this.transform.setOriginX(value);
-
-        if (this.frame)
+        if (dirty.colors)
         {
-            this.frame.setExtent(this);
+            PackColors(this);
+
+            dirty.colors = false;
         }
+
+        if (dirty.render)
+        {
+            UpdateVertices(this);
+
+            dirty.render = false;
+        }
+
+        renderer.renderSprite(this);
     }
-    */
 
     get alpha (): number
     {

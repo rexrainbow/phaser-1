@@ -1,4 +1,5 @@
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
+import { ISprite } from '../gameobjects/sprite/ISprite';
 
 export interface IRenderer
 {
@@ -7,4 +8,5 @@ export interface IRenderer
     height: number;
     resolution: number;
     render (renderData: ISceneRenderData): void;
+    renderSprite <T extends ISprite> (renderable: T): void;
 }
