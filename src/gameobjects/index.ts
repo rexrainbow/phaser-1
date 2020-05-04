@@ -4,7 +4,9 @@ import { AnimatedSprite } from './animatedsprite/AnimatedSprite';
 import { Container } from './container/Container';
 import { GameObject } from './GameObject';
 import { Layer } from './layer/Layer';
+import { RenderLayer } from './renderlayer/RenderLayer';
 import { Sprite } from './sprite/Sprite';
+import { SpriteBatch } from './spritebatch/SpriteBatch';
 import { Text } from './text/Text';
 
 export {
@@ -12,7 +14,9 @@ export {
     Components,
     Container,
     Layer,
+    RenderLayer,
     GameObject,
     Sprite,
+    SpriteBatch,
     Text
 };
