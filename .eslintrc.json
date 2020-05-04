@@ -105,6 +105,12 @@
             },
             {
                 "selector": "property",
+                "modifiers": [ "protected" ],
+                "format": [ "camelCase" ],
+                "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "property",
                 "modifiers": [ "readonly" ],
                 "format": [ "camelCase", "UPPER_CASE" ]
             },
@@ -121,6 +127,12 @@
             {
                 "selector": "memberLike",
                 "modifiers": [ "private" ],
+                "format": [ "camelCase" ],
+                "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "memberLike",
+                "modifiers": [ "protected" ],
                 "format": [ "camelCase" ],
                 "leadingUnderscore": "allow"
             },
