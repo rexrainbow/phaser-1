@@ -1,5 +1,6 @@
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { ISprite } from '../gameobjects/sprite/ISprite';
+import { ISpriteBatch } from '../gameobjects/spritebatch/ISpriteBatch';
 
 export interface IRenderer
 {
@@ -8,5 +9,6 @@ export interface IRenderer
     height: number;
     resolution: number;
     render (renderData: ISceneRenderData): void;
-    renderSprite <T extends ISprite> (renderable: T): void;
+    batchSprite <T extends ISprite> (renderable: T): void;
+    batchSpriteBuffer <T extends ISpriteBatch> (batch: T): void;
 }

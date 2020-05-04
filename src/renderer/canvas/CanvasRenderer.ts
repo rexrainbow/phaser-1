@@ -5,6 +5,7 @@ import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetCanvasContext } from '../../config/CanvasContext';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { ISprite } from '../../gameobjects/sprite/ISprite';
+import { ISpriteBatch } from '../../gameobjects/spritebatch/ISpriteBatch';
 
 export class CanvasRenderer
 {
@@ -125,7 +126,7 @@ export class CanvasRenderer
         }
     }
 
-    renderSprite <T extends ISprite> (renderable: T): void
+    batchSprite <T extends ISprite> (renderable: T): void
     {
         const frame = renderable.frame;
 
@@ -150,5 +151,10 @@ export class CanvasRenderer
         ctx.drawImage(frame.texture.image as HTMLImageElement, frame.x, frame.y, frame.width, frame.height, x, y, frame.width, frame.height);
 
         ctx.restore();
+    }
+
+    batchSpriteBuffer <T extends ISpriteBatch> (batch: T): void
+    {
+
     }
 }

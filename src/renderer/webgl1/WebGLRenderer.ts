@@ -9,6 +9,7 @@ import { GetWebGLContext } from '../../config/WebGLContext';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IShader } from './shaders/IShader';
 import { ISprite } from '../../gameobjects/sprite/ISprite';
+import { ISpriteBatch } from '../../gameobjects/spritebatch/ISpriteBatch';
 import { IStaticCamera } from '../../camera/IStaticCamera';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
@@ -39,7 +40,7 @@ export class WebGLRenderer
     tempTextures: WebGLTexture[] = [];
 
     clearBeforeRender: boolean = true;
-    optimizeRedraw: boolean = true;
+    optimizeRedraw: boolean = false;
     autoResize: boolean = true;
 
     contextLost: boolean = false;
@@ -303,6 +304,8 @@ export class WebGLRenderer
             //  Set this texture as texture0
             active[0] = texture;
 
+            texture.binding.setIndex(0);
+
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, texture.binding.texture);
 
@@ -322,7 +325,7 @@ export class WebGLRenderer
             //  Make this texture active
             this.activeTextures[this.currentActiveTexture] = texture;
 
-            binding.index = this.currentActiveTexture;
+            binding.setIndex(this.currentActiveTexture);
 
             gl.activeTexture(gl.TEXTURE0 + this.currentActiveTexture);
             gl.bindTexture(gl.TEXTURE_2D, binding.texture);
@@ -338,7 +341,7 @@ export class WebGLRenderer
         }
     }
 
-    renderSprite <T extends ISprite> (sprite: T): void
+    batchSprite <T extends ISprite> (sprite: T): void
     {
         const texture = sprite.texture;
         const shader = this.shader;
@@ -378,5 +381,46 @@ export class WebGLRenderer
         U32[offset + 23] = color[1];
 
         shader.count++;
+    }
+
+    batchSpriteBuffer <T extends ISpriteBatch> (batch: T): void
+    {
+        const texture = batch.texture;
+        const shader = this.shader;
+        const binding = texture.binding;
+
+        shader.flush();
+
+        if (binding.indexCounter < this.startActiveTexture)
+        {
+            this.requestTexture(texture);
+
+            if (binding.dirtyIndex)
+            {
+                batch.updateTextureIndex();
+                binding.dirtyIndex = false;
+            }
+        }
+
+        const gl = this.gl;
+
+        if (batch.dirty.render)
+        {
+            gl.bufferData(gl.ARRAY_BUFFER, batch.data, gl.STATIC_DRAW);
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, shader.index, gl.STATIC_DRAW);
+
+            batch.dirty.render = false;
+        }
+
+        shader.bindBuffers(shader.indexBuffer, batch.vertexBuffer);
+
+        gl.drawElements(gl.TRIANGLES, batch.count * shader.quadIndexSize, gl.UNSIGNED_SHORT, 0);
+
+        shader.prevCount = shader.count;
+
+        this.flushTotal++;
+
+        //  Restore
+        shader.bindBuffers(shader.indexBuffer, shader.vertexBuffer);
     }
 }

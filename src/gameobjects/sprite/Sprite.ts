@@ -75,7 +75,7 @@ export class Sprite extends Container implements ISprite
             dirty.render = false;
         }
 
-        renderer.renderSprite(this);
+        renderer.batchSprite(this);
     }
 
     get alpha (): number
