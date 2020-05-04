@@ -2,7 +2,6 @@ import { CreateFramebuffer } from '../../renderer/webgl1/CreateFramebuffer';
 import { GLTextureBinding } from '../GLTextureBinding';
 import { ISprite } from '../../gameobjects/sprite/ISprite';
 import { Ortho } from '../../renderer/webgl1/Ortho';
-import { RenderWebGL } from '../../gameobjects/sprite/RenderWebGL';
 import { Texture } from '../Texture';
 import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
 
@@ -58,11 +57,10 @@ export class RenderTexture extends Texture
     batchDraw (sprites: ISprite[]): this
     {
         const renderer = this.renderer;
-        const shader = renderer.shader;
 
         for (let i = 0, len = sprites.length; i < len; i++)
         {
-            RenderWebGL(sprites[i], renderer, shader, renderer.startActiveTexture);
+            sprites[i].render(renderer);
         }
 
         return this;
