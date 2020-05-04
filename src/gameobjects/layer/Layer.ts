@@ -8,5 +8,6 @@ export class Layer extends GameObject
 
         this.type = 'Layer';
         this.transform.passthru = true;
+        this.willRender = false;
     }
 }
