@@ -86,35 +86,53 @@ export class Frame
     {
         const transform = child.transform;
 
-        const originX = transform.originX;
-        const originY = transform.originY;
+        const originX = transform.origin.x;
+        const originY = transform.origin.y;
 
         const sourceSizeWidth = this.sourceSizeWidth;
         const sourceSizeHeight = this.sourceSizeHeight;
 
-        let left: number;
-        let right: number;
-        let top: number;
-        let bottom: number;
+        let x: number;
+        let y: number;
+        let width: number;
+        let height: number;
+
+        // let left: number;
+        // let right: number;
+        // let top: number;
+        // let bottom: number;
 
         if (this.trimmed)
         {
-            left = this.spriteSourceSizeX - (originX * sourceSizeWidth);
-            right = left + this.spriteSourceSizeWidth;
+            x = this.spriteSourceSizeX - (originX * sourceSizeWidth);
+            y = this.spriteSourceSizeY - (originY * sourceSizeHeight);
 
-            top = this.spriteSourceSizeY - (originY * sourceSizeHeight);
-            bottom = top + this.spriteSourceSizeHeight;
+            width = this.spriteSourceSizeWidth;
+            height = this.spriteSourceSizeHeight;
+
+            // left = this.spriteSourceSizeX - (originX * sourceSizeWidth);
+            // right = left + this.spriteSourceSizeWidth;
+
+            // top = this.spriteSourceSizeY - (originY * sourceSizeHeight);
+            // bottom = top + this.spriteSourceSizeHeight;
         }
         else
         {
-            left = -originX * sourceSizeWidth;
-            right = left + sourceSizeWidth;
+            x = -originX * sourceSizeWidth;
+            y = -originY * sourceSizeHeight;
+            width = sourceSizeWidth;
+            height = sourceSizeHeight;
 
-            top = -originY * sourceSizeHeight;
-            bottom = top + sourceSizeHeight;
+            // left = -originX * sourceSizeWidth;
+            // right = left + sourceSizeWidth;
+
+            // top = -originY * sourceSizeHeight;
+            // bottom = top + sourceSizeHeight;
         }
 
-        transform.setExtent(left, right, top, bottom);
+        // transform.setExtent(left, right, top, bottom);
+
+        transform.setExtent(x, y, width, height);
     }
 
     updateUVs (): void

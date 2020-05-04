@@ -22,6 +22,7 @@ export function RenderCanvas (sprite: ISprite, ctx: CanvasRenderingContext2D): v
     const transform = sprite.transform;
 
     const { a, b, c, d, tx, ty } = transform.world;
+    const { x, y } = transform.extent;
 
     ctx.save();
 
@@ -29,7 +30,7 @@ export function RenderCanvas (sprite: ISprite, ctx: CanvasRenderingContext2D): v
 
     ctx.globalAlpha = sprite.alpha;
 
-    ctx.drawImage(frame.texture.image as HTMLImageElement, frame.x, frame.y, frame.width, frame.height, transform.left, transform.top, frame.width, frame.height);
+    ctx.drawImage(frame.texture.image as HTMLImageElement, frame.x, frame.y, frame.width, frame.height, x, y, frame.width, frame.height);
 
     ctx.restore();
 }

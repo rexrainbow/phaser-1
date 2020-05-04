@@ -9,10 +9,10 @@ export class Vec2Callback
 
     constructor (callback: (vec2: Vec2Callback) => void, x: number = 0, y: number = 0, compareValue: boolean = false)
     {
+        this._x = x;
+        this._y = y;
         this.callback = callback;
         this.compareValue = compareValue;
-
-        this.set(x, y);
     }
 
     set (x: number = 0, y: number = 0): this
@@ -32,7 +32,7 @@ export class Vec2Callback
 
     set x (value: number)
     {
-        if (this.compareValue && value !== this._x)
+        if (!this.compareValue || (this.compareValue && value !== this._x))
         {
             this._x = value;
 
@@ -47,7 +47,7 @@ export class Vec2Callback
 
     set y (value: number)
     {
-        if (this.compareValue && value !== this._y)
+        if (!this.compareValue || (this.compareValue && value !== this._x))
         {
             this._y = value;
 

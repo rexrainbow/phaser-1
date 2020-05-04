@@ -1,6 +1,6 @@
-import { IGameObject } from '../gameobjects/IGameObject';
+import { IContainer } from '../gameobjects/container/IContainer';
 
-export function AddPosition <T extends IGameObject> (x: number, y: number, ...children: T[]): T[]
+export function AddPosition <T extends IContainer> (x: number, y: number, ...children: T[]): T[]
 {
     children.forEach(child =>
     {

@@ -12,7 +12,7 @@ import { ReparentChildren } from '../display/ReparentChildren';
 export class GameObject
 {
     world: IWorld;
-    type: string;
+    type: string = 'GameObject';
     name: string = '';
 
     parent: IGameObject;
@@ -28,9 +28,8 @@ export class GameObject
 
     visible: boolean = true;
 
-    constructor (x: number = 0, y: number = 0, type: string = 'GameObject')
+    constructor (x: number = 0, y: number = 0)
     {
-        this.type = type;
         this.children = [];
 
         this.dirty = new DirtyComponent(this);
@@ -67,116 +66,6 @@ export class GameObject
     get numChildren (): number
     {
         return this.children.length;
-    }
-
-    set width (value: number)
-    {
-        this.transform.setWidth(value);
-    }
-
-    get width (): number
-    {
-        return this.transform.width;
-    }
-
-    set height (value: number)
-    {
-        this.transform.setHeight(value);
-    }
-
-    get height (): number
-    {
-        return this.transform.height;
-    }
-
-    set x (value: number)
-    {
-        this.transform.setX(value);
-    }
-
-    get x (): number
-    {
-        return this.transform.x;
-    }
-
-    set y (value: number)
-    {
-        this.transform.setY(value);
-    }
-
-    get y (): number
-    {
-        return this.transform.y;
-    }
-
-    set originX (value: number)
-    {
-        this.transform.setOriginX(value);
-    }
-
-    get originX (): number
-    {
-        return this.transform.originX;
-    }
-
-    set originY (value: number)
-    {
-        this.transform.setOriginY(value);
-    }
-
-    get originY (): number
-    {
-        return this.transform.originY;
-    }
-
-    set skewX (value: number)
-    {
-        this.transform.setSkewX(value);
-    }
-
-    get skewX (): number
-    {
-        return this.transform.skewX;
-    }
-
-    set skewY (value: number)
-    {
-        this.transform.setSkewY(value);
-    }
-
-    get skewY (): number
-    {
-        return this.transform.skewY;
-    }
-
-    set scaleX (value: number)
-    {
-        this.transform.setScaleX(value);
-    }
-
-    get scaleX (): number
-    {
-        return this.transform.scaleX;
-    }
-
-    set scaleY (value: number)
-    {
-        this.transform.setScaleY(value);
-    }
-
-    get scaleY (): number
-    {
-        return this.transform.scaleY;
-    }
-
-    set rotation (value: number)
-    {
-        this.transform.setRotation(value);
-    }
-
-    get rotation (): number
-    {
-        return this.transform.rotation;
     }
 
     destroy (reparentChildren?: IGameObject): void

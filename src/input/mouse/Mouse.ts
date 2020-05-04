@@ -124,9 +124,7 @@ export class Mouse extends EventEmitter
         }
         else
         {
-            const { left, right, top, bottom } = entity.transform;
-
-            return (px >= left && px <= right && py >= top && py <= bottom);
+            return entity.transform.extent.contains(px, py);
         }
 
         return false;

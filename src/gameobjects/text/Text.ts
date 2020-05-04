@@ -181,7 +181,7 @@ export class Text extends Sprite
             canvas.height = canvasHeight;
 
             this.texture.setSize(displayWidth, displayHeight);
-            this.transform.setSize(displayWidth, displayHeight);
+            this.setSize(displayWidth, displayHeight);
         }
 
         ctx.save();

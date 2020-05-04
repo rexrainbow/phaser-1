@@ -1,50 +1,28 @@
+import { Vec2, Vec2Callback } from '../../../math/vec2';
+
 import { IGameObject } from '../../IGameObject';
 import { Matrix2D } from '../../../math/matrix2d/Matrix2D';
-import { Vec2 } from '../../../math/vec2/Vec2';
+import { Rectangle } from '../../../geom/rectangle';
 
 export interface ITransformComponent
 {
     entity: IGameObject;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    rotation: number;
-    scaleX: number;
-    scaleY: number;
-    skewX: number;
-    skewY: number;
-    originX: number;
-    originY: number;
-    left: number;
-    right: number;
-    top: number;
-    bottom: number;
     local: Matrix2D;
     world: Matrix2D;
+    position: Vec2Callback;
+    scale: Vec2Callback;
+    skew: Vec2Callback;
+    origin: Vec2Callback;
+    rotation: number;
+    extent: Rectangle;
+    passthru: boolean;
     update (): void;
     updateLocal (): void;
     updateWorld (): void;
     updateChildren (): void;
     globalToLocal (x: number, y: number, out?: Vec2): Vec2;
     localToGlobal (x: number, y: number, out?: Vec2): Vec2;
-    setExtent (left: number, right: number, top: number, bottom: number): void;
-    updateExtent (): void;
-    setSize (width: number, height: number): void;
-    setWidth (value: number): void;
-    setHeight (value: number): void;
-    setPosition (x: number, y: number): void;
-    setX (value: number): void;
-    setY (value: number): void;
-    setOrigin (x: number, y: number): void;
-    setOriginX (value: number): void;
-    setOriginY (value: number): void;
-    setSkew (x: number, y: number): void;
-    setSkewX (value: number): void;
-    setSkewY (value: number): void;
-    setScale (x: number, y: number): void;
-    setScaleX (value: number): void;
-    setScaleY (value: number): void;
-    setRotation (value: number): void;
+    setExtent (x: number, y: number, width: number, height: number): void;
+    updateExtent (width?: number, height?: number): void;
     destroy (): void;
 }

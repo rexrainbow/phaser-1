@@ -12,19 +12,23 @@ export function UpdateWorldTransform (gameObject: IGameObject): void
     if (!parent)
     {
         Copy(lt, wt);
-
-        return;
     }
+    else if (transform.passthru)
+    {
+        Copy(parent.transform.world, wt);
+    }
+    else
+    {
+        const { a, b, c, d, tx, ty } = lt;
+        const { a: pa, b: pb, c: pc, d: pd, tx: ptx, ty: pty } = parent.transform.world;
 
-    const { a, b, c, d, tx, ty } = lt;
-    const { a: pa, b: pb, c: pc, d: pd, tx: ptx, ty: pty } = parent.transform.world;
-
-    wt.set(
-        a  * pa + b  * pc,
-        a  * pb + b  * pd,
-        c  * pa + d  * pc,
-        c  * pb + d  * pd,
-        tx * pa + ty * pc + ptx,
-        tx * pb + ty * pd + pty
-    );
+        wt.set(
+            a  * pa + b  * pc,
+            a  * pb + b  * pd,
+            c  * pa + d  * pc,
+            c  * pb + d  * pd,
+            tx * pa + ty * pc + ptx,
+            tx * pb + ty * pd + pty
+        );
+    }
 }

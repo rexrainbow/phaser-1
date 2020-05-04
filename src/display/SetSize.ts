@@ -1,10 +1,10 @@
-import { IGameObject } from '../gameobjects/IGameObject';
+import { IContainer } from '../gameobjects/container/IContainer';
 
-export function SetSize <T extends IGameObject> (width: number, height: number, ...children: T[]): T[]
+export function SetSize <T extends IContainer> (width: number, height: number, ...children: T[]): T[]
 {
     children.forEach(child =>
     {
-        child.transform.setSize(width, height);
+        child.setSize(width, height);
     });
 
     return children;

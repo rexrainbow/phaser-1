@@ -1,11 +1,12 @@
+import { Vec2, Vec2Callback } from '../../../math/vec2';
 import { originX, originY } from '../../../config/DefaultOrigin';
 
 import { IGameObject } from '../../IGameObject';
 import { ITransformComponent } from './ITransformComponent';
 import { Matrix2D } from '../../../math/matrix2d/Matrix2D';
+import { Rectangle } from '../../../geom/rectangle';
 import { UpdateLocalTransform } from './UpdateLocalTransform';
 import { UpdateWorldTransform } from './UpdateWorldTransform';
-import { Vec2 } from '../../../math/vec2';
 
 export class TransformComponent implements ITransformComponent
 {
@@ -16,27 +17,15 @@ export class TransformComponent implements ITransformComponent
 
     world: Matrix2D;
 
-    x: number = 0;
-    y: number = 0;
+    position: Vec2Callback;
+    scale: Vec2Callback;
+    skew: Vec2Callback;
+    origin: Vec2Callback;
+    extent: Rectangle;
 
-    rotation: number = 0;
+    passthru: boolean = false;
 
-    scaleX: number = 1;
-    scaleY: number = 1;
-
-    skewX: number = 0;
-    skewY: number = 0;
-
-    originX: number;
-    originY: number;
-
-    width: number = 0;
-    height: number = 0;
-
-    left: number = 0;
-    right: number = 0;
-    top: number = 0;
-    bottom: number = 0;
+    private _rotation: number = 0;
 
     constructor (entity: IGameObject, x: number = 0, y: number = 0)
     {
@@ -45,11 +34,12 @@ export class TransformComponent implements ITransformComponent
         this.local = new Matrix2D();
         this.world = new Matrix2D();
 
-        this.x = x;
-        this.y = y;
+        this.position = new Vec2Callback(() => this.update(), x, y);
+        this.scale = new Vec2Callback(() => this.update(), 1, 1, true);
+        this.skew = new Vec2Callback(() => this.update(), 0, 0, true);
+        this.origin = new Vec2Callback(() => this.updateExtent(), originX, originY);
 
-        this.originX = originX;
-        this.originY = originY;
+        this.extent = new Rectangle();
     }
 
     update (): void
@@ -119,169 +109,65 @@ export class TransformComponent implements ITransformComponent
     }
 
     //  The area covered by this transform component + origin + size (usually from a Frame)
-    setExtent (left: number, right: number, top: number, bottom: number): void
+    setExtent (x: number, y: number, width: number, height: number): void
     {
-        this.left = left;
-        this.right = right;
-        this.top = top;
-        this.bottom = bottom;
-
-        this.width = left + right;
-        this.height = top + bottom;
+        this.extent.set(x, y, width, height);
 
         this.entity.dirty.setRender();
         this.entity.bounds.setDirty();
     }
 
-    updateExtent (): void
+    updateExtent (width?: number, height?: number): void
     {
-        const { originX, originY, width, height, entity } = this;
+        const extent = this.extent;
+        const entity = this.entity;
 
-        this.left = -originX * width;
-        this.right = this.left + width;
-        this.top = -originY * height;
-        this.bottom = this.top + height;
+        if (width !== undefined)
+        {
+            extent.width = width;
+        }
+
+        if (height !== undefined)
+        {
+            extent.height = height;
+        }
+
+        extent.x = -(this.origin.x) * extent.width;
+        extent.y = -(this.origin.y) * extent.height;
 
         entity.dirty.setRender();
         entity.bounds.setDirty();
     }
 
-    setSize (width: number, height: number): void
+    set rotation (value: number)
     {
-        this.width = width;
-        this.height = height;
-
-        this.updateExtent();
-    }
-
-    setWidth (value: number): void
-    {
-        this.width = value;
-
-        this.updateExtent();
-    }
-
-    setHeight (value: number): void
-    {
-        this.height = value;
-
-        this.updateExtent();
-    }
-
-    setPosition (x: number, y: number): void
-    {
-        this.x = x;
-        this.y = y;
-
-        this.update();
-    }
-
-    setX (value: number): void
-    {
-        this.x = value;
-
-        this.update();
-    }
-
-    setY (value: number): void
-    {
-        this.y = value;
-
-        this.update();
-    }
-
-    setOrigin (x: number, y: number): void
-    {
-        this.originX = x;
-        this.originY = y;
-
-        this.updateExtent();
-    }
-
-    setOriginX (value: number): void
-    {
-        this.originX = value;
-
-        this.updateExtent();
-    }
-
-    setOriginY (value: number): void
-    {
-        this.originX = value;
-
-        this.updateExtent();
-    }
-
-    setSkew (x: number, y: number): void
-    {
-        this.skewX = x;
-        this.skewY = y;
-
-        this.update();
-    }
-
-    setSkewX (value: number): void
-    {
-        if (value !== this.skewX)
+        if (value !== this._rotation)
         {
-            this.skewX = value;
+            this._rotation = value;
 
             this.update();
         }
     }
 
-    setSkewY (value: number): void
+    get rotation (): number
     {
-        if (value !== this.skewY)
-        {
-            this.skewY = value;
-
-            this.update();
-        }
-    }
-
-    setScale (x: number, y: number): void
-    {
-        this.scaleX = x;
-        this.scaleY = y;
-
-        this.update();
-    }
-
-    setScaleX (value: number): void
-    {
-        if (value !== this.scaleX)
-        {
-            this.scaleX = value;
-
-            this.update();
-        }
-    }
-
-    setScaleY (value: number): void
-    {
-        if (value !== this.scaleY)
-        {
-            this.scaleY = value;
-
-            this.update();
-        }
-    }
-
-    setRotation (value: number): void
-    {
-        if (value !== this.rotation)
-        {
-            this.rotation = value;
-
-            this.update();
-        }
+        return this._rotation;
     }
 
     destroy (): void
     {
+        this.position.destroy();
+        this.scale.destroy();
+        this.skew.destroy();
+        this.origin.destroy();
+
         this.entity = null;
         this.local = null;
         this.world = null;
+        this.position = null;
+        this.scale = null;
+        this.skew = null;
+        this.origin = null;
+        this.extent = null;
     }
 }

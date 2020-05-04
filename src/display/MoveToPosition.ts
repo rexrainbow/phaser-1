@@ -1,9 +1,9 @@
 import { AddTimer } from '../time/AddTimer';
 import { AngleBetween } from '../math/angle';
 import { DistanceBetween } from '../math/distance';
-import { IGameObject } from '../gameobjects/IGameObject';
+import { IContainer } from '../gameobjects/container/IContainer';
 
-export function MoveToPosition <T extends IGameObject> (x: number, y: number, duration: number, ...children: T[]): T[]
+export function MoveToPosition <T extends IContainer> (x: number, y: number, duration: number, ...children: T[]): T[]
 {
     children.forEach(child =>
     {

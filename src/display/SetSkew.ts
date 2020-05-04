@@ -1,10 +1,10 @@
-import { IGameObject } from '../gameobjects/IGameObject';
+import { IContainer } from '../gameobjects/container/IContainer';
 
-export function SetSkew <T extends IGameObject> (skewX: number, skewY: number, ...children: T[]): T[]
+export function SetSkew <T extends IContainer> (skewX: number, skewY: number, ...children: T[]): T[]
 {
     children.forEach(child =>
     {
-        child.transform.setSkew(skewX, skewY);
+        child.setSkew(skewX, skewY);
     });
 
     return children;

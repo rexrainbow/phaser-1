@@ -34,7 +34,9 @@ export class StaticWorld extends GameObject implements IWorld
 
     constructor (scene: IScene)
     {
-        super(0, 0, 'StaticWorld');
+        super(0, 0);
+
+        this.type = 'StaticWorld';
 
         this.world = this;
 

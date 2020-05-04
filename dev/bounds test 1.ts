@@ -40,7 +40,7 @@ class Demo extends Scene
 
         const debug = new Sprite(0, 0, boundsDebug);
 
-        debug.transform.setOrigin(0, 0);
+        debug.setOrigin(0, 0);
 
         const ctx = (boundsDebug.image as HTMLCanvasElement).getContext('2d');
 
@@ -54,10 +54,9 @@ class Demo extends Scene
 
         On(this, 'update', () =>
         {
-            sprite.transform.rotation += 0.005;
-            sprite.transform.scaleX = Math.cos(i);
-            sprite.transform.scaleY = Math.sin(i);
-            sprite.transform.update();
+            sprite.rotation += 0.005;
+            sprite.scaleX = Math.cos(i);
+            sprite.scaleY = Math.sin(i);
 
             let b = sprite.bounds.get();
 

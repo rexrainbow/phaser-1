@@ -24,18 +24,6 @@ export interface IGameObject
     bounds: IBoundsComponent;
     input: IInputComponent;
 
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    rotation: number;
-    scaleX: number;
-    scaleY: number;
-    skewX: number;
-    skewY: number;
-    originX: number;
-    originY: number;
-
     isRenderable (): boolean;
     update (delta: number, time: number): void;
     destroy (reparentChildren?: IGameObject): void;

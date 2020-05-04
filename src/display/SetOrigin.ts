@@ -1,10 +1,10 @@
-import { IGameObject } from '../gameobjects/IGameObject';
+import { IContainer } from '../gameobjects/container/IContainer';
 
-export function SetOrigin <T extends IGameObject> (originX: number, originY: number, ...children: T[]): T[]
+export function SetOrigin <T extends IContainer> (originX: number, originY: number, ...children: T[]): T[]
 {
     children.forEach(child =>
     {
-        child.transform.setOrigin(originX, originY);
+        child.setOrigin(originX, originY);
     });
 
     return children;

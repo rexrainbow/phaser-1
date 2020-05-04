@@ -49,7 +49,7 @@ class Demo extends Scene
         const boundsDebug = CanvasTexture(800, 600);
         const debug = new Sprite(0, 0, boundsDebug);
 
-        debug.transform.setOrigin(0, 0);
+        debug.setOrigin(0, 0);
 
         const ctx = (boundsDebug.image as HTMLCanvasElement).getContext('2d');
 
@@ -66,10 +66,9 @@ class Demo extends Scene
 
             // parent.rotation += 0.005;
 
-            parent.transform.rotation += 0.005;
-            parent.transform.scaleX = Math.min(0.5, Math.cos(i));
-            parent.transform.scaleY = Math.min(0.5, Math.sin(i));
-            parent.transform.update();
+            parent.rotation += 0.005;
+            parent.scaleX = Math.min(0.5, Math.cos(i));
+            parent.scaleY = Math.min(0.5, Math.sin(i));
 
             let b = parent.bounds.get();
 

@@ -1,11 +1,12 @@
+import { Container } from '../container/Container';
 import { Frame } from '../../textures/Frame';
-import { GameObject } from '../GameObject';
 import { IGameObject } from '../IGameObject';
+import { ISprite } from './ISprite';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
 import { Texture } from '../../textures/Texture';
 
-export class Sprite extends GameObject
+export class Sprite extends Container implements ISprite
 {
     texture: Texture;
     frame: Frame;
@@ -17,12 +18,13 @@ export class Sprite extends GameObject
     vertexAlpha: Float32Array;
     vertexTint: Uint32Array;
 
-    private _tint: number = 0xffffff;
-    private _alpha: number = 1;
+    protected _tint: number = 0xffffff;
 
     constructor (x: number, y: number, texture: string | Texture, frame?: string | number)
     {
-        super(x, y, 'Sprite');
+        super(x, y);
+
+        this.type = 'Sprite';
 
         this.vertexData = new Float32Array(24).fill(0);
         this.vertexColor = new Uint32Array(4).fill(4294967295);
@@ -52,14 +54,9 @@ export class Sprite extends GameObject
         return (this.visible && this.willRender && this.hasTexture && this.alpha > 0);
     }
 
+    /*
     set originX (value: number)
     {
-        this.transform.setOriginX(value);
-
-        if (this.frame)
-        {
-            this.frame.setExtent(this);
-        }
     }
 
     set originY (value: number)
@@ -71,6 +68,7 @@ export class Sprite extends GameObject
             this.frame.setExtent(this);
         }
     }
+    */
 
     get alpha (): number
     {

@@ -4,7 +4,13 @@ export function UpdateLocalTransform (transform: ITransformComponent): void
 {
     const local = transform.local;
 
-    const { rotation, skewX, skewY, scaleX, scaleY, x, y } = transform;
+    const x = transform.position.x;
+    const y = transform.position.y;
+    const rotation = transform.rotation;
+    const scaleX = transform.scale.x;
+    const scaleY = transform.scale.y;
+    const skewX = transform.skew.x;
+    const skewY = transform.skew.y;
 
     local.set(
         Math.cos(rotation + skewY) * scaleX,

@@ -1,10 +1,10 @@
-import { IGameObject } from '../gameobjects/IGameObject';
+import { IContainer } from '../gameobjects/container/IContainer';
 
-export function SetPosition <T extends IGameObject> (x: number, y: number, ...children: T[]): T[]
+export function SetPosition <T extends IContainer> (x: number, y: number, ...children: T[]): T[]
 {
     children.forEach(child =>
     {
-        child.transform.setPosition(x, y);
+        child.setPosition(x, y);
     });
 
     return children;
