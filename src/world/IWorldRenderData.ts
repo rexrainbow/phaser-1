@@ -1,4 +1,4 @@
-import { ISprite } from '../gameobjects/sprite/ISprite';
+import { IGameObject } from '../gameobjects/IGameObject';
 import { IStaticCamera } from '../camera/IStaticCamera';
 
 export interface IWorldRenderData
@@ -8,5 +8,5 @@ export interface IWorldRenderData
     dirtyFrame: number;
     numRendered: number;
     numRenderable: number;
-    renderList: ISprite[];
+    renderList: IGameObject[];
 }

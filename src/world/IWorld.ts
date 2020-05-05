@@ -1,17 +1,7 @@
-import { Clock } from '../time/Clock';
-import { IGameObject } from '../gameobjects/IGameObject';
-import { IScene } from '../scenes/IScene';
-import { ISceneRenderData } from '../scenes/ISceneRenderData';
-import { IStaticCamera } from '../camera/IStaticCamera';
-import { IWorldRenderData } from './IWorldRenderData';
+import { IBaseWorld } from './IBaseWorld';
+import { ICamera } from '../camera/ICamera';
 
-export interface IWorld extends IGameObject
+export interface IWorld extends IBaseWorld
 {
-    scene: IScene;
-    clock: Clock;
-    camera: IStaticCamera;
-    renderData: IWorldRenderData;
-    forceRefresh: boolean;
-    render (renderData: ISceneRenderData): void;
-    shutdown (): void;
+    camera: ICamera;
 }
