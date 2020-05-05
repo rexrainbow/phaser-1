@@ -1,4 +1,3 @@
-import { CreateWorldRenderData, MergeRenderData, ResetWorldRenderData } from '.';
 import { Off, On, Once } from '../events';
 
 import { Clock } from '../time';
@@ -10,7 +9,9 @@ import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorldRenderData } from './IWorldRenderData';
+import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren } from '../display';
+import { ResetWorldRenderData } from './ResetWorldRenderData';
 
 export class BaseWorld extends GameObject implements IBaseWorld
 {
@@ -34,8 +35,6 @@ export class BaseWorld extends GameObject implements IBaseWorld
         this.world = this;
 
         this.clock = new Clock(this);
-
-        this.renderData = CreateWorldRenderData(this.camera);
 
         this._updateListener = On(scene, 'update', (delta: number, time: number) => this.update(delta, time));
         this._renderListener = On(scene, 'render', (renderData: ISceneRenderData) => this.sceneRender(renderData));

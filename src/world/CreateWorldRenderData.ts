@@ -1,7 +1,7 @@
-import { IStaticCamera } from '../camera/IStaticCamera';
+import { ICamera } from '../camera/ICamera';
 import { IWorldRenderData } from './IWorldRenderData';
 
-export function CreateWorldRenderData (camera: IStaticCamera): IWorldRenderData
+export function CreateWorldRenderData (camera: ICamera): IWorldRenderData
 {
     return {
         camera,

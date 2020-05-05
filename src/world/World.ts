@@ -1,5 +1,6 @@
 import { BaseWorld } from './BaseWorld';
 import { Camera } from '../camera/Camera';
+import { CreateWorldRenderData } from './CreateWorldRenderData';
 import { ICamera } from '../camera/ICamera';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
@@ -21,6 +22,8 @@ export class World extends BaseWorld implements IWorld
         this.type = 'World';
 
         this.camera = new Camera();
+
+        this.renderData = CreateWorldRenderData(this.camera);
     }
 
     buildRenderList (root: IGameObject, renderData: IWorldRenderData): void

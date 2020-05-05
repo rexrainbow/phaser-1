@@ -1,4 +1,5 @@
 import { BaseWorld } from './BaseWorld';
+import { CreateWorldRenderData } from './CreateWorldRenderData';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
@@ -22,6 +23,8 @@ export class StaticWorld extends BaseWorld implements IStaticWorld
         this.type = 'StaticWorld';
 
         this.camera = new StaticCamera();
+
+        this.renderData = CreateWorldRenderData(this.camera);
     }
 
     sceneRender (sceneRenderData: ISceneRenderData): void
