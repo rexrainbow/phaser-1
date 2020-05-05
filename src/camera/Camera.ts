@@ -53,85 +53,86 @@ export class Camera implements ICamera
     {
         const matrix = this.matrix;
 
-        this.identity(matrix);
-        this.translateCamera(matrix, this.position);
-        this.rotateCamera(matrix, this.rotation);
-        // this.scaleCamera(matrix, this.scale);
+        const origin = new Vec2(-this.position.x + 400, -this.position.y + 300);
+
+        this.fromRotationTranslationScaleOrigin(matrix, this.position, this.scale, origin);
     }
 
-    identity (matrix: Float32Array): Float32Array
+    quatRotateZ (rad: number): number[]
     {
-        matrix.set([ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ]);
+        rad *= 0.5;
 
-        return matrix;
+        const ax = 0;
+        const ay = 0;
+        const az = 0;
+        const aw = 1;
+        const bz = Math.sin(rad);
+        const bw = Math.cos(rad);
+
+        const out = [ 0, 0, bz, bw ];
+
+        // out[0] = ax * bw + ay * bz;
+        // out[1] = ay * bw - ax * bz;
+        // out[2] = az * bw + aw * bz;
+        // out[3] = aw * bw - az * bz;
+
+        return out;
     }
 
-    translateCamera (matrix: Float32Array, position: IVec2): Float32Array
+    fromRotationTranslationScaleOrigin (matrix: Float32Array, v: IVec2, s: IVec2, o: IVec2): Float32Array
     {
-        const x = position.x;
-        const y = position.y;
-        const z = 0;
+        // Quaternion math
+        const q = this.quatRotateZ(this.rotation);
 
-        matrix[12] = matrix[0] * x + matrix[4] * y + matrix[8] * z + matrix[12];
-        matrix[13] = matrix[1] * x + matrix[5] * y + matrix[9] * z + matrix[13];
-        matrix[14] = matrix[2] * x + matrix[6] * y + matrix[10] * z + matrix[14];
-        matrix[15] = matrix[3] * x + matrix[7] * y + matrix[11] * z + matrix[15];
+        let x = q[0], y = q[1], z = q[2], w = q[3];
+        let x2 = x + x;
+        let y2 = y + y;
+        let z2 = z + z;
 
-        return matrix;
-    }
+        let xx = x * x2;
+        let xy = x * y2;
+        let xz = x * z2;
+        let yy = y * y2;
+        let yz = y * z2;
+        let zz = z * z2;
+        let wx = w * x2;
+        let wy = w * y2;
+        let wz = w * z2;
 
-    rotateCamera (matrix: Float32Array, rotation: number): Float32Array
-    {
-        this.translateCamera(matrix, new Vec2(this.position.x + 400, this.position.y + 300));
+        let sx = s.x;
+        let sy = s.y;
+        let sz = 0;
 
-        const s = Math.sin(rotation);
-        const c = Math.cos(rotation);
+        let ox = o.x;
+        let oy = o.y;
+        let oz = 0;
 
-        const a00 = matrix[0];
-        const a01 = matrix[1];
-        const a02 = matrix[2];
-        const a03 = matrix[3];
+        let out0 = (1 - (yy + zz)) * sx;
+        let out1 = (xy + wz) * sx;
+        let out2 = (xz - wy) * sx;
+        let out4 = (xy - wz) * sy;
+        let out5 = (1 - (xx + zz)) * sy;
+        let out6 = (yz + wx) * sy;
+        let out8 = (xz + wy) * sz;
+        let out9 = (yz - wx) * sz;
+        let out10 = (1 - (xx + yy)) * sz;
 
-        const a10 = matrix[4];
-        const a11 = matrix[5];
-        const a12 = matrix[6];
-        const a13 = matrix[7];
-
-        // Perform axis-specific matrix multiplication
-        matrix[0] = a00 * c + a10 * s;
-        matrix[1] = a01 * c + a11 * s;
-        matrix[2] = a02 * c + a12 * s;
-        matrix[3] = a03 * c + a13 * s;
-        matrix[4] = a10 * c - a00 * s;
-        matrix[5] = a11 * c - a01 * s;
-        matrix[6] = a12 * c - a02 * s;
-        matrix[7] = a13 * c - a03 * s;
-
-        this.translateCamera(matrix, new Vec2(this.position.x - 400, this.position.y - 300));
-
-        return matrix;
-    }
-
-    scaleCamera (matrix: Float32Array, scale: IVec2): Float32Array
-    {
-        const x = scale.x;
-        const y = scale.y;
-        const z = 0;
-
-        matrix[0] = matrix[0] * x;
-        matrix[1] = matrix[1] * x;
-        matrix[2] = matrix[2] * x;
-        matrix[3] = matrix[3] * x;
-
-        matrix[4] = matrix[4] * y;
-        matrix[5] = matrix[5] * y;
-        matrix[6] = matrix[6] * y;
-        matrix[7] = matrix[7] * y;
-
-        matrix[8] = matrix[8] * z;
-        matrix[9] = matrix[9] * z;
-        matrix[10] = matrix[10] * z;
-        matrix[11] = matrix[11] * z;
+        matrix[0] = out0;
+        matrix[1] = out1;
+        matrix[2] = out2;
+        matrix[3] = 0;
+        matrix[4] = out4;
+        matrix[5] = out5;
+        matrix[6] = out6;
+        matrix[7] = 0;
+        matrix[8] = out8;
+        matrix[9] = out9;
+        matrix[10] = out10;
+        matrix[11] = 0;
+        matrix[12] = v.x + ox - (out0 * ox + out4 * oy + out8 * oz);
+        matrix[13] = v.y + oy - (out1 * ox + out5 * oy + out9 * oz);
+        matrix[14] = 0 + oz - (out2 * ox + out6 * oy + out10 * oz);
+        matrix[15] = 1;
 
         return matrix;
     }
