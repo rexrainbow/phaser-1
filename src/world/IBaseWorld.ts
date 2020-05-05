@@ -1,5 +1,5 @@
 import { Clock } from '../time/Clock';
-import { ICamera } from '../camera/ICamera';
+import { IBaseCamera } from '../camera/IBaseCamera';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
@@ -9,7 +9,7 @@ export interface IBaseWorld extends IGameObject
 {
     scene: IScene;
     clock: Clock;
-    camera: ICamera;
+    camera: IBaseCamera;
     renderData: IWorldRenderData;
     forceRefresh: boolean;
     scanChildren (root: IGameObject, renderData: IWorldRenderData): void;

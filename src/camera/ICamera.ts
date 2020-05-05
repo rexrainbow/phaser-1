@@ -1,19 +1,9 @@
-import { IMatrix2D } from '../math/matrix2d/IMatrix2D';
-import { IRectangle } from '../geom/rectangle/IRectangle';
-import { IRenderer } from '../renderer/IRenderer';
-import { IWorld } from '../world/IWorld';
+import { IBaseCamera } from './IBaseCamera';
+import { Vec2Callback } from '../math/vec2';
 
-export interface ICamera
+export interface ICamera extends IBaseCamera
 {
-    world: IWorld;
-    matrix: Float32Array;
-    renderer: IRenderer;
-    type: string;
-    width: number;
-    height: number;
-    bounds: IRectangle;
-    dirtyRender: boolean;
-    worldTransform: IMatrix2D;
-    reset (): void;
-    destroy (): void;
+    position: Vec2Callback;
+    scale: Vec2Callback;
+    rotation: number;
 }

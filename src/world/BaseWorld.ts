@@ -2,8 +2,8 @@ import { Off, On, Once } from '../events';
 
 import { Clock } from '../time';
 import { GameObject } from '../gameobjects';
+import { IBaseCamera } from '../camera/IBaseCamera';
 import { IBaseWorld } from './IBaseWorld';
-import { ICamera } from '../camera/ICamera';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
@@ -18,7 +18,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
     scene: IScene;
 
     clock: Clock;
-    camera: ICamera;
+    camera: IBaseCamera;
     renderData: IWorldRenderData;
     forceRefresh: boolean = false;
 

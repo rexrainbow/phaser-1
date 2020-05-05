@@ -1,9 +1,9 @@
-import { ICamera } from '../camera/ICamera';
+import { IBaseCamera } from '../camera/IBaseCamera';
 import { IGameObject } from '../gameobjects/IGameObject';
 
 export interface IWorldRenderData
 {
-    camera: ICamera;
+    camera: IBaseCamera;
     gameFrame: number;
     dirtyFrame: number;
     numRendered: number;
