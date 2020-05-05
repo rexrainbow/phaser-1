@@ -155,6 +155,6 @@ export class CanvasRenderer
 
     batchSpriteBuffer <T extends ISpriteBatch> (batch: T): void
     {
-
+        //  TODO: Implement?
     }
 }
