@@ -20,7 +20,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        loader.setPath('/phaser4-examples/public/assets/');
+        // loader.setPath('/phaser4-examples/public/assets/');
+        loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('marker', 'drawcursor.png'));
         loader.add(SpriteSheetFile('fruits', '32x32-item-pack.png', { frameWidth: 32 }));
@@ -34,7 +35,7 @@ class Demo extends Scene
 
         const world = new World(this);
 
-        world.enableCameraCull = false;
+        // world.enableCameraCull = false;
 
         //  3 x 3 - 800 x 600 screens x 100 sprites per screen = 900 sprites
 
@@ -68,6 +69,8 @@ class Demo extends Scene
 
         const keyboard = new Keyboard();
 
+        const rot = (Math.PI) / 16;
+
         On(keyboard, 'keydown-ArrowLeft', () => {
             world.camera.position.x -= 4;
         });
@@ -78,18 +81,20 @@ class Demo extends Scene
 
         On(keyboard, 'keydown-ArrowUp', () => {
             world.camera.position.y -= 4;
+            console.log('up', world.camera.position.y);
         });
 
         On(keyboard, 'keydown-ArrowDown', () => {
             world.camera.position.y += 4;
+            console.log('dw', world.camera.position.y);
         });
 
         On(keyboard, 'keydown-a', () => {
-            world.camera.rotation -= 0.1;
+            world.camera.rotation -= rot;
         });
 
         On(keyboard, 'keydown-d', () => {
-            world.camera.rotation += 0.1;
+            world.camera.rotation += rot;
         });
 
         On(keyboard, 'keydown-w', () => {
