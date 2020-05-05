@@ -1,5 +1,6 @@
 import { IGameObject } from '../IGameObject';
 import { IRenderer } from '../../renderer/IRenderer';
+import { SpriteBatchAddConfig } from './SpriteBatchAddConfig';
 import { Texture } from '../../textures';
 
 export interface ISpriteBatch extends IGameObject
@@ -19,7 +20,8 @@ export interface ISpriteBatch extends IGameObject
     resetBuffers (): void;
     setMaxSize (value: number): this;
     setTexture (key: string | Texture): this;
-    add (x: number, y: number, frame?: string | number): this;
+    add (config: SpriteBatchAddConfig): this;
+    addXY (x: number, y: number, frame?: string | number): this;
     updateTextureIndex (): void;
     render <T extends IRenderer> (renderer: T): void;
 }

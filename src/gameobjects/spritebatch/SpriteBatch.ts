@@ -1,14 +1,17 @@
 import { Clamp } from '../../math/Clamp';
 import { DeleteFramebuffer } from '../../renderer/webgl1/DeleteFramebuffer';
+import { Frame } from '../../textures';
 import { GL } from '../../renderer/webgl1/GL';
-import { GameObject } from '../GameObject';
 import { GetVerticesFromValues } from '../components/transform/GetVerticesFromValues';
 import { IRenderer } from '../../renderer/IRenderer';
 import { ISpriteBatch } from './ISpriteBatch';
+import { Layer } from '../layer/Layer';
+import { PackColor } from '../../renderer/webgl1/PackColor';
+import { SpriteBatchAddConfig } from './SpriteBatchAddConfig';
 import { Texture } from '../../textures/Texture';
 import { TextureManagerInstance } from '../../textures/TextureManagerInstance';
 
-export class SpriteBatch extends GameObject implements ISpriteBatch
+export class SpriteBatch extends Layer implements ISpriteBatch
 {
     data: ArrayBuffer;
     vertexViewF32: Float32Array;
@@ -30,6 +33,7 @@ export class SpriteBatch extends GameObject implements ISpriteBatch
         super();
 
         this.type = 'SpriteBatch';
+        this.willRender = true;
 
         this.setTexture(texture);
         this.setMaxSize(maxSize);
@@ -45,7 +49,8 @@ export class SpriteBatch extends GameObject implements ISpriteBatch
             ibo.push(i + 0, i + 1, i + 2, i + 2, i + 3, i + 0);
         }
 
-        this.data = new ArrayBuffer(this.maxSize * 24);
+        //  96 = The size, in bytes, of a single quad in the array buffer
+        this.data = new ArrayBuffer(this.maxSize * 96);
         this.index = new Uint16Array(ibo);
 
         this.vertexViewF32 = new Float32Array(this.data);
@@ -126,43 +131,20 @@ export class SpriteBatch extends GameObject implements ISpriteBatch
         return this;
     }
 
-    add (x: number, y: number, frame?: string | number): this
+    private addToBatch (frame: Frame, color: number, x0: number, y0: number, x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): this
     {
-        const textureFrame = this.texture.getFrame(frame);
-
-        let left: number;
-        let right: number;
-        let top: number;
-        let bottom: number;
-
-        const originX = 0;
-        const originY = 0;
-
-        if (textureFrame.trimmed)
+        if (this.count >= this.maxSize)
         {
-            left = textureFrame.spriteSourceSizeX - (originX * textureFrame.sourceSizeWidth);
-            right = left + textureFrame.spriteSourceSizeWidth;
-
-            top = textureFrame.spriteSourceSizeY - (originY * textureFrame.sourceSizeHeight);
-            bottom = top + textureFrame.spriteSourceSizeHeight;
-        }
-        else
-        {
-            left = -originX * textureFrame.sourceSizeWidth;
-            right = left + textureFrame.sourceSizeWidth;
-
-            top = -originY * textureFrame.sourceSizeHeight;
-            bottom = top + textureFrame.sourceSizeHeight;
+            console.warn('SpriteBatch full');
+            return this;
         }
 
-        const { u0, u1, v0, v1 } = textureFrame;
-        const { x0, y0, x1, y1, x2, y2, x3, y3 } = GetVerticesFromValues(left, right, top, bottom, x, y);
+        const { u0, u1, v0, v1 } = frame;
 
         const F32 = this.vertexViewF32;
         const U32 = this.vertexViewU32;
         const offset = this.count * 24;
         const textureIndex = (this.texture.binding) ? this.texture.binding.index : 0;
-        const packedColor = 4294967295;
 
         //  top left
         F32[offset + 0] = x0;
@@ -170,7 +152,7 @@ export class SpriteBatch extends GameObject implements ISpriteBatch
         F32[offset + 2] = u0;
         F32[offset + 3] = v0;
         F32[offset + 4] = textureIndex;
-        U32[offset + 5] = packedColor;
+        U32[offset + 5] = color;
 
         //  bottom left
         F32[offset + 6] = x1;
@@ -178,7 +160,7 @@ export class SpriteBatch extends GameObject implements ISpriteBatch
         F32[offset + 8] = u0;
         F32[offset + 9] = v1;
         F32[offset + 10] = textureIndex;
-        U32[offset + 11] = packedColor;
+        U32[offset + 11] = color;
 
         //  bottom right
         F32[offset + 12] = x2;
@@ -186,7 +168,7 @@ export class SpriteBatch extends GameObject implements ISpriteBatch
         F32[offset + 14] = u1;
         F32[offset + 15] = v1;
         F32[offset + 16] = textureIndex;
-        U32[offset + 17] = packedColor;
+        U32[offset + 17] = color;
 
         //  top right
         F32[offset + 18] = x3;
@@ -194,13 +176,50 @@ export class SpriteBatch extends GameObject implements ISpriteBatch
         F32[offset + 20] = u1;
         F32[offset + 21] = v0;
         F32[offset + 22] = textureIndex;
-        U32[offset + 23] = packedColor;
+        U32[offset + 23] = color;
 
         this.dirty.setRender();
 
         this.count++;
 
         return this;
+    }
+
+    add (config: SpriteBatchAddConfig): this
+    {
+        const {
+            frame = null,
+            x = 0,
+            y = 0,
+            rotation = 0,
+            scaleX = 1,
+            scaleY = 1,
+            skewX = 0,
+            skewY = 0,
+            originX = 0,
+            originY = 0,
+            alpha = 1,
+            tint = 0xffffff
+        } = config;
+
+        const textureFrame = this.texture.getFrame(frame);
+
+        const { left, right, top, bottom } = textureFrame.getExtent(originX, originY);
+        const { x0, y0, x1, y1, x2, y2, x3, y3 } = GetVerticesFromValues(left, right, top, bottom, x, y, rotation, scaleX, scaleY, skewX, skewY);
+
+        const packedColor = PackColor(tint, alpha);
+
+        return this.addToBatch(textureFrame, packedColor, x0, y0, x1, y1, x2, y2, x3, y3);
+    }
+
+    addXY (x: number, y: number, frame?: string | number): this
+    {
+        const textureFrame = this.texture.getFrame(frame);
+
+        const { left, right, top, bottom } = textureFrame.getExtent(0, 0);
+        const { x0, y0, x1, y1, x2, y2, x3, y3 } = GetVerticesFromValues(left, right, top, bottom, x, y);
+
+        return this.addToBatch(textureFrame, 4294967295, x0, y0, x1, y1, x2, y2, x3, y3);
     }
 
     updateTextureIndex (): void
