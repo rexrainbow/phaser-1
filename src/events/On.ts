@@ -1,7 +1,8 @@
 import { EventInstance } from './EventInstance';
 import { IEventEmitter } from './IEventEmitter';
+import { IEventInstance } from './IEventInstance';
 
-export function On (emitter: IEventEmitter, event: string, callback: Function, context: unknown = emitter, once: boolean = false): IEventEmitter
+export function On (emitter: IEventEmitter, event: string, callback: Function, context: unknown = emitter, once: boolean = false): IEventInstance
 {
     if (typeof callback !== 'function')
     {
@@ -20,5 +21,5 @@ export function On (emitter: IEventEmitter, event: string, callback: Function, c
         listeners.add(listener);
     }
 
-    return emitter;
+    return listener;
 }
