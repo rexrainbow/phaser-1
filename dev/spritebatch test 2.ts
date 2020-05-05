@@ -34,12 +34,15 @@ class Demo extends Scene
 
     create ()
     {
-        const batch = new SpriteBatch(16, '64');
+        const batch = new SpriteBatch(7, '256');
 
-        batch.addXY(100, 100);
-        batch.addXY(200, 200);
-        batch.addXY(300, 300);
-        batch.addXY(400, 400);
+        batch.add({ x: 512, y: 300, tint: 0xff0000 });
+        batch.add({ alpha: 0.5 });
+        batch.add({ x: 256, y: 0, rotation: 0.2, alpha: 0.5 });
+        batch.add({ x: 512, y: 0, scaleX: 0.25, scaleY: 0.5 });
+        batch.add({ x: 100, y: 300, skewX: 0.25, skewY: 0.25 });
+        batch.add({ x: 300, y: 300, alpha: 0.2 });
+        batch.add({ x: 500, y: 150, alpha: 0.2, tint: 0x0000ff });
 
         AddChild(this.world, batch);
     }

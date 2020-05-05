@@ -12,7 +12,10 @@
 // import runTest from './vec2 callback 1';
 // import runTest from './layer test 1';
 // import runTest from './renderlayer test 1';
+// import runTest from './spritebatch test 1';
+// import runTest from './spritebatch test 2';
+// import runTest from './spritebatch test 3';
 
-import runTest from './spritebatch test 1';
+import runTest from './spritebatch test 4';
 
 runTest();
