@@ -82,6 +82,36 @@ export class Frame
         this.spriteSourceSizeHeight = h;
     }
 
+    getExtent (originX: number, originY: number): { left: number; right: number; top: number; bottom: number }
+    {
+        const sourceSizeWidth = this.sourceSizeWidth;
+        const sourceSizeHeight = this.sourceSizeHeight;
+
+        let left: number;
+        let right: number;
+        let top: number;
+        let bottom: number;
+
+        if (this.trimmed)
+        {
+            left = this.spriteSourceSizeX - (originX * sourceSizeWidth);
+            right = left + this.spriteSourceSizeWidth;
+
+            top = this.spriteSourceSizeY - (originY * sourceSizeHeight);
+            bottom = top + this.spriteSourceSizeHeight;
+        }
+        else
+        {
+            left = -originX * sourceSizeWidth;
+            right = left + sourceSizeWidth;
+
+            top = -originY * sourceSizeHeight;
+            bottom = top + sourceSizeHeight;
+        }
+
+        return { left, right, top, bottom };
+    }
+
     setExtent (child: IGameObject): void
     {
         const transform = child.transform;
@@ -97,11 +127,6 @@ export class Frame
         let width: number;
         let height: number;
 
-        // let left: number;
-        // let right: number;
-        // let top: number;
-        // let bottom: number;
-
         if (this.trimmed)
         {
             x = this.spriteSourceSizeX - (originX * sourceSizeWidth);
@@ -109,28 +134,15 @@ export class Frame
 
             width = this.spriteSourceSizeWidth;
             height = this.spriteSourceSizeHeight;
-
-            // left = this.spriteSourceSizeX - (originX * sourceSizeWidth);
-            // right = left + this.spriteSourceSizeWidth;
-
-            // top = this.spriteSourceSizeY - (originY * sourceSizeHeight);
-            // bottom = top + this.spriteSourceSizeHeight;
         }
         else
         {
             x = -originX * sourceSizeWidth;
             y = -originY * sourceSizeHeight;
+
             width = sourceSizeWidth;
             height = sourceSizeHeight;
-
-            // left = -originX * sourceSizeWidth;
-            // right = left + sourceSizeWidth;
-
-            // top = -originY * sourceSizeHeight;
-            // bottom = top + sourceSizeHeight;
         }
-
-        // transform.setExtent(left, right, top, bottom);
 
         transform.setExtent(x, y, width, height);
     }
