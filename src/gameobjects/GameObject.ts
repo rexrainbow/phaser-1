@@ -1,17 +1,18 @@
 import { BoundsComponent, DirtyComponent, InputComponent, TransformComponent } from './components';
 
 import { DestroyChildren } from '../display/DestroyChildren';
+import { IBaseWorld } from '../world/IBaseWorld';
 import { IBoundsComponent } from './components/bounds/IBoundsComponent';
 import { IDirtyComponent } from './components/dirty/IDirtyComponent';
 import { IGameObject } from './IGameObject';
 import { IInputComponent } from './components/input/IInputComponent';
+import { IRenderer } from '../renderer/IRenderer';
 import { ITransformComponent } from './components/transform/ITransformComponent';
-import { IWorld } from '../world/IWorld';
 import { ReparentChildren } from '../display/ReparentChildren';
 
 export class GameObject
 {
-    world: IWorld;
+    world: IBaseWorld;
     type: string = 'GameObject';
     name: string = '';
 
@@ -61,6 +62,12 @@ export class GameObject
                 }
             }
         }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    render <T extends IRenderer> (renderer: T): void
+    {
+        //  Empty for other classes to use
     }
 
     get numChildren (): number
