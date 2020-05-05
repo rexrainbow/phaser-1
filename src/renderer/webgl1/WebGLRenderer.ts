@@ -406,7 +406,7 @@ export class WebGLRenderer
 
         gl.drawElements(gl.TRIANGLES, batch.count * shader.quadIndexSize, gl.UNSIGNED_SHORT, 0);
 
-        shader.prevCount = shader.count;
+        shader.prevCount = batch.count;
 
         this.flushTotal++;
 
