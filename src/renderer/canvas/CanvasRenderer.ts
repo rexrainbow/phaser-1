@@ -153,6 +153,7 @@ export class CanvasRenderer
         ctx.restore();
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     batchSpriteBuffer <T extends ISpriteBatch> (batch: T): void
     {
         //  TODO: Implement?
