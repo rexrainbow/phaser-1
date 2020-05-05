@@ -82,57 +82,81 @@ export class Camera implements ICamera
     fromRotationTranslationScaleOrigin (matrix: Float32Array, v: IVec2, s: IVec2, o: IVec2): Float32Array
     {
         // Quaternion math
-        const q = this.quatRotateZ(this.rotation);
+        // const q = this.quatRotateZ(this.rotation);
 
-        let x = q[0], y = q[1], z = q[2], w = q[3];
-        let x2 = x + x;
-        let y2 = y + y;
-        let z2 = z + z;
+        const x = 0;
+        const y = 0;
+        const z = Math.sin(this.rotation);
+        const w = Math.cos(this.rotation);
 
-        let xx = x * x2;
-        let xy = x * y2;
-        let xz = x * z2;
-        let yy = y * y2;
-        let yz = y * z2;
-        let zz = z * z2;
-        let wx = w * x2;
-        let wy = w * y2;
-        let wz = w * z2;
+        // let x = q[0], y = q[1], z = q[2], w = q[3];
+        let x2 = x + x; // 0
+        let y2 = y + y; // 0
+        let z2 = z + z; // Math.sin(rotation) + Math.sin(rotation)
 
-        let sx = s.x;
-        let sy = s.y;
-        let sz = 0;
+        let xx = x * x2; // 0
+        let xy = x * y2; // 0
+        let xz = x * z2; // 0
+        let yy = y * y2; // 0
+        let yz = y * z2; // 0
+        let zz = z * z2; // Math.sin(rotation) * z2
+        let wx = w * x2; // 0
+        let wy = w * y2; // 0
+        let wz = w * z2; // Math.cos(rotation) * z2
 
-        let ox = o.x;
-        let oy = o.y;
-        let oz = 0;
+        let sx = s.x; // position.x
+        let sy = s.y; // position.y
+        let sz = 0;   // 0
 
-        let out0 = (1 - (yy + zz)) * sx;
-        let out1 = (xy + wz) * sx;
-        let out2 = (xz - wy) * sx;
-        let out4 = (xy - wz) * sy;
-        let out5 = (1 - (xx + zz)) * sy;
-        let out6 = (yz + wx) * sy;
-        let out8 = (xz + wy) * sz;
-        let out9 = (yz - wx) * sz;
-        let out10 = (1 - (xx + yy)) * sz;
+        let ox = o.x; // origin x
+        let oy = o.y; // origin y
+        let oz = 0;   // 0
+
+        let out0 = (1 - (yy + zz)) * sx; // (1 - zz) * sx
+        let out1 = (xy + wz) * sx; // wz * sx
+        let out2 = (xz - wy) * sx; // -wy * sx
+        let out4 = (xy - wz) * sy; // -wz * sy
+        let out5 = (1 - (xx + zz)) * sy; // (1 - zz) * sy
+        let out6 = (yz + wx) * sy; // 0
+        let out8 = (xz + wy) * sz; // 0
+        let out9 = (yz - wx) * sz; // 0
+        let out10 = (1 - (xx + yy)) * sz; // 0
+
+        // [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ]
 
         matrix[0] = out0;
         matrix[1] = out1;
         matrix[2] = out2;
-        matrix[3] = 0;
+        // matrix[3] = 0;
         matrix[4] = out4;
         matrix[5] = out5;
-        matrix[6] = out6;
-        matrix[7] = 0;
-        matrix[8] = out8;
-        matrix[9] = out9;
-        matrix[10] = out10;
-        matrix[11] = 0;
-        matrix[12] = v.x + ox - (out0 * ox + out4 * oy + out8 * oz);
-        matrix[13] = v.y + oy - (out1 * ox + out5 * oy + out9 * oz);
-        matrix[14] = 0 + oz - (out2 * ox + out6 * oy + out10 * oz);
-        matrix[15] = 1;
+        // matrix[6] = out6;
+        // matrix[7] = 0;
+        // matrix[8] = out8;
+        // matrix[9] = out9;
+        matrix[10] = 0;
+        // matrix[11] = 0;
+        matrix[12] = v.x + ox - (out0 * ox + out4 * oy);
+        matrix[13] = v.y + oy - (out1 * ox + out5 * oy);
+        matrix[14] = 0 + oz - (out2 * ox + out6 * oy);
+        // matrix[15] = 1;
+
+        // matrix[0] = out0;
+        // matrix[1] = out1;
+        // matrix[2] = out2;
+        // matrix[3] = 0;
+        // matrix[4] = out4;
+        // matrix[5] = out5;
+        // matrix[6] = out6;
+        // matrix[7] = 0;
+        // matrix[8] = out8;
+        // matrix[9] = out9;
+        // matrix[10] = out10;
+        // matrix[11] = 0;
+        // matrix[12] = v.x + ox - (out0 * ox + out4 * oy + out8 * oz);
+        // matrix[13] = v.y + oy - (out1 * ox + out5 * oy + out9 * oz);
+        // matrix[14] = 0 + oz - (out2 * ox + out6 * oy + out10 * oz);
+        // matrix[15] = 1;
 
         return matrix;
     }
