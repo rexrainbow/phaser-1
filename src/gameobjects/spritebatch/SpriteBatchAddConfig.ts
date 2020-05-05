@@ -1,5 +1,3 @@
-import { Frame } from '../../textures/Frame';
-
 export type SpriteBatchAddConfig = {
     frame?: string | number;
     x?: number;
