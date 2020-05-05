@@ -1,11 +1,11 @@
 import { IMatrix2D } from '../math/matrix2d/IMatrix2D';
 import { IRectangle } from '../geom/rectangle/IRectangle';
 import { IRenderer } from '../renderer/IRenderer';
-import { IStaticWorld } from '../world/IStaticWorld';
+import { IWorld } from '../world/IWorld';
 
-export interface IStaticCamera
+export interface ICamera
 {
-    world: IStaticWorld;
+    world: IWorld;
     matrix: Float32Array;
     renderer: IRenderer;
     type: string;

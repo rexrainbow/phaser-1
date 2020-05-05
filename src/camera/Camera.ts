@@ -1,13 +1,13 @@
 import { GameInstance } from '../GameInstance';
+import { ICamera } from './ICamera';
 import { IRenderer } from '../renderer/IRenderer';
-import { IStaticCamera } from './IStaticCamera';
-import { IStaticWorld } from '../world/IStaticWorld';
+import { IWorld } from '../world/IWorld';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
 import { Rectangle } from '../geom/rectangle/Rectangle';
 
-export class StaticCamera implements IStaticCamera
+export class Camera implements ICamera
 {
-    world: IStaticWorld;
+    world: IWorld;
     matrix: Float32Array;
     renderer: IRenderer;
     type: string;
@@ -21,7 +21,7 @@ export class StaticCamera implements IStaticCamera
 
     constructor ()
     {
-        this.type = 'StaticCamera';
+        this.type = 'Camera';
 
         this.dirtyRender = true;
 
