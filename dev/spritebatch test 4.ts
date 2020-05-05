@@ -41,7 +41,7 @@ class Demo extends Scene
             const x = Between(0, 800 - 32);
             const y = Between(0, 600 - 32);
             const frame = Between(0, 35);
-            const rotation = FloatBetween(-0.5, 0.5);
+            const rotation = FloatBetween(-1, 1);
             const scale = FloatBetween(0.5, 2);
 
             batch.add({ frame, x, y, rotation, scaleX: scale, scaleY: scale });
