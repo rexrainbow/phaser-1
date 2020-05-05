@@ -47,9 +47,7 @@ const DistPackagePlugin = {
 const filterConfig = {
     extensions: /\.ts/,
     exclude: [
-        /src\\_wip/,
         /src\\stats/,
-        /src\/_wip/,
         /src\/stats/
     ]
 };

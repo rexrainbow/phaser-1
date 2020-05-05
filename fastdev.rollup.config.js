@@ -5,13 +5,15 @@ import typescript from '@rollup/plugin-typescript';
 
 // import filesize from 'rollup-plugin-filesize';
 
-
-
 const extensions = [
     '.js', '.jsx', '.ts', '.tsx'
 ];
 
 export default {
+
+    watch: {
+        include: 'dev/*.ts'
+    },
 
     input: './dev/index.ts',
 
@@ -37,7 +39,6 @@ export default {
 
         typescript({
             exclude: [
-                './src/_wip/**/*',
                 './src/stats/**/*'
             ],
             tsconfig: './fastdev.tsconfig.json'

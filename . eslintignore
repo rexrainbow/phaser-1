@@ -1,6 +1,5 @@
 /node_modules/*
 /dist/*
 /dev/*
-/src/_wip/*
 /src/stats/*
 **/*.js
