@@ -52,6 +52,7 @@ export class StaticCamera implements IStaticCamera
     destroy (): void
     {
         this.world = null;
+        this.worldTransform = null;
         this.renderer = null;
         this.matrix = null;
         this.bounds = null;
