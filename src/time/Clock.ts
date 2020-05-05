@@ -1,5 +1,5 @@
 import { ITimerEvent } from './ITimerEvent';
-import { IWorld } from '../world/IWorld';
+import { IWorld } from '../world/IBaseWorld';
 
 export class Clock
 {

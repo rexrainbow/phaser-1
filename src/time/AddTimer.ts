@@ -1,9 +1,9 @@
+import { IBaseWorld } from '../world/IBaseWorld';
 import { ITimerEvent } from './ITimerEvent';
 import { ITimerEventConfig } from './ITimerEventConfig';
-import { IWorld } from '../world/IWorld';
 import { NOOP } from './NOOP';
 
-export function AddTimer (world: IWorld, config: ITimerEventConfig): void
+export function AddTimer (world: IBaseWorld, config: ITimerEventConfig): void
 {
     const {
         duration = 0,

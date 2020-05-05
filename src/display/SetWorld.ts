@@ -1,7 +1,7 @@
+import { IBaseWorld } from '../world/IBaseWorld';
 import { IGameObject } from '../gameobjects/IGameObject';
-import { IWorld } from '../world/IWorld';
 
-export function SetWorld <T extends IGameObject> (world: IWorld, ...children: T[]): T[]
+export function SetWorld <T extends IGameObject> (world: IBaseWorld, ...children: T[]): T[]
 {
     children.forEach(child =>
     {
