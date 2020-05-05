@@ -40,7 +40,7 @@ export class WebGLRenderer
     tempTextures: WebGLTexture[] = [];
 
     clearBeforeRender: boolean = true;
-    optimizeRedraw: boolean = false;
+    optimizeRedraw: boolean = true;
     autoResize: boolean = true;
 
     contextLost: boolean = false;
@@ -394,25 +394,15 @@ export class WebGLRenderer
         if (binding.indexCounter < this.startActiveTexture)
         {
             this.requestTexture(texture);
-
-            if (binding.dirtyIndex)
-            {
-                batch.updateTextureIndex();
-                binding.dirtyIndex = false;
-            }
         }
+
+        batch.updateTextureIndex();
 
         const gl = this.gl;
 
-        if (batch.dirty.render)
-        {
-            gl.bufferData(gl.ARRAY_BUFFER, batch.data, gl.STATIC_DRAW);
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, shader.index, gl.STATIC_DRAW);
+        shader.bindBuffers(batch.indexBuffer, batch.vertexBuffer);
 
-            batch.dirty.render = false;
-        }
-
-        shader.bindBuffers(shader.indexBuffer, batch.vertexBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, batch.data, gl.STATIC_DRAW);
 
         gl.drawElements(gl.TRIANGLES, batch.count * shader.quadIndexSize, gl.UNSIGNED_SHORT, 0);
 
