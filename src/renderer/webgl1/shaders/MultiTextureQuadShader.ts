@@ -114,7 +114,7 @@ export class MultiTextureQuadShader
      * @type {number}
      * @memberof MultiTextureQuadShader
      */
-    quadByteSize: number = (6 * 4) * 4;
+    quadByteSize: number = 6 * 4 * 4;
 
     /**
      * The size, in quantity of elements, of a single quad in the element index array.
