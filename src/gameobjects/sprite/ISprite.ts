@@ -1,6 +1,5 @@
 import { Frame } from '../../textures/Frame';
 import { IContainer } from '../container/IContainer';
-import { IRenderer } from '../../renderer/IRenderer';
 import { Texture } from '../../textures/Texture';
 
 export interface ISprite extends IContainer
@@ -15,5 +14,4 @@ export interface ISprite extends IContainer
     tint: number;
     setTexture (key: string | Texture, frame?: string | number): this;
     setFrame (key?: string | number | Frame): this;
-    render <T extends IRenderer> (renderer: T): void;
 }

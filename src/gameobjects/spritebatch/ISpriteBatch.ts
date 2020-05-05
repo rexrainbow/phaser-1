@@ -1,5 +1,4 @@
 import { IGameObject } from '../IGameObject';
-import { IRenderer } from '../../renderer/IRenderer';
 import { SpriteBatchAddConfig } from './SpriteBatchAddConfig';
 import { Texture } from '../../textures';
 
@@ -23,5 +22,4 @@ export interface ISpriteBatch extends IGameObject
     add (config: SpriteBatchAddConfig): this;
     addXY (x: number, y: number, frame?: string | number): this;
     updateTextureIndex (): void;
-    render <T extends IRenderer> (renderer: T): void;
 }
