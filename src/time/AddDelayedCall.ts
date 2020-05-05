@@ -1,7 +1,7 @@
 import { AddTimer } from './AddTimer';
-import { IWorld } from '../world/IBaseWorld';
+import { IBaseWorld } from '../world/IBaseWorld';
 
-export function AddDelayedCall (world: IWorld, delay: number, callback: () => void): void
+export function AddDelayedCall (world: IBaseWorld, delay: number, callback: () => void): void
 {
     AddTimer(world,
         {

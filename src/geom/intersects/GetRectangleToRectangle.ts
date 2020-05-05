@@ -5,7 +5,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { GetEdges } from '../Rectangle/GetEdges';
+import { GetEdges } from '../rectangle/GetEdges';
 import { GetLineToRectangle } from './GetLineToRectangle';
 import { IRectangle } from '../rectangle/IRectangle';
 import { RectangleToRectangle } from './RectangleToRectangle';

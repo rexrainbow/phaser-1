@@ -7,7 +7,7 @@
 import { Contains } from '../rectangle/Contains';
 import { ContainsArray } from '../triangle/ContainsArray';
 import { Decompose } from '../rectangle/Decompose';
-import { GetEdges as GetRectangleEdges } from '../Rectangle/GetEdges';
+import { GetEdges as GetRectangleEdges } from '../rectangle/GetEdges';
 import { GetEdges as GetTriangleEdges } from '../triangle/GetEdges';
 import { IRectangle } from '../rectangle/IRectangle';
 import { ITriangle } from '../triangle/ITriangle';

@@ -1,9 +1,9 @@
+import { IBaseWorld } from '../world/IBaseWorld';
 import { ITimerEvent } from './ITimerEvent';
-import { IWorld } from '../world/IBaseWorld';
 
 export class Clock
 {
-    world: IWorld;
+    world: IBaseWorld;
 
     /**
      * The current time of the Clock, in milliseconds.
@@ -21,7 +21,7 @@ export class Clock
 
     events: Set<ITimerEvent>;
 
-    constructor (world: IWorld)
+    constructor (world: IBaseWorld)
     {
         this.world = world;
 
@@ -44,5 +44,4 @@ export class Clock
             }
         });
     }
-
 }

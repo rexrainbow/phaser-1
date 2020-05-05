@@ -6,10 +6,10 @@
  */
 
 import { CircleToRectangle } from './CircleToRectangle';
-import { GetEdges } from '../Rectangle/GetEdges';
+import { GetEdges } from '../rectangle/GetEdges';
 import { GetLineToCircle } from './GetLineToCircle';
 import { ICircle } from '../circle/ICircle';
-import { IRectangle } from '../Rectangle/IRectangle';
+import { IRectangle } from '../rectangle/IRectangle';
 import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
