@@ -93,41 +93,17 @@ export class Camera implements ICamera
             -py
         );
 
-        const { a, b, c, d, tx, ty } = this.worldTransform;
-        const left = -(this.width / 2);
-        const right = this.width;
-        const top = -(this.height / 2);
-        const bottom = this.height;
-
-        //  update bounds
-        const x0 = (left * a) + (top * c) + tx;
-        const y0 = (left * b) + (top * d) + ty;
-
-        const x1 = (left * a) + (bottom * c) + tx;
-        const y1 = (left * b) + (bottom * d) + ty;
-
-        const x2 = (right * a) + (bottom * c) + tx;
-        const y2 = (right * b) + (bottom * d) + ty;
-
-        const x3 = (right * a) + (top * c) + tx;
-        const y3 = (right * b) + (top * d) + ty;
-
-        const bx = Math.min(x0, x1, x2, x3);
-        const by = Math.min(y0, y1, y2, y3);
-        const bw = Math.max(x0, x1, x2, x3);
-        const bh = Math.max(y0, y1, y2, y3);
+        const bw = this.width * (1 / sx);
+        const bh = this.height * (1 / sy);
 
         this.bounds.set(
-            bx,
-            by,
-            bw - bx,
-            bh - by
+            ox - (bw / 2),
+            oy - (bh / 2),
+            bw,
+            bh
         );
 
-        // this.bounds.x = -px;
-        // this.bounds.y = -py;
-
-        console.log('b', bx, by, this.bounds.width, this.bounds.height);
+        // console.log('b', this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
 
         this.dirtyRender = true;
     }
