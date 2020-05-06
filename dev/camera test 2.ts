@@ -1,8 +1,8 @@
 import { AddChild, AddChildren } from '../src/display/';
 import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
+import { Between, RadToDeg } from '../src/math';
 import { ImageFile, SpriteSheetFile } from '../src/loader/files/';
 
-import { Between } from '../src/math';
 import { Game } from '../src/Game';
 import { Keyboard } from '../src/input/keyboard';
 import { Loader } from '../src/loader/Loader';
@@ -69,7 +69,7 @@ class Demo extends Scene
 
         const keyboard = new Keyboard();
 
-        const rot = (Math.PI) / 16;
+        const rot = (Math.PI) / 8;
 
         On(keyboard, 'keydown-ArrowLeft', () => {
             world.camera.position.x -= 4;
@@ -93,10 +93,12 @@ class Demo extends Scene
 
         On(keyboard, 'keydown-a', () => {
             world.camera.rotation -= rot;
+            console.log('rotation', world.camera.rotation, RadToDeg(world.camera.rotation));
         });
 
         On(keyboard, 'keydown-d', () => {
             world.camera.rotation += rot;
+            console.log('rotation', world.camera.rotation, RadToDeg(world.camera.rotation));
         });
 
         On(keyboard, 'keydown-w', () => {
