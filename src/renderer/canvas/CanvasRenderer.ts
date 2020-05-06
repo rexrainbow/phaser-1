@@ -18,6 +18,9 @@ export class CanvasRenderer
     height: number;
     resolution: number;
 
+    textureIndex: number[];
+    flushTotal: number;
+
     clearBeforeRender: boolean = true;
     optimizeRedraw: boolean = true;
     autoResize: boolean = true;
