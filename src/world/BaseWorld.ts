@@ -66,7 +66,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
             }
         }
 
-        if (root.visible && root.numChildren)
+        if (root.visible && root.willRenderChildren && root.numChildren)
         {
             this.scanChildren(root, renderData);
         }
