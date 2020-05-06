@@ -13,6 +13,7 @@ export interface IGameObject
 
     willRender: boolean;
     willUpdate: boolean;
+    willRenderChildren: boolean;
 
     parent: IGameObject;
     children: IGameObject[];

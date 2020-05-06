@@ -21,6 +21,7 @@ export class GameObject
 
     willRender: boolean = true;
     willUpdate: boolean = true;
+    willRenderChildren: boolean = true;
 
     transform: ITransformComponent;
     dirty: IDirtyComponent;
