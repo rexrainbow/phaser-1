@@ -292,8 +292,6 @@ export class MultiTextureQuadShader
         fragmentShaderSource = fragmentShaderSource.replace(/%count%/gi, `${maxTextures}`);
         fragmentShaderSource = fragmentShaderSource.replace(/%forloop%/gi, src);
 
-        console.log(fragmentShaderSource);
-
         //  Create the shaders
 
         const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);

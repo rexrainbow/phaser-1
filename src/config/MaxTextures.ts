@@ -8,6 +8,11 @@ function MaxTextures (max: number = 0): () => void
     };
 }
 
+function SetMaxTextures (max: number): void
+{
+    maxTextures = max;
+}
+
 function GetMaxTextures (): number
 {
     return maxTextures;
@@ -15,5 +20,6 @@ function GetMaxTextures (): number
 
 export {
     MaxTextures,
-    GetMaxTextures
+    GetMaxTextures,
+    SetMaxTextures
 };

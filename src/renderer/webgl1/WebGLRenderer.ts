@@ -1,5 +1,5 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
-import { GetMaxTextures, MaxTextures } from '../../config/MaxTextures';
+import { GetMaxTextures, MaxTextures, SetMaxTextures } from '../../config/MaxTextures';
 
 import { BindingQueue } from '../BindingQueue';
 import { CheckShaderMaxIfStatements } from './shaders/CheckShaderMaxIfStatements';
@@ -150,14 +150,10 @@ export class WebGLRenderer
 
         const maxConfigTextures = GetMaxTextures();
 
-        console.log('maxConfigTextures', maxConfigTextures, 'maxGPU', maxGPUTextures);
-
         if (maxConfigTextures === 0 || (maxConfigTextures > 0 && maxConfigTextures > maxGPUTextures))
         {
             //  Insert gpu limit into config value
-            MaxTextures(maxGPUTextures);
-
-            console.log('getmax', GetMaxTextures());
+            SetMaxTextures(maxGPUTextures);
         }
         else if (maxConfigTextures > 0 && maxConfigTextures < maxGPUTextures)
         {
