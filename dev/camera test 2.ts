@@ -1,5 +1,5 @@
 import { AddChild, AddChildren } from '../src/display/';
-import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
+import { BackgroundColor, MaxTextures, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 import { Between, RadToDeg } from '../src/math';
 import { ImageFile, SpriteSheetFile } from '../src/loader/files/';
 
@@ -20,8 +20,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        loader.setPath('/phaser4-examples/public/assets/');
-        // loader.setPath('/examples/public/assets/');
+        // loader.setPath('/phaser4-examples/public/assets/');
+        loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('marker', 'drawcursor.png'));
         loader.add(SpriteSheetFile('fruits', '32x32-item-pack.png', { frameWidth: 32 }));
@@ -116,6 +116,7 @@ class Demo extends Scene
 export default function (): void
 {
     new Game(
+        MaxTextures(8),
         WebGLRenderer(),
         Size(800, 600),
         Parent('gameParent'),
