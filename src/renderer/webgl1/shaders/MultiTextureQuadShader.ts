@@ -1,7 +1,9 @@
+import { GL } from '../GL';
+import { GetMaxTextures } from '../../../config/MaxTextures';
+import { IRenderer } from '../../IRenderer';
 import { IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
-import { WebGLRenderer } from '../WebGLRenderer';
 
 const shaderSource = {
 
@@ -49,7 +51,6 @@ void main (void)
 
 export class MultiTextureQuadShader
 {
-    renderer: WebGLRenderer;
     gl: WebGLRenderingContext;
 
     program: WebGLProgram;
@@ -207,10 +208,9 @@ export class MultiTextureQuadShader
     //  The number of quads previously flushed
     prevCount: number;
 
-    constructor (renderer: WebGLRenderer, config: IShaderConfig = {})
+    constructor (config: IShaderConfig = {})
     {
-        this.renderer = renderer;
-        this.gl = renderer.gl;
+        this.gl = GL.get();
 
         const {
             batchSize = 4096,
@@ -261,7 +261,7 @@ export class MultiTextureQuadShader
     createShaders (fragmentShaderSource: string, vertexShaderSource: string): void
     {
         const gl = this.gl;
-        const maxTextures = this.renderer.maxTextures;
+        const maxTextures = GetMaxTextures();
 
         let src = '';
 
@@ -283,14 +283,16 @@ export class MultiTextureQuadShader
                 src += `\n  color = texture2D(uTexture[${i}], vTextureCoord);`;
                 src += '\n}';
             }
-
-            fragmentShaderSource = fragmentShaderSource.replace(/%count%/gi, `${maxTextures}`);
-            fragmentShaderSource = fragmentShaderSource.replace(/%forloop%/gi, src);
         }
         else
         {
             src = 'color = texture2D(uTexture[0], vTextureCoord);';
         }
+
+        fragmentShaderSource = fragmentShaderSource.replace(/%count%/gi, `${maxTextures}`);
+        fragmentShaderSource = fragmentShaderSource.replace(/%forloop%/gi, src);
+
+        console.log(fragmentShaderSource);
 
         //  Create the shaders
 
@@ -329,10 +331,9 @@ export class MultiTextureQuadShader
         }
     }
 
-    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
+    bind (renderer: IRenderer, projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
     {
         const gl = this.gl;
-        const renderer = this.renderer;
         const uniforms = this.uniforms;
 
         gl.useProgram(this.program);
@@ -382,7 +383,7 @@ export class MultiTextureQuadShader
         gl.drawElements(gl.TRIANGLES, count * this.quadIndexSize, gl.UNSIGNED_SHORT, 0);
     }
 
-    flush (): boolean
+    flush (renderer: IRenderer): boolean
     {
         const count = this.count;
 
@@ -397,7 +398,7 @@ export class MultiTextureQuadShader
 
         this.count = 0;
 
-        this.renderer.flushTotal++;
+        renderer.flushTotal++;
 
         return true;
     }
