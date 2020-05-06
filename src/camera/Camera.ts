@@ -1,6 +1,4 @@
-import { Clamp } from '../math';
 import { GameInstance } from '../GameInstance';
-import { GetVerticesFromValues } from '../gameobjects/components/transform/GetVerticesFromValues';
 import { ICamera } from './ICamera';
 import { IRenderer } from '../renderer/IRenderer';
 import { IWorld } from '../world/IWorld';
