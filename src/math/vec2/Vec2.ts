@@ -61,10 +61,8 @@ export class Vec2
         return this.set(src[0], src[1]);
     }
 
-    // [Symbol.iterator] ()
-    // {
-    //     const data = this.getArray();
-
-    //     return data[Symbol.iterator]();
-    // }
+    toString (): string
+    {
+        return `[x=${this.x}, y=${this.y}]`;
+    }
 }
