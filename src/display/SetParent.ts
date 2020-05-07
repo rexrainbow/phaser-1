@@ -1,5 +1,6 @@
 import { IGameObject } from '../gameobjects/IGameObject';
 import { RemoveChild } from './RemoveChild';
+import { SetWorld } from './SetWorld';
 
 export function SetParent <T extends IGameObject> (parent: IGameObject, ...children: T[]): T[]
 {
@@ -10,9 +11,15 @@ export function SetParent <T extends IGameObject> (parent: IGameObject, ...child
             RemoveChild(child.parent, child);
         }
 
-        child.world = parent.world;
         child.parent = parent;
     });
+
+    const parentWorld = parent.world;
+
+    if (parentWorld)
+    {
+        SetWorld(parentWorld, ...children);
+    }
 
     return children;
 }
