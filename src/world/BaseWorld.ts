@@ -1,6 +1,7 @@
 import { Off, On, Once } from '../events';
 
 import { Clock } from '../time';
+import { DepthFirstSearch } from './DepthFirstSearch';
 import { GameObject } from '../gameobjects';
 import { IBaseCamera } from '../camera/IBaseCamera';
 import { IBaseWorld } from './IBaseWorld';
@@ -42,6 +43,9 @@ export class BaseWorld extends GameObject implements IBaseWorld
         Once(scene, 'destroy', () => this.destroy());
     }
 
+    //  Depth First Search with recursion
+
+    /*
     scanChildren (root: IGameObject, renderData: IWorldRenderData): void
     {
         const children = root.children;
@@ -71,6 +75,61 @@ export class BaseWorld extends GameObject implements IBaseWorld
             this.scanChildren(root, renderData);
         }
     }
+    */
+
+    //  Depth First Search with stack instead of recursion
+
+    scanChildren (root: IGameObject, renderData: IWorldRenderData): void
+    {
+        this.buildRenderList(root, renderData);
+    }
+
+    buildRenderList (root: IGameObject, renderData: IWorldRenderData): void
+    {
+        const stack = [ root ];
+
+        while (stack.length > 0)
+        {
+            const node = stack.shift();
+
+            if (node.isRenderable())
+            {
+                /*
+                if (!node.dirty.postRender)
+                {
+                    renderData.numRendered++;
+                    renderData.numRenderable++;
+
+                    if (node.dirty.frame >= renderData.gameFrame)
+                    {
+                        renderData.dirtyFrame++;
+                    }
+                }
+                */
+
+                node.dirty.setPendingRender(renderData);
+
+                renderData.renderList.push(node);
+            }
+
+            const numChildren = node.numChildren;
+
+            if (node.visible && node.willRenderChildren && numChildren > 0)
+            {
+                for (let i = numChildren - 1; i >= 0; i--)
+                {
+                    const child = node.children[i];
+
+                    stack.unshift(child);
+                }
+
+                //  Inject postRender hook
+                node.dirty.setPostRender();
+
+                stack.unshift(node);
+            }
+        }
+    }
 
     update (delta: number, time: number): void
     {
@@ -94,6 +153,8 @@ export class BaseWorld extends GameObject implements IBaseWorld
         {
             return;
         }
+
+        // DepthFirstSearch(this, renderData);
 
         this.scanChildren(this, renderData);
 
