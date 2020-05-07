@@ -2,7 +2,9 @@
 // import runTest from './sprite image';
 // import runTest from './move sprite';
 // import runTest from './sprite alpha';
-// import runTest from './container test 1';
+
+import runTest from './container test 1';
+
 // import runTest from './default origin test 1';
 // import runTest from './bounds test 1';
 // import runTest from './bounds test 2';
@@ -17,7 +19,8 @@
 // import runTest from './spritebatch test 3';
 // import runTest from './spritebatch test 4';
 // import runTest from './camera test 1';
+// import runTest from './camera test 2';
 
-import runTest from './camera test 2';
+// import runTest from './post render';
 
 runTest();

@@ -8,6 +8,7 @@ import { On } from '../src/events';
 import { Scene } from '../src/scenes/Scene';
 import { Sprite } from '../src/gameobjects/';
 import { StaticWorld } from '../src/world/StaticWorld';
+import { WebGLRenderer as W } from '../src/renderer/webgl1/WebGLRenderer';
 
 class Demo extends Scene
 {
@@ -21,16 +22,26 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        loader.add(ImageFile('256', '/examples/public/assets/f-texture.png'));
-        loader.add(ImageFile('64', '/examples/public/assets/box-item-boxed.png'));
-        loader.add(ImageFile('32', '/examples/public/assets/shinyball.png'));
-        loader.add(ImageFile('16', '/examples/public/assets/skull.png'));
+        loader.setPath('/phaser4-examples/public/assets/');
+        // loader.setPath('/examples/public/assets/');
+
+        loader.add(ImageFile('256', 'f-texture.png'));
+        loader.add(ImageFile('64', 'box-item-boxed.png'));
+        loader.add(ImageFile('32', 'shinyball.png'));
+        loader.add(ImageFile('16', 'skull.png'));
 
         loader.start(() => this.create());
     }
 
     create ()
     {
+        (this.game.renderer as W).optimizeRedraw = false;
+
+        // AddChild(this.world, new Sprite(200, 200, '256'));
+        // AddChild(this.world, new Sprite(300, 250, '256'));
+        // AddChild(this.world, new Sprite(400, 300, '256'));
+        // AddChild(this.world, new Sprite(500, 350, '256'));
+
         const parent = new Sprite(400, 300, '256');
 
         const child1 = new Sprite(-128, -128, '64');
@@ -74,7 +85,6 @@ class Demo extends Scene
 export default function (): void
 {
     new Game(
-        // CanvasRenderer(),
         WebGLRenderer(),
         Size(800, 600),
         Parent('gameParent'),
