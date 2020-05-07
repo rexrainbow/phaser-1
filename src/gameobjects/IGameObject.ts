@@ -14,6 +14,7 @@ export interface IGameObject
     willRender: boolean;
     willUpdate: boolean;
     willRenderChildren: boolean;
+    willUpdateChildren: boolean;
 
     parent: IGameObject;
     children: IGameObject[];
@@ -28,6 +29,8 @@ export interface IGameObject
 
     isRenderable (): boolean;
     update (delta: number, time: number): void;
+    postUpdate (delta: number, time: number): void;
     render <T extends IRenderer> (renderer: T): void;
+    postRender <T extends IRenderer> (renderer: T): void;
     destroy (reparentChildren?: IGameObject): void;
 }

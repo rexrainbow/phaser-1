@@ -19,8 +19,10 @@ export class GameObject
     parent: IGameObject;
     children: IGameObject[];
 
-    willRender: boolean = true;
     willUpdate: boolean = true;
+    willUpdateChildren: boolean = true;
+
+    willRender: boolean = true;
     willRenderChildren: boolean = true;
 
     transform: ITransformComponent;
@@ -49,7 +51,7 @@ export class GameObject
 
     update (delta: number, time: number): void
     {
-        if (this.willUpdate)
+        if (this.willUpdateChildren)
         {
             const children = this.children;
 
@@ -63,12 +65,29 @@ export class GameObject
                 }
             }
         }
+
+        this.postUpdate(delta, time);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    postUpdate (delta: number, time: number): void
+    {
+        //  Empty for parent classes to use.
+        //  Called after this GameObject and all of its children have been updated.
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render <T extends IRenderer> (renderer: T): void
     {
-        //  Empty for other classes to use
+        //  Empty for parent classes to use
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    postRender <T extends IRenderer> (renderer: T): void
+    {
+        //  Empty for parent classes to use.
+        //  Called after this GameObject and all of its children have been rendered.
+        //  If it doesn't have any children, this method is never called.
     }
 
     get numChildren (): number
