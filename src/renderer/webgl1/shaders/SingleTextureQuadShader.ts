@@ -1,7 +1,9 @@
+import { GL } from '../GL';
+import { IRenderer } from '../../IRenderer';
+import { IShader } from './IShader';
 import { IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
-import { WebGLRenderer } from '../WebGLRenderer';
 
 const shaderSource = {
 
@@ -46,15 +48,16 @@ void main (void)
 }`
 };
 
-export class SingleTextureQuadShader
+export class SingleTextureQuadShader implements IShader
 {
-    renderer: WebGLRenderer;
     gl: WebGLRenderingContext;
 
     program: WebGLProgram;
 
     attribs: IShaderAttributes = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
     uniforms: IShaderUniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0 };
+
+    maxTextures: number = 1;
 
     /**
      * Maximum number of quads per batch before a flush takes place.
@@ -113,7 +116,7 @@ export class SingleTextureQuadShader
      * @type {number}
      * @memberof MultiTextureQuadShader
      */
-    quadByteSize: number = (6 * 4) * 4;
+    quadByteSize: number = 6 * 4 * 4;
 
     /**
      * The size, in quantity of elements, of a single quad in the element index array.
@@ -206,17 +209,18 @@ export class SingleTextureQuadShader
     //  The number of quads previously flushed
     prevCount: number;
 
-    constructor (renderer: WebGLRenderer, config: IShaderConfig = {})
+    constructor (config: IShaderConfig = {})
     {
-        this.renderer = renderer;
-        this.gl = renderer.gl;
+        this.gl = GL.get();
 
         const {
             batchSize = 4096,
             fragmentShader = shaderSource.fragmentShader,
-            vertexShader = shaderSource.vertexShader
+            vertexShader = shaderSource.vertexShader,
+            maxTextures = 1
         } = config;
 
+        this.maxTextures = maxTextures;
         this.batchSize = batchSize;
         this.bufferByteSize = batchSize * this.quadByteSize;
 
@@ -298,17 +302,16 @@ export class SingleTextureQuadShader
         }
     }
 
-    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
+    bind (renderer: IRenderer, projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
     {
         const gl = this.gl;
-        const renderer = this.renderer;
         const uniforms = this.uniforms;
 
         gl.useProgram(this.program);
 
         gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
-        gl.uniform1iv(uniforms.uTexture, renderer.textureIndex);
+        gl.uniform1i(uniforms.uTexture, renderer.textureIndex[0]);
 
         this.bindBuffers(this.indexBuffer, this.vertexBuffer);
     }
@@ -351,7 +354,7 @@ export class SingleTextureQuadShader
         gl.drawElements(gl.TRIANGLES, count * this.quadIndexSize, gl.UNSIGNED_SHORT, 0);
     }
 
-    flush (): boolean
+    flush (renderer: IRenderer): boolean
     {
         const count = this.count;
 
@@ -366,7 +369,7 @@ export class SingleTextureQuadShader
 
         this.count = 0;
 
-        this.renderer.flushTotal++;
+        renderer.flushTotal++;
 
         return true;
     }
