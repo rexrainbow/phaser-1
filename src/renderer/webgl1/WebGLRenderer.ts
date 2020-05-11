@@ -278,7 +278,7 @@ export class WebGLRenderer
 
         for (let i: number = 0; i < worlds.length; i++)
         {
-            const { camera, renderList, numRendered } = worlds[i];
+            const { camera, renderList } = worlds[i];
 
             //  This only needs rebinding if the camera matrix is different to before
             if (!this.prevCamera || !Matrix2dEqual(camera.worldTransform, this.prevCamera.worldTransform))
@@ -291,7 +291,7 @@ export class WebGLRenderer
             }
 
             //  Process the render list
-            for (let s: number = 0; s < numRendered; s++)
+            for (let s: number = 0; s < renderList.length; s++)
             {
                 const gameObject = renderList[s];
 
