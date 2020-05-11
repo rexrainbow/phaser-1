@@ -8,6 +8,7 @@ import { IGameObject } from './IGameObject';
 import { IInputComponent } from './components/input/IInputComponent';
 import { IRenderer } from '../renderer/IRenderer';
 import { ITransformComponent } from './components/transform/ITransformComponent';
+import { IWebGLRenderer } from '../renderer/IWebGLRenderer';
 import { ReparentChildren } from '../display/ReparentChildren';
 
 export class GameObject
@@ -77,13 +78,13 @@ export class GameObject
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    render <T extends IRenderer> (renderer: T): void
+    render <T extends IRenderer | IWebGLRenderer> (renderer: T): void
     {
         this.dirty.pendingRender = false;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    postRender <T extends IRenderer> (renderer: T): void
+    postRender <T extends IRenderer | IWebGLRenderer> (renderer: T): void
     {
         //  Called after this GameObject and all of its children have been rendered.
         //  If it doesn't have any children, this method is never called.

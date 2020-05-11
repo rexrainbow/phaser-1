@@ -4,6 +4,7 @@ import { IDirtyComponent } from './components/dirty/IDirtyComponent';
 import { IInputComponent } from './components/input/IInputComponent';
 import { IRenderer } from '../renderer/IRenderer';
 import { ITransformComponent } from './components/transform/ITransformComponent';
+import { IWebGLRenderer } from '../renderer/IWebGLRenderer';
 
 export interface IGameObject
 {
@@ -30,7 +31,7 @@ export interface IGameObject
     isRenderable (): boolean;
     update (delta: number, time: number): void;
     postUpdate (delta: number, time: number): void;
-    render <T extends IRenderer> (renderer: T): void;
-    postRender <T extends IRenderer> (renderer: T): void;
+    render <T extends IRenderer | IWebGLRenderer> (renderer: T): void;
+    postRender <T extends IRenderer | IWebGLRenderer> (renderer: T): void;
     destroy (reparentChildren?: IGameObject): void;
 }
