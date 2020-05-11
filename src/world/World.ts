@@ -6,6 +6,7 @@ import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorld } from './IWorld';
+import { IWorldRenderData } from './IWorldRenderData';
 import { RectangleToRectangle } from '../geom/intersects';
 
 export class World extends BaseWorld implements IWorld
@@ -25,11 +26,28 @@ export class World extends BaseWorld implements IWorld
         this.renderData = CreateWorldRenderData(this.camera);
     }
 
-    addNodeToRenderList (node: IGameObject): boolean
+    //  TODO: An out-of-bounds parent with in-bounds children will be cull checked against in postRender, stop this.
+    //  TODO: Use circle-circle check when camera is rotated.
+    addNode (node: IGameObject, renderData: IWorldRenderData): boolean
     {
         const cull = this.enableCameraCull;
 
-        return (!node.dirty.pendingRender && (!cull || (cull && RectangleToRectangle(node.bounds.get(), this.camera.bounds))));
+        if (node.isRenderable())
+        {
+            if (node.dirty.pendingRender || node === this)
+            {
+                //  Already been cull checked once, so add to renderList and return
+                renderData.renderList.push(node);
+            }
+            else if (!cull || (cull && RectangleToRectangle(node.bounds.get(), this.camera.bounds)))
+            {
+                renderData.renderList.push(node);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     sceneRender (sceneRenderData: ISceneRenderData): void

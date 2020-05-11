@@ -45,9 +45,16 @@ export class BaseWorld extends GameObject implements IBaseWorld
         Once(scene, 'destroy', () => this.destroy());
     }
 
-    addNodeToRenderList (node: IGameObject): boolean
+    addNode (node: IGameObject, renderData: IWorldRenderData): boolean
     {
-        return (node.dirty.pendingRender === false);
+        if (node.isRenderable())
+        {
+            renderData.renderList.push(node);
+
+            return (!node.dirty.pendingRender);
+        }
+
+        return false;
     }
 
     //  Depth First Search with stack instead of recursion
@@ -60,22 +67,17 @@ export class BaseWorld extends GameObject implements IBaseWorld
         {
             const node = stack.shift();
 
-            if (node.isRenderable())
+            if (this.addNode(node, renderData))
             {
-                if (this.addNodeToRenderList(node))
+                renderData.numRendered++;
+                renderData.numRenderable++;
+
+                if (node.dirty.frame >= renderData.gameFrame)
                 {
-                    renderData.numRendered++;
-                    renderData.numRenderable++;
-
-                    if (node.dirty.frame >= renderData.gameFrame)
-                    {
-                        renderData.dirtyFrame++;
-                    }
-
-                    node.dirty.setPendingRender();
+                    renderData.dirtyFrame++;
                 }
 
-                renderData.renderList.push(node);
+                node.dirty.setPendingRender();
             }
 
             const numChildren = node.numChildren;
