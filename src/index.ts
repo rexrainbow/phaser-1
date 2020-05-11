@@ -8,6 +8,7 @@ import * as Input from './input/';
 import * as Math from './math/';
 import * as Textures from './textures/';
 import * as Time from './time/';
+import * as WebGL1 from './renderer/webgl1/';
 import * as World from './world/';
 
 import { Game } from './Game';
@@ -30,5 +31,6 @@ export {
     WebGLRenderer,
     Textures,
     Time,
+    WebGL1,
     World
 };
