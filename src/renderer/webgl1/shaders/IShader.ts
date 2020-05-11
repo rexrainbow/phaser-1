@@ -4,6 +4,7 @@ export interface IShader
 {
     gl: WebGLRenderingContext;
     program: WebGLProgram;
+    maxTextures: number;
     batchSize: number;
     dataSize: number;
     indexSize: number;
