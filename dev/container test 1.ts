@@ -22,8 +22,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        loader.setPath('/phaser4-examples/public/assets/');
-        // loader.setPath('/examples/public/assets/');
+        // loader.setPath('/phaser4-examples/public/assets/');
+        loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('256', 'f-texture.png'));
         loader.add(ImageFile('64', 'box-item-boxed.png'));
@@ -67,7 +67,7 @@ class Demo extends Scene
 
         let i = 0;
 
-        On(this, 'update', (delta, time) =>
+        On(this, 'xupdate', (delta, time) =>
         {
             parent.rotation += 0.005;
 
