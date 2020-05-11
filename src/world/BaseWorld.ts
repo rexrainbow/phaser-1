@@ -6,7 +6,6 @@ import { IBaseCamera } from '../camera/IBaseCamera';
 import { IBaseWorld } from './IBaseWorld';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
-import { IRenderer } from '../renderer/IRenderer';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorldRenderData } from './IWorldRenderData';
@@ -26,6 +25,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
     private _updateListener: IEventInstance;
     private _renderListener: IEventInstance;
     private _shutdownListener: IEventInstance;
+    protected _stack: IGameObject[];
 
     constructor (scene: IScene)
     {
@@ -37,17 +37,24 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
         this.clock = new Clock(this);
 
+        this._stack = [];
+
         this._updateListener = On(scene, 'update', (delta: number, time: number) => this.update(delta, time));
         this._renderListener = On(scene, 'render', (renderData: ISceneRenderData) => this.sceneRender(renderData));
         this._shutdownListener = On(scene, 'shutdown', () => this.shutdown());
         Once(scene, 'destroy', () => this.destroy());
     }
 
+    addNodeToRenderList (node: IGameObject): boolean
+    {
+        return (node.dirty.pendingRender === false);
+    }
+
     //  Depth First Search with stack instead of recursion
 
-    buildRenderList (root: IGameObject, renderData: IWorldRenderData): void
+    buildRenderList (renderData: IWorldRenderData): void
     {
-        const stack = [ root ];
+        const stack = this._stack;
 
         while (stack.length > 0)
         {
@@ -55,7 +62,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
             if (node.isRenderable())
             {
-                if (!node.dirty.pendingRender)
+                if (this.addNodeToRenderList(node))
                 {
                     renderData.numRendered++;
                     renderData.numRenderable++;
@@ -64,9 +71,9 @@ export class BaseWorld extends GameObject implements IBaseWorld
                     {
                         renderData.dirtyFrame++;
                     }
-                }
 
-                node.dirty.setPendingRender();
+                    node.dirty.setPendingRender();
+                }
 
                 renderData.renderList.push(node);
             }
@@ -113,7 +120,9 @@ export class BaseWorld extends GameObject implements IBaseWorld
             return;
         }
 
-        this.buildRenderList(this, renderData);
+        this._stack = [ this ];
+
+        this.buildRenderList(renderData);
 
         if (this.forceRefresh)
         {

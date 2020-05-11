@@ -12,7 +12,8 @@ export interface IBaseWorld extends IGameObject
     camera: IBaseCamera;
     renderData: IWorldRenderData;
     forceRefresh: boolean;
-    buildRenderList (root: IGameObject, renderData: IWorldRenderData): void;
+    addNodeToRenderList (node: IGameObject): boolean;
+    buildRenderList (renderData: IWorldRenderData): void;
     sceneRender (sceneRenderData: ISceneRenderData): void;
     shutdown (): void;
 }
