@@ -1,5 +1,5 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
-import { GetMaxTextures, MaxTextures, SetMaxTextures } from '../../config/MaxTextures';
+import { GetMaxTextures, SetMaxTextures } from '../../config/MaxTextures';
 
 import { BindingQueue } from '../BindingQueue';
 import { CheckShaderMaxIfStatements } from './shaders/CheckShaderMaxIfStatements';
@@ -15,6 +15,7 @@ import { ISpriteBatch } from '../../gameobjects/spritebatch/ISpriteBatch';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './Ortho';
+import { SingleTextureQuadShader } from './shaders/SingleTextureQuadShader';
 import { Texture } from '../../textures/Texture';
 
 export class WebGLRenderer
@@ -24,7 +25,8 @@ export class WebGLRenderer
 
     clearColor = [ 0, 0, 0, 1 ];
 
-    shader: IShader;
+    currentShader: IShader;
+    shaders: IShader[];
 
     width: number;
     height: number;
@@ -41,7 +43,7 @@ export class WebGLRenderer
     tempTextures: WebGLTexture[] = [];
 
     clearBeforeRender: boolean = true;
-    optimizeRedraw: boolean = true;
+    optimizeRedraw: boolean = false;
     autoResize: boolean = true;
 
     contextLost: boolean = false;
@@ -67,8 +69,9 @@ export class WebGLRenderer
 
         this.initContext();
 
-        //  TODO - If maxTexture = 1 then use single quad shader
-        this.shader = new MultiTextureQuadShader();
+        this.currentShader = (this.maxTextures === 1) ? new SingleTextureQuadShader() : new MultiTextureQuadShader();
+
+        this.shaders = [ this.currentShader ];
     }
 
     initContext (): void
@@ -208,15 +211,8 @@ export class WebGLRenderer
         this.flushTotal = 0;
     }
 
-    render (renderData: ISceneRenderData): void
+    processBindingQueue (): void
     {
-        if (this.contextLost)
-        {
-            return;
-        }
-
-        const gl = this.gl;
-
         const queue = BindingQueue.get();
 
         for (let i = 0; i < queue.length; i++)
@@ -230,6 +226,16 @@ export class WebGLRenderer
         }
 
         BindingQueue.clear();
+    }
+
+    render (renderData: ISceneRenderData): void
+    {
+        if (this.contextLost)
+        {
+            return;
+        }
+
+        this.processBindingQueue();
 
         //  This is only here because if we don't do _something_ with the context, GL Spector can't see it.
         //  Technically, we could move it below the dirty bail-out below.
@@ -241,11 +247,12 @@ export class WebGLRenderer
             return;
         }
 
-        const shader = this.shader;
-        const cls = this.clearColor;
+        const gl = this.gl;
 
         if (this.clearBeforeRender)
         {
+            const cls = this.clearColor;
+
             gl.clearColor(cls[0], cls[1], cls[2], cls[3]);
             gl.clear(gl.COLOR_BUFFER_BIT);
         }
@@ -283,9 +290,9 @@ export class WebGLRenderer
             //  This only needs rebinding if the camera matrix is different to before
             if (!this.prevCamera || !Matrix2dEqual(camera.worldTransform, this.prevCamera.worldTransform))
             {
-                shader.flush(this);
+                this.currentShader.flush(this);
 
-                shader.bind(this, projectionMatrix, camera.matrix);
+                this.currentShader.bind(this, projectionMatrix, camera.matrix);
 
                 this.prevCamera = camera;
             }
@@ -307,19 +314,60 @@ export class WebGLRenderer
         }
 
         //  One final sweep
-        shader.flush(this);
+        this.currentShader.flush(this);
     }
 
     setShader (newShader: IShader): void
     {
-        this.shader.flush(this);
+        this.currentShader.flush(this);
+
+        this.resetTextures();
 
         newShader.bind(this, this.projectionMatrix, this.prevCamera.matrix);
+
+        this.shaders.push(newShader);
+
+        this.currentShader = newShader;
     }
 
     resetShader (): void
     {
-        this.shader.bind(this, this.projectionMatrix, this.prevCamera.matrix);
+        this.currentShader.flush(this);
+
+        this.resetTextures();
+
+        const shaders = this.shaders;
+
+        if (shaders.length > 1)
+        {
+            shaders.pop();
+        }
+
+        this.currentShader = shaders[shaders.length - 1];
+
+        this.currentShader.bind(this, this.projectionMatrix, this.prevCamera.matrix);
+    }
+
+    setFramebuffer (framebuffer: WebGLFramebuffer = null, width?: number, height?: number): void
+    {
+        this.currentShader.flush(this);
+
+        const gl = this.gl;
+
+        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+
+        if (width)
+        {
+            gl.viewport(0, 0, width, height);
+        }
+    }
+
+    resetFramebuffer (): void
+    {
+        const gl = this.gl;
+
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.viewport(0, 0, this.width, this.height);
     }
 
     resetTextures (texture?: Texture): void
@@ -353,7 +401,7 @@ export class WebGLRenderer
 
         binding.indexCounter = this.startActiveTexture;
 
-        if (this.currentActiveTexture < this.maxTextures)
+        if (this.currentActiveTexture < this.currentShader.maxTextures)
         {
             //  Make this texture active
             this.activeTextures[this.currentActiveTexture] = texture;
@@ -368,7 +416,7 @@ export class WebGLRenderer
         else
         {
             //  We're out of textures, so flush the batch and reset them all
-            this.shader.flush(this);
+            this.currentShader.flush(this);
 
             this.resetTextures(texture);
         }
@@ -377,7 +425,7 @@ export class WebGLRenderer
     batchSprite <T extends ISprite> (sprite: T): void
     {
         const texture = sprite.texture;
-        const shader = this.shader;
+        const shader = this.currentShader;
         const binding = texture.binding;
 
         if (binding.indexCounter < this.startActiveTexture)
@@ -419,7 +467,7 @@ export class WebGLRenderer
     batchSpriteBuffer <T extends ISpriteBatch> (batch: T): void
     {
         const texture = batch.texture;
-        const shader = this.shader;
+        const shader = this.currentShader;
         const binding = texture.binding;
 
         shader.flush(this);
