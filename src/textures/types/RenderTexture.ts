@@ -49,7 +49,7 @@ export class RenderTexture extends Texture
 
         renderer.reset(this.binding.framebuffer, this.width, this.height);
 
-        renderer.shader.bind(renderer, this.projectionMatrix, this.cameraMatrix);
+        renderer.currentShader.bind(renderer, this.projectionMatrix, this.cameraMatrix);
 
         return this;
     }
@@ -69,7 +69,7 @@ export class RenderTexture extends Texture
     batchEnd (): this
     {
         const renderer = this.renderer;
-        const shader = renderer.shader;
+        const shader = renderer.currentShader;
 
         shader.flush(renderer);
 
