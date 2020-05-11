@@ -79,15 +79,15 @@ export class GameObject
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render <T extends IRenderer> (renderer: T): void
     {
-        //  Empty for parent classes to use
+        this.dirty.pendingRender = false;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     postRender <T extends IRenderer> (renderer: T): void
     {
-        //  Empty for parent classes to use.
         //  Called after this GameObject and all of its children have been rendered.
         //  If it doesn't have any children, this method is never called.
+        this.dirty.postRender = false;
     }
 
     get numChildren (): number

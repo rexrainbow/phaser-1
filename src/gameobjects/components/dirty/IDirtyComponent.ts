@@ -1,5 +1,4 @@
 import { IGameObject } from '../../IGameObject';
-import { IWorldRenderData } from '../../../world/IWorldRenderData';
 
 export interface IDirtyComponent
 {
@@ -11,7 +10,7 @@ export interface IDirtyComponent
     colors: boolean;
     frame: number;
     setRender (): void;
-    setPendingRender (renderData: IWorldRenderData): void;
+    setPendingRender (): void;
     setPostRender (): void;
     setUpdate (): void;
     setColors (): void;

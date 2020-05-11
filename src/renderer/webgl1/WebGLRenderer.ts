@@ -293,7 +293,16 @@ export class WebGLRenderer
             //  Process the render list
             for (let s: number = 0; s < numRendered; s++)
             {
-                renderList[s].render(this);
+                const gameObject = renderList[s];
+
+                if (gameObject.dirty.pendingRender)
+                {
+                    gameObject.render(this);
+                }
+                else
+                {
+                    gameObject.postRender(this);
+                }
             }
         }
 

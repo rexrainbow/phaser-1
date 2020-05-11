@@ -1,7 +1,6 @@
 import { Off, On, Once } from '../events';
 
 import { Clock } from '../time';
-import { DepthFirstSearch } from './DepthFirstSearch';
 import { GameObject } from '../gameobjects';
 import { IBaseCamera } from '../camera/IBaseCamera';
 import { IBaseWorld } from './IBaseWorld';
@@ -94,8 +93,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
             if (node.isRenderable())
             {
-                /*
-                if (!node.dirty.postRender)
+                if (!node.dirty.pendingRender)
                 {
                     renderData.numRendered++;
                     renderData.numRenderable++;
@@ -105,28 +103,27 @@ export class BaseWorld extends GameObject implements IBaseWorld
                         renderData.dirtyFrame++;
                     }
                 }
-                */
 
-                node.dirty.setPendingRender(renderData);
+                node.dirty.setPendingRender();
 
                 renderData.renderList.push(node);
             }
 
             const numChildren = node.numChildren;
 
-            if (node.visible && node.willRenderChildren && numChildren > 0)
+            if (!node.dirty.postRender && node.visible && node.willRenderChildren && numChildren > 0)
             {
+                //  Inject postRender hook
+                node.dirty.setPostRender();
+
+                stack.unshift(node);
+
                 for (let i = numChildren - 1; i >= 0; i--)
                 {
                     const child = node.children[i];
 
                     stack.unshift(child);
                 }
-
-                //  Inject postRender hook
-                node.dirty.setPostRender();
-
-                stack.unshift(node);
             }
         }
     }
@@ -153,8 +150,6 @@ export class BaseWorld extends GameObject implements IBaseWorld
         {
             return;
         }
-
-        // DepthFirstSearch(this, renderData);
 
         this.scanChildren(this, renderData);
 

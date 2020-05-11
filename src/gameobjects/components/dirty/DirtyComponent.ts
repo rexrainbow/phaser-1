@@ -1,7 +1,6 @@
 import { GameInstance } from '../../../GameInstance';
 import { IDirtyComponent } from './IDirtyComponent';
 import { IGameObject } from '../../IGameObject';
-import { IWorldRenderData } from '../../../world/IWorldRenderData';
 
 export class DirtyComponent implements IDirtyComponent
 {
@@ -18,22 +17,9 @@ export class DirtyComponent implements IDirtyComponent
         this.entity = entity;
     }
 
-    setPendingRender (renderData: IWorldRenderData): void
+    setPendingRender (): void
     {
-        if (this.pendingRender)
-        {
-            return;
-        }
-
         this.pendingRender = true;
-
-        renderData.numRendered++;
-        renderData.numRenderable++;
-
-        if (this.frame >= renderData.gameFrame)
-        {
-            renderData.dirtyFrame++;
-        }
     }
 
     setPostRender (): void

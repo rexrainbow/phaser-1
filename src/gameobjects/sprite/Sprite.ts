@@ -61,32 +61,23 @@ export class Sprite extends Container implements ISprite
     {
         const dirty = this.dirty;
 
-        if (dirty.pendingRender)
+        if (dirty.colors)
         {
-            if (dirty.colors)
-            {
-                PackColors(this);
+            PackColors(this);
 
-                dirty.colors = false;
-            }
-
-            if (dirty.render)
-            {
-                UpdateVertices(this);
-
-                dirty.render = false;
-            }
-
-            renderer.batchSprite(this);
-
-            dirty.pendingRender = false;
+            dirty.colors = false;
         }
-        else if (dirty.postRender)
+
+        if (dirty.render)
         {
-            this.postRender(renderer);
+            UpdateVertices(this);
 
-            dirty.postRender = false;
+            dirty.render = false;
         }
+
+        renderer.batchSprite(this);
+
+        dirty.pendingRender = false;
     }
 
     get alpha (): number
