@@ -6,6 +6,7 @@ import { IBaseCamera } from '../camera/IBaseCamera';
 import { IBaseWorld } from './IBaseWorld';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
+import { IRenderer } from '../renderer/IRenderer';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorldRenderData } from './IWorldRenderData';
@@ -42,46 +43,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
         Once(scene, 'destroy', () => this.destroy());
     }
 
-    //  Depth First Search with recursion
-
-    /*
-    scanChildren (root: IGameObject, renderData: IWorldRenderData): void
-    {
-        const children = root.children;
-
-        for (let i = 0; i < children.length; i++)
-        {
-            this.buildRenderList(children[i], renderData);
-        }
-    }
-
-    buildRenderList (root: IGameObject, renderData: IWorldRenderData): void
-    {
-        if (root.isRenderable())
-        {
-            renderData.numRendered++;
-            renderData.numRenderable++;
-            renderData.renderList.push(root);
-
-            if (root.dirty.frame >= renderData.gameFrame)
-            {
-                renderData.dirtyFrame++;
-            }
-        }
-
-        if (root.visible && root.willRenderChildren && root.numChildren)
-        {
-            this.scanChildren(root, renderData);
-        }
-    }
-    */
-
     //  Depth First Search with stack instead of recursion
-
-    scanChildren (root: IGameObject, renderData: IWorldRenderData): void
-    {
-        this.buildRenderList(root, renderData);
-    }
 
     buildRenderList (root: IGameObject, renderData: IWorldRenderData): void
     {
@@ -151,7 +113,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
             return;
         }
 
-        this.scanChildren(this, renderData);
+        this.buildRenderList(this, renderData);
 
         if (this.forceRefresh)
         {

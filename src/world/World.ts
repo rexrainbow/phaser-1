@@ -28,6 +28,54 @@ export class World extends BaseWorld implements IWorld
 
     buildRenderList (root: IGameObject, renderData: IWorldRenderData): void
     {
+        const stack = [ root ];
+
+        const cull = this.enableCameraCull;
+
+        while (stack.length > 0)
+        {
+            const node = stack.shift();
+
+            if (node.isRenderable())
+            {
+                if (!node.dirty.pendingRender && (!cull || (cull && RectangleToRectangle(root.bounds.get(), this.camera.bounds))))
+                {
+                    renderData.numRendered++;
+                    renderData.numRenderable++;
+
+                    if (node.dirty.frame >= renderData.gameFrame)
+                    {
+                        renderData.dirtyFrame++;
+                    }
+                }
+
+                node.dirty.setPendingRender();
+
+                renderData.renderList.push(node);
+            }
+
+            const numChildren = node.numChildren;
+
+            if (!node.dirty.postRender && node.visible && node.willRenderChildren && numChildren > 0)
+            {
+                //  Inject postRender hook
+                node.dirty.setPostRender();
+
+                stack.unshift(node);
+
+                for (let i = numChildren - 1; i >= 0; i--)
+                {
+                    const child = node.children[i];
+
+                    stack.unshift(child);
+                }
+            }
+        }
+    }
+
+    /*
+    buildRenderList (root: IGameObject, renderData: IWorldRenderData): void
+    {
         if (root.isRenderable())
         {
             const cull = this.enableCameraCull;
@@ -51,6 +99,7 @@ export class World extends BaseWorld implements IWorld
             this.scanChildren(root, renderData);
         }
     }
+    */
 
     sceneRender (sceneRenderData: ISceneRenderData): void
     {
