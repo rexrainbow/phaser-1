@@ -1,4 +1,5 @@
 import { GL } from '../GL';
+import { GameInstance } from '../../../GameInstance';
 import { IRenderer } from '../../IRenderer';
 import { IShader } from './IShader';
 import { IShaderAttributes } from './IShaderAttributes';
@@ -55,7 +56,7 @@ export class SingleTextureQuadShader implements IShader
     program: WebGLProgram;
 
     attribs: IShaderAttributes = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
-    uniforms: IShaderUniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0 };
+    uniforms: IShaderUniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0, uTime: 0, uResolution: 0 };
 
     maxTextures: number = 1;
 
@@ -312,6 +313,8 @@ export class SingleTextureQuadShader implements IShader
         gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
         gl.uniform1i(uniforms.uTexture, renderer.textureIndex[0]);
+        gl.uniform1f(uniforms.uTime, performance.now() / 1000);
+        gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
 
         this.bindBuffers(this.indexBuffer, this.vertexBuffer);
     }
