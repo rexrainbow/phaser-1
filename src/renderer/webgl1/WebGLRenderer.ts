@@ -317,7 +317,7 @@ export class WebGLRenderer
         this.currentShader.flush(this);
     }
 
-    setShader (newShader: IShader): void
+    setShader (newShader: IShader): IShader
     {
         this.currentShader.flush(this);
 
@@ -328,6 +328,8 @@ export class WebGLRenderer
         this.shaders.push(newShader);
 
         this.currentShader = newShader;
+
+        return newShader;
     }
 
     resetShader (): void
@@ -348,13 +350,19 @@ export class WebGLRenderer
         this.currentShader.bind(this, this.projectionMatrix, this.prevCamera.matrix);
     }
 
-    setFramebuffer (framebuffer: WebGLFramebuffer = null, width?: number, height?: number): void
+    setFramebuffer (framebuffer: WebGLFramebuffer = null, clear: boolean = false, width?: number, height?: number): void
     {
         this.currentShader.flush(this);
 
         const gl = this.gl;
 
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+
+        if (clear)
+        {
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+        }
 
         if (width)
         {
@@ -385,10 +393,12 @@ export class WebGLRenderer
             //  Set this texture as texture0
             active[0] = texture;
 
-            texture.binding.setIndex(0);
+            const binding = texture.binding;
+
+            binding.setIndex(0);
 
             gl.activeTexture(gl.TEXTURE0);
-            gl.bindTexture(gl.TEXTURE_2D, texture.binding.texture);
+            gl.bindTexture(gl.TEXTURE_2D, binding.texture);
 
             this.currentActiveTexture = 1;
         }
