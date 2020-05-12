@@ -1,7 +1,8 @@
 import { Game } from './Game';
 
-let instance: Game;
-let frame: number = 0;
+export let instance: Game;
+export let frame: number = 0;
+export let elapsed: number = 0;
 
 export const GameInstance =
 {
@@ -23,5 +24,16 @@ export const GameInstance =
     setFrame: (current: number): void =>
     {
         frame = current;
+    },
+
+    getElapsed: (): number =>
+    {
+        return elapsed;
+    },
+
+    setElapsed: (current: number): void =>
+    {
+        elapsed = current;
     }
+
 };

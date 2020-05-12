@@ -18,6 +18,7 @@ export class Game extends EventEmitter
     willRender: boolean = true;
 
     lastTick: number = 0;
+    elapsed: number = 0;
 
     //  The current game frame
     frame: number = 0;
@@ -84,6 +85,7 @@ export class Game extends EventEmitter
         const delta = time - this.lastTick;
 
         this.lastTick = time;
+        this.elapsed += delta;
 
         if (!this.isPaused)
         {
@@ -102,6 +104,7 @@ export class Game extends EventEmitter
         this.frame++;
 
         GameInstance.setFrame(this.frame);
+        GameInstance.setElapsed(this.elapsed);
 
         requestAnimationFrame(now => this.step(now));
     }
