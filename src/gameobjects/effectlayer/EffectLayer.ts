@@ -12,7 +12,7 @@ import { Texture } from '../../textures/Texture';
 //  EffectLayerCanvas is a canvas alternative
 export class EffectLayer extends Layer
 {
-    shader: IShader;
+    shaders: IShader[] = [];
     texture: Texture;
     framebuffer: WebGLFramebuffer;
 
@@ -31,6 +31,7 @@ export class EffectLayer extends Layer
         const height = GetHeight();
         const resolution = GetResolution();
 
+        //  TODO: Allow them to set this via a filterArea
         const texture = new Texture(null, width * resolution, height * resolution);
 
         texture.binding = new GLTextureBinding(texture);
@@ -55,73 +56,72 @@ export class EffectLayer extends Layer
     {
         super.postRender(renderer);
 
-        let shader: IShader = (renderer as IWebGLRenderer).currentShader;
+        const shaders = this.shaders;
+        const texture = this.texture;
+        const binding = texture.binding;
+        const { u0, v0, u1, v1 } = texture.firstFrame;
+        const packedColor = 4294967295;
 
-        if (this.shader)
+        if (shaders.length === 0)
         {
-            shader = (renderer as IWebGLRenderer).setShader(this.shader);
+            // let shader: IShader = (renderer as IWebGLRenderer).currentShader;
         }
         else
         {
-            shader.flush(renderer);
+            shaders.forEach(shader =>
+            {
+                //  TODO - Combine
+                (renderer as IWebGLRenderer).setShader(shader);
+
+                (renderer as IWebGLRenderer).resetTextures(texture);
+
+                const textureIndex = binding.index;
+
+                const F32 = shader.vertexViewF32;
+                const U32 = shader.vertexViewU32;
+
+                //  top left
+                F32[0] = 0;
+                F32[1] = 0;
+                F32[2] = u0;
+                F32[3] = v1;
+                F32[4] = textureIndex;
+                U32[5] = packedColor;
+
+                //  bottom left
+                F32[6] = 0;
+                F32[7] = texture.height;
+                F32[8] = u0;
+                F32[9] = v0;
+                F32[10] = textureIndex;
+                U32[11] = packedColor;
+
+                //  bottom right
+                F32[12] = texture.width;
+                F32[13] = texture.height;
+                F32[14] = u1;
+                F32[15] = v0;
+                F32[16] = textureIndex;
+                U32[17] = packedColor;
+
+                //  top right
+                F32[18] = texture.width;
+                F32[19] = 0;
+                F32[20] = u1;
+                F32[21] = v1;
+                F32[22] = textureIndex;
+                U32[23] = packedColor;
+
+                shader.count = 1;
+
+                (renderer as IWebGLRenderer).resetFramebuffer();
+
+                shader.flush(renderer);
+
+                (renderer as IWebGLRenderer).resetShader();
+            });
         }
-
-        const texture = this.texture;
-        const binding = texture.binding;
-
-        (renderer as IWebGLRenderer).resetTextures(texture);
-
-        const textureIndex = binding.index;
-        const { u0, v0, u1, v1 } = texture.firstFrame;
-
-        const F32 = shader.vertexViewF32;
-        const U32 = shader.vertexViewU32;
-
-        const packedColor = 4294967295;
-
-        //  top left
-        F32[0] = 0;
-        F32[1] = 0;
-        F32[2] = u0;
-        F32[3] = v1;
-        F32[4] = textureIndex;
-        U32[5] = packedColor;
-
-        //  bottom left
-        F32[6] = 0;
-        F32[7] = texture.height;
-        F32[8] = u0;
-        F32[9] = v0;
-        F32[10] = textureIndex;
-        U32[11] = packedColor;
-
-        //  bottom right
-        F32[12] = texture.width;
-        F32[13] = texture.height;
-        F32[14] = u1;
-        F32[15] = v0;
-        F32[16] = textureIndex;
-        U32[17] = packedColor;
-
-        //  top right
-        F32[18] = texture.width;
-        F32[19] = 0;
-        F32[20] = u1;
-        F32[21] = v1;
-        F32[22] = textureIndex;
-        U32[23] = packedColor;
-
-        shader.count = 1;
-
-        (renderer as IWebGLRenderer).resetFramebuffer();
-
-        shader.flush(renderer);
 
         (renderer as IWebGLRenderer).resetTextures();
-
-        if (this.shader)
-        {
-            (renderer as IWebGLRenderer).resetShader();
-        }
     }
 }
