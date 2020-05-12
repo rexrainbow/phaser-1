@@ -1,27 +1,21 @@
 import { GL } from './GL';
 
-export function CreateFramebuffer (width: number, height: number): [ WebGLTexture, WebGLFramebuffer ]
+export function CreateFramebuffer (texture: WebGLTexture, attachment?: GLenum): WebGLFramebuffer
 {
     const gl = GL.get();
 
-    const texture: WebGLTexture = gl.createTexture();
-
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    if (!attachment)
+    {
+        attachment = gl.COLOR_ATTACHMENT0;
+    }
 
     const framebuffer = gl.createFramebuffer();
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, attachment, gl.TEXTURE_2D, texture, 0);
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-    return [ texture, framebuffer ];
+    return framebuffer;
 }
