@@ -66,6 +66,8 @@ export class Loader extends EventEmitter
 
             this.onComplete = onComplete;
 
+            // console.log('Loader.start');
+
             Emit(this, 'start');
 
             this.nextFile();
@@ -91,6 +93,8 @@ export class Loader extends EventEmitter
             limit = Math.min(limit, this.maxParallelDownloads) - this.inflight.size;
         }
 
+        // console.log('Loader.nextFile', limit);
+
         if (limit)
         {
             // console.log('Batching', limit, 'files to download');
@@ -107,19 +111,32 @@ export class Loader extends EventEmitter
 
                 this.queue.delete(file);
 
-                file.load().then((file: File) => this.fileComplete(file)).catch((file: File) => this.fileError(file));
+                file.load()
+                    .then(
+                        (file: File) => this.fileComplete(file)
+                    )
+                    .catch(
+                        (file: File) => this.fileError(file)
+                    );
 
                 limit--;
             }
         }
         else if (this.inflight.size === 0)
         {
-            this.stop();
+            // console.log('Loader inflight zero');
+
+            window.setTimeout(() => this.stop(), 0);
         }
     }
 
     stop (): void
     {
+        if (!this.isLoading)
+        {
+            return;
+        }
+
         this.isLoading = false;
 
         Emit(this, 'complete', this.completed);
