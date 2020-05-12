@@ -34,8 +34,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        loader.setPath('/phaser4-examples/public/assets/');
-        // loader.setPath('/examples/public/assets/');
+        // loader.setPath('/phaser4-examples/public/assets/');
+        loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('ayu', 'ayu.png'));
         loader.add(ImageFile('logo', 'logo.png'));
@@ -46,14 +46,14 @@ class Demo extends Scene
 
     create ()
     {
-        // const shader = new Shader({ fragmentShader });
+        const shader = new Shader({ fragmentShader });
         // const shader = new Shader();
 
         const world = new StaticWorld(this);
 
         const layer = new EffectLayer();
 
-        // layer.shader = shader;
+        layer.shader = shader;
 
         const ayu1 = new Sprite(400, 100, 'ayu');
         const ayu2 = new Sprite(480, 500, 'ayu');
@@ -61,9 +61,9 @@ class Demo extends Scene
         const bubble = new Sprite(400, 300, 'bubble');
         const logo = new Sprite(400, 300, 'logo');
 
-        AddChildren(layer, logo);
+        // AddChildren(layer, logo);
 
-        // AddChildren(layer, logo, bubble);
+        AddChildren(layer, logo, bubble);
         // AddChildren(world, ayu1, ayu2, logo, bubble);
 
         AddChild(world, ayu1);
