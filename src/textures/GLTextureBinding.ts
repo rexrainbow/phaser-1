@@ -3,6 +3,7 @@ import { DeleteFramebuffer } from '../renderer/webgl1/DeleteFramebuffer';
 import { DeleteGLTexture } from '../renderer/webgl1/DeleteGLTexture';
 import { GL } from '../renderer/webgl1/GL';
 import { IGLTextureBinding } from './IGLTextureBinding';
+import { IGLTextureBindingConfig } from './IGLTextureBindingConfig';
 import { ITexture } from './ITexture';
 import { IsSizePowerOfTwo } from '../math/pow2/IsSizePowerOfTwo';
 import { SetGLTextureFilterMode } from '../renderer/webgl1/SetGLTextureFilterMode';
@@ -30,22 +31,47 @@ export class GLTextureBinding implements IGLTextureBinding
     isPOT: boolean = false;
     generateMipmap: boolean = false;
 
-    constructor (parent: ITexture)
+    constructor (parent: ITexture, config: IGLTextureBindingConfig = {})
     {
+        const gl = GL.get();
+
         this.parent = parent;
 
         this.isPOT = IsSizePowerOfTwo(parent.width, parent.height);
 
-        const gl = GL.get();
+        const {
+            texture = null,
+            framebuffer = null,
+            unpackPremultiplyAlpha = true,
+            minFilter = gl.LINEAR,
+            magFilter = gl.LINEAR,
+            wrapS = gl.CLAMP_TO_EDGE,
+            wrapT = gl.CLAMP_TO_EDGE,
+            generateMipmap = this.isPOT,
+            flipY = false
+        } = config;
 
-        this.minFilter = gl.LINEAR;
-        this.magFilter = gl.LINEAR;
-        this.wrapS = gl.CLAMP_TO_EDGE;
-        this.wrapT = gl.CLAMP_TO_EDGE;
+        this.minFilter = minFilter;
+        this.magFilter = magFilter;
+        this.wrapS = wrapS;
+        this.wrapT = wrapT;
+        this.generateMipmap = generateMipmap;
+        this.flipY = flipY;
+        this.unpackPremultiplyAlpha = unpackPremultiplyAlpha;
 
-        this.generateMipmap = this.isPOT;
+        if (framebuffer)
+        {
+            this.framebuffer = framebuffer;
+        }
 
-        CreateGLTexture(this);
+        if (texture)
+        {
+            this.texture = texture;
+        }
+        else
+        {
+            CreateGLTexture(this);
+        }
     }
 
     //  Needed?
