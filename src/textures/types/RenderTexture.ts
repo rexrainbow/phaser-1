@@ -17,6 +17,7 @@ export class RenderTexture extends Texture
 
         this.renderer = renderer;
 
+        /*
         const [ texture, framebuffer ] = CreateFramebuffer(width, height);
 
         this.binding = new GLTextureBinding(this);
@@ -26,6 +27,7 @@ export class RenderTexture extends Texture
 
         this.projectionMatrix = Ortho(width, height);
         this.cameraMatrix = new Float32Array([ 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, height, 0, 1 ]);
+        */
     }
 
     cls (): this
