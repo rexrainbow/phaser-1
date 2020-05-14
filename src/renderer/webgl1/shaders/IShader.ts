@@ -5,7 +5,6 @@ export interface IShader
 {
     gl: WebGLRenderingContext;
     program: WebGLProgram;
-    maxTextures: number;
     buffer: IndexedBuffer;
     count: number;
     prevCount: number;

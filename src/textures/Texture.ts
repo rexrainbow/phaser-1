@@ -1,6 +1,6 @@
 import { BindingQueue } from '../renderer/BindingQueue';
 import { Frame } from './Frame';
-import { IGLTextureBinding } from './IGLTextureBinding';
+import { IGLTextureBinding } from '../renderer/webgl1/textures/IGLTextureBinding';
 import { ITexture } from './ITexture';
 
 export class Texture implements ITexture

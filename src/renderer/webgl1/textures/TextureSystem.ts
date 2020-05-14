@@ -2,7 +2,7 @@ import { GetMaxTextures, SetMaxTextures } from '../../../config/MaxTextures';
 
 import { BindingQueue } from '../../BindingQueue';
 import { CheckShaderMaxIfStatements } from '../shaders/CheckShaderMaxIfStatements';
-import { GLTextureBinding } from '../../../textures/GLTextureBinding';
+import { GLTextureBinding } from './GLTextureBinding';
 import { IWebGLRenderer } from '../IWebGLRenderer';
 import { Texture } from '../../../textures/Texture';
 

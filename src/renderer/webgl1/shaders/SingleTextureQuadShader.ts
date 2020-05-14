@@ -88,11 +88,8 @@ export class SingleTextureQuadShader implements IShader
             vertexElementSize = 6,
             quadIndexSize = 6,
             fragmentShader = shaderSource.fragmentShader,
-            vertexShader = shaderSource.vertexShader,
-            maxTextures = 1
+            vertexShader = shaderSource.vertexShader
         } = config;
-
-        this.maxTextures = maxTextures;
 
         this.buffer = new IndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, quadIndexSize);
 
@@ -151,7 +148,7 @@ export class SingleTextureQuadShader implements IShader
 
         gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
-        gl.uniform1i(uniforms.uTexture, renderer.textures.textureIndex[0]);
+        gl.uniform1i(uniforms.uTexture, renderer.textures.currentActiveTexture);
         gl.uniform1f(uniforms.uTime, performance.now());
         gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
 

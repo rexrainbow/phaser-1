@@ -1,4 +1,4 @@
-import { ITexture } from './ITexture';
+import { ITexture } from '../../../textures/ITexture';
 
 export interface IGLTextureBinding
 {

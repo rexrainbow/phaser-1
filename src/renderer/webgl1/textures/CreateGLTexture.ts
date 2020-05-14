@@ -1,7 +1,7 @@
 import { GL } from '../GL';
-import { IGLTextureBinding } from '../../../textures/IGLTextureBinding';
+import { IGLTextureBinding } from './IGLTextureBinding';
 
-export function CreateGLTexture (binding: IGLTextureBinding): WebGLTexture
+export function CreateGLTexture <T extends IGLTextureBinding> (binding: T): WebGLTexture
 {
     const gl = GL.get();
 

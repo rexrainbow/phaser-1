@@ -1,5 +1,5 @@
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
-import { GLTextureBinding } from '../GLTextureBinding';
+import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
 import { ISprite } from '../../gameobjects/sprite/ISprite';
 import { Ortho } from '../../renderer/webgl1/cameras/Ortho';
 import { Texture } from '../Texture';

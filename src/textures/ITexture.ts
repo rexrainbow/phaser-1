@@ -1,5 +1,5 @@
 import { Frame } from './Frame';
-import { IGLTextureBinding } from './IGLTextureBinding';
+import { IGLTextureBinding } from '../renderer/webgl1/textures/IGLTextureBinding';
 
 export interface ITexture
 {
