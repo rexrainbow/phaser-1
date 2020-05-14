@@ -77,6 +77,6 @@ export class MultiTextureQuadShader extends SingleTextureQuadShader implements I
         gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
         gl.uniform1iv(uniforms.uTexture, renderer.textureIndex);
 
-        this.bindBuffers(this.indexBuffer, this.vertexBuffer);
+        this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
     }
 }

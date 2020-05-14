@@ -76,8 +76,8 @@ export class EffectLayer extends Layer
 
                 const textureIndex = binding.index;
 
-                const F32 = shader.vertexViewF32;
-                const U32 = shader.vertexViewU32;
+                const F32 = shader.buffer.vertexViewF32;
+                const U32 = shader.buffer.vertexViewU32;
 
                 //  top left
                 F32[0] = 0;

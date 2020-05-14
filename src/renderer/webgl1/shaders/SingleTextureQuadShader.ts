@@ -4,6 +4,7 @@ import { IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
 import { IWebGLRenderer } from '../IWebGLRenderer';
+import { IndexedBuffer } from '../buffers/IndexedBuffer';
 
 const shaderSource = {
 
@@ -59,154 +60,21 @@ export class SingleTextureQuadShader implements IShader
 
     maxTextures: number = 1;
 
-    /**
-     * Maximum number of quads per batch before a flush takes place.
-     *
-     * @type {number}
-     * @memberof MultiTextureQuadShader
-     */
-    batchSize: number;
-
-    /**
-     * The size, in bytes, per entry in the array buffer.
-     *
-     * @type {number}
-     * @memberof MultiTextureQuadShader
-     */
-    dataSize: number = 4;
-
-    /**
-     * The size, in bytes, per entry in the element index array.
-     *
-     * @type {number}
-     * @memberof MultiTextureQuadShader
-     */
-    indexSize: number = 4;
-
-    /**
-     * The amount of elements / floats a single vertex consists of.
-     *
-     * The default is 6:
-     *
-     * position (x,y - 2 floats)
-     * texture coord (x,y - 2 floats)
-     * texture index (float)
-     * packed color (vec4)
-     *
-     * @type {number}
-     * @memberof MultiTextureQuadShader
-     */
-    vertexElementSize: number = 6;
-
-    /**
-     * The size, in bytes, of a single vertex in the array buffer.
-     *
-     * This is `vertexElementSize * dataSize`.
-     *
-     * @type {number}
-     * @memberof MultiTextureQuadShader
-     */
-    vertexByteSize: number = 6 * 4;
-
-    /**
-     * The size, in bytes, of a single quad in the array buffer.
-     *
-     * This is `vertexByteSize * 4`.
-     *
-     * @type {number}
-     * @memberof MultiTextureQuadShader
-     */
-    quadByteSize: number = 6 * 4 * 4;
-
-    /**
-     * The size, in quantity of elements, of a single quad in the element index array.
-     *
-     * This is `vertexElementSize * 4`.
-     *
-     * @type {number}
-     * @memberof MultiTextureQuadShader
-     */
-    quadElementSize: number = 6 * 4;
-
-    /**
-     * The total number of entries per quad in the element index array.
-     *
-     * The IBO contains 6 entries per quad:
-     *
-     * 0, 1, 2
-     * 2, 3, 0
-     *
-     * @type {number}
-     * @memberof MultiTextureQuadShader
-     */
-    quadIndexSize: number = 6;
-
-    /**
-     * The size, in bytes, of the Array Buffer.
-     *
-     * @type {number}
-     * @memberof MultiTextureQuadShader
-     */
-    bufferByteSize: number;
-
-    /**
-     * The Array Buffer.
-     *
-     * @type {ArrayBuffer}
-     * @memberof MultiTextureQuadShader
-     */
-    data: ArrayBuffer;
-
-    /**
-     * Float32 View of the Array Buffer.
-     *
-     * @type {Float32Array}
-     * @memberof MultiTextureQuadShader
-     */
-    vertexViewF32: Float32Array;
-
-    /**
-     * Uint32 View of the Array Buffer.
-     *
-     * @type {Uint32Array}
-     * @memberof MultiTextureQuadShader
-     */
-    vertexViewU32: Uint32Array;
-
-    /**
-     * The Element Array Buffer.
-     *
-     * @type {Uint16Array}
-     * @memberof MultiTextureQuadShader
-     */
-    index: Uint16Array;
-
-    /**
-     * The data array buffer.
-     *
-     * @type {WebGLBuffer}
-     * @memberof MultiTextureQuadShader
-     */
-    vertexBuffer: WebGLBuffer;
-
-    /**
-     * The element array buffer.
-     *
-     * @type {WebGLBuffer}
-     * @memberof MultiTextureQuadShader
-     */
-    indexBuffer: WebGLBuffer;
+    buffer: IndexedBuffer;
 
     /**
      * The total number of quads added to the batch so far.
      * Reset every bind and flush.
      *
      * @type {number}
-     * @memberof MultiTextureQuadShader
      */
     count: number;
 
-    //  The number of quads previously flushed
+    /**
+     * The total number of quads previously flushed.
+     *
+     * @type {number}
+     */
     prevCount: number;
 
     constructor (config: IShaderConfig = {})
@@ -215,50 +83,22 @@ export class SingleTextureQuadShader implements IShader
 
         const {
             batchSize = 4096,
+            dataSize = 4,
+            indexSize = 4,
+            vertexElementSize = 6,
+            quadIndexSize = 6,
             fragmentShader = shaderSource.fragmentShader,
             vertexShader = shaderSource.vertexShader,
             maxTextures = 1
         } = config;
 
         this.maxTextures = maxTextures;
-        this.batchSize = batchSize;
-        this.bufferByteSize = batchSize * this.quadByteSize;
 
-        this.createBuffers();
+        this.buffer = new IndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, quadIndexSize);
+
         this.createShaders(fragmentShader, vertexShader);
 
         this.count = 0;
-    }
-
-    createBuffers (): void
-    {
-        let ibo: number[] = [];
-
-        //  Seed the index buffer
-        for (let i = 0; i < (this.batchSize * this.indexSize); i += this.indexSize)
-        {
-            ibo.push(i + 0, i + 1, i + 2, i + 2, i + 3, i + 0);
-        }
-
-        this.data = new ArrayBuffer(this.bufferByteSize);
-        this.index = new Uint16Array(ibo);
-
-        this.vertexViewF32 = new Float32Array(this.data);
-        this.vertexViewU32 = new Uint32Array(this.data);
-
-        const gl = this.gl;
-
-        this.vertexBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.DYNAMIC_DRAW);
-
-        this.indexBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.index, gl.STATIC_DRAW);
-
-        //  Tidy-up
-        gl.bindBuffer(gl.ARRAY_BUFFER, null);
-        ibo = [];
     }
 
     createShaders (fragmentShaderSource: string, vertexShaderSource: string): void
@@ -315,13 +155,13 @@ export class SingleTextureQuadShader implements IShader
         gl.uniform1f(uniforms.uTime, performance.now()); // TODO: Link to a clock, so it can be paused
         gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
 
-        this.bindBuffers(this.indexBuffer, this.vertexBuffer);
+        this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
     }
 
     bindBuffers (indexBuffer: WebGLBuffer, vertexBuffer: WebGLBuffer): void
     {
         const gl = this.gl;
-        const stride = this.vertexByteSize;
+        const stride = this.buffer.vertexByteSize;
         const attribs = this.attribs;
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -340,20 +180,20 @@ export class SingleTextureQuadShader implements IShader
     draw (count: number): void
     {
         const gl = this.gl;
-        const offset = count * this.quadByteSize;
+        const offset = count * this.buffer.quadByteSize;
 
-        if (offset === this.bufferByteSize)
+        if (offset === this.buffer.bufferByteSize)
         {
-            gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.DYNAMIC_DRAW);
+            gl.bufferData(gl.ARRAY_BUFFER, this.buffer.data, gl.DYNAMIC_DRAW);
         }
         else
         {
-            const view = this.vertexViewF32.subarray(0, offset);
+            const view = this.buffer.vertexViewF32.subarray(0, offset);
 
             gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
         }
 
-        gl.drawElements(gl.TRIANGLES, count * this.quadIndexSize, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES, count * this.buffer.quadIndexSize, gl.UNSIGNED_SHORT, 0);
     }
 
     flush (renderer: IWebGLRenderer): boolean

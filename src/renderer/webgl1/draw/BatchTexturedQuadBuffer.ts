@@ -5,6 +5,7 @@ export function BatchTexturedQuadBuffer <T extends ISpriteBatch> (batch: T, rend
 {
     const texture = batch.texture;
     const shader = renderer.currentShader;
+    const buffer = shader.buffer;
     const binding = texture.binding;
 
     shader.flush(renderer);
@@ -22,12 +23,12 @@ export function BatchTexturedQuadBuffer <T extends ISpriteBatch> (batch: T, rend
 
     gl.bufferData(gl.ARRAY_BUFFER, batch.data, gl.STATIC_DRAW);
 
-    gl.drawElements(gl.TRIANGLES, batch.count * shader.quadIndexSize, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, batch.count * buffer.quadIndexSize, gl.UNSIGNED_SHORT, 0);
 
     shader.prevCount = batch.count;
 
     renderer.flushTotal++;
 
     //  Restore
-    shader.bindBuffers(shader.indexBuffer, shader.vertexBuffer);
+    shader.bindBuffers(buffer.indexBuffer, buffer.vertexBuffer);
 }

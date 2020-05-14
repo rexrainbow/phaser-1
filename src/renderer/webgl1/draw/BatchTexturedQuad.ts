@@ -5,6 +5,7 @@ export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: IWeb
 {
     const texture = sprite.texture;
     const shader = renderer.currentShader;
+    const buffer = shader.buffer;
     const binding = texture.binding;
 
     if (binding.indexCounter < renderer.startActiveTexture)
@@ -12,7 +13,7 @@ export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: IWeb
         renderer.requestTexture(texture);
     }
 
-    if (shader.count === shader.batchSize)
+    if (shader.count === buffer.batchSize)
     {
         shader.flush(renderer);
     }
@@ -26,13 +27,13 @@ export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: IWeb
     data[16] = textureIndex;
     data[22] = textureIndex;
 
-    const offset = shader.count * shader.quadElementSize;
+    const offset = shader.count * buffer.quadElementSize;
 
     //  Copy the data to the array buffer
-    shader.vertexViewF32.set(data, offset);
+    buffer.vertexViewF32.set(data, offset);
 
     const color = sprite.vertexColor;
-    const U32 = shader.vertexViewU32;
+    const U32 = buffer.vertexViewU32;
 
     //  Copy the vertex colors to the Uint32 view (as the data copy above overwrites them)
     U32[offset + 5] = color[0];
