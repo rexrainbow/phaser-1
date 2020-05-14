@@ -18,7 +18,8 @@
 // import runTest from './spritebatch test 4';
 // import runTest from './camera test 1';
 // import runTest from './camera test 2';
+// import runTest from './post render';
 
-import runTest from './post render';
+import runTest from './sprite image';
 
 runTest();
