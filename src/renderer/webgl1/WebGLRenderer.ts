@@ -1,5 +1,6 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
+import { FBOSystem } from './fbo/FBOSystem';
 import { GL } from './GL';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetRGBArray } from './colors/GetRGBArray';
@@ -18,6 +19,7 @@ export class WebGLRenderer
     canvas: HTMLCanvasElement;
     gl: WebGLRenderingContext;
 
+    fbo: FBOSystem;
     textures: TextureSystem;
 
     clearColor = [ 0, 0, 0, 1 ];
@@ -55,6 +57,7 @@ export class WebGLRenderer
 
         this.canvas = canvas;
 
+        this.fbo = new FBOSystem(this);
         this.textures = new TextureSystem(this);
 
         this.initContext();
@@ -266,35 +269,5 @@ export class WebGLRenderer
         this.currentShader = shaders[shaders.length - 1];
 
         this.currentShader.bind(this, this.projectionMatrix, this.prevCamera.matrix);
-    }
-
-    //  TODO Move to FBOSystem
-
-    setFramebuffer (framebuffer: WebGLFramebuffer = null, clear: boolean = false, width?: number, height?: number): void
-    {
-        this.flush();
-
-        const gl = this.gl;
-
-        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-
-        if (clear)
-        {
-            gl.clearColor(0, 0, 0, 0);
-            gl.clear(gl.COLOR_BUFFER_BIT);
-        }
-
-        if (width)
-        {
-            gl.viewport(0, 0, width, height);
-        }
-    }
-
-    resetFramebuffer (): void
-    {
-        const gl = this.gl;
-
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        gl.viewport(0, 0, this.width, this.height);
     }
 }

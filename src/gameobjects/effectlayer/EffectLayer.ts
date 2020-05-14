@@ -1,7 +1,7 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config';
 
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
-import { GLTextureBinding } from '../../textures';
+import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
 import { IShader } from '../../renderer/webgl1/shaders/IShader';
 import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
 import { Layer } from '../layer/Layer';
@@ -47,7 +47,7 @@ export class EffectLayer extends Layer
 
         if (this.numChildren > 0)
         {
-            renderer.setFramebuffer(this.framebuffer, true);
+            renderer.fbo.add(this.framebuffer, true);
         }
     }
 
@@ -69,12 +69,12 @@ export class EffectLayer extends Layer
         {
             shaders.forEach(shader =>
             {
-                //  TODO - Combine
-                renderer.setShader(shader);
-
+                //  TODO - Combine and move to DrawQuad op
                 renderer.textures.request(texture);
 
                 const textureIndex = binding.index;
+
+                renderer.setShader(shader);
 
                 const F32 = shader.buffer.vertexViewF32;
                 const U32 = shader.buffer.vertexViewU32;
@@ -113,9 +113,7 @@ export class EffectLayer extends Layer
 
                 shader.count = 1;
 
-                renderer.resetFramebuffer();
-
-                renderer.flush();
+                renderer.fbo.pop();
 
                 renderer.resetShader();
             });
