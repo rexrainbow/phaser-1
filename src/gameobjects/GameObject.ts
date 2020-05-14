@@ -3,12 +3,12 @@ import { BoundsComponent, DirtyComponent, InputComponent, TransformComponent } f
 import { DestroyChildren } from '../display/DestroyChildren';
 import { IBaseWorld } from '../world/IBaseWorld';
 import { IBoundsComponent } from './components/bounds/IBoundsComponent';
+import { ICanvasRenderer } from '../renderer/canvas/ICanvasRenderer';
 import { IDirtyComponent } from './components/dirty/IDirtyComponent';
 import { IGameObject } from './IGameObject';
 import { IInputComponent } from './components/input/IInputComponent';
-import { IRenderer } from '../renderer/IRenderer';
 import { ITransformComponent } from './components/transform/ITransformComponent';
-import { IWebGLRenderer } from '../renderer/IWebGLRenderer';
+import { IWebGLRenderer } from '../renderer/webgl1/IWebGLRenderer';
 import { ReparentChildren } from '../display/ReparentChildren';
 
 export class GameObject
@@ -77,18 +77,42 @@ export class GameObject
         //  Called after this GameObject and all of its children have been updated.
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    render <T extends IRenderer | IWebGLRenderer> (renderer: T): void
+    preRender (): void
     {
         this.dirty.pendingRender = false;
     }
 
+    postRender (): void
+    {
+        this.dirty.postRender = false;
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    postRender <T extends IRenderer | IWebGLRenderer> (renderer: T): void
+    renderGL <T extends IWebGLRenderer> (renderer: T): void
+    {
+        this.preRender();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    renderCanvas <T extends ICanvasRenderer> (renderer: T): void
+    {
+        this.preRender();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    postRenderGL <T extends IWebGLRenderer> (renderer: T): void
     {
         //  Called after this GameObject and all of its children have been rendered.
         //  If it doesn't have any children, this method is never called.
-        this.dirty.postRender = false;
+        this.postRender();
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    postRenderCanvas <T extends ICanvasRenderer> (renderer: T): void
+    {
+        //  Called after this GameObject and all of its children have been rendered.
+        //  If it doesn't have any children, this method is never called.
+        this.postRender();
     }
 
     get numChildren (): number

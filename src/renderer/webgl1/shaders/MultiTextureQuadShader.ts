@@ -1,7 +1,7 @@
 import { GetMaxTextures } from '../../../config/MaxTextures';
-import { IRenderer } from '../../IRenderer';
 import { IShader } from './IShader';
 import { IShaderConfig } from './IShaderConfig';
+import { IWebGLRenderer } from '../IWebGLRenderer';
 import { SingleTextureQuadShader } from './SingleTextureQuadShader';
 
 const fragmentShader = `
@@ -66,7 +66,7 @@ export class MultiTextureQuadShader extends SingleTextureQuadShader implements I
         super.createShaders(fragmentShaderSource, vertexShaderSource);
     }
 
-    bind (renderer: IRenderer, projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
+    bind (renderer: IWebGLRenderer, projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
     {
         const gl = this.gl;
         const uniforms = this.uniforms;

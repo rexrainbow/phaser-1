@@ -1,7 +1,7 @@
 import { ISprite } from '../../../gameobjects/sprite/ISprite';
-import { WebGLRenderer } from '../WebGLRenderer';
+import { IWebGLRenderer } from '../IWebGLRenderer';
 
-export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: WebGLRenderer): void
+export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: IWebGLRenderer): void
 {
     const texture = sprite.texture;
     const shader = renderer.currentShader;

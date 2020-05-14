@@ -1,10 +1,9 @@
 import { GL } from '../GL';
-import { GameInstance } from '../../../GameInstance';
-import { IRenderer } from '../../IRenderer';
 import { IShader } from './IShader';
 import { IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
+import { IWebGLRenderer } from '../IWebGLRenderer';
 
 const shaderSource = {
 
@@ -303,7 +302,7 @@ export class SingleTextureQuadShader implements IShader
         }
     }
 
-    bind (renderer: IRenderer, projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
+    bind (renderer: IWebGLRenderer, projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
     {
         const gl = this.gl;
         const uniforms = this.uniforms;
@@ -357,7 +356,7 @@ export class SingleTextureQuadShader implements IShader
         gl.drawElements(gl.TRIANGLES, count * this.quadIndexSize, gl.UNSIGNED_SHORT, 0);
     }
 
-    flush (renderer: IRenderer): boolean
+    flush (renderer: IWebGLRenderer): boolean
     {
         const count = this.count;
 

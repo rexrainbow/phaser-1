@@ -1,8 +1,11 @@
+import { BatchTexturedQuad } from '../../renderer/webgl1/draw/BatchTexturedQuad';
 import { Container } from '../container/Container';
+import { DrawTexturedQuad } from '../../renderer/canvas/draw/DrawTexturedQuad';
 import { Frame } from '../../textures/Frame';
+import { ICanvasRenderer } from '../../renderer/canvas/ICanvasRenderer';
 import { IGameObject } from '../IGameObject';
-import { IRenderer } from '../../renderer/IRenderer';
 import { ISprite } from './ISprite';
+import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
 import { PackColors } from '../../renderer/webgl1/colors/PackColors';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
@@ -57,7 +60,7 @@ export class Sprite extends Container implements ISprite
         return (this.visible && this.willRender && this.hasTexture && this.alpha > 0);
     }
 
-    render <T extends IRenderer> (renderer: T): void
+    preRender (): void
     {
         const dirty = this.dirty;
 
@@ -75,9 +78,21 @@ export class Sprite extends Container implements ISprite
             dirty.render = false;
         }
 
-        renderer.batchSprite(this);
-
         dirty.pendingRender = false;
+    }
+
+    renderGL <T extends IWebGLRenderer> (renderer: T): void
+    {
+        this.preRender();
+
+        BatchTexturedQuad(this, renderer);
+    }
+
+    renderCanvas <T extends ICanvasRenderer> (renderer: T): void
+    {
+        this.preRender();
+
+        DrawTexturedQuad(this, renderer);
     }
 
     get alpha (): number

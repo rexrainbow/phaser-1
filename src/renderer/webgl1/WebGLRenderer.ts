@@ -11,8 +11,6 @@ import { GetWebGLContext } from '../../config/WebGLContext';
 import { IBaseCamera } from '../../camera/IBaseCamera';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IShader } from './shaders/IShader';
-import { ISprite } from '../../gameobjects/sprite/ISprite';
-import { ISpriteBatch } from '../../gameobjects/spritebatch/ISpriteBatch';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './cameras/Ortho';
@@ -295,11 +293,11 @@ export class WebGLRenderer
 
                 if (gameObject.dirty.pendingRender)
                 {
-                    gameObject.render(this);
+                    gameObject.renderGL(this);
                 }
                 else
                 {
-                    gameObject.postRender(this);
+                    gameObject.postRenderGL(this);
                 }
             }
         }
@@ -421,78 +419,5 @@ export class WebGLRenderer
 
             this.resetTextures(texture);
         }
-    }
-
-    batchSprite <T extends ISprite> (sprite: T): void
-    {
-        const texture = sprite.texture;
-        const shader = this.currentShader;
-        const binding = texture.binding;
-
-        if (binding.indexCounter < this.startActiveTexture)
-        {
-            this.requestTexture(texture);
-        }
-
-        if (shader.count === shader.batchSize)
-        {
-            shader.flush(this);
-        }
-
-        const data = sprite.vertexData;
-        const textureIndex = binding.index;
-
-        //  Inject the texture ID
-        data[4] = textureIndex;
-        data[10] = textureIndex;
-        data[16] = textureIndex;
-        data[22] = textureIndex;
-
-        const offset = shader.count * shader.quadElementSize;
-
-        //  Copy the data to the array buffer
-        shader.vertexViewF32.set(data, offset);
-
-        const color = sprite.vertexColor;
-        const U32 = shader.vertexViewU32;
-
-        //  Copy the vertex colors to the Uint32 view (as the data copy above overwrites them)
-        U32[offset + 5] = color[0];
-        U32[offset + 11] = color[2];
-        U32[offset + 17] = color[3];
-        U32[offset + 23] = color[1];
-
-        shader.count++;
-    }
-
-    batchSpriteBuffer <T extends ISpriteBatch> (batch: T): void
-    {
-        const texture = batch.texture;
-        const shader = this.currentShader;
-        const binding = texture.binding;
-
-        shader.flush(this);
-
-        if (binding.indexCounter < this.startActiveTexture)
-        {
-            this.requestTexture(texture);
-        }
-
-        batch.updateTextureIndex();
-
-        const gl = this.gl;
-
-        shader.bindBuffers(batch.indexBuffer, batch.vertexBuffer);
-
-        gl.bufferData(gl.ARRAY_BUFFER, batch.data, gl.STATIC_DRAW);
-
-        gl.drawElements(gl.TRIANGLES, batch.count * shader.quadIndexSize, gl.UNSIGNED_SHORT, 0);
-
-        shader.prevCount = batch.count;
-
-        this.flushTotal++;
-
-        //  Restore
-        shader.bindBuffers(shader.indexBuffer, shader.vertexBuffer);
     }
 }

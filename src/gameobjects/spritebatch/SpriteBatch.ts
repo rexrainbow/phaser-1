@@ -1,10 +1,11 @@
+import { BatchTexturedQuadBuffer } from '../../renderer/webgl1/draw/BatchTexturedQuadBuffer';
 import { Clamp } from '../../math/Clamp';
 import { DeleteFramebuffer } from '../../renderer/webgl1/fbo/DeleteFramebuffer';
 import { Frame } from '../../textures';
 import { GL } from '../../renderer/webgl1/GL';
 import { GetVerticesFromValues } from '../components/transform/GetVerticesFromValues';
-import { IRenderer } from '../../renderer/IRenderer';
 import { ISpriteBatch } from './ISpriteBatch';
+import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
 import { Layer } from '../layer/Layer';
 import { PackColor } from '../../renderer/webgl1/colors/PackColor';
 import { SpriteBatchAddConfig } from './SpriteBatchAddConfig';
@@ -244,9 +245,9 @@ export class SpriteBatch extends Layer implements ISpriteBatch
         }
     }
 
-    render <T extends IRenderer> (renderer: T): void
+    renderGL <T extends IWebGLRenderer> (renderer: T): void
     {
-        renderer.batchSpriteBuffer(this);
+        BatchTexturedQuadBuffer(this, renderer);
     }
 
     destroy (): void

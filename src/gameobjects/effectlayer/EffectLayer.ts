@@ -2,9 +2,8 @@ import { GetHeight, GetResolution, GetWidth } from '../../config';
 
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
 import { GLTextureBinding } from '../../textures';
-import { IRenderer } from '../../renderer/IRenderer';
 import { IShader } from '../../renderer/webgl1/shaders/IShader';
-import { IWebGLRenderer } from '../../renderer/IWebGLRenderer';
+import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
 import { Layer } from '../layer/Layer';
 import { Texture } from '../../textures/Texture';
 
@@ -42,19 +41,19 @@ export class EffectLayer extends Layer
         this.framebuffer = texture.binding.framebuffer;
     }
 
-    render <T extends IRenderer | IWebGLRenderer> (renderer: T): void
+    renderGL <T extends IWebGLRenderer> (renderer: T): void
     {
-        super.render(renderer);
+        super.renderGL(renderer);
 
         if (this.numChildren > 0)
         {
-            (renderer as IWebGLRenderer).setFramebuffer(this.framebuffer, true);
+            renderer.setFramebuffer(this.framebuffer, true);
         }
     }
 
-    postRender <T extends IRenderer | IWebGLRenderer> (renderer: T): void
+    postRenderGL <T extends IWebGLRenderer> (renderer: T): void
     {
-        super.postRender(renderer);
+        super.postRenderGL(renderer);
 
         const shaders = this.shaders;
         const texture = this.texture;
@@ -64,16 +63,16 @@ export class EffectLayer extends Layer
 
         if (shaders.length === 0)
         {
-            // let shader: IShader = (renderer as IWebGLRenderer).currentShader;
+            // let shader: IShader = renderer.currentShader;
         }
         else
         {
             shaders.forEach(shader =>
             {
                 //  TODO - Combine
-                (renderer as IWebGLRenderer).setShader(shader);
+                renderer.setShader(shader);
 
-                (renderer as IWebGLRenderer).resetTextures(texture);
+                renderer.resetTextures(texture);
 
                 const textureIndex = binding.index;
 
@@ -114,14 +113,14 @@ export class EffectLayer extends Layer
 
                 shader.count = 1;
 
-                (renderer as IWebGLRenderer).resetFramebuffer();
+                renderer.resetFramebuffer();
 
                 shader.flush(renderer);
 
-                (renderer as IWebGLRenderer).resetShader();
+                renderer.resetShader();
             });
         }
 
-        (renderer as IWebGLRenderer).resetTextures();
+        renderer.resetTextures();
     }
 }
