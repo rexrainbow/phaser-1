@@ -1,15 +1,20 @@
 import { IRenderer } from '../IRenderer';
 import { IShader } from './shaders/IShader';
-import { Texture } from '../../textures';
+import { TextureSystem } from './textures/TextureSystem';
 
 export interface IWebGLRenderer extends IRenderer
 {
     gl: WebGLRenderingContext;
-    textureIndex: number[];
-    flushTotal: number;
+
+    textures: TextureSystem;
+
     currentShader: IShader;
     shaders: IShader[];
-    startActiveTexture: number;
+
+    flushTotal: number;
+
+    contextLost: boolean;
+
     onContextLost (event: Event): void;
     onContextRestored (): void;
     reset (framebuffer?: WebGLFramebuffer, width?: number, height?: number): void;
@@ -17,6 +22,6 @@ export interface IWebGLRenderer extends IRenderer
     resetFramebuffer (): void;
     setShader (newShader: IShader): IShader;
     resetShader (): void;
-    resetTextures (texture?: Texture): void;
-    requestTexture (texture: Texture): void;
+    // resetTextures (texture?: Texture): void;
+    // requestTexture (texture: Texture): void;
 }

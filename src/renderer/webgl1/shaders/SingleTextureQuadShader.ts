@@ -151,8 +151,8 @@ export class SingleTextureQuadShader implements IShader
 
         gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
-        gl.uniform1i(uniforms.uTexture, renderer.textureIndex[0]);
-        gl.uniform1f(uniforms.uTime, performance.now()); // TODO: Link to a clock, so it can be paused
+        gl.uniform1i(uniforms.uTexture, renderer.textures.textureIndex[0]);
+        gl.uniform1f(uniforms.uTime, performance.now());
         gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
 
         this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);

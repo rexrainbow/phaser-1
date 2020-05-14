@@ -8,14 +8,14 @@ export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: IWeb
     const buffer = shader.buffer;
     const binding = texture.binding;
 
-    if (binding.indexCounter < renderer.startActiveTexture)
-    {
-        renderer.requestTexture(texture);
-    }
-
     if (shader.count === buffer.batchSize)
     {
         shader.flush(renderer);
+    }
+
+    if (binding.indexCounter < renderer.textures.startActiveTexture)
+    {
+        renderer.textures.request(renderer, texture);
     }
 
     const data = sprite.vertexData;
