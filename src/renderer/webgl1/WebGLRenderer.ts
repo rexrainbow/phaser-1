@@ -6,6 +6,7 @@ import { CheckShaderMaxIfStatements } from './shaders/CheckShaderMaxIfStatements
 import { GL } from './GL';
 import { GLTextureBinding } from '../../textures';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
+import { GetRGBArray } from './colors/GetRGBArray';
 import { GetWebGLContext } from '../../config/WebGLContext';
 import { IBaseCamera } from '../../camera/IBaseCamera';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
@@ -130,17 +131,7 @@ export class WebGLRenderer
 
     setBackgroundColor (color: number): this
     {
-        const clearColor = this.clearColor;
-
-        const r: number = color >> 16 & 0xFF;
-        const g: number = color >> 8 & 0xFF;
-        const b: number = color & 0xFF;
-        const a: number = (color > 16777215) ? color >>> 24 : 255;
-
-        clearColor[0] = r / 255;
-        clearColor[1] = g / 255;
-        clearColor[2] = b / 255;
-        clearColor[3] = a / 255;
+        GetRGBArray(color, this.clearColor);
 
         return this;
     }
