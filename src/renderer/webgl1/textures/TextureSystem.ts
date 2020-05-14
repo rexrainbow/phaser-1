@@ -116,7 +116,9 @@ export class TextureSystem
         this.startActiveTexture++;
     }
 
-    request (texture: Texture): void
+    //  returns true if a batch flush (and texture reset) was caused, otherwise false
+    //  TODO - if it turns out we need to request more than once texture at once, swap this to a spread op
+    request (texture: Texture): boolean
     {
         const gl = this.renderer.gl;
         const binding = texture.binding;
@@ -125,7 +127,7 @@ export class TextureSystem
         if (binding.indexCounter > this.startActiveTexture)
         {
             //  This texture was already bound this step, so we're good to go
-            return;
+            return false;
         }
 
         binding.indexCounter = this.startActiveTexture;
@@ -141,17 +143,28 @@ export class TextureSystem
             gl.bindTexture(gl.TEXTURE_2D, binding.texture);
 
             this.currentActiveTexture++;
+
+            return false;
         }
         else
         {
             //  We're out of textures, so flush the batch and reset back to zero
             this.renderer.flush();
 
-            this.currentActiveTexture = 0;
-
             this.startActiveTexture++;
 
-            this.request(texture);
+            binding.indexCounter = this.startActiveTexture;
+
+            this.activeTextures[0] = texture;
+
+            binding.setIndex(0);
+
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, binding.texture);
+
+            this.currentActiveTexture = 1;
+
+            return true;
         }
     }
 }
