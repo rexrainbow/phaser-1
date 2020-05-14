@@ -62,7 +62,7 @@ export class RenderTexture extends Texture
 
         for (let i = 0, len = sprites.length; i < len; i++)
         {
-            sprites[i].render(renderer);
+            sprites[i].renderGL(renderer);
         }
 
         return this;
