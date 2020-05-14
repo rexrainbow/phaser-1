@@ -330,8 +330,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        // loader.setPath('/phaser4-examples/public/assets/');
-        loader.setPath('/examples/public/assets/');
+        loader.setPath('/phaser4-examples/public/assets/');
+        // loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('ayu', 'ayu.png'));
         loader.add(ImageFile('logo', 'logo.png'));
