@@ -22,12 +22,18 @@ class Demo extends Scene
         loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('logo', 'logo.png'));
+        loader.add(ImageFile('256', 'f-texture.png'));
+        loader.add(ImageFile('64', 'box-item-boxed.png'));
+        loader.add(ImageFile('32', 'shinyball.png'));
+        loader.add(ImageFile('16', 'skull.png'));
 
         loader.start(() => {
 
-            const block = new Sprite(400, 300, 'logo');
-
-            AddChildren(world, block);
+            AddChild(world, new Sprite(400, 200, '256'));
+            AddChild(world, new Sprite(400, 300, 'logo'));
+            AddChild(world, new Sprite(400, 400, '64'));
+            AddChild(world, new Sprite(400, 500, '32'));
+            AddChild(world, new Sprite(400, 550, '16'));
 
         });
 
