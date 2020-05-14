@@ -4,6 +4,7 @@ import { Texture } from '../../textures';
 
 export interface IWebGLRenderer extends IRenderer
 {
+    gl: WebGLRenderingContext;
     textureIndex: number[];
     flushTotal: number;
     currentShader: IShader;
