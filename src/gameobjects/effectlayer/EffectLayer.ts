@@ -41,9 +41,9 @@ export class EffectLayer extends Layer
         this.framebuffer = texture.binding.framebuffer;
     }
 
-    renderGL <T extends IWebGLRenderer> (renderer: T): void
+    render <T extends IWebGLRenderer> (renderer: T): void
     {
-        super.renderGL(renderer);
+        super.render(renderer);
 
         if (this.numChildren > 0)
         {
@@ -51,9 +51,9 @@ export class EffectLayer extends Layer
         }
     }
 
-    postRenderGL <T extends IWebGLRenderer> (renderer: T): void
+    postRender <T extends IWebGLRenderer> (renderer: T): void
     {
-        super.postRenderGL(renderer);
+        super.postRender(renderer);
 
         const shaders = this.shaders;
         const texture = this.texture;

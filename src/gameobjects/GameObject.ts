@@ -77,34 +77,24 @@ export class GameObject
         //  Called after this GameObject and all of its children have been updated.
     }
 
-    preRender (): void
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    render <T extends IWebGLRenderer> (renderer: T): void
     {
         this.dirty.pendingRender = false;
-    }
-
-    postRender (): void
-    {
-        this.dirty.postRender = false;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    renderGL <T extends IWebGLRenderer> (renderer: T): void
-    {
-        this.preRender();
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     renderCanvas <T extends ICanvasRenderer> (renderer: T): void
     {
-        this.preRender();
+        this.dirty.pendingRender = false;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    postRenderGL <T extends IWebGLRenderer> (renderer: T): void
+    postRender <T extends IWebGLRenderer> (renderer: T): void
     {
         //  Called after this GameObject and all of its children have been rendered.
         //  If it doesn't have any children, this method is never called.
-        this.postRender();
+        this.dirty.postRender = false;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -112,7 +102,7 @@ export class GameObject
     {
         //  Called after this GameObject and all of its children have been rendered.
         //  If it doesn't have any children, this method is never called.
-        this.postRender();
+        this.dirty.postRender = false;
     }
 
     get numChildren (): number

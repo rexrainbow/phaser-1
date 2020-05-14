@@ -81,7 +81,7 @@ export class Sprite extends Container implements ISprite
         dirty.pendingRender = false;
     }
 
-    renderGL <T extends IWebGLRenderer> (renderer: T): void
+    render <T extends IWebGLRenderer> (renderer: T): void
     {
         this.preRender();
 

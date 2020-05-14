@@ -293,11 +293,11 @@ export class WebGLRenderer
 
                 if (gameObject.dirty.pendingRender)
                 {
-                    gameObject.renderGL(this);
+                    gameObject.render(this);
                 }
                 else
                 {
-                    gameObject.postRenderGL(this);
+                    gameObject.postRender(this);
                 }
             }
         }

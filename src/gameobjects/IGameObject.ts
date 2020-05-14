@@ -33,11 +33,9 @@ export interface IGameObject
     update (delta: number, time: number): void;
     postUpdate (delta: number, time: number): void;
 
-    preRender (): void;
-    postRender (): void;
-    renderGL <T extends IWebGLRenderer> (renderer: T): void;
+    render <T extends IWebGLRenderer> (renderer: T): void;
     renderCanvas <T extends ICanvasRenderer> (renderer: T): void;
-    postRenderGL <T extends IWebGLRenderer> (renderer: T): void;
+    postRender <T extends IWebGLRenderer> (renderer: T): void;
     postRenderCanvas <T extends ICanvasRenderer> (renderer: T): void;
 
     destroy (reparentChildren?: IGameObject): void;
