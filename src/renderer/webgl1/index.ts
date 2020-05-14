@@ -1,14 +1,14 @@
-import { CreateFramebuffer } from './CreateFramebuffer';
-import { CreateGLTexture } from './CreateGLTexture';
-import { DeleteFramebuffer } from './DeleteFramebuffer';
-import { DeleteGLBuffer } from './DeleteGLBuffer';
-import { DeleteGLTexture } from './DeleteGLTexture';
+import { CreateFramebuffer } from './fbo/CreateFramebuffer';
+import { CreateGLTexture } from './textures/CreateGLTexture';
+import { DeleteFramebuffer } from './fbo/DeleteFramebuffer';
+import { DeleteGLBuffer } from './buffers/DeleteGLBuffer';
+import { DeleteGLTexture } from './textures/DeleteGLTexture';
 import { GL } from './GL';
-import { Ortho } from './Ortho';
-import { PackColor } from './PackColor';
-import { PackColors } from './PackColors';
-import { SetGLTextureFilterMode } from './SetGLTextureFilterMode';
-import { UpdateGLTexture } from './UpdateGLTexture';
+import { Ortho } from './cameras/Ortho';
+import { PackColor } from './colors/PackColor';
+import { PackColors } from './colors/PackColors';
+import { SetGLTextureFilterMode } from './textures/SetGLTextureFilterMode';
+import { UpdateGLTexture } from './textures/UpdateGLTexture';
 import { WebGLRenderer } from './WebGLRenderer';
 
 export {

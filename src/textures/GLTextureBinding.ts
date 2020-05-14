@@ -1,13 +1,13 @@
-import { CreateGLTexture } from '../renderer/webgl1/CreateGLTexture';
-import { DeleteFramebuffer } from '../renderer/webgl1/DeleteFramebuffer';
-import { DeleteGLTexture } from '../renderer/webgl1/DeleteGLTexture';
+import { CreateGLTexture } from '../renderer/webgl1/textures/CreateGLTexture';
+import { DeleteFramebuffer } from '../renderer/webgl1/fbo/DeleteFramebuffer';
+import { DeleteGLTexture } from '../renderer/webgl1/textures/DeleteGLTexture';
 import { GL } from '../renderer/webgl1/GL';
 import { IGLTextureBinding } from './IGLTextureBinding';
 import { IGLTextureBindingConfig } from './IGLTextureBindingConfig';
 import { ITexture } from './ITexture';
 import { IsSizePowerOfTwo } from '../math/pow2/IsSizePowerOfTwo';
-import { SetGLTextureFilterMode } from '../renderer/webgl1/SetGLTextureFilterMode';
-import { UpdateGLTexture } from '../renderer/webgl1/UpdateGLTexture';
+import { SetGLTextureFilterMode } from '../renderer/webgl1/textures/SetGLTextureFilterMode';
+import { UpdateGLTexture } from '../renderer/webgl1/textures/UpdateGLTexture';
 
 export class GLTextureBinding implements IGLTextureBinding
 {

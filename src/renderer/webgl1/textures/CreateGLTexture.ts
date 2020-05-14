@@ -1,5 +1,5 @@
-import { GL } from './GL';
-import { IGLTextureBinding } from '../../textures/IGLTextureBinding';
+import { GL } from '../GL';
+import { IGLTextureBinding } from '../../../textures/IGLTextureBinding';
 
 export function CreateGLTexture (binding: IGLTextureBinding): WebGLTexture
 {

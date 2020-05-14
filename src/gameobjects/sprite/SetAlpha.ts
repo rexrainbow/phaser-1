@@ -1,5 +1,5 @@
 import { ISprite } from './ISprite';
-import { PackColors } from '../../renderer/webgl1/PackColors';
+import { PackColors } from '../../renderer/webgl1/colors/PackColors';
 
 export function SetAlpha <T extends ISprite> (alpha: number, ...children: T[]): T[]
 {

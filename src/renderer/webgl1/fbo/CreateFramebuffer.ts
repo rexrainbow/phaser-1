@@ -1,4 +1,4 @@
-import { GL } from './GL';
+import { GL } from '../GL';
 
 export function CreateFramebuffer (texture: WebGLTexture, attachment?: GLenum): WebGLFramebuffer
 {

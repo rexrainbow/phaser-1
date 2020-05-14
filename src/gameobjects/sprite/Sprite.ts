@@ -3,7 +3,7 @@ import { Frame } from '../../textures/Frame';
 import { IGameObject } from '../IGameObject';
 import { IRenderer } from '../../renderer/IRenderer';
 import { ISprite } from './ISprite';
-import { PackColors } from '../../renderer/webgl1/PackColors';
+import { PackColors } from '../../renderer/webgl1/colors/PackColors';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
 import { Texture } from '../../textures/Texture';

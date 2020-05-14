@@ -1,6 +1,6 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config';
 
-import { CreateFramebuffer } from '../../renderer/webgl1/CreateFramebuffer';
+import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
 import { GLTextureBinding } from '../../textures';
 import { IRenderer } from '../../renderer/IRenderer';
 import { IShader } from '../../renderer/webgl1/shaders/IShader';

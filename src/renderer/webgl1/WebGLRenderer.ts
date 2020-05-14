@@ -14,7 +14,7 @@ import { ISprite } from '../../gameobjects/sprite/ISprite';
 import { ISpriteBatch } from '../../gameobjects/spritebatch/ISpriteBatch';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
-import { Ortho } from './Ortho';
+import { Ortho } from './cameras/Ortho';
 import { SingleTextureQuadShader } from './shaders/SingleTextureQuadShader';
 import { Texture } from '../../textures/Texture';
 

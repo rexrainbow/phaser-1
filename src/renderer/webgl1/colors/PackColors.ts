@@ -1,4 +1,4 @@
-import { ISprite } from '../../gameobjects/sprite/ISprite';
+import { ISprite } from '../../../gameobjects/sprite/ISprite';
 import { PackColor } from './PackColor';
 
 export function PackColors <T extends ISprite> (sprite: T): T

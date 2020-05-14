@@ -1,5 +1,5 @@
 import { ISprite } from './ISprite';
-import { PackColors } from '../../renderer/webgl1/PackColors';
+import { PackColors } from '../../renderer/webgl1/colors/PackColors';
 
 export function SetQuadTint <T extends ISprite> (topLeft: number, topRight: number, bottomLeft: number, bottomRight: number, ...children: T[]): T[]
 {

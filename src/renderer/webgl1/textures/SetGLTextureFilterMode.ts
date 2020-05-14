@@ -1,4 +1,4 @@
-import { GL } from './GL';
+import { GL } from '../GL';
 
 export function SetGLTextureFilterMode (texture: WebGLTexture, linear: boolean = true): void
 {

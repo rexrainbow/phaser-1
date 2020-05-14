@@ -1,4 +1,4 @@
-import { GL } from './GL';
+import { GL } from '../GL';
 
 export function DeleteGLTexture (texture: WebGLTexture): void
 {

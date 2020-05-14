@@ -1,12 +1,12 @@
 import { Clamp } from '../../math/Clamp';
-import { DeleteFramebuffer } from '../../renderer/webgl1/DeleteFramebuffer';
+import { DeleteFramebuffer } from '../../renderer/webgl1/fbo/DeleteFramebuffer';
 import { Frame } from '../../textures';
 import { GL } from '../../renderer/webgl1/GL';
 import { GetVerticesFromValues } from '../components/transform/GetVerticesFromValues';
 import { IRenderer } from '../../renderer/IRenderer';
 import { ISpriteBatch } from './ISpriteBatch';
 import { Layer } from '../layer/Layer';
-import { PackColor } from '../../renderer/webgl1/PackColor';
+import { PackColor } from '../../renderer/webgl1/colors/PackColor';
 import { SpriteBatchAddConfig } from './SpriteBatchAddConfig';
 import { Texture } from '../../textures/Texture';
 import { TextureManagerInstance } from '../../textures/TextureManagerInstance';

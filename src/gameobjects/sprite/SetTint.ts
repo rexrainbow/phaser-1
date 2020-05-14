@@ -1,5 +1,5 @@
 import { ISprite } from './ISprite';
-import { PackColors } from '../../renderer/webgl1/PackColors';
+import { PackColors } from '../../renderer/webgl1/colors/PackColors';
 
 export function SetTint <T extends ISprite> (tint: number, ...children: T[]): T[]
 {

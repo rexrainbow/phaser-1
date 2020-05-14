@@ -1,5 +1,5 @@
-import { GL } from './GL';
-import { GLTextureBinding } from '../../textures';
+import { GL } from '../GL';
+import { GLTextureBinding } from '../../../textures';
 
 export function UpdateGLTexture (binding: GLTextureBinding): WebGLTexture
 {
