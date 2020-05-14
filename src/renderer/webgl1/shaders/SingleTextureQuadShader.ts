@@ -196,7 +196,7 @@ export class SingleTextureQuadShader implements IShader
         gl.drawElements(gl.TRIANGLES, count * this.buffer.quadIndexSize, gl.UNSIGNED_SHORT, 0);
     }
 
-    flush (renderer: IWebGLRenderer): boolean
+    flush (): boolean
     {
         const count = this.count;
 
@@ -210,8 +210,6 @@ export class SingleTextureQuadShader implements IShader
         this.prevCount = count;
 
         this.count = 0;
-
-        renderer.flushTotal++;
 
         return true;
     }

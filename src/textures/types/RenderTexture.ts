@@ -71,9 +71,8 @@ export class RenderTexture extends Texture
     batchEnd (): this
     {
         const renderer = this.renderer;
-        const shader = renderer.currentShader;
 
-        shader.flush(renderer);
+        renderer.flush();
 
         renderer.reset();
 

@@ -1,22 +1,33 @@
-import { GLTextureBinding, Texture } from '../../../textures';
-import { GetMaxTextures, SetMaxTextures } from '../../../config';
+import { GetMaxTextures, SetMaxTextures } from '../../../config/MaxTextures';
 
 import { BindingQueue } from '../../BindingQueue';
-import { CheckShaderMaxIfStatements } from '../shaders';
-import { GL } from '../GL';
+import { CheckShaderMaxIfStatements } from '../shaders/CheckShaderMaxIfStatements';
+import { GLTextureBinding } from '../../../textures/GLTextureBinding';
 import { IWebGLRenderer } from '../IWebGLRenderer';
+import { Texture } from '../../../textures/Texture';
 
 export class TextureSystem
 {
+    renderer: IWebGLRenderer;
+
+    //  The maximum number of combined image units the GPU supports
+    //  Accordingly to the WebGL spec the minimum is 8
     maxTextures: number;
+
     activeTextures: Texture[];
+
     currentActiveTexture: number;
-    startActiveTexture: number;
+
+    startActiveTexture: number = 0;
+
     tempTextures: WebGLTexture[];
+
     textureIndex: number[];
 
-    constructor ()
+    constructor (renderer: IWebGLRenderer)
     {
+        this.renderer = renderer;
+
         this.tempTextures = [];
         this.textureIndex = [];
     }
@@ -24,7 +35,7 @@ export class TextureSystem
     //  As per the WebGL spec, the browser should always support at least 8 texture units
     init (): void
     {
-        const gl = GL.get();
+        const gl = this.renderer.gl;
 
         let maxGPUTextures: number = CheckShaderMaxIfStatements(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS), gl);
 
@@ -70,14 +81,12 @@ export class TextureSystem
         this.textureIndex = Array.from(Array(maxGPUTextures).keys());
 
         this.activeTextures = Array(maxGPUTextures);
+
+        this.currentActiveTexture = 0;
     }
 
-    reset (): void
+    update (): void
     {
-        this.currentActiveTexture = 0;
-
-        this.startActiveTexture++;
-
         this.processBindingQueue();
     }
 
@@ -98,57 +107,51 @@ export class TextureSystem
         BindingQueue.clear();
     }
 
-    clear (renderer: IWebGLRenderer, texture?: Texture): void
+    clear (): void
     {
-        const gl = renderer.gl;
-        const active = this.activeTextures;
-
-        active.fill(null);
+        this.activeTextures.fill(null);
 
         this.currentActiveTexture = 0;
+
         this.startActiveTexture++;
-
-        if (texture)
-        {
-            //  Set this texture as texture0
-            active[0] = texture;
-
-            const binding = texture.binding;
-
-            binding.setIndex(0);
-
-            gl.activeTexture(gl.TEXTURE0);
-            gl.bindTexture(gl.TEXTURE_2D, binding.texture);
-
-            this.currentActiveTexture = 1;
-        }
     }
 
-    request (renderer: IWebGLRenderer, texture: Texture): void
+    request (texture: Texture): void
     {
-        const gl = renderer.gl;
+        const gl = this.renderer.gl;
         const binding = texture.binding;
+        const currentActiveTexture = this.currentActiveTexture;
+
+        if (binding.indexCounter > this.startActiveTexture)
+        {
+            //  This texture was already bound this step, so we're good to go
+            return;
+        }
 
         binding.indexCounter = this.startActiveTexture;
 
-        if (this.currentActiveTexture < renderer.currentShader.maxTextures)
+        if (currentActiveTexture < this.maxTextures)
         {
             //  Make this texture active
-            this.activeTextures[this.currentActiveTexture] = texture;
+            this.activeTextures[currentActiveTexture] = texture;
 
-            binding.setIndex(this.currentActiveTexture);
+            binding.setIndex(currentActiveTexture);
 
-            gl.activeTexture(gl.TEXTURE0 + this.currentActiveTexture);
+            gl.activeTexture(gl.TEXTURE0 + currentActiveTexture);
             gl.bindTexture(gl.TEXTURE_2D, binding.texture);
 
             this.currentActiveTexture++;
         }
         else
         {
-            //  We're out of textures, so flush the batch and reset them all
-            renderer.currentShader.flush(renderer);
+            //  We're out of textures, so flush the batch and reset back to zero
+            this.renderer.flush();
 
-            this.clear(renderer, texture);
+            this.currentActiveTexture = 0;
+
+            this.startActiveTexture++;
+
+            this.request(texture);
         }
     }
 }

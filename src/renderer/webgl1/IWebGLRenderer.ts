@@ -22,6 +22,7 @@ export interface IWebGLRenderer extends IRenderer
     resetFramebuffer (): void;
     setShader (newShader: IShader): IShader;
     resetShader (): void;
+    flush (): void;
     // resetTextures (texture?: Texture): void;
     // requestTexture (texture: Texture): void;
 }

@@ -72,7 +72,7 @@ export class EffectLayer extends Layer
                 //  TODO - Combine
                 renderer.setShader(shader);
 
-                renderer.resetTextures(texture);
+                renderer.textures.request(texture);
 
                 const textureIndex = binding.index;
 
@@ -115,12 +115,10 @@ export class EffectLayer extends Layer
 
                 renderer.resetFramebuffer();
 
-                shader.flush(renderer);
+                renderer.flush();
 
                 renderer.resetShader();
             });
         }
-
-        renderer.resetTextures();
     }
 }

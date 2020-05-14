@@ -55,9 +55,9 @@ export class WebGLRenderer
 
         this.canvas = canvas;
 
-        this.initContext();
+        this.textures = new TextureSystem(this);
 
-        this.textures = new TextureSystem();
+        this.initContext();
 
         //  Let them set the default shader in the config
         this.currentShader = new MultiTextureQuadShader();
@@ -135,8 +135,6 @@ export class WebGLRenderer
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
-        this.textures.reset();
-
         this.flushTotal = 0;
     }
 
@@ -191,6 +189,8 @@ export class WebGLRenderer
         }
         */
 
+        this.textures.update();
+
         this.prevCamera = null;
 
         const worlds = renderData.worldData;
@@ -202,7 +202,7 @@ export class WebGLRenderer
             //  This only needs rebinding if the camera matrix is different to before
             if (!this.prevCamera || !Matrix2dEqual(camera.worldTransform, this.prevCamera.worldTransform))
             {
-                this.currentShader.flush(this);
+                this.flush();
 
                 this.currentShader.bind(this, projectionMatrix, camera.matrix);
 
@@ -226,16 +226,22 @@ export class WebGLRenderer
         }
 
         //  One final sweep
-        this.currentShader.flush(this);
+        this.flush();
+    }
+
+    flush (): void
+    {
+        if (this.currentShader.flush())
+        {
+            this.flushTotal++;
+        }
     }
 
     //  TODO Move to ShaderSystem
 
     setShader (newShader: IShader): IShader
     {
-        this.currentShader.flush(this);
-
-        // this.resetTextures();
+        this.flush();
 
         newShader.bind(this, this.projectionMatrix, this.prevCamera.matrix);
 
@@ -248,9 +254,7 @@ export class WebGLRenderer
 
     resetShader (): void
     {
-        this.currentShader.flush(this);
-
-        this.textures.clear(this);
+        this.flush();
 
         const shaders = this.shaders;
 
@@ -268,7 +272,7 @@ export class WebGLRenderer
 
     setFramebuffer (framebuffer: WebGLFramebuffer = null, clear: boolean = false, width?: number, height?: number): void
     {
-        this.currentShader.flush(this);
+        this.flush();
 
         const gl = this.gl;
 

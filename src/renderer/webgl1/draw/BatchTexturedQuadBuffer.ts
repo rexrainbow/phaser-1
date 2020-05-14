@@ -6,14 +6,10 @@ export function BatchTexturedQuadBuffer <T extends ISpriteBatch> (batch: T, rend
     const texture = batch.texture;
     const shader = renderer.currentShader;
     const buffer = shader.buffer;
-    const binding = texture.binding;
 
-    shader.flush(renderer);
+    renderer.flush();
 
-    if (binding.indexCounter < renderer.startActiveTexture)
-    {
-        renderer.requestTexture(texture);
-    }
+    renderer.textures.request(texture);
 
     batch.updateTextureIndex();
 
