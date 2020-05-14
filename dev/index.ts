@@ -21,7 +21,8 @@
 // import runTest from './post render';
 // import runTest from './sprite image';
 // import runTest from './multiple sprite images';
+// import runTest from './over 16 textures';
 
-import runTest from './over 16 textures';
+import runTest from './effect layer 1';
 
 runTest();
