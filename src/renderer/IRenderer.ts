@@ -16,4 +16,5 @@ export interface IRenderer
     resize (width: number, height: number, resolution?: number): void;
     setBackgroundColor (color: number): this;
     render (renderData: ISceneRenderData): void;
+    destroy (): void;
 }
