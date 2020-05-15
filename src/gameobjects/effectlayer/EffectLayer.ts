@@ -47,6 +47,8 @@ export class EffectLayer extends Layer
 
         if (this.numChildren > 0)
         {
+            // console.log('EL fbo.add', renderer.fbo);
+
             renderer.fbo.add(this.framebuffer, true);
         }
     }
@@ -55,11 +57,16 @@ export class EffectLayer extends Layer
     {
         super.postRender(renderer);
 
+        renderer.flush();
+
         const shaders = this.shaders;
         const texture = this.texture;
-        const binding = texture.binding;
         const { u0, v0, u1, v1 } = texture.firstFrame;
         const packedColor = 4294967295;
+
+        renderer.textures.bindFBOTexture(texture);
+
+        const textureIndex = texture.binding.index;
 
         if (shaders.length === 0)
         {
@@ -69,12 +76,8 @@ export class EffectLayer extends Layer
         {
             shaders.forEach(shader =>
             {
-                //  TODO - Combine and move to DrawQuad op
-                renderer.textures.request(texture);
-
-                const textureIndex = binding.index;
-
-                renderer.setShader(shader);
+                //  Render all the children now
+                renderer.setShader(shader, textureIndex);
 
                 const F32 = shader.buffer.vertexViewF32;
                 const U32 = shader.buffer.vertexViewU32;
@@ -116,6 +119,10 @@ export class EffectLayer extends Layer
                 renderer.fbo.pop();
 
                 renderer.resetShader();
+
+                //  To avoid forming a feedback loop
+                renderer.textures.unbindFBOTexture();
+
             });
         }
     }
