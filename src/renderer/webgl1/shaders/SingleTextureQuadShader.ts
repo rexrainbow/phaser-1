@@ -1,10 +1,15 @@
-import { GL } from '../GL';
+import { GetHeight, GetResolution, GetWidth } from '../../../config/Size';
+
+import { CreateFramebuffer } from '../fbo/CreateFramebuffer';
+import { GLTextureBinding } from '../textures/GLTextureBinding';
 import { IShader } from './IShader';
 import { IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
 import { IWebGLRenderer } from '../IWebGLRenderer';
 import { IndexedBuffer } from '../buffers/IndexedBuffer';
+import { Texture } from '../../../textures/Texture';
+import { WebGLRendererInstance } from '../WebGLRendererInstance';
 
 const shaderSource = {
 
@@ -55,7 +60,7 @@ void main (void)
 
 export class SingleTextureQuadShader implements IShader
 {
-    gl: WebGLRenderingContext;
+    renderer: IWebGLRenderer;
 
     program: WebGLProgram;
 
@@ -79,9 +84,14 @@ export class SingleTextureQuadShader implements IShader
      */
     prevCount: number;
 
+    texture: Texture;
+    framebuffer: WebGLFramebuffer;
+
+    renderToFBO: boolean = false;
+
     constructor (config: IShaderConfig = {})
     {
-        this.gl = GL.get();
+        this.renderer = WebGLRendererInstance.get();
 
         const {
             batchSize = 4096,
@@ -90,7 +100,11 @@ export class SingleTextureQuadShader implements IShader
             vertexElementSize = 6,
             quadIndexSize = 6,
             fragmentShader = shaderSource.fragmentShader,
-            vertexShader = shaderSource.vertexShader
+            vertexShader = shaderSource.vertexShader,
+            width = GetWidth(),
+            height = GetHeight(),
+            resolution = GetResolution(),
+            renderToFBO = false
         } = config;
 
         this.buffer = new IndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, quadIndexSize);
@@ -98,11 +112,23 @@ export class SingleTextureQuadShader implements IShader
         this.createShaders(fragmentShader, vertexShader);
 
         this.count = 0;
+
+        this.renderToFBO = renderToFBO;
+
+        const texture = new Texture(null, width * resolution, height * resolution);
+        const binding = new GLTextureBinding(texture);
+
+        texture.binding = binding;
+
+        binding.framebuffer = CreateFramebuffer(binding.texture);
+
+        this.texture = texture;
+        this.framebuffer = binding.framebuffer;
     }
 
     createShaders (fragmentShaderSource: string, vertexShaderSource: string): void
     {
-        const gl = this.gl;
+        const gl = this.renderer.gl;
 
         //  Create the shaders
 
@@ -141,16 +167,20 @@ export class SingleTextureQuadShader implements IShader
         }
     }
 
-    bind (renderer: IWebGLRenderer, projectionMatrix: Float32Array, cameraMatrix: Float32Array, textureID: number): void
+    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array, textureID: number): void
     {
-        const gl = this.gl;
+        const renderer = this.renderer;
+        const gl = renderer.gl;
         const uniforms = this.uniforms;
 
         gl.useProgram(this.program);
 
         gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
+
+        //  0
         gl.uniform1i(uniforms.uTexture, renderer.textures.textureIndex[textureID]);
+
         gl.uniform1f(uniforms.uTime, performance.now());
         gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
 
@@ -159,7 +189,7 @@ export class SingleTextureQuadShader implements IShader
 
     bindBuffers (indexBuffer: WebGLBuffer, vertexBuffer: WebGLBuffer): void
     {
-        const gl = this.gl;
+        const gl = this.renderer.gl;
         const stride = this.buffer.vertexByteSize;
         const attribs = this.attribs;
 
@@ -178,7 +208,8 @@ export class SingleTextureQuadShader implements IShader
 
     draw (count: number): void
     {
-        const gl = this.gl;
+        const renderer = this.renderer;
+        const gl = renderer.gl;
         const buffer = this.buffer;
 
         if (count === buffer.batchSize)
@@ -192,7 +223,17 @@ export class SingleTextureQuadShader implements IShader
             gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
         }
 
+        if (this.renderToFBO)
+        {
+            renderer.fbo.add(this.framebuffer, true);
+        }
+
         gl.drawElements(gl.TRIANGLES, count * buffer.quadIndexSize, gl.UNSIGNED_SHORT, 0);
+
+        if (this.renderToFBO)
+        {
+            renderer.fbo.pop();
+        }
     }
 
     flush (): boolean
