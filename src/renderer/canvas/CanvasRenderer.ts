@@ -135,4 +135,9 @@ export class CanvasRenderer
             }
         }
     }
+
+    destroy (): void
+    {
+        //  TODO!
+    }
 }
