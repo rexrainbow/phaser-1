@@ -44,8 +44,6 @@ export class FBOSystem
         const renderer = this.renderer;
         const gl = renderer.gl;
 
-        renderer.flush();
-
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 
         if (clear)
