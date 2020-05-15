@@ -1,5 +1,4 @@
 import { IWebGLRenderer } from '../IWebGLRenderer';
-import { frame } from '../../../GameInstance';
 
 export type FBOStackEntry = {
     framebuffer: WebGLFramebuffer;
