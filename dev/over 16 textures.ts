@@ -18,8 +18,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        // loader.setPath('/phaser4-examples/public/assets/');
-        loader.setPath('/examples/public/assets/');
+        loader.setPath('/phaser4-examples/public/assets/');
+        // loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('tex1', 'beball1.png'));
         loader.add(ImageFile('tex2', 'car.png'));

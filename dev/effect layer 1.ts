@@ -10,6 +10,8 @@ import { Shader } from '../src/renderer/webgl1/shaders/Shader';
 import { StaticWorld } from '../src/world/StaticWorld';
 
 const verticalBarsFragmentShader = `
+#define SHADER_NAME BARS_FRAG
+
 precision mediump float;
 
 varying vec2 vTextureCoord;
@@ -330,8 +332,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        // loader.setPath('/phaser4-examples/public/assets/');
-        loader.setPath('/examples/public/assets/');
+        loader.setPath('/phaser4-examples/public/assets/');
+        // loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('ayu', 'ayu.png'));
         loader.add(ImageFile('logo', 'logo.png'));
@@ -348,15 +350,15 @@ class Demo extends Scene
         // const red = new Shader({ fragmentShader: redFragmentShader, batchSize: 1 });
         // const blurX = new Shader({ fragmentShader: blurXFragmentShader, batchSize: 1 });
         // const blurY = new Shader({ fragmentShader: blurYFragmentShader, batchSize: 1 });
-        const lazer = new Shader({ fragmentShader: lazerBeamFragmentShader, batchSize: 1 });
-        const plasma = new Shader({ fragmentShader: plasmaFragmentShader, batchSize: 1 });
-        const pixel = new Shader({ fragmentShader: pixelateFragmentShader, batchSize: 1 });
-        const sine = new Shader({ fragmentShader: sineWaveFragmentShader, batchSize: 1 });
-        const sine2 = new Shader({ fragmentShader: sineWaveFragmentShader2, batchSize: 1 });
-        const underwater = new Shader({ fragmentShader: underwaterFragmentShader, batchSize: 1 });
-        const vdu = new Shader({ fragmentShader: vduNoiseFragmentShader, batchSize: 1 });
+        // const lazer = new Shader({ fragmentShader: lazerBeamFragmentShader, batchSize: 1 });
+        // const plasma = new Shader({ fragmentShader: plasmaFragmentShader, batchSize: 1 });
+        // const pixel = new Shader({ fragmentShader: pixelateFragmentShader, batchSize: 1 });
+        // const sine = new Shader({ fragmentShader: sineWaveFragmentShader, batchSize: 1 });
+        // const sine2 = new Shader({ fragmentShader: sineWaveFragmentShader2, batchSize: 1 });
+        // const underwater = new Shader({ fragmentShader: underwaterFragmentShader, batchSize: 1 });
+        // const vdu = new Shader({ fragmentShader: vduNoiseFragmentShader, batchSize: 1 });
         const bars = new Shader({ fragmentShader: verticalBarsFragmentShader, batchSize: 1 });
-        const empty = new Shader({ batchSize: 1 });
+        // const empty = new Shader({ batchSize: 1 });
 
         const world = new StaticWorld(this);
 
@@ -370,8 +372,8 @@ class Demo extends Scene
         // layer.shaders.push(sine2);
         // layer.shaders.push(underwater);
         // layer.shaders.push(vdu);
-        // layer.shaders.push(bars);
-        layer.shaders.push(empty);
+        layer.shaders.push(bars);
+        // layer.shaders.push(empty);
 
         const logo = new Sprite(200, 300, 'logo');
         const ayu = new Sprite(600, 300, 'ayu');
@@ -382,9 +384,9 @@ class Demo extends Scene
 
         // AddChildren(world, ayu, logo, farm, rocket, bubble, star);
 
-        AddChildren(layer, ayu, logo);
+        // AddChildren(layer, ayu, logo);
 
-        // AddChildren(layer, ayu, logo, farm, rocket, bubble, star);
+        AddChildren(layer, ayu, logo, farm, rocket, bubble, star);
 
         AddChild(world, layer);
     }
