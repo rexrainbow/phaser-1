@@ -14,8 +14,6 @@ export class TextureSystem
     //  Accordingly to the WebGL spec the minimum is 8
     maxTextures: number;
 
-    activeTextures: Texture[];
-
     currentActiveTexture: number;
 
     startActiveTexture: number = 0;
@@ -62,6 +60,8 @@ export class TextureSystem
             });
         }
 
+        const index = [];
+
         //  Create temp textures to stop WebGL errors on mac os
         for (let texturesIndex: number = 0; texturesIndex < maxGPUTextures; texturesIndex++)
         {
@@ -74,23 +74,19 @@ export class TextureSystem
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([ 0, 0, 255, 255 ]));
 
             tempTextures[texturesIndex] = tempTexture;
+
+            index.push(texturesIndex);
         }
 
         this.maxTextures = maxGPUTextures;
 
-        this.textureIndex = Array.from(Array(maxGPUTextures).keys());
+        this.textureIndex = index;
 
-        this.activeTextures = Array(maxGPUTextures);
-
-        this.currentActiveTexture = 0;
+        //  Zero is reserved for FBO textures
+        this.currentActiveTexture = 1;
     }
 
     update (): void
-    {
-        this.processBindingQueue();
-    }
-
-    private processBindingQueue (): void
     {
         const queue = BindingQueue.get();
 
@@ -109,24 +105,41 @@ export class TextureSystem
 
     clear (): void
     {
-        this.activeTextures.fill(null);
-
-        this.currentActiveTexture = 0;
+        this.currentActiveTexture = 1;
 
         this.startActiveTexture++;
     }
 
-    //  returns true if a batch flush (and texture reset) was caused, otherwise false
-    //  TODO - if it turns out we need to request more than once texture at once, swap this to a spread op
+    bindFBOTexture (texture: Texture): void
+    {
+        const gl = this.renderer.gl;
+        const binding = texture.binding;
+
+        binding.setIndex(0);
+
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, binding.texture);
+    }
+
+    unbindFBOTexture (): void
+    {
+        const gl = this.renderer.gl;
+
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this.tempTextures[0]);
+    }
+
+    //  returns true if the texture was assigned a new index, otherwise false
     request (texture: Texture): boolean
     {
         const gl = this.renderer.gl;
         const binding = texture.binding;
         const currentActiveTexture = this.currentActiveTexture;
 
-        if (binding.indexCounter > this.startActiveTexture)
+        if (binding.indexCounter >= this.startActiveTexture)
         {
             //  This texture was already bound this step, so we're good to go
+
             return false;
         }
 
@@ -134,37 +147,30 @@ export class TextureSystem
 
         if (currentActiveTexture < this.maxTextures)
         {
-            //  Make this texture active
-            this.activeTextures[currentActiveTexture] = texture;
-
             binding.setIndex(currentActiveTexture);
 
             gl.activeTexture(gl.TEXTURE0 + currentActiveTexture);
             gl.bindTexture(gl.TEXTURE_2D, binding.texture);
 
             this.currentActiveTexture++;
-
-            return false;
         }
         else
         {
-            //  We're out of textures, so flush the batch and reset back to zero
+            //  We're out of textures, so flush the batch and reset back to 1
             this.renderer.flush();
 
             this.startActiveTexture++;
 
             binding.indexCounter = this.startActiveTexture;
 
-            this.activeTextures[0] = texture;
+            binding.setIndex(1);
 
-            binding.setIndex(0);
-
-            gl.activeTexture(gl.TEXTURE0);
+            gl.activeTexture(gl.TEXTURE1);
             gl.bindTexture(gl.TEXTURE_2D, binding.texture);
 
-            this.currentActiveTexture = 1;
-
-            return true;
+            this.currentActiveTexture = 2;
         }
+
+        return true;
     }
 }
