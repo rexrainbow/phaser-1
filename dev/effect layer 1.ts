@@ -347,24 +347,24 @@ class Demo extends Scene
 
     create ()
     {
-        // const red = new Shader({ fragmentShader: redFragmentShader, batchSize: 1 });
-        // const blurX = new Shader({ fragmentShader: blurXFragmentShader, batchSize: 1 });
-        // const blurY = new Shader({ fragmentShader: blurYFragmentShader, batchSize: 1 });
-        // const lazer = new Shader({ fragmentShader: lazerBeamFragmentShader, batchSize: 1 });
-        // const plasma = new Shader({ fragmentShader: plasmaFragmentShader, batchSize: 1 });
-        // const pixel = new Shader({ fragmentShader: pixelateFragmentShader, batchSize: 1 });
-        // const sine = new Shader({ fragmentShader: sineWaveFragmentShader, batchSize: 1 });
-        // const sine2 = new Shader({ fragmentShader: sineWaveFragmentShader2, batchSize: 1 });
-        // const underwater = new Shader({ fragmentShader: underwaterFragmentShader, batchSize: 1 });
-        // const vdu = new Shader({ fragmentShader: vduNoiseFragmentShader, batchSize: 1 });
+        const red = new Shader({ fragmentShader: redFragmentShader, batchSize: 1 });
+        const blurX = new Shader({ fragmentShader: blurXFragmentShader, batchSize: 1 });
+        const blurY = new Shader({ fragmentShader: blurYFragmentShader, batchSize: 1 });
+        const lazer = new Shader({ fragmentShader: lazerBeamFragmentShader, batchSize: 1 });
+        const plasma = new Shader({ fragmentShader: plasmaFragmentShader, batchSize: 1 });
+        const pixel = new Shader({ fragmentShader: pixelateFragmentShader, batchSize: 1 });
+        const sine = new Shader({ fragmentShader: sineWaveFragmentShader, batchSize: 1 });
+        const sine2 = new Shader({ fragmentShader: sineWaveFragmentShader2, batchSize: 1 });
+        const underwater = new Shader({ fragmentShader: underwaterFragmentShader, batchSize: 1 });
+        const vdu = new Shader({ fragmentShader: vduNoiseFragmentShader, batchSize: 1 });
         const bars = new Shader({ fragmentShader: verticalBarsFragmentShader, batchSize: 1 });
-        // const empty = new Shader({ batchSize: 1 });
+        const empty = new Shader({ batchSize: 1 });
 
         const world = new StaticWorld(this);
 
         const layer = new EffectLayer();
 
-        // layer.shaders.push(red, blurX, blurY);
+        // layer.shaders.push(blurX, red);
         // layer.shaders.push(lazer);
         // layer.shaders.push(plasma);
         // layer.shaders.push(pixel);
@@ -372,7 +372,7 @@ class Demo extends Scene
         // layer.shaders.push(sine2);
         // layer.shaders.push(underwater);
         // layer.shaders.push(vdu);
-        layer.shaders.push(bars);
+        layer.shaders.push(plasma, bars);
         // layer.shaders.push(empty);
 
         const logo = new Sprite(200, 300, 'logo');
