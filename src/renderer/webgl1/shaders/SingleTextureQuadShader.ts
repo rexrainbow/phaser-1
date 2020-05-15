@@ -9,6 +9,8 @@ import { IndexedBuffer } from '../buffers/IndexedBuffer';
 const shaderSource = {
 
     fragmentShader: `
+#define SHADER_NAME SINGLE_QUAD_FRAG
+
 precision highp float;
 
 varying vec2 vTextureCoord;
@@ -25,6 +27,8 @@ void main (void)
 }`,
 
     vertexShader: `
+#define SHADER_NAME SINGLE_QUAD_VERT
+
 precision highp float;
 
 attribute vec2 aVertexPosition;
@@ -57,8 +61,6 @@ export class SingleTextureQuadShader implements IShader
 
     attribs: IShaderAttributes = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
     uniforms: IShaderUniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0, uTime: 0, uResolution: 0 };
-
-    maxTextures: number = 1;
 
     buffer: IndexedBuffer;
 
@@ -139,7 +141,7 @@ export class SingleTextureQuadShader implements IShader
         }
     }
 
-    bind (renderer: IWebGLRenderer, projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
+    bind (renderer: IWebGLRenderer, projectionMatrix: Float32Array, cameraMatrix: Float32Array, textureID: number): void
     {
         const gl = this.gl;
         const uniforms = this.uniforms;
@@ -148,7 +150,7 @@ export class SingleTextureQuadShader implements IShader
 
         gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
-        gl.uniform1i(uniforms.uTexture, renderer.textures.currentActiveTexture);
+        gl.uniform1i(uniforms.uTexture, renderer.textures.textureIndex[textureID]);
         gl.uniform1f(uniforms.uTime, performance.now());
         gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
 
@@ -177,20 +179,20 @@ export class SingleTextureQuadShader implements IShader
     draw (count: number): void
     {
         const gl = this.gl;
-        const offset = count * this.buffer.quadByteSize;
+        const buffer = this.buffer;
 
-        if (offset === this.buffer.bufferByteSize)
+        if (count === buffer.batchSize)
         {
-            gl.bufferData(gl.ARRAY_BUFFER, this.buffer.data, gl.DYNAMIC_DRAW);
+            gl.bufferData(gl.ARRAY_BUFFER, buffer.data, gl.DYNAMIC_DRAW);
         }
         else
         {
-            const view = this.buffer.vertexViewF32.subarray(0, offset);
+            const view = buffer.vertexViewF32.subarray(0, count * buffer.quadElementSize);
 
             gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
         }
 
-        gl.drawElements(gl.TRIANGLES, count * this.buffer.quadIndexSize, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES, count * buffer.quadIndexSize, gl.UNSIGNED_SHORT, 0);
     }
 
     flush (): boolean
