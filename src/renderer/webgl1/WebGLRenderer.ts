@@ -13,6 +13,7 @@ import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './cameras/Ortho';
 import { SingleTextureQuadShader } from './shaders/SingleTextureQuadShader';
 import { TextureSystem } from './textures/TextureSystem';
+import { WebGLRendererInstance } from './WebGLRendererInstance';
 
 export class WebGLRenderer
 {
@@ -23,6 +24,8 @@ export class WebGLRenderer
     textures: TextureSystem;
 
     clearColor = [ 0, 0, 0, 1 ];
+
+    singleQuadShader: SingleTextureQuadShader;
 
     currentShader: IShader;
     shaders: IShader[];
@@ -62,9 +65,11 @@ export class WebGLRenderer
 
         this.initContext();
 
-        //  Let them set the default shader in the config
+        WebGLRendererInstance.set(this);
+
+        this.singleQuadShader = new SingleTextureQuadShader();
+
         this.currentShader = new MultiTextureQuadShader();
-        // this.currentShader = (this.textures.maxTextures === 8) ? new SingleTextureQuadShader() : new MultiTextureQuadShader();
 
         this.shaders = [ this.currentShader ];
     }
@@ -207,7 +212,7 @@ export class WebGLRenderer
             {
                 this.flush();
 
-                this.currentShader.bind(this, projectionMatrix, camera.matrix);
+                this.currentShader.bind(projectionMatrix, camera.matrix);
 
                 this.prevCamera = camera;
             }
@@ -246,7 +251,7 @@ export class WebGLRenderer
     {
         this.flush();
 
-        newShader.bind(this, this.projectionMatrix, this.prevCamera.matrix, textureID);
+        newShader.bind(this.projectionMatrix, this.prevCamera.matrix, textureID);
 
         this.shaders.push(newShader);
 
@@ -255,7 +260,7 @@ export class WebGLRenderer
         return newShader;
     }
 
-    resetShader (): void
+    popShader (): void
     {
         this.flush();
 
@@ -267,7 +272,17 @@ export class WebGLRenderer
         }
 
         this.currentShader = shaders[shaders.length - 1];
+    }
 
-        this.currentShader.bind(this, this.projectionMatrix, this.prevCamera.matrix);
+    resetShader (): void
+    {
+        this.popShader();
+
+        this.currentShader.bind(this.projectionMatrix, this.prevCamera.matrix);
+    }
+
+    destroy (): void
+    {
+        WebGLRendererInstance.set(undefined);
     }
 }
