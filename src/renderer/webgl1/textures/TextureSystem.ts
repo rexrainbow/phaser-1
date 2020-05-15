@@ -82,7 +82,7 @@ export class TextureSystem
 
         this.textureIndex = index;
 
-        //  Zero is reserved for FBO textures
+        //  ID Zero is reserved for FBO Textures
         this.currentActiveTexture = 1;
     }
 
@@ -103,32 +103,50 @@ export class TextureSystem
         BindingQueue.clear();
     }
 
-    clear (): void
+    reset (): void
     {
+        const gl = this.renderer.gl;
+        const temp = this.tempTextures;
+
+        for (let i: number = 0; i < temp.length; i++)
+        {
+            gl.activeTexture(gl.TEXTURE0 + i);
+
+            gl.bindTexture(gl.TEXTURE_2D, temp[i]);
+        }
+
         this.currentActiveTexture = 1;
 
         this.startActiveTexture++;
     }
 
-    bindFBOTexture (texture: Texture): void
+    //  directly bind a texture to an index slot
+    bind (texture: Texture, index: number = 0): void
     {
         const gl = this.renderer.gl;
         const binding = texture.binding;
 
-        binding.setIndex(0);
+        binding.setIndex(index);
 
-        gl.activeTexture(gl.TEXTURE0);
+        gl.activeTexture(gl.TEXTURE0 + index);
         gl.bindTexture(gl.TEXTURE_2D, binding.texture);
     }
 
-    unbindFBOTexture (): void
+    //  unbind the given texture index
+    unbind (index: number = 0): void
     {
         const gl = this.renderer.gl;
 
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, this.tempTextures[0]);
+        gl.activeTexture(gl.TEXTURE0 + index);
+        gl.bindTexture(gl.TEXTURE_2D, this.tempTextures[index]);
+
+        if (index > 0)
+        {
+            this.startActiveTexture++;
+        }
     }
 
+    //  request the next available texture and bind it
     //  returns true if the texture was assigned a new index, otherwise false
     request (texture: Texture): boolean
     {
