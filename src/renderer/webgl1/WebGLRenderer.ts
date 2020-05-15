@@ -242,11 +242,11 @@ export class WebGLRenderer
 
     //  TODO Move to ShaderSystem
 
-    setShader (newShader: IShader): IShader
+    setShader (newShader: IShader, textureID?: number): IShader
     {
         this.flush();
 
-        newShader.bind(this, this.projectionMatrix, this.prevCamera.matrix);
+        newShader.bind(this, this.projectionMatrix, this.prevCamera.matrix, textureID);
 
         this.shaders.push(newShader);
 

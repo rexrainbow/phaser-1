@@ -20,7 +20,7 @@ export interface IWebGLRenderer extends IRenderer
     onContextLost (event: Event): void;
     onContextRestored (): void;
     reset (framebuffer?: WebGLFramebuffer, width?: number, height?: number): void;
-    setShader (newShader: IShader): IShader;
+    setShader (newShader: IShader, textureID?: number): IShader;
     resetShader (): void;
     flush (): void;
 }
