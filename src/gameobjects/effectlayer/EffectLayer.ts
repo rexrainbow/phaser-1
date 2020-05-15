@@ -1,5 +1,6 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config';
 
+import { BatchSingleQuad } from '../../renderer/webgl1/draw/BatchSingleQuad';
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
 import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
@@ -58,31 +59,56 @@ export class EffectLayer extends Layer
 
         const shaders = this.shaders;
         const texture = this.texture;
-        const { u0, v0, u1, v1 } = texture.firstFrame;
+
+        renderer.flush();
+
+        renderer.fbo.pop();
+
+        //  this.framebuffer now contains a texture with all of this layers sprites drawn to it
 
         if (shaders.length === 0)
         {
-            // let shader: IShader = renderer.currentShader;
+            const { u0, v0, u1, v1 } = texture.firstFrame;
+
+            renderer.textures.bind(texture);
+
+            DrawTexturedQuad(renderer, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
+
+            renderer.textures.unbind();
         }
         else
         {
-            shaders.forEach(shader =>
+            let prevTexture = texture;
+
+            for (let i: number = 0; i < shaders.length; i++)
             {
-                //  Render all the children now
+                const shader = shaders[i];
+
+                const { u0, v0, u1, v1 } = prevTexture.firstFrame;
+
                 renderer.setShader(shader, 0);
 
-                renderer.textures.bindFBOTexture(texture);
+                shader.renderToFBO = true;
 
-                DrawTexturedQuad(renderer, texture.width, texture.height, u0, v0, u1, v1);
+                //  The shaders input texture
+                renderer.textures.bind(prevTexture);
 
-                renderer.fbo.pop();
+                BatchSingleQuad(renderer, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
 
-                renderer.resetShader();
+                renderer.popShader();
 
-                //  To avoid forming a feedback loop
-                renderer.textures.unbindFBOTexture();
+                renderer.textures.unbind();
 
-            });
+                prevTexture = shader.texture;
+            }
+
+            const { u0, v0, u1, v1 } = prevTexture.firstFrame;
+
+            renderer.textures.bind(prevTexture);
+
+            DrawTexturedQuad(renderer, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
+
+            renderer.textures.unbind();
         }
     }
 }
