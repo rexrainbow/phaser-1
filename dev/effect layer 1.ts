@@ -372,7 +372,7 @@ class Demo extends Scene
         // layer.shaders.push(sine2);
         // layer.shaders.push(underwater);
         // layer.shaders.push(vdu);
-        layer.shaders.push(plasma, bars);
+        layer.shaders.push(pixel, plasma, bars);
         // layer.shaders.push(empty);
 
         const logo = new Sprite(200, 300, 'logo');
