@@ -7,4 +7,8 @@ export type IShaderConfig = {
     quadIndexSize?: number;
     fragmentShader?: string;
     vertexShader?: string;
+    width?: number;
+    height?: number;
+    resolution?: number;
+    renderToFBO?: boolean;
 };
