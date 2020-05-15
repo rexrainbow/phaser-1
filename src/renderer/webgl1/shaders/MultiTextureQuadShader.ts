@@ -5,6 +5,8 @@ import { IWebGLRenderer } from '../IWebGLRenderer';
 import { SingleTextureQuadShader } from './SingleTextureQuadShader';
 
 const fragmentShader = `
+#define SHADER_NAME MULTI_QUAD_FRAG
+
 precision highp float;
 
 varying vec2 vTextureCoord;
@@ -16,6 +18,7 @@ uniform sampler2D uTexture[%count%];
 void main (void)
 {
     vec4 color;
+
     %forloop%
 
     gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);
@@ -23,45 +26,38 @@ void main (void)
 
 export class MultiTextureQuadShader extends SingleTextureQuadShader implements IShader
 {
-    maxTextures: number = 0;
-
-    constructor (config: IShaderConfig = { fragmentShader, maxTextures: GetMaxTextures() })
+    constructor (config: IShaderConfig = { fragmentShader })
     {
         super(config);
     }
 
     createShaders (fragmentShaderSource: string, vertexShaderSource: string): void
     {
-        const maxTextures = this.maxTextures;
+        const maxTextures = GetMaxTextures();
 
         let src = '';
 
-        if (maxTextures > 1)
+        for (let i = 1; i < maxTextures; i++)
         {
-            for (let i = 0; i < maxTextures; i++)
+            if (i > 1)
             {
-                if (i > 0)
-                {
-                    src += '\nelse ';
-                }
-
-                if (i < maxTextures - 1)
-                {
-                    src += `if (vTextureId < ${i}.5)`;
-                }
-
-                src += '\n{';
-                src += `\n  color = texture2D(uTexture[${i}], vTextureCoord);`;
-                src += '\n}';
+                src += '\n\telse ';
             }
-        }
-        else
-        {
-            src = 'color = texture2D(uTexture[0], vTextureCoord);';
+
+            if (i < maxTextures - 1)
+            {
+                src += `if (vTextureId < ${i}.5)`;
+            }
+
+            src += '\n\t{';
+            src += `\n\t\tcolor = texture2D(uTexture[${i}], vTextureCoord);`;
+            src += '\n\t}';
         }
 
         fragmentShaderSource = fragmentShaderSource.replace(/%count%/gi, `${maxTextures}`);
         fragmentShaderSource = fragmentShaderSource.replace(/%forloop%/gi, src);
+
+        // console.log(fragmentShaderSource);
 
         super.createShaders(fragmentShaderSource, vertexShaderSource);
     }
@@ -80,5 +76,23 @@ export class MultiTextureQuadShader extends SingleTextureQuadShader implements I
         gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
 
         this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
+    }
+
+    flush (): boolean
+    {
+        const count = this.count;
+
+        if (count === 0)
+        {
+            return false;
+        }
+
+        this.draw(count);
+
+        this.prevCount = count;
+
+        this.count = 0;
+
+        return true;
     }
 }
