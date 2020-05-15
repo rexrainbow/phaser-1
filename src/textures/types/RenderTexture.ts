@@ -51,7 +51,7 @@ export class RenderTexture extends Texture
 
         renderer.reset(this.binding.framebuffer, this.width, this.height);
 
-        renderer.currentShader.bind(renderer, this.projectionMatrix, this.cameraMatrix);
+        renderer.currentShader.bind(this.projectionMatrix, this.cameraMatrix);
 
         return this;
     }
