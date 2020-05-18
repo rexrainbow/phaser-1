@@ -10,13 +10,13 @@ export const DIRTY_CONST = {
     TEXTURE: 64,
     FRAME: 128,
     ALPHA: 256,
+    CHILD: 512,
 
     //  Special combinations
     DEFAULT: 1 + 2 + 16 + 32,
     TRANSFORM_BOUNDS: 1 + 32,
 
     //  Reserved for future use:
-    //  512
     //  1024
     //  2048
     //  4096
