@@ -50,10 +50,10 @@ export class EffectLayer extends Layer
     {
         super.render(renderer);
 
-        renderer.flush();
-
         if (this.numChildren > 0)
         {
+            renderer.flush();
+
             renderer.fbo.add(this.framebuffer, true);
         }
     }
@@ -61,6 +61,11 @@ export class EffectLayer extends Layer
     postRender <T extends IWebGLRenderer> (renderer: T): void
     {
         super.postRender(renderer);
+
+        if (this.numChildren === 0)
+        {
+            return;
+        }
 
         const shaders = this.shaders;
         const texture = this.texture;
@@ -91,7 +96,7 @@ export class EffectLayer extends Layer
 
                 const { u0, v0, u1, v1 } = prevTexture.firstFrame;
 
-                renderer.setShader(shader, 0);
+                renderer.shaders.set(shader, 0);
 
                 shader.renderToFBO = true;
 
@@ -100,7 +105,7 @@ export class EffectLayer extends Layer
 
                 BatchSingleQuad(renderer, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
 
-                renderer.popShader();
+                renderer.shaders.pop();
 
                 renderer.textures.unbind();
 

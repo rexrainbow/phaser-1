@@ -4,7 +4,7 @@ import { IWebGLRenderer } from '../IWebGLRenderer';
 export function BatchTexturedQuadBuffer <T extends ISpriteBatch> (batch: T, renderer: IWebGLRenderer): void
 {
     const texture = batch.texture;
-    const shader = renderer.currentShader;
+    const shader = renderer.shaders.current;
     const buffer = shader.buffer;
 
     renderer.flush();

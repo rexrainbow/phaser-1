@@ -47,11 +47,11 @@ export class RenderTexture extends Texture
 
     batchStart (): this
     {
-        const renderer = this.renderer;
+        // const renderer = this.renderer;
 
-        renderer.reset(this.binding.framebuffer, this.width, this.height);
+        // renderer.reset(this.binding.framebuffer, this.width, this.height);
 
-        renderer.currentShader.bind(this.projectionMatrix, this.cameraMatrix);
+        // renderer.currentShader.bind(this.projectionMatrix, this.cameraMatrix);
 
         return this;
     }

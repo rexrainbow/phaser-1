@@ -8,11 +8,10 @@ import { GetRGBArray } from './colors/GetRGBArray';
 import { GetWebGLContext } from '../../config/WebGLContext';
 import { IBaseCamera } from '../../camera/IBaseCamera';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
-import { IShader } from './shaders/IShader';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './cameras/Ortho';
-import { SingleTextureQuadShader } from './shaders/SingleTextureQuadShader';
+import { ShaderSystem } from './shaders/ShaderSystem';
 import { TextureSystem } from './textures/TextureSystem';
 import { WebGLRendererInstance } from './WebGLRendererInstance';
 
@@ -23,19 +22,17 @@ export class WebGLRenderer
 
     fbo: FBOSystem;
     textures: TextureSystem;
+    shaders: ShaderSystem;
 
     clearColor = [ 0, 0, 0, 1 ];
-
-    singleQuadShader: SingleTextureQuadShader;
-
-    currentShader: IShader;
-    shaders: IShader[];
 
     width: number;
     height: number;
     resolution: number;
 
     projectionMatrix: Float32Array;
+
+    //  TODO - Move to stats object, so we can track texture creation, shader swaps, etc
     flushTotal: number = 0;
 
     clearBeforeRender: boolean = true;
@@ -44,7 +41,7 @@ export class WebGLRenderer
 
     contextLost: boolean = false;
 
-    prevCamera: IBaseCamera = null;
+    currentCamera: IBaseCamera = null;
 
     constructor ()
     {
@@ -68,11 +65,8 @@ export class WebGLRenderer
 
         WebGLRendererInstance.set(this);
 
-        this.singleQuadShader = new SingleTextureQuadShader();
-
-        this.currentShader = new MultiTextureQuadShader();
-
-        this.shaders = [ this.currentShader ];
+        //  Shaders need reference to the renderer, so create after the instance is set
+        this.shaders = new ShaderSystem(this, MultiTextureQuadShader);
     }
 
     initContext (): void
@@ -174,8 +168,6 @@ export class WebGLRenderer
             gl.clear(gl.COLOR_BUFFER_BIT);
         }
 
-        const projectionMatrix = this.projectionMatrix;
-
         //  Cache 2 - Only one dirty camera and one flush? We can re-use the buffers
         //  TODO - Per shader
 
@@ -183,6 +175,8 @@ export class WebGLRenderer
         const flushTotal = this.flushTotal;
         if (dirtyCameras === 1 && dirtyFrame === 0 && flushTotal === 1)
         {
+            const projectionMatrix = this.projectionMatrix;
+
             //  Total items rendered in the previous frame
             const count = shader.prevCount;
 
@@ -200,7 +194,7 @@ export class WebGLRenderer
 
         this.textures.update();
 
-        this.prevCamera = null;
+        this.currentCamera = null;
 
         const worlds = renderData.worldData;
 
@@ -209,13 +203,13 @@ export class WebGLRenderer
             const { camera, renderList } = worlds[i];
 
             //  This only needs rebinding if the camera matrix is different to before
-            if (!this.prevCamera || !Matrix2dEqual(camera.worldTransform, this.prevCamera.worldTransform))
+            if (!this.currentCamera || !Matrix2dEqual(camera.worldTransform, this.currentCamera.worldTransform))
             {
                 this.flush();
 
-                this.currentShader.bind(projectionMatrix, camera.matrix);
+                this.currentCamera = camera;
 
-                this.prevCamera = camera;
+                this.shaders.rebind();
             }
 
             //  Process the render list
@@ -240,46 +234,7 @@ export class WebGLRenderer
 
     flush (): void
     {
-        if (this.currentShader.flush())
-        {
-            this.flushTotal++;
-        }
-    }
-
-    //  TODO Move to ShaderSystem
-
-    setShader (newShader: IShader, textureID?: number): IShader
-    {
-        this.flush();
-
-        newShader.bind(this.projectionMatrix, this.prevCamera.matrix, textureID);
-
-        this.shaders.push(newShader);
-
-        this.currentShader = newShader;
-
-        return newShader;
-    }
-
-    popShader (): void
-    {
-        this.flush();
-
-        const shaders = this.shaders;
-
-        if (shaders.length > 1)
-        {
-            shaders.pop();
-        }
-
-        this.currentShader = shaders[shaders.length - 1];
-    }
-
-    resetShader (): void
-    {
-        this.popShader();
-
-        this.currentShader.bind(this.projectionMatrix, this.prevCamera.matrix);
+        this.shaders.flush();
     }
 
     destroy (): void

@@ -2,7 +2,7 @@ import { IWebGLRenderer } from '../IWebGLRenderer';
 
 export function BatchSingleQuad (renderer: IWebGLRenderer, x: number, y: number, width: number, height: number, u0: number, v0: number, u1: number, v1: number, textureIndex: number = 0, packedColor: number = 4294967295): void
 {
-    const shader = renderer.currentShader;
+    const shader = renderer.shaders.current;
     const buffer = shader.buffer;
 
     const F32 = buffer.vertexViewF32;
