@@ -1,4 +1,5 @@
 import { CanvasTexture } from '../../textures/types/CanvasTexture';
+import { DIRTY_CONST } from '../DIRTY_CONST';
 import { GameInstance } from '../../GameInstance';
 import { IContainer } from '../container/IContainer';
 import { Sprite } from '../sprite/Sprite';
@@ -255,7 +256,7 @@ export class Text extends Sprite
             this.texture.binding.update();
         }
 
-        this.dirty.setRender();
+        this.setDirty(DIRTY_CONST.TEXTURE);
 
         return this;
     }

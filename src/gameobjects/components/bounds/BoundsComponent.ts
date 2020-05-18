@@ -1,3 +1,4 @@
+import { DIRTY_CONST } from '../../DIRTY_CONST';
 import { GetVertices } from '../transform/GetVertices';
 import { IBoundsComponent } from './IBoundsComponent';
 import { IGameObject } from '../../IGameObject';
@@ -9,8 +10,6 @@ export class BoundsComponent implements IBoundsComponent
 
     //  The bounds of the entity calculated in world space
     private area: Rectangle;
-
-    dirty: boolean = true;
 
     fixed: boolean = false;
 
@@ -25,11 +24,6 @@ export class BoundsComponent implements IBoundsComponent
         this.area = new Rectangle();
     }
 
-    setDirty (): void
-    {
-        this.dirty = true;
-    }
-
     set (x: number, y: number, width: number, height: number): void
     {
         this.area.set(x, y, width, height);
@@ -37,7 +31,7 @@ export class BoundsComponent implements IBoundsComponent
 
     get (): Rectangle
     {
-        if (this.dirty && !this.fixed)
+        if (this.entity.isDirty(DIRTY_CONST.BOUNDS) && !this.fixed)
         {
             this.update();
         }
@@ -67,7 +61,7 @@ export class BoundsComponent implements IBoundsComponent
         //  First we get the bounds for this Game Object
         const bounds = this.updateLocal();
 
-        this.dirty = false;
+        this.entity.clearDirty(DIRTY_CONST.BOUNDS);
 
         if (!this.includeChildren || !this.entity.numChildren)
         {

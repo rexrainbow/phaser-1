@@ -1,3 +1,4 @@
+import { DIRTY_CONST } from '../DIRTY_CONST';
 import { GameObject } from '../GameObject';
 import { IContainer } from './IContainer';
 
@@ -175,7 +176,8 @@ export class Container extends GameObject implements IContainer
         {
             this._alpha = value;
 
-            this.dirty.setRender();
+            //  TODO - Switch to Alpha or Colors dirty flag instead
+            this.setDirty(DIRTY_CONST.TRANSFORM);
         }
     }
 }

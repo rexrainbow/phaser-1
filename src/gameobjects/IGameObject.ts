@@ -1,7 +1,6 @@
 import { IBaseWorld } from '../world/IBaseWorld';
 import { IBoundsComponent } from './components/bounds/IBoundsComponent';
 import { ICanvasRenderer } from '../renderer/canvas/ICanvasRenderer';
-import { IDirtyComponent } from './components/dirty/IDirtyComponent';
 import { IInputComponent } from './components/input/IInputComponent';
 import { ITransformComponent } from './components/transform/ITransformComponent';
 import { IWebGLRenderer } from '../renderer/webgl1/IWebGLRenderer';
@@ -21,14 +20,19 @@ export interface IGameObject
     children: IGameObject[];
     numChildren: number;
 
+    dirty: number;
+    dirtyFrame: number;
+
     visible: boolean;
 
     transform: ITransformComponent;
-    dirty: IDirtyComponent;
     bounds: IBoundsComponent;
     input: IInputComponent;
 
     isRenderable (): boolean;
+    isDirty (flag: number): boolean;
+    clearDirty (flag: number): this;
+    setDirty (flag: number): this;
 
     update (delta: number, time: number): void;
     postUpdate (delta: number, time: number): void;

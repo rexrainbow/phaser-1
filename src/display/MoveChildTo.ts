@@ -1,3 +1,4 @@
+import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
 import { GetChildIndex } from './GetChildIndex';
 import { IGameObject } from '../gameobjects/IGameObject';
 
@@ -20,7 +21,7 @@ export function MoveChildTo <T extends IGameObject> (parent: IGameObject, child:
         //  Add in new location
         parentChildren.splice(index, 0, child);
 
-        child.dirty.setRender();
+        child.setDirty(DIRTY_CONST.TRANSFORM);
     }
 
     return child;

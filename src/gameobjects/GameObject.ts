@@ -1,10 +1,11 @@
-import { BoundsComponent, DirtyComponent, InputComponent, TransformComponent } from './components';
+import { BoundsComponent, InputComponent, TransformComponent } from './components';
 
+import { DIRTY_CONST } from './DIRTY_CONST';
 import { DestroyChildren } from '../display/DestroyChildren';
+import { GameInstance } from '../GameInstance';
 import { IBaseWorld } from '../world/IBaseWorld';
 import { IBoundsComponent } from './components/bounds/IBoundsComponent';
 import { ICanvasRenderer } from '../renderer/canvas/ICanvasRenderer';
-import { IDirtyComponent } from './components/dirty/IDirtyComponent';
 import { IGameObject } from './IGameObject';
 import { IInputComponent } from './components/input/IInputComponent';
 import { ITransformComponent } from './components/transform/ITransformComponent';
@@ -26,8 +27,10 @@ export class GameObject
     willRender: boolean = true;
     willRenderChildren: boolean = true;
 
+    dirty: number = 0;
+    dirtyFrame: number = 0;
+
     transform: ITransformComponent;
-    dirty: IDirtyComponent;
     bounds: IBoundsComponent;
     input: IInputComponent;
 
@@ -37,10 +40,11 @@ export class GameObject
     {
         this.children = [];
 
-        this.dirty = new DirtyComponent(this);
         this.transform = new TransformComponent(this, x, y);
         this.bounds = new BoundsComponent(this);
         this.input = new InputComponent(this);
+
+        this.dirty ^= DIRTY_CONST.DEFAULT;
 
         this.transform.update();
     }
@@ -48,6 +52,32 @@ export class GameObject
     isRenderable (): boolean
     {
         return (this.visible && this.willRender);
+    }
+
+    isDirty (flag: number): boolean
+    {
+        return (this.dirty & flag) !== 0;
+    }
+
+    clearDirty (flag: number): this
+    {
+        if (this.isDirty(flag))
+        {
+            this.dirty ^= flag;
+        }
+
+        return this;
+    }
+
+    setDirty (flag: number): this
+    {
+        if (!this.isDirty(flag))
+        {
+            this.dirty ^= flag;
+            this.dirtyFrame = GameInstance.getFrame();
+        }
+
+        return this;
     }
 
     update (delta: number, time: number): void
@@ -80,13 +110,13 @@ export class GameObject
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render <T extends IWebGLRenderer> (renderer: T): void
     {
-        this.dirty.pendingRender = false;
+        this.dirty ^= DIRTY_CONST.PENDING_RENDER;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     renderCanvas <T extends ICanvasRenderer> (renderer: T): void
     {
-        this.dirty.pendingRender = false;
+        this.dirty ^= DIRTY_CONST.PENDING_RENDER;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -94,7 +124,7 @@ export class GameObject
     {
         //  Called after this GameObject and all of its children have been rendered.
         //  If it doesn't have any children, this method is never called.
-        this.dirty.postRender = false;
+        this.dirty ^= DIRTY_CONST.POST_RENDER;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -102,7 +132,7 @@ export class GameObject
     {
         //  Called after this GameObject and all of its children have been rendered.
         //  If it doesn't have any children, this method is never called.
-        this.dirty.postRender = false;
+        this.dirty ^= DIRTY_CONST.POST_RENDER;
     }
 
     get numChildren (): number
@@ -122,7 +152,6 @@ export class GameObject
         }
 
         this.transform.destroy();
-        this.dirty.destroy();
         this.bounds.destroy();
         this.input.destroy();
 

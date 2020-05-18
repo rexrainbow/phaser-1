@@ -1,3 +1,4 @@
+import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
 import { IGameObject } from '../gameobjects/IGameObject';
 
 export function ShuffleChildren (parent: IGameObject): IGameObject[]
@@ -12,7 +13,7 @@ export function ShuffleChildren (parent: IGameObject): IGameObject[]
         children[i] = children[j];
         children[j] = temp;
 
-        temp.dirty.setRender();
+        temp.setDirty(DIRTY_CONST.TRANSFORM);
     }
 
     return children;

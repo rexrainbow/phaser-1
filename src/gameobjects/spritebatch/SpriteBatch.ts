@@ -1,5 +1,6 @@
 import { BatchTexturedQuadBuffer } from '../../renderer/webgl1/draw/BatchTexturedQuadBuffer';
 import { Clamp } from '../../math/Clamp';
+import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DeleteFramebuffer } from '../../renderer/webgl1/fbo/DeleteFramebuffer';
 import { Frame } from '../../textures';
 import { GL } from '../../renderer/webgl1/GL';
@@ -179,7 +180,7 @@ export class SpriteBatch extends Layer implements ISpriteBatch
         F32[offset + 22] = textureIndex;
         U32[offset + 23] = color;
 
-        this.dirty.setRender();
+        this.setDirty(DIRTY_CONST.TRANSFORM);
 
         this.count++;
 

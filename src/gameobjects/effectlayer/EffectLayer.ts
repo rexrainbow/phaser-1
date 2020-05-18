@@ -47,6 +47,8 @@ export class EffectLayer extends Layer
     {
         super.render(renderer);
 
+        renderer.flush();
+
         if (this.numChildren > 0)
         {
             renderer.fbo.add(this.framebuffer, true);

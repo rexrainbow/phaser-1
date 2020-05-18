@@ -1,3 +1,4 @@
+import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
 import { IGameObject } from '../gameobjects/IGameObject';
 
 export function RotateChildrenLeft (parent: IGameObject, total: number = 1): IGameObject
@@ -12,7 +13,7 @@ export function RotateChildrenLeft (parent: IGameObject, total: number = 1): IGa
 
         parentChildren.push(child);
 
-        child.dirty.setRender();
+        child.setDirty(DIRTY_CONST.TRANSFORM);
     }
 
     return child;

@@ -1,6 +1,7 @@
 import { Vec2, Vec2Callback } from '../../../math/vec2';
 import { originX, originY } from '../../../config/DefaultOrigin';
 
+import { DIRTY_CONST } from '../../DIRTY_CONST';
 import { IGameObject } from '../../IGameObject';
 import { ITransformComponent } from './ITransformComponent';
 import { Matrix2D } from '../../../math/matrix2d/Matrix2D';
@@ -52,8 +53,7 @@ export class TransformComponent implements ITransformComponent
     {
         const entity = this.entity;
 
-        entity.dirty.setRender();
-        entity.bounds.setDirty();
+        entity.setDirty(DIRTY_CONST.TRANSFORM_BOUNDS);
 
         UpdateLocalTransform(this);
     }
@@ -62,8 +62,7 @@ export class TransformComponent implements ITransformComponent
     {
         const entity = this.entity;
 
-        entity.dirty.setRender();
-        entity.bounds.setDirty();
+        entity.setDirty(DIRTY_CONST.TRANSFORM_BOUNDS);
 
         UpdateWorldTransform(entity);
 
@@ -113,8 +112,7 @@ export class TransformComponent implements ITransformComponent
     {
         this.extent.set(x, y, width, height);
 
-        this.entity.dirty.setRender();
-        this.entity.bounds.setDirty();
+        this.entity.setDirty(DIRTY_CONST.TRANSFORM_BOUNDS);
     }
 
     updateExtent (width?: number, height?: number): void
@@ -135,8 +133,7 @@ export class TransformComponent implements ITransformComponent
         extent.x = -(this.origin.x) * extent.width;
         extent.y = -(this.origin.y) * extent.height;
 
-        entity.dirty.setRender();
-        entity.bounds.setDirty();
+        entity.setDirty(DIRTY_CONST.TRANSFORM_BOUNDS);
     }
 
     set rotation (value: number)

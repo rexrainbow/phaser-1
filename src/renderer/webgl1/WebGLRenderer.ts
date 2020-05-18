@@ -1,5 +1,6 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
+import { DIRTY_CONST } from '../../gameobjects/DIRTY_CONST';
 import { FBOSystem } from './fbo/FBOSystem';
 import { GL } from './GL';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
@@ -222,7 +223,7 @@ export class WebGLRenderer
             {
                 const gameObject = renderList[s];
 
-                if (gameObject.dirty.pendingRender)
+                if (gameObject.isDirty(DIRTY_CONST.PENDING_RENDER))
                 {
                     gameObject.render(this);
                 }

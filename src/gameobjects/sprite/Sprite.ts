@@ -1,5 +1,6 @@
 import { BatchTexturedQuad } from '../../renderer/webgl1/draw/BatchTexturedQuad';
 import { Container } from '../container/Container';
+import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/canvas/draw/DrawTexturedQuad';
 import { Frame } from '../../textures/Frame';
 import { ICanvasRenderer } from '../../renderer/canvas/ICanvasRenderer';
@@ -62,23 +63,21 @@ export class Sprite extends Container implements ISprite
 
     preRender (): void
     {
-        const dirty = this.dirty;
-
-        if (dirty.colors)
+        if (this.isDirty(DIRTY_CONST.COLORS))
         {
             PackColors(this);
 
-            dirty.colors = false;
+            this.clearDirty(DIRTY_CONST.COLORS);
         }
 
-        if (dirty.render)
+        if (this.isDirty(DIRTY_CONST.TRANSFORM))
         {
             UpdateVertices(this);
 
-            dirty.render = false;
+            this.clearDirty(DIRTY_CONST.TRANSFORM);
         }
 
-        dirty.pendingRender = false;
+        this.clearDirty(DIRTY_CONST.PENDING_RENDER);
     }
 
     render <T extends IWebGLRenderer> (renderer: T): void
@@ -113,7 +112,7 @@ export class Sprite extends Container implements ISprite
             vertexAlpha[2] = value;
             vertexAlpha[3] = value;
 
-            this.dirty.setColors();
+            this.setDirty(DIRTY_CONST.ALPHA);
         }
     }
 
@@ -135,7 +134,7 @@ export class Sprite extends Container implements ISprite
             vertexTint[2] = value;
             vertexTint[3] = value;
 
-            this.dirty.setColors();
+            this.setDirty(DIRTY_CONST.COLORS);
         }
     }
 

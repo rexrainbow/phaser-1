@@ -1,6 +1,7 @@
 import { Off, On, Once } from '../events';
 
 import { Clock } from '../time';
+import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
 import { GameObject } from '../gameobjects';
 import { IBaseCamera } from '../camera/IBaseCamera';
 import { IBaseWorld } from './IBaseWorld';
@@ -51,7 +52,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
         {
             renderData.renderList.push(node);
 
-            return (!node.dirty.pendingRender);
+            return (!node.isDirty(DIRTY_CONST.PENDING_RENDER));
         }
 
         return false;
@@ -72,20 +73,20 @@ export class BaseWorld extends GameObject implements IBaseWorld
                 renderData.numRendered++;
                 renderData.numRenderable++;
 
-                if (node.dirty.frame >= renderData.gameFrame)
+                if (node.dirtyFrame >= renderData.gameFrame)
                 {
                     renderData.dirtyFrame++;
                 }
 
-                node.dirty.setPendingRender();
+                node.setDirty(DIRTY_CONST.PENDING_RENDER);
             }
 
             const numChildren = node.numChildren;
 
-            if (!node.dirty.postRender && node.visible && node.willRenderChildren && numChildren > 0)
+            if (!node.isDirty(DIRTY_CONST.POST_RENDER) && node.visible && node.willRenderChildren && numChildren > 0)
             {
                 //  Inject postRender hook
-                node.dirty.setPostRender();
+                node.setDirty(DIRTY_CONST.POST_RENDER);
 
                 stack.unshift(node);
 

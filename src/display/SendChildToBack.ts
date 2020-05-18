@@ -1,3 +1,4 @@
+import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
 import { GetChildIndex } from './GetChildIndex';
 import { IGameObject } from '../gameobjects/IGameObject';
 
@@ -12,7 +13,7 @@ export function SendChildToBack <T extends IGameObject> (parent: IGameObject, ch
         parentChildren.splice(currentIndex, 1);
         parentChildren.unshift(child);
 
-        child.dirty.setRender();
+        child.setDirty(DIRTY_CONST.TRANSFORM);
     }
 
     return child;

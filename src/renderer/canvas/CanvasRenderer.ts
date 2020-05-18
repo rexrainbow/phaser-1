@@ -1,6 +1,7 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
 import { BindingQueue } from '../BindingQueue';
+import { DIRTY_CONST } from '../../gameobjects/DIRTY_CONST';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetCanvasContext } from '../../config/CanvasContext';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
@@ -124,7 +125,7 @@ export class CanvasRenderer
             {
                 const gameObject = renderList[s];
 
-                if (gameObject.dirty.pendingRender)
+                if (gameObject.isDirty(DIRTY_CONST.PENDING_RENDER))
                 {
                     gameObject.renderCanvas(this);
                 }

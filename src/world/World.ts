@@ -1,6 +1,7 @@
 import { BaseWorld } from './BaseWorld';
 import { Camera } from '../camera/Camera';
 import { CreateWorldRenderData } from './CreateWorldRenderData';
+import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
 import { ICamera } from '../camera/ICamera';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
@@ -34,7 +35,7 @@ export class World extends BaseWorld implements IWorld
 
         if (node.isRenderable())
         {
-            if (node.dirty.pendingRender || node === this)
+            if (node.isDirty(DIRTY_CONST.PENDING_RENDER) || node === this)
             {
                 //  Already been cull checked once, so add to renderList and return
                 renderData.renderList.push(node);
