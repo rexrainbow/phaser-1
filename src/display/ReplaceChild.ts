@@ -11,7 +11,7 @@ import { RemoveChild } from './RemoveChild';
 //  If both children have the same parent, target is removed from the parent and source is moved to the position target previously held.
 //  Target is returned.
 
-export function ReplaceChild <T extends IGameObject> (target: T, source: T): T
+export function ReplaceChild (target: IGameObject, source: IGameObject): IGameObject
 {
     const targetParent = target.parent;
     const sourceParent = source.parent;

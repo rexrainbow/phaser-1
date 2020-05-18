@@ -2,7 +2,7 @@ import { IGameObject } from '../gameobjects/IGameObject';
 import { RemoveChild } from './RemoveChild';
 import { SetWorld } from './SetWorld';
 
-export function SetParent <T extends IGameObject> (parent: IGameObject, ...children: T[]): T[]
+export function SetParent (parent: IGameObject, ...children: IGameObject[]): IGameObject[]
 {
     children.forEach(child =>
     {

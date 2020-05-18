@@ -3,7 +3,7 @@ import { RectangleToRectangle } from '../geom/intersects/RectangleToRectangle';
 
 //  AABB Overlap test using bounds
 
-export function Overlap <T extends IGameObject> (source: T, ...targets: T[]): boolean
+export function Overlap (source: IGameObject, ...targets: IGameObject[]): boolean
 {
     const sourceBounds = source.bounds.get();
 

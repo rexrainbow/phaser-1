@@ -1,6 +1,6 @@
 import { IGameObject } from '../gameobjects/IGameObject';
 
-export function SetBounds <T extends IGameObject> (x: number, y: number, width: number, height: number, ...children: T[]): T[]
+export function SetBounds (x: number, y: number, width: number, height: number, ...children: IGameObject[]): IGameObject[]
 {
     children.forEach(child =>
     {

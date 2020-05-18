@@ -1,7 +1,7 @@
 import { IGameObject } from '../gameobjects/IGameObject';
 import { SetParent } from './SetParent';
 
-export function AddChildren <T extends IGameObject> (parent: IGameObject, ...children: T[]): T[]
+export function AddChildren (parent: IGameObject, ...children: IGameObject[]): IGameObject[]
 {
     SetParent(parent, ...children);
 
