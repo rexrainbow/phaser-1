@@ -7,10 +7,14 @@ import { AddRotation } from './AddRotation';
 import { AddScale } from './AddScale';
 import { AddSkew } from './AddSkew';
 import { BringChildToTop } from './BringChildToTop';
+import { ConsoleTreeChildren } from './ConsoleTreeChildren';
 import { CountMatchingChildren } from './CountMatchingChildren';
+import { DepthFirstSearch } from './DepthFirstSearch';
+import { DepthFirstSearchRecursive } from './DepthFirstSearchRecursive';
 import { DestroyChildren } from './DestroyChildren';
 import { FindChildByName } from './FindChildByName';
 import { FindChildrenByName } from './FindChildrenByName';
+import { GetAllChildren } from './GetAllChildren';
 import { GetChildAt } from './GetChildAt';
 import { GetChildIndex } from './GetChildIndex';
 import { GetChildren } from './GetChildren';
@@ -35,6 +39,7 @@ import { RotateChildrenLeft } from './RotateChildrenLeft';
 import { RotateChildrenRight } from './RotateChildrenRight';
 import { SendChildToBack } from './SendChildToBack';
 import { SetBounds } from './SetBounds';
+import { SetChildrenValue } from './SetChildrenValue';
 import { SetName } from './SetName';
 import { SetOrigin } from './SetOrigin';
 import { SetParent } from './SetParent';
@@ -44,6 +49,7 @@ import { SetScale } from './SetScale';
 import { SetSize } from './SetSize';
 import { SetSkew } from './SetSkew';
 import { SetType } from './SetType';
+import { SetValue } from './SetValue';
 import { SetVisible } from './SetVisible';
 import { SetWorld } from './SetWorld';
 import { ShuffleChildren } from './ShuffleChildren';
@@ -59,10 +65,14 @@ export {
     AddScale,
     AddSkew,
     BringChildToTop,
+    ConsoleTreeChildren,
     CountMatchingChildren,
+    DepthFirstSearch,
+    DepthFirstSearchRecursive,
     DestroyChildren,
     FindChildByName,
     FindChildrenByName,
+    GetAllChildren,
     GetChildAt,
     GetChildIndex,
     GetChildren,
@@ -87,6 +97,7 @@ export {
     RotateChildrenRight,
     SendChildToBack,
     SetBounds,
+    SetChildrenValue,
     SetName,
     SetOrigin,
     SetParent,
@@ -96,6 +107,7 @@ export {
     SetSize,
     SetSkew,
     SetType,
+    SetValue,
     SetVisible,
     SetWorld,
     ShuffleChildren,
