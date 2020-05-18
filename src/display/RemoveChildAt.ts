@@ -13,6 +13,7 @@ export function RemoveChildAt (parent: IGameObject, index: number): IGameObject 
         {
             child = removed[0];
             child.parent = null;
+            child.root = null;
         }
     }
 

@@ -1,7 +1,7 @@
 import { IGameObject } from '../gameobjects/IGameObject';
 
 /**
- * Get all children from the given parent.
+ * Get all children from the given parent to one layer deep. Does not go any lower (see GetAllChildren)
  *
  * The children are returned in a new array. Therefore, modifying this array will not
  * mutate the parent.

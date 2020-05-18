@@ -1,31 +1,20 @@
+import { DepthFirstSearch } from './DepthFirstSearch';
 import { IGameObject } from '../gameobjects/IGameObject';
 
-export function FindChildrenByName (parent: IGameObject, searchString: string, deep: boolean = false): IGameObject[]
+export function FindChildrenByName (parent: IGameObject, searchString: string): IGameObject[]
 {
-    const children = parent.children;
+    const children = DepthFirstSearch(parent);
     const regex = RegExp(searchString);
 
-    let out: IGameObject[] = [];
+    const results: IGameObject[] = [];
 
-    for (let i = 0; i < children.length; i++)
+    children.forEach(child =>
     {
-        const child = children[i];
-
         if (regex.test(child.name))
         {
-            out.push(child);
+            results.push(child);
         }
+    });
 
-        if (deep && child.numChildren > 0)
-        {
-            const deepChildren = FindChildrenByName(child, searchString, true);
-
-            if (deepChildren.length)
-            {
-                out = out.concat(deepChildren);
-            }
-        }
-    }
-
-    return out;
+    return results;
 }
