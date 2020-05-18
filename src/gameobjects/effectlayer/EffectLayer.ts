@@ -43,6 +43,9 @@ export class EffectLayer extends Layer
         this.framebuffer = texture.binding.framebuffer;
     }
 
+    //  TODO - If none of the children or the camera are dirty, we can reuse the FBO from the previous frame to save
+    //  re-rendering them all again. This needs to be implemented in the World buildRenderList too.
+
     render <T extends IWebGLRenderer> (renderer: T): void
     {
         super.render(renderer);
