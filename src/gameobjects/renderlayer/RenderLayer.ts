@@ -3,11 +3,19 @@ import { GetHeight, GetResolution, GetWidth } from '../../config';
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
 import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
+import { IRenderLayer } from './IRenderLayer';
 import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
 import { Layer } from '../layer/Layer';
 import { Texture } from '../../textures/Texture';
 
-export class RenderLayer extends Layer
+//  The RenderLayer works like a normal Layer, except it automatically caches
+//  all of its renderable children to its own texture. The children are drawn
+//  to the RenderLayers texture and then the RenderLayer texture is drawn to
+//  the WebGL Renderer. You should use a RenderLayer if you've got a complex or
+//  large set of Game Objects that don't update very often, where you would
+//  benefit from not having to re-render every single child, every frame.
+
+export class RenderLayer extends Layer implements IRenderLayer
 {
     texture: Texture;
     framebuffer: WebGLFramebuffer;

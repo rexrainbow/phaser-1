@@ -1,13 +1,15 @@
 import { BatchSingleQuad } from '../../renderer/webgl1/draw/BatchSingleQuad';
 import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
+import { IEffectLayer } from './IEffectLayer';
 import { IShader } from '../../renderer/webgl1/shaders/IShader';
 import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
 import { RenderLayer } from '../renderlayer/RenderLayer';
 
 //  A WebGL specific EffectLayer
 //  EffectLayerCanvas is a canvas alternative
-export class EffectLayer extends RenderLayer
+
+export class EffectLayer extends RenderLayer implements IEffectLayer
 {
     shaders: IShader[] = [];
 
