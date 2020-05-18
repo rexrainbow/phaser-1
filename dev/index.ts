@@ -25,8 +25,10 @@
 
 // import runTest from './effect layer 1';
 
-import runTest from './render layer 1';
+// import runTest from './render layer 1';
 
 // import runTest from './sprite image';
+
+import runTest from './display list debug 1';
 
 runTest();
