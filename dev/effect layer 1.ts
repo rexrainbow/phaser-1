@@ -335,6 +335,7 @@ class Demo extends Scene
         loader.setPath('/phaser4-examples/public/assets/');
         // loader.setPath('/examples/public/assets/');
 
+        loader.add(ImageFile('background', 'farm-background.png'));
         loader.add(ImageFile('ayu', 'ayu.png'));
         loader.add(ImageFile('logo', 'logo.png'));
         loader.add(ImageFile('rocket', 'rocket.png'));
@@ -363,6 +364,7 @@ class Demo extends Scene
         const world = new StaticWorld(this);
 
         const layer = new EffectLayer();
+        // const layer2 = new EffectLayer();
 
         // layer.shaders.push(blurX, red);
         // layer.shaders.push(lazer);
@@ -372,9 +374,11 @@ class Demo extends Scene
         // layer.shaders.push(sine2);
         // layer.shaders.push(underwater);
         // layer.shaders.push(vdu);
-        layer.shaders.push(pixel, plasma, bars);
+        layer.shaders.push(blurX, plasma);
         // layer.shaders.push(empty);
+        // layer2.shaders.push(sine);
 
+        const bg = new Sprite(400, 300, 'background');
         const logo = new Sprite(200, 300, 'logo');
         const ayu = new Sprite(600, 300, 'ayu');
         const farm = new Sprite(200, 150, 'farm');
@@ -383,12 +387,18 @@ class Demo extends Scene
         const star = new Sprite(650, 500, 'star');
 
         // AddChildren(world, ayu, logo, farm, rocket, bubble, star);
-
         // AddChildren(layer, ayu, logo);
 
-        AddChildren(layer, ayu, logo, farm, rocket, bubble, star);
+        AddChildren(layer, ayu, logo, farm, rocket, bubble);
 
-        AddChild(world, layer);
+        // AddChildren(layer2, farm);
+
+        AddChildren(world, bg, layer, star);
+
+        // AddChild(world, bg);
+        // AddChild(world, layer);
+        // AddChild(world, layer2);
+        // AddChild(world, star);
     }
 }
 
