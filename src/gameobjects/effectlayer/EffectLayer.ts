@@ -1,66 +1,26 @@
-import { GetHeight, GetResolution, GetWidth } from '../../config';
-
 import { BatchSingleQuad } from '../../renderer/webgl1/draw/BatchSingleQuad';
-import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
+import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
-import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
 import { IShader } from '../../renderer/webgl1/shaders/IShader';
 import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
-import { Layer } from '../layer/Layer';
-import { Texture } from '../../textures/Texture';
+import { RenderLayer } from '../renderlayer/RenderLayer';
 
 //  A WebGL specific EffectLayer
 //  EffectLayerCanvas is a canvas alternative
-export class EffectLayer extends Layer
+export class EffectLayer extends RenderLayer
 {
     shaders: IShader[] = [];
-    texture: Texture;
-    framebuffer: WebGLFramebuffer;
 
     constructor ()
     {
         super();
 
         this.type = 'EffectLayer';
-
-        this.transform.passthru = true;
-
-        this.willRender = true;
-        this.willRenderChildren = true;
-
-        const width = GetWidth();
-        const height = GetHeight();
-        const resolution = GetResolution();
-
-        //  TODO: Allow them to set this via a filterArea
-        const texture = new Texture(null, width * resolution, height * resolution);
-
-        texture.binding = new GLTextureBinding(texture);
-
-        texture.binding.framebuffer = CreateFramebuffer(texture.binding.texture);
-
-        this.texture = texture;
-        this.framebuffer = texture.binding.framebuffer;
-    }
-
-    //  TODO - If none of the children or the camera are dirty, we can reuse the FBO from the previous frame to save
-    //  re-rendering them all again. This needs to be implemented in the World buildRenderList too.
-
-    render <T extends IWebGLRenderer> (renderer: T): void
-    {
-        super.render(renderer);
-
-        if (this.numChildren > 0)
-        {
-            renderer.flush();
-
-            renderer.fbo.add(this.framebuffer, true);
-        }
     }
 
     postRender <T extends IWebGLRenderer> (renderer: T): void
     {
-        super.postRender(renderer);
+        this.clearDirty(DIRTY_CONST.POST_RENDER);
 
         if (this.numChildren === 0)
         {
