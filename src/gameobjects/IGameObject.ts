@@ -17,6 +17,7 @@ export interface IGameObject
     willUpdateChildren: boolean;
 
     parent: IGameObject;
+    root: IGameObject;
     children: IGameObject[];
     numChildren: number;
 

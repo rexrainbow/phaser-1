@@ -14,11 +14,18 @@ import { ReparentChildren } from '../display/ReparentChildren';
 
 export class GameObject
 {
-    world: IBaseWorld;
     type: string = 'GameObject';
     name: string = '';
 
+    //  The World this Game Object belongs to. A Game Object can only belong to one World instance at any one time.
+    world: IBaseWorld;
+
+    //  The direct parent of this Game Object in the display list (if any)
     parent: IGameObject;
+
+    //  The root parent of this Game Object. This is the top-most parent, not including the World, from which this child descends.
+    root: IGameObject;
+
     children: IGameObject[];
 
     willUpdate: boolean = true;
