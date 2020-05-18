@@ -139,6 +139,9 @@ export class WebGLRenderer
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
         this.flushTotal = 0;
+        this.currentCamera = null;
+
+        this.textures.update();
     }
 
     render (renderData: ISceneRenderData): void
@@ -191,10 +194,6 @@ export class WebGLRenderer
             return;
         }
         */
-
-        this.textures.update();
-
-        this.currentCamera = null;
 
         const worlds = renderData.worldData;
 
