@@ -51,20 +51,21 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
 
                 const { u0, v0, u1, v1 } = prevTexture.firstFrame;
 
-                renderer.shaders.set(shader, 0);
+                if (renderer.shaders.set(shader, 0))
+                {
+                    shader.renderToFBO = true;
 
-                shader.renderToFBO = true;
+                    //  The shaders input texture
+                    renderer.textures.bind(prevTexture);
 
-                //  The shaders input texture
-                renderer.textures.bind(prevTexture);
+                    BatchSingleQuad(renderer, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
 
-                BatchSingleQuad(renderer, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
+                    renderer.shaders.pop();
 
-                renderer.shaders.pop();
+                    renderer.textures.unbind();
 
-                renderer.textures.unbind();
-
-                prevTexture = shader.texture;
+                    prevTexture = shader.texture;
+                }
             }
 
             const { u0, v0, u1, v1 } = prevTexture.firstFrame;
