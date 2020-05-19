@@ -9,6 +9,91 @@ import { Scene } from '../src/scenes/Scene';
 import { Shader } from '../src/renderer/webgl1/shaders/Shader';
 import { StaticWorld } from '../src/world/StaticWorld';
 
+const cloudsFragmentShader = `
+#define SHADER_NAME CLOUDS_FRAG
+
+/*
+ * Original shader from: https://www.shadertoy.com/view/MtjGRK
+ */
+
+precision mediump float;
+
+varying vec2 vTextureCoord;
+varying float vTextureId;
+varying vec4 vTintColor;
+
+uniform sampler2D uTexture;
+uniform float uTime;
+uniform vec2 uResolution;
+
+#define PI 3.14159265358979323
+
+//Random
+float rand(vec2 uv)
+{
+    float dt = dot(uv, vec2(12.9898, 78.233));
+	return fract(sin(mod(dt, PI / 2.0)) * 43758.5453);
+}
+
+//Clouds from (https://www.shadertoy.com/view/MlS3z1)
+const int iter = 8;
+
+float turbulence(vec2 fragCoord, float octave, int id)
+{
+    float col = 0.0;
+    vec2 xy;
+    vec2 frac;
+    vec2 tmp1;
+    vec2 tmp2;
+    float i2;
+    float amp;
+    float maxOct = octave;
+    float time = uTime / 1000.0;
+    for (int i = 0; i < iter; i++)
+    {
+        amp = maxOct / octave;
+        i2 = float(i);
+        xy = id == 1 || id == 4? (fragCoord + 50.0 * float(id) * time / (4.0 + i2)) / octave : fragCoord / octave;
+        frac = fract(xy);
+        tmp1 = mod(floor(xy) + uResolution.xy, uResolution.xy);
+        tmp2 = mod(tmp1 + uResolution.xy - 1.0, uResolution.xy);
+        col += frac.x * frac.y * rand(tmp1) / amp;
+        col += frac.x * (1.0 - frac.y) * rand(vec2(tmp1.x, tmp2.y)) / amp;
+        col += (1.0 - frac.x) * frac.y * rand(vec2(tmp2.x, tmp1.y)) / amp;
+        col += (1.0 - frac.x) * (1.0 - frac.y) * rand(tmp2) / amp;
+        octave /= 2.0;
+    }
+    return (col);
+}
+//____________________________________________________
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+	vec2 uv = fragCoord.xy / uResolution.xy;
+
+    // vec3 sky = clamp(vec3(0.2, sin(uv.y), 1.0) + 0.3, 0.0, 1.0);
+
+    vec4 sky = clamp(vec4(0.2, sin(uv.y), 1.0, 1.0) + 0.3, 0.0, 1.0);
+
+    vec4 color = texture2D(uTexture, vTextureCoord);
+
+    // vec4 skyandtexture = mix(sky, color);
+
+    float cloud1 = turbulence(fragCoord, 128.0, 1);
+    float cloud2 = turbulence(fragCoord + 2000.0, 128.0, 1);
+    float cloudss = clamp(pow(mix(cloud1, cloud2, 0.5), 30.0) / 9.0, 0.0, 1.0);
+
+	fragColor = sky + color + vec4(cloudss, 1.0);
+
+    // fragColor = color * vec4(sky+cloudss,1.0);
+}
+
+void main(void)
+{
+    mainImage(gl_FragColor, gl_FragCoord.xy);
+}
+`;
+
 const verticalBarsFragmentShader = `
 #define SHADER_NAME BARS_FRAG
 
@@ -343,7 +428,7 @@ class Demo extends Scene
         loader.add(ImageFile('star', 'star.png'));
         loader.add(ImageFile('bubble', 'bubble256.png'));
 
-        loader.start(() => this.create());
+        loader.start().then(() => this.create()).catch();
     }
 
     create ()
@@ -359,6 +444,7 @@ class Demo extends Scene
         const underwater = new Shader({ fragmentShader: underwaterFragmentShader, batchSize: 1 });
         const vdu = new Shader({ fragmentShader: vduNoiseFragmentShader, batchSize: 1 });
         const bars = new Shader({ fragmentShader: verticalBarsFragmentShader, batchSize: 1 });
+        const clouds = new Shader({ fragmentShader: cloudsFragmentShader, batchSize: 1 });
         const empty = new Shader({ batchSize: 1 });
 
         const world = new StaticWorld(this);
@@ -374,9 +460,10 @@ class Demo extends Scene
         // layer.shaders.push(sine2);
         // layer.shaders.push(underwater);
         // layer.shaders.push(vdu);
-        layer.shaders.push(blurX, plasma);
+        // layer.shaders.push(bars);
         // layer.shaders.push(empty);
         // layer2.shaders.push(sine);
+        layer.shaders.push(clouds);
 
         const bg = new Sprite(400, 300, 'background');
         const logo = new Sprite(200, 300, 'logo');

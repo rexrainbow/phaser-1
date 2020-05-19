@@ -1,4 +1,4 @@
-import { AddChild, AddChildren } from '../src/display/';
+import { AddChild, AddChildren, ConsoleTreeChildren } from '../src/display/';
 import { BackgroundColor, CanvasRenderer, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 
 import { Game } from '../src/Game';
@@ -19,8 +19,8 @@ class Demo extends Scene
     {
         super();
 
-        // this.world = new StaticWorld(this);
-        this.world = new World(this);
+        this.world = new StaticWorld(this);
+        // this.world = new World(this);
 
         const loader = new Loader();
 
@@ -37,7 +37,7 @@ class Demo extends Scene
 
     create ()
     {
-        (this.game.renderer as W).optimizeRedraw = false;
+        // (this.game.renderer as W).optimizeRedraw = false;
 
         // AddChild(this.world, new Sprite(200, 200, '256'));
         // AddChild(this.world, new Sprite(300, 250, '256'));
@@ -86,7 +86,9 @@ class Demo extends Scene
 
         let i = 0;
 
-        On(this, 'xupdate', (delta, time) =>
+        ConsoleTreeChildren(this.world);
+
+        On(this, 'update', (delta, time) =>
         {
             parent.rotation += 0.005;
 
