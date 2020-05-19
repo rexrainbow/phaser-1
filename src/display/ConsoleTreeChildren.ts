@@ -1,55 +1,56 @@
-import { DepthFirstSearch } from './DepthFirstSearch';
+import { DepthFirstSearchRecursiveNested, SearchEntry } from './DepthFirstSearchRecursiveNested';
+
 import { IGameObject } from '../gameobjects/IGameObject';
 
-//  Assume parent is always the World for now
-export function ConsoleTreeChildren (parent: IGameObject): void
+function GetInfo (entry: IGameObject): string
 {
-    const children = DepthFirstSearch(parent);
+    const legend = (entry.numChildren > 0) ? 'Parent' :  'Child';
 
-    console.log(children);
+    return `${legend} [ type=${entry.type}, name=${entry.name} ]`;
+}
 
-    // let parentCount = 1;
-    // let childCount = 1;
-    let prevParent: IGameObject;
+function LogChildren (entry: SearchEntry): void
+{
+    console.group(GetInfo(entry.node));
 
-    console.group(parent.name);
-
-    // if (parent.world === parent)
-    // {
-    //     console.group('World');
-    // }
-    // else
-    // {
-    //     console.group('Parent 1');
-
-    //     parentCount = 2;
-    // }
-
-    let depth = 0;
-
-    children.forEach(child =>
+    entry.children.forEach(child =>
     {
-        if (child.numChildren > 0)
+        if (child.children.length > 0)
         {
-            console.group(child.name);
-
-            prevParent = child;
-
-            depth++;
+            LogChildren(child);
         }
         else
         {
-            console.log(child.name);
+            console.log(GetInfo(child.node));
         }
+    });
 
-        if (child.parent !== prevParent)
+    console.groupEnd();
+}
+
+export function ConsoleTreeChildren (parent: IGameObject): void
+{
+    const entries = DepthFirstSearchRecursiveNested(parent);
+
+    if (parent.world === parent)
+    {
+        console.group('World');
+    }
+    else
+    {
+        console.group(GetInfo(parent));
+    }
+
+    entries.forEach(entry =>
+    {
+        if (entry.children.length)
         {
+            LogChildren(entry);
         }
-
-        // if (prevParent && child.parent && child.parent !== prevParent)
-        // {
-        //     console.groupEnd();
-        // }
+        else
+        {
+            console.log(GetInfo(entry.node));
+        }
     });
 
     console.groupEnd();
