@@ -1,6 +1,7 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config';
 
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
+import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
 import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
 import { IRenderLayer } from './IRenderLayer';
@@ -28,6 +29,9 @@ export class RenderLayer extends Layer implements IRenderLayer
 
         this.willRender = true;
         this.willRenderChildren = true;
+        this.willCacheChildren = true;
+
+        this.setDirty(DIRTY_CONST.CHILD_CACHE);
 
         const width = GetWidth();
         const height = GetHeight();
@@ -44,30 +48,31 @@ export class RenderLayer extends Layer implements IRenderLayer
         this.framebuffer = texture.binding.framebuffer;
     }
 
-    //  TODO - If none of the children or the camera are dirty, we can reuse the FBO from the previous frame to save
-    //  re-rendering them all again. This needs to be implemented in the World buildRenderList too.
-
     render <T extends IWebGLRenderer> (renderer: T): void
     {
-        super.render(renderer);
-
         if (this.numChildren > 0)
         {
             renderer.flush();
 
-            renderer.fbo.add(this.framebuffer, true);
+            if (this.isDirty(DIRTY_CONST.CHILD_CACHE))
+            {
+                //  This RenderLayer has dirty children
+                renderer.fbo.add(this.framebuffer, true);
+
+                this.clearDirty(DIRTY_CONST.CHILD_CACHE);
+            }
+            else
+            {
+                //  This RenderLayer doesn't have any dirty children, so we'll use the previous fbo contents
+                renderer.fbo.add(this.framebuffer, false);
+
+                this.postRender(renderer);
+            }
         }
     }
 
     postRender <T extends IWebGLRenderer> (renderer: T): void
     {
-        super.postRender(renderer);
-
-        if (this.numChildren === 0)
-        {
-            return;
-        }
-
         const texture = this.texture;
 
         renderer.flush();
@@ -81,5 +86,7 @@ export class RenderLayer extends Layer implements IRenderLayer
         DrawTexturedQuad(renderer, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
 
         renderer.textures.unbind();
+
+        this.clearDirty(DIRTY_CONST.TRANSFORM);
     }
 }

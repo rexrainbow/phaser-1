@@ -22,13 +22,6 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
 
     postRender <T extends IWebGLRenderer> (renderer: T): void
     {
-        this.clearDirty(DIRTY_CONST.POST_RENDER);
-
-        if (this.numChildren === 0)
-        {
-            return;
-        }
-
         const shaders = this.shaders;
         const texture = this.texture;
 
@@ -36,7 +29,7 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
 
         renderer.fbo.pop();
 
-        //  this.framebuffer now contains a texture with all of this layers sprites drawn to it
+        //  this.framebuffer contains a texture with all of this layers sprites drawn to it
 
         if (shaders.length === 0)
         {
@@ -82,5 +75,7 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
 
             renderer.textures.unbind();
         }
+
+        this.clearDirty(DIRTY_CONST.TRANSFORM);
     }
 }
