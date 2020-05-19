@@ -137,10 +137,32 @@ export class SingleTextureQuadShader implements IShader
         gl.shaderSource(fragmentShader, fragmentShaderSource);
         gl.compileShader(fragmentShader);
 
+        let failed = false;
+        let message = gl.getShaderInfoLog(fragmentShader);
+
+        if (message.length > 0)
+        {
+            failed = true;
+            console.error(message);
+        }
+
         const vertexShader = gl.createShader(gl.VERTEX_SHADER);
 
         gl.shaderSource(vertexShader, vertexShaderSource);
         gl.compileShader(vertexShader);
+
+        message = gl.getShaderInfoLog(fragmentShader);
+
+        if (message.length > 0)
+        {
+            failed = true;
+            console.error(message);
+        }
+
+        if (failed)
+        {
+            return;
+        }
 
         const program = gl.createProgram();
 
@@ -167,8 +189,13 @@ export class SingleTextureQuadShader implements IShader
         }
     }
 
-    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array, textureID: number): void
+    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array, textureID: number): boolean
     {
+        if (!this.program)
+        {
+            return false;
+        }
+
         const renderer = this.renderer;
         const gl = renderer.gl;
         const uniforms = this.uniforms;
@@ -185,6 +212,8 @@ export class SingleTextureQuadShader implements IShader
         gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
 
         this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
+
+        return true;
     }
 
     bindBuffers (indexBuffer: WebGLBuffer, vertexBuffer: WebGLBuffer): void
