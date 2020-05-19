@@ -71,9 +71,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
 	vec2 uv = fragCoord.xy / uResolution.xy;
 
-    // vec3 sky = clamp(vec3(0.2, sin(uv.y), 1.0) + 0.3, 0.0, 1.0);
-
-    vec4 sky = clamp(vec4(0.2, sin(uv.y), 1.0, 1.0) + 0.3, 0.0, 1.0);
+    vec3 sky = clamp(vec3(0.2, sin(uv.y), 1.0) + 0.3, 0.0, 1.0);
 
     vec4 color = texture2D(uTexture, vTextureCoord);
 
@@ -83,9 +81,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float cloud2 = turbulence(fragCoord + 2000.0, 128.0, 1);
     float cloudss = clamp(pow(mix(cloud1, cloud2, 0.5), 30.0) / 9.0, 0.0, 1.0);
 
-	fragColor = sky + color + vec4(cloudss, 1.0);
+	// fragColor = sky + color + vec4(cloudss, 1.0);
 
-    // fragColor = color * vec4(sky+cloudss,1.0);
+    fragColor = color * vec4(sky + cloudss, 1.0);
 }
 
 void main(void)
@@ -417,8 +415,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        loader.setPath('/phaser4-examples/public/assets/');
-        // loader.setPath('/examples/public/assets/');
+        // loader.setPath('/phaser4-examples/public/assets/');
+        loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('background', 'farm-background.png'));
         loader.add(ImageFile('ayu', 'ayu.png'));
