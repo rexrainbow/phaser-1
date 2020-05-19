@@ -123,16 +123,16 @@ export class CanvasRenderer
             //  Process the render list
             for (let s: number = 0; s < numRendered; s++)
             {
-                const gameObject = renderList[s];
+                // const gameObject = renderList[s];
 
-                if (gameObject.isDirty(DIRTY_CONST.PENDING_RENDER))
-                {
-                    gameObject.renderCanvas(this);
-                }
-                else
-                {
-                    gameObject.postRenderCanvas(this);
-                }
+                // if (gameObject.isDirty(DIRTY_CONST.PENDING_RENDER))
+                // {
+                //     gameObject.renderCanvas(this);
+                // }
+                // else
+                // {
+                //     gameObject.postRenderCanvas(this);
+                // }
             }
         }
     }

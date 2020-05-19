@@ -29,6 +29,7 @@ export class World extends BaseWorld implements IWorld
 
     //  TODO: An out-of-bounds parent with in-bounds children will be cull checked against in postRender, stop this.
     //  TODO: Use circle-circle check when camera is rotated.
+    /*
     addNode (node: IGameObject, renderData: IWorldRenderData): boolean
     {
         const cull = this.enableCameraCull;
@@ -50,6 +51,7 @@ export class World extends BaseWorld implements IWorld
 
         return false;
     }
+    */
 
     sceneRender (sceneRenderData: ISceneRenderData): void
     {
