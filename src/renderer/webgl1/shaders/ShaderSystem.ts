@@ -43,22 +43,25 @@ export class ShaderSystem
         return stackEntry;
     }
 
-    set (shader: IShader, textureID?: number): IShader
+    set (shader: IShader, textureID?: number): boolean
     {
         this.flush();
-
-        const entry = this.add(shader, textureID);
 
         const renderer = this.renderer;
         const projectionMatrix = renderer.projectionMatrix;
         const cameraMatrix = renderer.currentCamera.matrix;
 
-        shader.bind(projectionMatrix, cameraMatrix, textureID);
+        const success = shader.bind(projectionMatrix, cameraMatrix, textureID);
 
-        this.currentEntry = entry;
-        this.current = shader;
+        if (success)
+        {
+            const entry = this.add(shader, textureID);
 
-        return shader;
+            this.currentEntry = entry;
+            this.current = shader;
+        }
+
+        return success;
     }
 
     setDefault (textureID: number): void
