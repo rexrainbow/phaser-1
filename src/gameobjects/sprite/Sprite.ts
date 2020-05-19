@@ -76,8 +76,6 @@ export class Sprite extends Container implements ISprite
 
             this.clearDirty(DIRTY_CONST.TRANSFORM);
         }
-
-        this.clearDirty(DIRTY_CONST.PENDING_RENDER);
     }
 
     render <T extends IWebGLRenderer> (renderer: T): void
