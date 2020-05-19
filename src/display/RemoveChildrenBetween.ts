@@ -18,7 +18,6 @@ export function RemoveChildrenBetween (parent: IGameObject, beginIndex: number =
         removed.forEach(child =>
         {
             child.parent = null;
-            child.root = null;
         });
 
         return removed;

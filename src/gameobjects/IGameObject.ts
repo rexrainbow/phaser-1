@@ -7,18 +7,18 @@ import { IWebGLRenderer } from '../renderer/webgl1/IWebGLRenderer';
 
 export interface IGameObject
 {
-    world: IBaseWorld;
-    name: string;
     type: string;
-
-    willRender: boolean;
-    willUpdate: boolean;
-    willRenderChildren: boolean;
-    willUpdateChildren: boolean;
-
+    name: string;
+    world: IBaseWorld;
     parent: IGameObject;
-    root: IGameObject;
     children: IGameObject[];
+
+    willUpdate: boolean;
+    willUpdateChildren: boolean;
+    willRender: boolean;
+    willRenderChildren: boolean;
+    willCacheChildren: boolean;
+
     numChildren: number;
 
     dirty: number;
@@ -33,7 +33,7 @@ export interface IGameObject
     isRenderable (): boolean;
     isDirty (flag: number): boolean;
     clearDirty (flag: number): this;
-    setDirty (flag: number): this;
+    setDirty (flag: number, flag2?: number): this;
 
     update (delta: number, time: number): void;
     postUpdate (delta: number, time: number): void;
