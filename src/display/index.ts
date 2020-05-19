@@ -11,6 +11,7 @@ import { ConsoleTreeChildren } from './ConsoleTreeChildren';
 import { CountMatchingChildren } from './CountMatchingChildren';
 import { DepthFirstSearch } from './DepthFirstSearch';
 import { DepthFirstSearchRecursive } from './DepthFirstSearchRecursive';
+import { DepthFirstSearchRecursiveNested } from './DepthFirstSearchRecursiveNested';
 import { DestroyChildren } from './DestroyChildren';
 import { FindChildByName } from './FindChildByName';
 import { FindChildrenByName } from './FindChildrenByName';
@@ -69,6 +70,7 @@ export {
     CountMatchingChildren,
     DepthFirstSearch,
     DepthFirstSearchRecursive,
+    DepthFirstSearchRecursiveNested,
     DestroyChildren,
     FindChildByName,
     FindChildrenByName,
