@@ -51,9 +51,7 @@ export class TransformComponent implements ITransformComponent
 
     updateLocal (): void
     {
-        const entity = this.entity;
-
-        entity.setDirty(DIRTY_CONST.TRANSFORM_BOUNDS);
+        this.entity.setDirty(DIRTY_CONST.TRANSFORM, DIRTY_CONST.BOUNDS);
 
         UpdateLocalTransform(this);
     }
@@ -62,7 +60,7 @@ export class TransformComponent implements ITransformComponent
     {
         const entity = this.entity;
 
-        entity.setDirty(DIRTY_CONST.TRANSFORM_BOUNDS);
+        entity.setDirty(DIRTY_CONST.TRANSFORM, DIRTY_CONST.BOUNDS);
 
         UpdateWorldTransform(entity);
 
@@ -112,7 +110,7 @@ export class TransformComponent implements ITransformComponent
     {
         this.extent.set(x, y, width, height);
 
-        this.entity.setDirty(DIRTY_CONST.TRANSFORM_BOUNDS);
+        this.entity.setDirty(DIRTY_CONST.TRANSFORM, DIRTY_CONST.BOUNDS);
     }
 
     updateExtent (width?: number, height?: number): void
@@ -133,7 +131,7 @@ export class TransformComponent implements ITransformComponent
         extent.x = -(this.origin.x) * extent.width;
         extent.y = -(this.origin.y) * extent.height;
 
-        entity.setDirty(DIRTY_CONST.TRANSFORM_BOUNDS);
+        entity.setDirty(DIRTY_CONST.TRANSFORM, DIRTY_CONST.BOUNDS);
     }
 
     set rotation (value: number)
