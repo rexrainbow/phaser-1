@@ -11,6 +11,7 @@ import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './cameras/Ortho';
+import { SearchEntry } from '../../display/DepthFirstSearchRecursiveNested';
 import { ShaderSystem } from './shaders/ShaderSystem';
 import { TextureSystem } from './textures/TextureSystem';
 import { WebGLRendererInstance } from './WebGLRendererInstance';
@@ -212,23 +213,40 @@ export class WebGLRenderer
             }
 
             //  Process the render list
-            for (let s: number = 0; s < renderList.length; s++)
+            renderList.forEach(entry =>
             {
-                const gameObject = renderList[s];
-
-                if (gameObject.isDirty(DIRTY_CONST.PENDING_RENDER))
+                if (entry.children.length)
                 {
-                    gameObject.render(this);
+                    this.renderNode(entry);
                 }
                 else
                 {
-                    gameObject.postRender(this);
+                    entry.node.render(this);
                 }
-            }
+            });
         }
 
         //  One final sweep
         this.flush();
+    }
+
+    renderNode (entry: SearchEntry): void
+    {
+        entry.node.render(this);
+
+        entry.children.forEach(child =>
+        {
+            if (child.children.length > 0)
+            {
+                this.renderNode(child);
+            }
+            else
+            {
+                child.node.render(this);
+            }
+        });
+
+        entry.node.postRender(this);
     }
 
     flush (): void
