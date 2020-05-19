@@ -19,6 +19,7 @@ export class Loader extends EventEmitter
     completed: Set<File>;
 
     onComplete: Function;
+    onError: Function;
 
     constructor ()
     {
@@ -50,8 +51,43 @@ export class Loader extends EventEmitter
         return this;
     }
 
-    start (onComplete: Function): this
+    start (): Promise<Loader>
     {
+        if (this.isLoading)
+        {
+            return null;
+        }
+
+        return new Promise((resolve, reject) =>
+        {
+            this.completed.clear();
+            this.progress = 0;
+
+            if (this.queue.size > 0)
+            {
+                this.isLoading = true;
+
+                this.onComplete = resolve;
+                this.onError = reject;
+
+                // console.log('Loader.start');
+
+                Emit(this, 'start');
+
+                this.nextFile();
+            }
+            else
+            {
+                this.progress = 1;
+
+                Emit(this, 'complete');
+
+                resolve();
+                // onComplete();
+            }
+        });
+
+        /*
         if (this.isLoading)
         {
             return this;
@@ -82,6 +118,7 @@ export class Loader extends EventEmitter
         }
 
         return this;
+        */
     }
 
     nextFile (): void
@@ -126,7 +163,9 @@ export class Loader extends EventEmitter
         {
             // console.log('Loader inflight zero');
 
-            window.setTimeout(() => this.stop(), 0);
+            this.stop();
+
+            // window.setTimeout(() => this.stop(), 0);
         }
     }
 
