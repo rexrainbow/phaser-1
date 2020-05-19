@@ -3,7 +3,7 @@ export const DIRTY_CONST = {
     CLEAR: 0,
     TRANSFORM: 1,
     UPDATE: 2,
-    PENDING_RENDER: 4,
+    CHILD_CACHE: 4,
     POST_RENDER: 8,
     COLORS: 16,
     BOUNDS: 32,
@@ -14,7 +14,6 @@ export const DIRTY_CONST = {
 
     //  Special combinations
     DEFAULT: 1 + 2 + 16 + 32,
-    TRANSFORM_BOUNDS: 1 + 32,
 
     //  Reserved for future use:
     //  1024
