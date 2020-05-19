@@ -17,18 +17,13 @@ export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: IWeb
 
     renderer.textures.request(texture);
 
-    if (binding.dirtyIndex)
-    {
-        const textureIndex = binding.index;
+    const textureIndex = binding.index;
 
-        //  Inject the texture ID
-        data[4] = textureIndex;
-        data[10] = textureIndex;
-        data[16] = textureIndex;
-        data[22] = textureIndex;
-
-        binding.dirtyIndex = false;
-    }
+    //  Inject the texture ID
+    data[4] = textureIndex;
+    data[10] = textureIndex;
+    data[16] = textureIndex;
+    data[22] = textureIndex;
 
     const offset = shader.count * buffer.quadElementSize;
 
