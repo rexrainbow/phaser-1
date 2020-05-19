@@ -44,6 +44,15 @@ class Demo extends Scene
         const bubble = new Sprite(400, 450, 'bubble');
         const star = new Sprite(650, 500, 'star');
 
+        layer.name = 'RenderLayer';
+        bg.name = 'Background';
+        logo.name = 'Logo';
+        ayu.name = 'Ayu';
+        farm.name = 'Farm Logo';
+        rocket.name = 'Rocket';
+        bubble.name = 'Bubble';
+        star.name = 'Star';
+
         AddChildren(layer, ayu, logo, farm, rocket, bubble);
 
         AddChildren(world, bg, layer, star);
