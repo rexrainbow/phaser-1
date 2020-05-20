@@ -7,35 +7,10 @@ import { IEventInstance } from '../src/events/IEventInstance';
 import { ImageFile } from '../src/loader/files/ImageFile';
 import { Loader } from '../src/loader/Loader';
 import { On } from '../src/events';
+import { Quadratic } from '../src/math/easing/';
 import { Scene } from '../src/scenes/Scene';
 import { Sprite } from '../src/gameobjects/';
 import { StaticWorld } from '../src/world/StaticWorld';
-
-class Quadratic
-{
-    static easeIn (k: number): number
-    {
-        return k * k;
-    }
-
-    static easeOut (k: number): number
-    {
-        return -k * (k - 2);
-    }
-
-    static easeInOut (k: number): number
-    {
-        if ((k *= 2) < 1) return 0.5 * k * k;
-
-        return -0.5 * (--k * (k - 2) - 1);
-    }
-}
-
-type Duration = {
-    slow: number;
-    normal: number;
-    fast: number;
-}
 
 class TweenProperty
 {
@@ -120,8 +95,7 @@ class CompleteData
 
 class Tween
 {
-    static defaultEasing: Function = Quadratic.easeOut;
-    static defaultDuration: Duration = { slow: 1, normal: 0.4, fast: 0.2 };
+    static defaultEasing: Function = Quadratic.Out;
 
     private static running: Map<any, Tween> = new Map();
     private static head: Tween;
@@ -147,9 +121,7 @@ class Tween
     private startTime: number;
     private endTime: number;
     private properties: TweenProperty;
-    // private specials: EazeSpecial;
-    // private autoVisible: Boolean;
-    // private slowTween: Boolean;
+    private autoVisible: boolean;
     private _chain: Tween[];
 
     private _onStart: Function;
@@ -175,6 +147,11 @@ class Tween
 
     static killAllTweens (): void
     {
+        this.running.forEach(tween =>
+        {
+            tween.isDead = true;
+            tween.dispose();
+        });
     }
 
     static killTweensOf (target: unknown): void
@@ -333,7 +310,7 @@ class Tween
         return this;
     }
 
-    private configure (duration: number | string, newState: Object = {}, reversed: boolean = false): void
+    private configure (duration: number, newState: Object = {}, reversed: boolean = false): void
     {
         this._configured = true;
         this.reversed = reversed;
@@ -342,26 +319,6 @@ class Tween
         for (let name in newState)
         {
             let value = newState[name];
-
-            // if (name in specialProperties)
-            // {
-            //     if (name == "alpha") { autoVisible = true; slowTween = true; }
-            //     else if (name == "alphaVisible") { name = "alpha"; autoVisible = false; }
-            //     else if (!(name in target))
-            //     {
-            //         if (name == "scale")
-            //         {
-            //             configure(duration, { scaleX:value, scaleY:value }, reversed);
-            //             continue;
-            //         }
-            //         else
-            //         {
-            //             specials = new specialProperties[name](target, name, value, specials);
-            //             slowTween = true;
-            //             continue;
-            //         }
-            //     }
-            // }
 
             // if (value is Array && target[name] is Number)
             // {
@@ -383,61 +340,28 @@ class Tween
         if (!this._inited) this.init();
         this.overwrite = killTargetTweens;
 
-        // add to main tween chain
         this.startTime = performance.now() + timeOffset;
-        this._duration = (isNaN(this.duration) ? this.smartDuration(String(this.duration)) : this.duration) * 1000;
+        this._duration = this.duration * 1000;
         this.endTime = this.startTime + this._duration;
 
-        // set values
         if (this.reversed || this._duration == 0) this.update(this.startTime);
-
-        // if (autoVisible && _duration > 0) target.visible = true;
 
         this._started = true;
 
         this.attach(this.overwrite);
     }
 
-    /// Read target properties
-    private init(): void
+    private init (): void
     {
         if (this._inited) return;
 
-        // configure properties
         let p: TweenProperty = this.properties;
 
         while (p) { p.init(this.target, this.reversed); p = p.next; }
 
-        // var s:EazeSpecial = specials;
-        // while (s) { s.init(reversed); s = s.next; }
-
         this._inited = true;
     }
 
-    /// Resolve non numeric durations
-    private smartDuration (duration: string): number
-    {
-        if (duration in Tween.defaultDuration) return Tween.defaultDuration[duration];
-
-        // else if (duration === 'auto')
-        // {
-        //     // look for a special property willing to provide an optimal duration
-        //     var s:EazeSpecial = specials;
-        //     while (s)
-        //     {
-        //         if ("getPreferredDuration" in s) return s["getPreferredDuration"]();
-        //         s = s.next;
-        //     }
-        // }
-
-        return Tween.defaultDuration.normal;
-    }
-
-    /**
-     * Set easing method
-     * @param	f	Easing function(k:Number):Number
-     * @return	Tween reference
-     */
     easing (f: Function): this
     {
         this._ease = f || Tween.defaultEasing;
@@ -445,10 +369,8 @@ class Tween
         return this;
     }
 
-    /// Update this tween alone
     private update (time: number): void
     {
-        // make this tween the only tween to update
         let h: Tween = Tween.head;
 
         Tween.head = this;
@@ -481,7 +403,6 @@ class Tween
             Tween.head = this;
         }
 
-        // Tween.running[target] = this;
         Tween.running.set(this.target, this);
     }
 
@@ -530,8 +451,6 @@ class Tween
 
             if (this._chain)
             {
-                // for each(let tween: Tween in this._chain) tween.dispose();
-
                 this._chain.forEach(tween =>
                 {
                     tween.dispose();
@@ -546,17 +465,9 @@ class Tween
         this._ease = null;
         this._onStart = null;
         this._onStartArgs = null;
-
-        // if (slowTween)
-        // {
-        //     if (specials) { specials.dispose(); specials = null; }
-        //     autoVisible = false;
-        //     _onUpdate = null;
-        //     _onUpdateArgs = null;
-        // }
     }
 
-    delay (duration: number | string, overwrite: boolean = true): Tween
+    delay (duration: number, overwrite: boolean = true): Tween
     {
         return this.add(duration, null, overwrite);
     }
@@ -566,17 +477,17 @@ class Tween
         return this.add(0, newState, overwrite);
     }
 
-    to (duration: number | string, newState: Object = null, overwrite: boolean = true): Tween
+    to (duration: number, newState: Object = null, overwrite: boolean = true): Tween
     {
         return this.add(duration, newState, overwrite);
     }
 
-    from (duration: number | string, fromState: Object = null, overwrite: boolean = true): Tween
+    from (duration: number, fromState: Object = null, overwrite: boolean = true): Tween
     {
         return this.add(duration, fromState, overwrite, true);
     }
 
-    private add (duration: number | string, state: Object, overwrite: boolean, reversed: boolean = false): Tween
+    private add (duration: number, state: Object, overwrite: boolean, reversed: boolean = false): Tween
     {
         if (this.isDead) return new Tween(this.target).add(duration, state, overwrite, reversed);
 
