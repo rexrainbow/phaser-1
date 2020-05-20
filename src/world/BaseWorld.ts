@@ -190,6 +190,10 @@ export class BaseWorld extends GameObject implements IBaseWorld
         // debugger;
     }
 
+    // registerPlugin (plugin)
+    // {
+    // }
+
     update (delta: number, time: number): void
     {
         if (!this.willUpdate)
