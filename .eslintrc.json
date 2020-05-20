@@ -71,6 +71,7 @@
         "@typescript-eslint/interface-name-prefix": [ "error", { "prefixWithI": "always" } ],
         "no-empty-function": "off",
         "@typescript-eslint/no-empty-function": [ "error", { "allow": [ "functions", "arrowFunctions", "methods" ] } ],
+        "@typescript-eslint/unbound-method": [ "error", { "ignoreStatic": true } ],
         "@typescript-eslint/naming-convention": [
             "error",
             {
@@ -140,6 +141,11 @@
                 "modifiers": [ "private" ],
                 "format": [ "camelCase" ],
                 "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "method",
+                "modifiers": [ "static" ],
+                "format": [ "camelCase", "UPPER_CASE", "PascalCase" ]
             },
             {
                 "selector": "typeLike",
