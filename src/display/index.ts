@@ -28,7 +28,6 @@ import { GetRandomChild } from './GetRandomChild';
 import { MoveChildDown } from './MoveChildDown';
 import { MoveChildTo } from './MoveChildTo';
 import { MoveChildUp } from './MoveChildUp';
-import { MoveToPosition } from './MoveToPosition';
 import { Overlap } from './Overlap';
 import { RemoveChild } from './RemoveChild';
 import { RemoveChildAt } from './RemoveChildAt';
@@ -87,7 +86,6 @@ export {
     MoveChildDown,
     MoveChildTo,
     MoveChildUp,
-    MoveToPosition,
     Overlap,
     RemoveChild,
     RemoveChildAt,

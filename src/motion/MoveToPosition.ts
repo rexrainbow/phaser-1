@@ -26,13 +26,13 @@ export function MoveToPosition <T extends IContainer> (x: number, y: number, dur
 
         const world = child.world;
 
-        if (world)
-        {
-            AddTimer(world, {
-                duration,
-                onUpdate: moveHandler
-            });
-        }
+        // if (world)
+        // {
+        //     AddTimer(world, {
+        //         duration,
+        //         onUpdate: moveHandler
+        //     });
+        // }
     });
 
     return children;
