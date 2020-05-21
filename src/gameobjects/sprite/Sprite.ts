@@ -78,7 +78,7 @@ export class Sprite extends Container implements ISprite
         }
     }
 
-    render <T extends IWebGLRenderer> (renderer: T): void
+    renderGL <T extends IWebGLRenderer> (renderer: T): void
     {
         this.preRender();
 

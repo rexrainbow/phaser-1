@@ -48,7 +48,7 @@ export class RenderLayer extends Layer implements IRenderLayer
         this.framebuffer = texture.binding.framebuffer;
     }
 
-    render <T extends IWebGLRenderer> (renderer: T): void
+    renderGL <T extends IWebGLRenderer> (renderer: T): void
     {
         if (this.numChildren > 0)
         {

@@ -118,7 +118,7 @@ export class GameObject
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    render <T extends IWebGLRenderer> (renderer: T): void
+    renderGL <T extends IWebGLRenderer> (renderer: T): void
     {
     }
 
@@ -128,7 +128,7 @@ export class GameObject
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    postRender <T extends IWebGLRenderer> (renderer: T): void
+    postRenderGL <T extends IWebGLRenderer> (renderer: T): void
     {
         //  Called after this GameObject and all of its children have been rendered.
         //  If it doesn't have any children, this method is never called.

@@ -221,7 +221,7 @@ export class WebGLRenderer
                 }
                 else
                 {
-                    entry.node.render(this);
+                    entry.node.renderGL(this);
                 }
             });
         }
@@ -232,7 +232,7 @@ export class WebGLRenderer
 
     renderNode (entry: SearchEntry): void
     {
-        entry.node.render(this);
+        entry.node.renderGL(this);
 
         entry.children.forEach(child =>
         {
@@ -242,11 +242,11 @@ export class WebGLRenderer
             }
             else
             {
-                child.node.render(this);
+                child.node.renderGL(this);
             }
         });
 
-        entry.node.postRender(this);
+        entry.node.postRenderGL(this);
     }
 
     flush (): void
