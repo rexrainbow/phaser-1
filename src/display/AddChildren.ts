@@ -1,4 +1,4 @@
-import { AddChild } from '.';
+import { AddChild } from './AddChild';
 import { IGameObject } from '../gameobjects/IGameObject';
 
 export function AddChildren (parent: IGameObject, ...children: IGameObject[]): IGameObject[]
