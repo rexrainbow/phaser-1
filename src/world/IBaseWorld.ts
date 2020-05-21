@@ -3,8 +3,8 @@ import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
-import { IWorldPlugin } from './IWorldPlugin';
 import { IWorldRenderData } from './IWorldRenderData';
+import { WorldPluginType } from './WorldPluginType';
 
 export interface IBaseWorld extends IGameObject
 {
@@ -12,7 +12,7 @@ export interface IBaseWorld extends IGameObject
     camera: IBaseCamera;
     renderData: IWorldRenderData;
     forceRefresh: boolean;
-    plugins: Map<string, IWorldPlugin>;
+    plugins: Map<string, WorldPluginType>;
     events: Map<string, Set<IEventInstance>>;
     render (sceneRenderData: ISceneRenderData): void;
     shutdown (): void;

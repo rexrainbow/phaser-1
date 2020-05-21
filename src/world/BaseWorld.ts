@@ -9,12 +9,12 @@ import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
-import { IWorldPlugin } from './IWorldPlugin';
 import { IWorldPluginConstructor } from './IWorldPluginConstructor';
 import { IWorldRenderData } from './IWorldRenderData';
 import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren } from '../display';
 import { ResetWorldRenderData } from './ResetWorldRenderData';
+import { WorldPluginType } from './WorldPluginType';
 
 export class BaseWorld extends GameObject implements IBaseWorld
 {
@@ -24,7 +24,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
     renderData: IWorldRenderData;
     forceRefresh: boolean = false;
 
-    plugins: Map<string, IWorldPlugin>;
+    plugins: Map<string, WorldPluginType>;
     events: Map<string, Set<IEventInstance>>;
 
     private _updateListener: IEventInstance;

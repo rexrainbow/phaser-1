@@ -7,6 +7,6 @@ export function AddWorldPlugin (world: IBaseWorld, ...plugins: IWorldPluginConst
     {
         const instance = new plugin(world);
 
-        world.plugins.set(instance.toString(), instance);
+        world.plugins.set(plugin.toString(), instance);
     });
 }

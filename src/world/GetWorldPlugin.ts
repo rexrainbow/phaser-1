@@ -1,8 +1,8 @@
 import { IBaseWorld } from './IBaseWorld';
-import { IWorldPlugin } from './IWorldPlugin';
 import { IWorldPluginConstructor } from './IWorldPluginConstructor';
+import { WorldPluginType } from './WorldPluginType';
 
-export function GetWorldPlugin (world: IBaseWorld, key: string | IWorldPluginConstructor): IWorldPlugin
+export function GetWorldPlugin (world: IBaseWorld, key: string | IWorldPluginConstructor): WorldPluginType
 {
     return world.plugins.get(key.toString());
 }

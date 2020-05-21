@@ -11,5 +11,4 @@ export interface IWorldPlugin
     render (renderData: IWorldRenderData): void;
     shutdown (): void;
     destroy (): void;
-    toString (): string;
 }

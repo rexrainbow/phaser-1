@@ -40,7 +40,7 @@ export class WorldPlugin implements IWorldPlugin
     {
     }
 
-    toString (): string
+    static toString (): string
     {
         return WorldPlugin.key;
     }
