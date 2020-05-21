@@ -13,10 +13,21 @@ export class WorldPlugin implements IWorldPlugin
         this.world = world;
     }
 
+    boot (): void
+    {
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     update (delta: number, time: number): void
     {
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    postUpdate (delta: number, time: number): void
+    {
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     render (renderData: IWorldRenderData): void
     {
     }

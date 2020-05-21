@@ -5,7 +5,9 @@ export interface IWorldPlugin
 {
     world: IBaseWorld;
 
+    boot (): void;
     update (delta: number, time: number): void;
+    postUpdate (delta: number, time: number): void;
     render (renderData: IWorldRenderData): void;
     shutdown (): void;
     destroy (): void;
