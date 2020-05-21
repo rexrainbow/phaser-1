@@ -27,25 +27,4 @@ export class StaticWorld extends BaseWorld implements IStaticWorld
 
         this.renderData = CreateWorldRenderData(this.camera);
     }
-
-    sceneRender (sceneRenderData: ISceneRenderData): void
-    {
-        super.sceneRender(sceneRenderData);
-
-        this.camera.dirtyRender = false;
-    }
-
-    shutdown (): void
-    {
-        super.shutdown();
-
-        this.camera.reset();
-    }
-
-    destroy (reparentChildren?: IGameObject): void
-    {
-        this.camera.destroy();
-
-        super.destroy(reparentChildren);
-    }
 }
