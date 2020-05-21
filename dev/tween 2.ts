@@ -4,305 +4,14 @@ import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 
 import { Game } from '../src/Game';
-import { IBaseWorld } from '../src/world/IBaseWorld';
-import { IEventInstance } from '../src/events/IEventInstance';
+import { GetWorldPlugin } from '../src/world';
+import { ITweenPlugin } from '../src/motion/tween/ITweenPlugin';
 import { ImageFile } from '../src/loader/files/ImageFile';
 import { Loader } from '../src/loader/Loader';
-import { On } from '../src/events';
-import { Quadratic } from '../src/math/easing';
 import { Scene } from '../src/scenes/Scene';
 import { Sprite } from '../src/gameobjects';
 import { StaticWorld } from '../src/world/StaticWorld';
-import { WorldPlugin } from '../src/world/WorldPlugin';
-
-class TweenProperty
-{
-	name: string;
-	start: number;
-	end: number;
-	current: number;
-
-	constructor (name: string, end: number)
-	{
-		this.name = name;
-        this.end = end;
-	}
-
-	init (target: object, reversed: boolean): void
-	{
-		if (reversed)
-		{
-			this.start = this.end;
-			this.end = target[this.name];
-
-            target[this.name] = this.start;
-		}
-        else
-        {
-            this.start = target[this.name];
-        }
-
-        this.current = this.start;
-    }
-
-    update (target: object, v: number): void
-    {
-        this.current = this.start + ((this.end - this.start) * v);
-
-        target[this.name] = this.current;
-    }
-}
-
-class TweenPlugin extends WorldPlugin
-{
-    static key: string = 'TweenPlugin';
-    static defaultEase: Function = Quadratic.Out;
-
-    private tweens: Set<Tween> = new Set();
-
-    constructor (world: IBaseWorld)
-    {
-        super(world);
-    }
-
-    create (target: Object, autoStart: boolean = true): Tween
-    {
-        const tween = new Tween(this, target, autoStart);
-
-        this.tweens.add(tween);
-
-        return tween;
-    }
-
-    update (delta: number): void
-    {
-        for (const tween of this.tweens)
-        {
-            if (tween.update(delta))
-            {
-                this.tweens.delete(tween);
-            }
-        }
-    }
-
-    killAllTweens (): void
-    {
-    }
-
-    killTweensOf (target: unknown): void
-    {
-    }
-
-    pauseAllTweens (): void
-    {
-    }
-
-    resumeAllTweens (): void
-    {
-    }
-
-    toString (): string
-    {
-        return TweenPlugin.key;
-    }
-}
-
-class Tween
-{
-    // static defaultEase: Function = Quadratic.Out;
-
-    // private static tweens: Map<any, Tween> = new Map();
-    // private static world: IBaseWorld;
-    // private static _updateListener: IEventInstance;
-
-    private isDead: boolean = false;
-    private target: object;
-    private reversed: boolean;
-    private overwrite: boolean;
-    private autoStart: boolean;
-    private delay: number = 0;
-    private duration: number = 0;
-    private elapsed: number = 0;
-    private _delayElapsed: number = 0;
-    private _durationElapsed: number = 0;
-    private ease: Function;
-    private properties: TweenProperty[] = [];
-    private autoVisible: boolean;
-
-    progress: number = 0;
-    isRunning: boolean;
-    plugin: TweenPlugin;
-
-    constructor (plugin: TweenPlugin, target: Object, autoStart: boolean = true)
-    {
-        this.plugin = plugin;
-        this.target = target;
-        this.autoStart = autoStart;
-        this.ease = TweenPlugin.defaultEase;
-        this.isRunning = false;
-    }
-
-    /*
-    static init (world: IBaseWorld): void
-    {
-        this.world = world;
-
-        this._updateListener = On(world.scene, 'update', (delta: number) => this.updateTweens(delta));
-    }
-
-    static updateTweens (delta: number): void
-    {
-        for (const [ target, tween ] of this.tweens)
-        {
-            if (tween.update(delta))
-            {
-                this.tweens.delete(target);
-            }
-        }
-    }
-
-    static killAllTweens (): void
-    {
-    }
-
-    static killTweensOf (target: unknown): void
-    {
-    }
-
-    static pauseAllTweens (): void
-    {
-    }
-
-    static resumeAllTweens (): void
-    {
-    }
-    */
-
-    to (duration: number, toState: Object = null, overwrite: boolean = true): Tween
-    {
-        return this.add(duration, toState, overwrite);
-    }
-
-    from (duration: number, fromState: Object = null, overwrite: boolean = true): Tween
-    {
-        return this.add(duration, fromState, overwrite, true);
-    }
-
-    private add (duration: number, state: Object, overwrite: boolean, reversed: boolean = false): Tween
-    {
-        if (this.isDead)
-        {
-            return new Tween(this.plugin, this.target).add(duration, state, overwrite, reversed);
-        }
-
-        //  Tween already configured - add to chain?
-        for (let name in state)
-        {
-            let value = state[name];
-
-            this.properties.push(new TweenProperty(name, value));
-        }
-
-        this.duration = duration * 1000;
-        this.reversed = reversed;
-        this.overwrite = overwrite;
-
-        if (this.autoStart)
-        {
-            this.start();
-        }
-
-        return this;
-    }
-
-    start (): void
-    {
-        if (this.isRunning)
-        {
-            return;
-        }
-
-        this.properties.forEach(property =>
-        {
-            property.init(this.target, this.reversed);
-        });
-
-        this._delayElapsed = this.delay;
-        this._durationElapsed = this.duration;
-        this.elapsed = 0;
-
-        this.isRunning = true;
-
-        // Tween.tweens.set(this.target, this);
-
-        this.update(0);
-    }
-
-    //  If it returns true it means this Tween has been disposed
-    update (delta: number): boolean
-    {
-        if (!this.isRunning)
-        {
-            return false;
-        }
-
-        if (this._delayElapsed > 0)
-        {
-            this._delayElapsed -= delta;
-
-            if (this._delayElapsed <= 0)
-            {
-                //  Carry over the difference to the duration
-                this.elapsed = Math.abs(this._delayElapsed);
-                this._delayElapsed = 0;
-            }
-        }
-        else
-        {
-            this.elapsed += delta;
-            this.progress = Math.min(this.elapsed / this.duration, 1);
-
-            // const v = (this.reversed) ? this.ease(1 - this.progress) : this.ease(this.progress);
-            const v = this.ease(this.progress);
-
-            this.properties.forEach(property =>
-            {
-                property.update(this.target, v);
-            });
-
-            if (this.progress === 1)
-            {
-                this.dispose();
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    easing (f: Function): this
-    {
-        this.ease = f;
-
-        return this;
-    }
-
-    dispose (): void
-    {
-        this.isDead = true;
-        this.target = null;
-        this.properties = null;
-        this.ease = null;
-        this.isRunning = false;
-    }
-}
-
-function Tweens (target: Object): Tween
-{
-
-    // return new Tween(target);
-}
+import { TweenPlugin } from '../src/motion/tween/TweenPlugin';
 
 class Demo extends Scene
 {
@@ -312,14 +21,10 @@ class Demo extends Scene
 
         const world = new StaticWorld(this, [ TweenPlugin ]);
 
-        const tweens = world.getPlugin(TweenPlugin);
-
-        // Tween.init(world);
-
         const loader = new Loader();
 
-        // loader.setPath('/phaser4-examples/public/assets/');
-        loader.setPath('/examples/public/assets/');
+        loader.setPath('/phaser4-examples/public/assets/');
+        // loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('logo', 'logo.png'));
         loader.add(ImageFile('rocket', 'rocket.png'));
@@ -331,15 +36,23 @@ class Demo extends Scene
             const logo = new Sprite(400, 100, 'logo').setRotation(0.5);
             const rocket = new Sprite(-200, 300, 'rocket');
 
-            // Tweens(logo).from(3, { y: 500, rotation: 0 });
+            //  Get our TweenPlugin *instance* from the World, casting it to TweenPlugin so we get full code-insight.
+            //  We mark the const as the interface, so only the important methods and properties are exposed.
+            const tweens: ITweenPlugin = GetWorldPlugin(world, TweenPlugin) as TweenPlugin;
 
-            Tweens(logo).to(3, { y: 500, rotation: 0 }).easing(Easing.Bounce.Out);
-            Tweens(rocket).to(1.5, { x: 950 }).easing(Easing.Quadratic.In);
+            tweens.add(logo).to(3, { y: 500, rotation: 0 }).easing(Easing.Bounce.Out).yoyo();
+
+            tweens.add(rocket).delay(2).to(1.5, { x: 800 }).easing(Easing.Quadratic.In);
+
+            // tweens.add([ logo, rocket ]).to(3, { y: 500, rotation: 0 }).easing(Easing.Bounce.Out);
+
+            //  tweens.to({ targets: logo, duration: 3, y: 500, rotation: 0, ease: Bounce.Out });
+
+            //  tweens.to(logo, { y: 500, rotation: 0, ease: Bounce.Out });
 
             AddChildren(world, logo, rocket);
 
         });
-
     }
 }
 
