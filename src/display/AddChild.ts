@@ -3,9 +3,9 @@ import { SetParent } from './SetParent';
 
 export function AddChild <T extends IGameObject> (parent: IGameObject, child: T): T
 {
-    SetParent(parent, child);
-
     parent.children.push(child);
+
+    SetParent(parent, child);
 
     child.transform.updateWorld();
 

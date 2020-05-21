@@ -9,9 +9,9 @@ export function AddChildrenAt (parent: IGameObject, index: number, ...children: 
     {
         children.reverse().forEach(child =>
         {
-            SetParent(parent, child);
-
             children.splice(index, 0, child);
+
+            SetParent(parent, child);
 
             child.transform.updateWorld();
         });
