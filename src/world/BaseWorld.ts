@@ -9,6 +9,8 @@ import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
+import { IWorldPlugin } from './IWorldPlugin';
+import { IWorldPluginConstructor } from './IWorldPluginConstructor';
 import { IWorldRenderData } from './IWorldRenderData';
 import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren } from '../display';
@@ -24,6 +26,8 @@ export class BaseWorld extends GameObject implements IBaseWorld
     renderData: IWorldRenderData;
     forceRefresh: boolean = false;
 
+    plugins: Map<string, IWorldPlugin>;
+
     private _updateListener: IEventInstance;
     private _renderListener: IEventInstance;
     private _shutdownListener: IEventInstance;
@@ -31,7 +35,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
     protected _stack: SearchEntry[];
     protected _cachedLayers: SearchEntry[];
 
-    constructor (scene: IScene)
+    constructor (scene: IScene, plugins?: IWorldPluginConstructor[])
     {
         super();
 
@@ -39,12 +43,43 @@ export class BaseWorld extends GameObject implements IBaseWorld
         this.scene = scene;
         this.world = this;
 
+        this.plugins = new Map();
+
         this.clock = new Clock(this);
 
         this._updateListener = On(scene, 'update', (delta: number, time: number) => this.update(delta, time));
         this._renderListener = On(scene, 'render', (renderData: ISceneRenderData) => this.sceneRender(renderData));
         this._shutdownListener = On(scene, 'shutdown', () => this.shutdown());
         Once(scene, 'destroy', () => this.destroy());
+
+        if (plugins)
+        {
+            this.addPlugin(...plugins);
+        }
+    }
+
+    addPlugin (...plugins: IWorldPluginConstructor[]): this
+    {
+        plugins.forEach(plugin =>
+        {
+            const instance = new plugin(this);
+
+            this.plugins.set(instance.key, instance);
+        });
+
+        return this;
+    }
+
+    getPlugin (key: string): IWorldPlugin
+    {
+        return this.plugins.get(key);
+    }
+
+    removePlugin (key: string): this
+    {
+        this.plugins.delete(key);
+
+        return this;
     }
 
     depthFirstSearch (parent: IGameObject, output: SearchEntry[] = []): SearchEntry[]
@@ -190,16 +225,17 @@ export class BaseWorld extends GameObject implements IBaseWorld
         // debugger;
     }
 
-    // registerPlugin (plugin)
-    // {
-    // }
-
     update (delta: number, time: number): void
     {
         if (!this.willUpdate)
         {
             return;
         }
+
+        this.plugins.forEach(plugin =>
+        {
+            plugin.update(delta, time);
+        });
 
         this.clock.update(delta, time);
 
@@ -229,6 +265,11 @@ export class BaseWorld extends GameObject implements IBaseWorld
             this.forceRefresh = false;
         }
 
+        this.plugins.forEach(plugin =>
+        {
+            plugin.render(renderData);
+        });
+
         MergeRenderData(sceneRenderData, renderData);
     }
 
@@ -244,6 +285,11 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
         RemoveChildren(this);
 
+        this.plugins.forEach(plugin =>
+        {
+            plugin.shutdown();
+        });
+
         this.renderData.renderList.length = 0;
     }
 
@@ -255,5 +301,12 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
         this.camera = null;
         this.renderData = null;
+
+        this.plugins.forEach(plugin =>
+        {
+            plugin.destroy();
+        });
+
+        this.plugins.clear();
     }
 }

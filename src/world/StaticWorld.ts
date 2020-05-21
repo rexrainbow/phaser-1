@@ -5,6 +5,7 @@ import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IStaticCamera } from '../camera/IStaticCamera';
 import { IStaticWorld } from './IStaticWorld';
+import { IWorldPluginConstructor } from './IWorldPluginConstructor';
 import { StaticCamera } from '../camera/StaticCamera';
 
 //  A Static World is designed specifically to have a bounds of a fixed size
@@ -16,9 +17,9 @@ export class StaticWorld extends BaseWorld implements IStaticWorld
 {
     camera: IStaticCamera;
 
-    constructor (scene: IScene)
+    constructor (scene: IScene, plugins?: IWorldPluginConstructor[])
     {
-        super(scene);
+        super(scene, plugins);
 
         this.type = 'StaticWorld';
 

@@ -1,6 +1,6 @@
-import * as Easing from '../src/math/easing/';
+import * as Easing from '../src/math/easing';
 
-import { AddChild, AddChildren } from '../src/display/';
+import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 
 import { Game } from '../src/Game';
@@ -9,10 +9,11 @@ import { IEventInstance } from '../src/events/IEventInstance';
 import { ImageFile } from '../src/loader/files/ImageFile';
 import { Loader } from '../src/loader/Loader';
 import { On } from '../src/events';
-import { Quadratic } from '../src/math/easing/';
+import { Quadratic } from '../src/math/easing';
 import { Scene } from '../src/scenes/Scene';
-import { Sprite } from '../src/gameobjects/';
+import { Sprite } from '../src/gameobjects';
 import { StaticWorld } from '../src/world/StaticWorld';
+import { WorldPlugin } from '../src/world/WorldPlugin';
 
 class TweenProperty
 {
@@ -52,13 +53,67 @@ class TweenProperty
     }
 }
 
-class Tween
+class TweenPlugin extends WorldPlugin
 {
+    static key: string = 'TweenPlugin';
     static defaultEase: Function = Quadratic.Out;
 
-    private static tweens: Map<any, Tween> = new Map();
-    private static world: IBaseWorld;
-    private static _updateListener: IEventInstance;
+    private tweens: Set<Tween> = new Set();
+
+    constructor (world: IBaseWorld)
+    {
+        super(world);
+    }
+
+    create (target: Object, autoStart: boolean = true): Tween
+    {
+        const tween = new Tween(this, target, autoStart);
+
+        this.tweens.add(tween);
+
+        return tween;
+    }
+
+    update (delta: number): void
+    {
+        for (const tween of this.tweens)
+        {
+            if (tween.update(delta))
+            {
+                this.tweens.delete(tween);
+            }
+        }
+    }
+
+    killAllTweens (): void
+    {
+    }
+
+    killTweensOf (target: unknown): void
+    {
+    }
+
+    pauseAllTweens (): void
+    {
+    }
+
+    resumeAllTweens (): void
+    {
+    }
+
+    toString (): string
+    {
+        return TweenPlugin.key;
+    }
+}
+
+class Tween
+{
+    // static defaultEase: Function = Quadratic.Out;
+
+    // private static tweens: Map<any, Tween> = new Map();
+    // private static world: IBaseWorld;
+    // private static _updateListener: IEventInstance;
 
     private isDead: boolean = false;
     private target: object;
@@ -76,15 +131,18 @@ class Tween
 
     progress: number = 0;
     isRunning: boolean;
+    plugin: TweenPlugin;
 
-    constructor (target: Object, autoStart: boolean = true)
+    constructor (plugin: TweenPlugin, target: Object, autoStart: boolean = true)
     {
+        this.plugin = plugin;
         this.target = target;
         this.autoStart = autoStart;
-        this.ease = Tween.defaultEase;
+        this.ease = TweenPlugin.defaultEase;
         this.isRunning = false;
     }
 
+    /*
     static init (world: IBaseWorld): void
     {
         this.world = world;
@@ -118,6 +176,7 @@ class Tween
     static resumeAllTweens (): void
     {
     }
+    */
 
     to (duration: number, toState: Object = null, overwrite: boolean = true): Tween
     {
@@ -133,7 +192,7 @@ class Tween
     {
         if (this.isDead)
         {
-            return new Tween(this.target).add(duration, state, overwrite, reversed);
+            return new Tween(this.plugin, this.target).add(duration, state, overwrite, reversed);
         }
 
         //  Tween already configured - add to chain?
@@ -174,7 +233,7 @@ class Tween
 
         this.isRunning = true;
 
-        Tween.tweens.set(this.target, this);
+        // Tween.tweens.set(this.target, this);
 
         this.update(0);
     }
@@ -224,7 +283,7 @@ class Tween
 
     easing (f: Function): this
     {
-        this.ease = f || Tween.defaultEase;
+        this.ease = f;
 
         return this;
     }
@@ -241,7 +300,8 @@ class Tween
 
 function Tweens (target: Object): Tween
 {
-    return new Tween(target);
+
+    // return new Tween(target);
 }
 
 class Demo extends Scene
@@ -250,14 +310,16 @@ class Demo extends Scene
     {
         super();
 
-        const world = new StaticWorld(this);
+        const world = new StaticWorld(this, [ TweenPlugin ]);
 
-        Tween.init(world);
+        const tweens = world.getPlugin(TweenPlugin);
+
+        // Tween.init(world);
 
         const loader = new Loader();
 
-        loader.setPath('/phaser4-examples/public/assets/');
-        // loader.setPath('/examples/public/assets/');
+        // loader.setPath('/phaser4-examples/public/assets/');
+        loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('logo', 'logo.png'));
         loader.add(ImageFile('rocket', 'rocket.png'));

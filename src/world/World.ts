@@ -7,6 +7,7 @@ import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorld } from './IWorld';
+import { IWorldPluginConstructor } from './IWorldPluginConstructor';
 import { IWorldRenderData } from './IWorldRenderData';
 import { RectangleToRectangle } from '../geom/intersects';
 
@@ -16,9 +17,9 @@ export class World extends BaseWorld implements IWorld
 
     enableCameraCull: boolean = true;
 
-    constructor (scene: IScene)
+    constructor (scene: IScene, plugins?: IWorldPluginConstructor[])
     {
-        super(scene);
+        super(scene, plugins);
 
         this.type = 'World';
 

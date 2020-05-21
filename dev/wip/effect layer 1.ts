@@ -1,13 +1,13 @@
-import { AddChild, AddChildren } from '../src/display/';
-import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
-import { EffectLayer, Sprite } from '../src/gameobjects/';
+import { AddChild, AddChildren } from '../../src/display';
+import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../../src/config';
+import { EffectLayer, Sprite } from '../../src/gameobjects';
 
-import { Game } from '../src/Game';
-import { ImageFile } from '../src/loader/files/ImageFile';
-import { Loader } from '../src/loader/Loader';
-import { Scene } from '../src/scenes/Scene';
-import { Shader } from '../src/renderer/webgl1/shaders/Shader';
-import { StaticWorld } from '../src/world/StaticWorld';
+import { Game } from '../../src/Game';
+import { ImageFile } from '../../src/loader/files/ImageFile';
+import { Loader } from '../../src/loader/Loader';
+import { Scene } from '../../src/scenes/Scene';
+import { Shader } from '../../src/renderer/webgl1/shaders/Shader';
+import { StaticWorld } from '../../src/world/StaticWorld';
 
 const cloudsFragmentShader = `
 #define SHADER_NAME CLOUDS_FRAG
