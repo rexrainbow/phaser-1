@@ -33,8 +33,8 @@
     },
     "homepage": "https://github.com/phaserjs/phaser#readme",
     "devDependencies": {
-        "@rollup/plugin-node-resolve": "^7.1.3",
-        "@rollup/plugin-typescript": "^4.1.1",
+        "@rollup/plugin-node-resolve": "^8.0.0",
+        "@rollup/plugin-typescript": "^4.1.2",
         "@typescript-eslint/eslint-plugin": "^2.34.0",
         "@typescript-eslint/parser": "^2.34.0",
         "directory-tree": "^2.2.4",
