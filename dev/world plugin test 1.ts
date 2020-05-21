@@ -56,7 +56,7 @@ class DemoPlugin extends WorldPlugin
         Off(this.world, AddedToWorldEvent, this._listener);
     }
 
-    toString (): string
+    static toString (): string
     {
         return DemoPlugin.key;
     }
