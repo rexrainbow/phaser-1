@@ -1,4 +1,4 @@
-import { AddedToWorldEvent, RemovedFromWorldEvent } from '../world/events';
+import { AddedToWorldEvent, RemovedFromWorldEvent } from '../gameobjects/events';
 
 import { Emit } from '../events/Emit';
 import { IBaseWorld } from '../world/IBaseWorld';
@@ -11,11 +11,13 @@ export function SetWorld (world: IBaseWorld, ...children: IGameObject[]): IGameO
         if (child.world)
         {
             Emit(child.world, RemovedFromWorldEvent, child, child.world);
+            Emit(child, RemovedFromWorldEvent, child, child.world);
         }
 
         child.world = world;
 
         Emit(world, AddedToWorldEvent, child, world);
+        Emit(child, AddedToWorldEvent, child, world);
     });
 
     return children;
