@@ -1,11 +1,15 @@
+import * as GameObjectEvents from './events';
+
 import { BoundsComponent, InputComponent, TransformComponent } from './components';
 
 import { DIRTY_CONST } from './DIRTY_CONST';
 import { DestroyChildren } from '../display/DestroyChildren';
+import { Emit } from '../events';
 import { GameInstance } from '../GameInstance';
 import { IBaseWorld } from '../world/IBaseWorld';
 import { IBoundsComponent } from './components/bounds/IBoundsComponent';
 import { ICanvasRenderer } from '../renderer/canvas/ICanvasRenderer';
+import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from './IGameObject';
 import { IInputComponent } from './components/input/IInputComponent';
 import { ITransformComponent } from './components/transform/ITransformComponent';
@@ -24,6 +28,8 @@ export class GameObject
     parent: IGameObject;
 
     children: IGameObject[];
+
+    events: Map<string, Set<IEventInstance>>;
 
     willUpdate: boolean = true;
     willUpdateChildren: boolean = true;
@@ -44,6 +50,8 @@ export class GameObject
     constructor (x: number = 0, y: number = 0)
     {
         this.children = [];
+
+        this.events = new Map();
 
         this.transform = new TransformComponent(this, x, y);
         this.bounds = new BoundsComponent(this);
@@ -92,6 +100,8 @@ export class GameObject
 
     update (delta: number, time: number): void
     {
+        Emit(this, GameObjectEvents.UpdateEvent, this, delta, time);
+
         if (this.willUpdateChildren)
         {
             const children = this.children;
@@ -115,6 +125,8 @@ export class GameObject
     {
         //  Empty for parent classes to use.
         //  Called after this GameObject and all of its children have been updated.
+
+        Emit(this, GameObjectEvents.PostUpdateEvent, this, delta, time);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -160,6 +172,8 @@ export class GameObject
         this.transform.destroy();
         this.bounds.destroy();
         this.input.destroy();
+
+        this.events.clear();
 
         this.world = null;
         this.parent = null;

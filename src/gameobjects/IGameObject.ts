@@ -1,6 +1,7 @@
 import { IBaseWorld } from '../world/IBaseWorld';
 import { IBoundsComponent } from './components/bounds/IBoundsComponent';
 import { ICanvasRenderer } from '../renderer/canvas/ICanvasRenderer';
+import { IEventInstance } from '../events/IEventInstance';
 import { IInputComponent } from './components/input/IInputComponent';
 import { ITransformComponent } from './components/transform/ITransformComponent';
 import { IWebGLRenderer } from '../renderer/webgl1/IWebGLRenderer';
@@ -25,6 +26,8 @@ export interface IGameObject
     dirtyFrame: number;
 
     visible: boolean;
+
+    events: Map<string, Set<IEventInstance>>;
 
     transform: ITransformComponent;
     bounds: IBoundsComponent;
