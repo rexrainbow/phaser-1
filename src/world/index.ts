@@ -4,7 +4,6 @@ import { BaseWorld } from './BaseWorld';
 import { BuildRenderList } from './BuildRenderList';
 import { CalculateTotalRenderable } from './CalculateTotalRenderable';
 import { CreateWorldRenderData } from './CreateWorldRenderData';
-import { GetWorldPlugin } from './GetWorldPlugin';
 import { HasDirtyChildren } from './HasDirtyChildren';
 import { MergeRenderData } from './MergeRenderData';
 import { ResetWorldRenderData } from './ResetWorldRenderData';
@@ -19,7 +18,6 @@ export {
     CalculateTotalRenderable,
     CreateWorldRenderData,
     Events,
-    GetWorldPlugin,
     HasDirtyChildren,
     MergeRenderData,
     ResetWorldRenderData,
