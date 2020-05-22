@@ -92,6 +92,8 @@ export class Game extends EventEmitter
             if (this.willUpdate)
             {
                 this.sceneManager.update(delta, time);
+
+                Emit(this, 'update', delta, time);
             }
 
             if (this.willRender)
