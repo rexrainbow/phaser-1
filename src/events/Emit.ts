@@ -2,7 +2,7 @@ import { IEventEmitter } from './IEventEmitter';
 
 export function Emit (emitter: IEventEmitter, event: string, ...args: unknown[]): boolean
 {
-    if (!emitter.events.has(event))
+    if (emitter.events.size === 0 || !emitter.events.has(event))
     {
         return false;
     }
