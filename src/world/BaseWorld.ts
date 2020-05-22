@@ -2,7 +2,6 @@ import * as WorldEvents from './events';
 
 import { Emit, Off, On, Once } from '../events';
 
-import { AddWorldPlugin } from './AddWorldPlugin';
 import { BuildRenderList } from './BuildRenderList';
 import { GameObject } from '../gameobjects';
 import { IBaseCamera } from '../camera/IBaseCamera';
@@ -11,12 +10,10 @@ import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
-import { IWorldPluginConstructor } from './IWorldPluginConstructor';
 import { IWorldRenderData } from './IWorldRenderData';
 import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren } from '../display';
 import { ResetWorldRenderData } from './ResetWorldRenderData';
-import { WorldPluginType } from './WorldPluginType';
 
 export class BaseWorld extends GameObject implements IBaseWorld
 {
@@ -25,15 +22,13 @@ export class BaseWorld extends GameObject implements IBaseWorld
     camera: IBaseCamera;
     renderData: IWorldRenderData;
     forceRefresh: boolean = false;
-
-    plugins: Map<string, WorldPluginType>;
     events: Map<string, Set<IEventInstance>>;
 
     private _updateListener: IEventInstance;
     private _renderListener: IEventInstance;
     private _shutdownListener: IEventInstance;
 
-    constructor (scene: IScene, plugins?: IWorldPluginConstructor[])
+    constructor (scene: IScene)
     {
         super();
 
@@ -41,18 +36,12 @@ export class BaseWorld extends GameObject implements IBaseWorld
         this.scene = scene;
         this.world = this;
 
-        this.plugins = new Map();
         this.events = new Map();
 
         this._updateListener = On(scene, 'update', (delta: number, time: number) => this.update(delta, time));
         this._renderListener = On(scene, 'render', (renderData: ISceneRenderData) => this.render(renderData));
         this._shutdownListener = On(scene, 'shutdown', () => this.shutdown());
         Once(scene, 'destroy', () => this.destroy());
-
-        if (plugins)
-        {
-            AddWorldPlugin(this, ...plugins);
-        }
     }
 
     update (delta: number, time: number): void
@@ -64,22 +53,12 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
         Emit(this, WorldEvents.WorldUpdateEvent, delta, time, this);
 
-        this.plugins.forEach(plugin =>
-        {
-            plugin.update(delta, time);
-        });
-
         super.update(delta, time);
     }
 
     postUpdate (delta: number, time: number): void
     {
         Emit(this, WorldEvents.WorldPostUpdateEvent, delta, time, this);
-
-        this.plugins.forEach(plugin =>
-        {
-            plugin.postUpdate(delta, time);
-        });
     }
 
     render (sceneRenderData: ISceneRenderData): void
@@ -96,11 +75,6 @@ export class BaseWorld extends GameObject implements IBaseWorld
         BuildRenderList(this);
 
         Emit(this, WorldEvents.WorldRenderEvent, renderData, this);
-
-        this.plugins.forEach(plugin =>
-        {
-            plugin.render(renderData);
-        });
 
         MergeRenderData(sceneRenderData, renderData);
 
@@ -126,11 +100,6 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
         Emit(this, WorldEvents.WorldShutdownEvent, this);
 
-        this.plugins.forEach(plugin =>
-        {
-            plugin.shutdown();
-        });
-
         ResetWorldRenderData(this.renderData, 0);
 
         if (this.camera)
@@ -143,14 +112,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
     {
         super.destroy(reparentChildren);
 
-        const plugins = this.plugins;
-
         Emit(this, WorldEvents.WorldDestroyEvent, this);
-
-        plugins.forEach(plugin =>
-        {
-            plugin.destroy();
-        });
 
         ResetWorldRenderData(this.renderData, 0);
 
@@ -159,7 +121,6 @@ export class BaseWorld extends GameObject implements IBaseWorld
             this.camera.destroy();
         }
 
-        plugins.clear();
         this.events.clear();
 
         this.camera = null;
