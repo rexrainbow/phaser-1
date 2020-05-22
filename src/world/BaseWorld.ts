@@ -1,3 +1,4 @@
+import * as GameObjectEvents from '../gameobjects/events';
 import * as WorldEvents from './events';
 
 import { Emit, Off, On, Once } from '../events';
@@ -51,14 +52,14 @@ export class BaseWorld extends GameObject implements IBaseWorld
             return;
         }
 
-        Emit(this, WorldEvents.WorldUpdateEvent, delta, time, this);
+        Emit(this, GameObjectEvents.UpdateEvent, delta, time, this);
 
         super.update(delta, time);
     }
 
     postUpdate (delta: number, time: number): void
     {
-        Emit(this, WorldEvents.WorldPostUpdateEvent, delta, time, this);
+        Emit(this, GameObjectEvents.PostUpdateEvent, delta, time, this);
     }
 
     render (sceneRenderData: ISceneRenderData): void
@@ -112,7 +113,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
     {
         super.destroy(reparentChildren);
 
-        Emit(this, WorldEvents.WorldDestroyEvent, this);
+        Emit(this, GameObjectEvents.DestroyEvent, this);
 
         ResetWorldRenderData(this.renderData, 0);
 

@@ -1,5 +1,4 @@
 import { IBaseCamera } from '../camera/IBaseCamera';
-import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
@@ -11,7 +10,6 @@ export interface IBaseWorld extends IGameObject
     camera: IBaseCamera;
     renderData: IWorldRenderData;
     forceRefresh: boolean;
-    events: Map<string, Set<IEventInstance>>;
     render (sceneRenderData: ISceneRenderData): void;
     shutdown (): void;
 }
