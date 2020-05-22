@@ -1,8 +1,6 @@
 import { BaseWorld } from './BaseWorld';
 import { CreateWorldRenderData } from './CreateWorldRenderData';
-import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
-import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IStaticCamera } from '../camera/IStaticCamera';
 import { IStaticWorld } from './IStaticWorld';
 import { IWorldPluginConstructor } from './IWorldPluginConstructor';

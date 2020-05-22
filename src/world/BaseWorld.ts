@@ -1,4 +1,6 @@
-import { Off, On, Once } from '../events';
+import * as WorldEvents from './events';
+
+import { Emit, Off, On, Once } from '../events';
 
 import { AddWorldPlugin } from './AddWorldPlugin';
 import { BuildRenderList } from './BuildRenderList';
@@ -60,6 +62,8 @@ export class BaseWorld extends GameObject implements IBaseWorld
             return;
         }
 
+        Emit(this, WorldEvents.WorldUpdateEvent, delta, time, this);
+
         this.plugins.forEach(plugin =>
         {
             plugin.update(delta, time);
@@ -70,6 +74,8 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
     postUpdate (delta: number, time: number): void
     {
+        Emit(this, WorldEvents.WorldPostUpdateEvent, delta, time, this);
+
         this.plugins.forEach(plugin =>
         {
             plugin.postUpdate(delta, time);
@@ -88,6 +94,8 @@ export class BaseWorld extends GameObject implements IBaseWorld
         }
 
         BuildRenderList(this);
+
+        Emit(this, WorldEvents.WorldRenderEvent, renderData, this);
 
         this.plugins.forEach(plugin =>
         {
@@ -116,6 +124,8 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
         RemoveChildren(this);
 
+        Emit(this, WorldEvents.WorldShutdownEvent, this);
+
         this.plugins.forEach(plugin =>
         {
             plugin.shutdown();
@@ -135,6 +145,8 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
         const plugins = this.plugins;
 
+        Emit(this, WorldEvents.WorldDestroyEvent, this);
+
         plugins.forEach(plugin =>
         {
             plugin.destroy();
@@ -148,8 +160,10 @@ export class BaseWorld extends GameObject implements IBaseWorld
         }
 
         plugins.clear();
+        this.events.clear();
 
         this.camera = null;
         this.renderData = null;
+        this.events = null;
     }
 }
