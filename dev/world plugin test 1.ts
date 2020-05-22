@@ -2,7 +2,7 @@ import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../src/con
 import { Off, On } from '../src/events';
 
 import { AddChildren } from '../src/display';
-import { AddedToWorldEvent } from '../src/world/events';
+import { AddedToWorldEvent } from '../src/gameobjects/events/AddedToWorldEvent';
 import { Between } from '../src/math';
 import { Game } from '../src/Game';
 import { GetRandom } from '../src/utils/array/GetRandom';
@@ -15,11 +15,10 @@ import { Scene } from '../src/scenes/Scene';
 import { Sprite } from '../src/gameobjects';
 import { StaticWorld } from '../src/world/StaticWorld';
 import { UppercaseFirst } from '../src/utils/string/UppercaseFirst';
-import { WorldPlugin } from '../src/world/WorldPlugin';
 
-class DemoPlugin extends WorldPlugin
+class DemoPlugin
 {
-    static key: string = 'DemoPlugin';
+    world: IBaseWorld;
 
     syllables: string[];
 
@@ -27,7 +26,7 @@ class DemoPlugin extends WorldPlugin
 
     constructor (world: IBaseWorld)
     {
-        super(world);
+        this.world = world;
 
         this.syllables = [ 'fro', 'tir', 'nag', 'bli', 'mon', 'fay', 'shi', 'zag', 'blarg', 'rash', 'izen' ];
 
@@ -55,11 +54,6 @@ class DemoPlugin extends WorldPlugin
     {
         Off(this.world, AddedToWorldEvent, this._listener);
     }
-
-    static toString (): string
-    {
-        return DemoPlugin.key;
-    }
 }
 
 class Demo extends Scene
@@ -68,7 +62,9 @@ class Demo extends Scene
     {
         super();
 
-        const world = new StaticWorld(this, [ DemoPlugin ]);
+        const world = new StaticWorld(this);
+
+        const plugin = new DemoPlugin(world);
 
         const loader = new Loader();
 

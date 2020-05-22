@@ -4,14 +4,21 @@ import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 
 import { Game } from '../src/Game';
-import { GetWorldPlugin } from '../src/world';
-import { ITweenPlugin } from '../src/motion/tween/ITweenPlugin';
 import { ImageFile } from '../src/loader/files/ImageFile';
 import { Loader } from '../src/loader/Loader';
+import { NanoTween } from '../src/motion/tween/nano/NanoTween';
 import { Scene } from '../src/scenes/Scene';
 import { Sprite } from '../src/gameobjects';
 import { StaticWorld } from '../src/world/StaticWorld';
-import { TweenPlugin } from '../src/motion/tween/TweenPlugin';
+
+// import { ITweenPlugin } from '../src/motion/tween/ITweenPlugin';
+
+
+
+
+
+// import { TweenPlugin } from '../src/motion/tween/TweenPlugin';
+
 
 class Demo extends Scene
 {
@@ -19,7 +26,7 @@ class Demo extends Scene
     {
         super();
 
-        const world = new StaticWorld(this, [ TweenPlugin ]);
+        const world = new StaticWorld(this);
 
         const loader = new Loader();
 
@@ -36,19 +43,8 @@ class Demo extends Scene
             const logo = new Sprite(400, 100, 'logo').setRotation(0.5);
             const rocket = new Sprite(-200, 300, 'rocket');
 
-            //  Get our TweenPlugin *instance* from the World, casting it to TweenPlugin so we get full code-insight.
-            //  We mark the const as the interface, so only the important methods and properties are exposed.
-            const tweens: ITweenPlugin = GetWorldPlugin(world, TweenPlugin) as TweenPlugin;
-
-            tweens.add(logo).to(3, { y: 500, rotation: 0 }).easing(Easing.Bounce.Out).yoyo();
-
-            tweens.add(rocket).delay(2).to(1.5, { x: 800 }).easing(Easing.Quadratic.In);
-
-            // tweens.add([ logo, rocket ]).to(3, { y: 500, rotation: 0 }).easing(Easing.Bounce.Out);
-
-            //  tweens.to({ targets: logo, duration: 3, y: 500, rotation: 0, ease: Bounce.Out });
-
-            //  tweens.to(logo, { y: 500, rotation: 0, ease: Bounce.Out });
+            NanoTween(logo).to(3, { y: 500, rotation: 0 }).easing(Easing.Bounce.Out);
+            NanoTween(rocket).delay(2).to(1.5, { x: 800 }).easing(Easing.Quadratic.In);
 
             AddChildren(world, logo, rocket);
 
