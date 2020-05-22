@@ -1,11 +1,12 @@
 import { IBaseWorld } from '../../world/IBaseWorld';
 import { ITweenPlugin } from './ITweenPlugin';
+import { On } from '../../events/On';
 import { Tween } from './Tween';
-import { WorldPlugin } from '../../world/WorldPlugin';
+import { UpdateEvent } from '../../gameobjects/events/UpdateEvent';
 
-export class TweenPlugin extends WorldPlugin implements ITweenPlugin
+export class TweenPlugin implements ITweenPlugin
 {
-    static key: string = 'TweenPlugin';
+    world: IBaseWorld;
 
     private tweens: Set<Tween> = new Set();
     private paused: boolean = false;
@@ -14,7 +15,9 @@ export class TweenPlugin extends WorldPlugin implements ITweenPlugin
 
     constructor (world: IBaseWorld)
     {
-        super(world);
+        this.world = world;
+
+        On(world, UpdateEvent, (delta: number) => this.update(delta));
     }
 
     add (target: {}, autoStart: boolean = true): Tween
@@ -80,11 +83,6 @@ export class TweenPlugin extends WorldPlugin implements ITweenPlugin
     resumeAllTweens (): void
     {
         this.paused = false;
-    }
-
-    static toString (): string
-    {
-        return TweenPlugin.key;
     }
 
     destroy (): void
