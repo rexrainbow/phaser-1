@@ -7,6 +7,43 @@ import { Linear } from '../../../math/easing/Linear';
 import { TweenProperty } from '../TweenProperty';
 import { UpdateEvent } from '../../../gameobjects/events';
 
+/*
+    Done
+    ----
+
+    Delay (influences start of playback)
+    Repeat Counter (number of times to repeat full tween cycle)
+    Repeat Delay (how long before repeat starts)
+    Yoyo (repeat tween in reverse back to starting values)
+    Hold Delay (how long before a yoyo should start)
+    AutoStart (tween will begin automatically, or wait for 'start' to be called)
+    Restart (reset tween to beginning at any point during playback)
+    Easing (set ease function to use)
+    From and To flow
+    Value modifiers via strings, i.e. '-200' or '+0.5'
+    All durations now given in ms
+
+    Todo
+    ----
+
+    Bezier values
+    Callbacks based on tween state
+    Overall duration (based on delay + repeat, hold, etc)
+    Overall progress (based on an overall elapsed / overall duration)
+    Tween.stop (plus option to jump to end values, or end at current)
+    GetEase function (for eases that provide input values, like Elastic)
+
+    Todo - but maybe not Nano features?
+    -----------------------------------
+
+    Config object instead of methods?
+    Allow multiple targets?
+    Allow for infinite repeats?
+    Tween.seek
+    Short Rotate to
+    Scale via a single property instead of scaleX & scaleY
+*/
+
 type TweenState = {
     running: boolean;
     repeat: boolean;
