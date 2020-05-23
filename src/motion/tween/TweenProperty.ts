@@ -3,49 +3,64 @@ export class TweenProperty
     name: string;
     start: number;
     end: number;
-    current: number;
+    modifier: string;
 
-    constructor (name: string, end: number)
+    constructor (name: string, end: number | string)
     {
         this.name = name;
-        this.end = end;
-    }
 
-    init (target: {}, reversed: boolean): void
-    {
-        const name = this.name;
-        const property = target[ name ];
-
-        if (reversed)
+        if (typeof end === 'string')
         {
-            this.start = this.end;
-            this.end = property;
-
-            target[ name ] = this.start;
+            this.modifier = end.substr(0, 1);
+            this.end = parseFloat(end.substring(1));
         }
         else
         {
-            this.start = property;
+            this.end = end;
         }
-
-        this.current = this.start;
     }
 
-    reverse (): void
+    getEnd (start: number): number
     {
-        const start = this.start;
+        const modifier = this.modifier;
+        const end = this.end;
 
-        this.start = this.end;
+        if (modifier === '+')
+        {
+            return start + end;
+        }
+        else if (modifier === '-')
+        {
+            return start - end;
+        }
+        else
+        {
+            return end;
+        }
+    }
 
-        this.end = start;
+    to (target: {}): void
+    {
+        const current = target[ this.name ];
+        const end = this.getEnd(current);
+
+        this.start = current;
+        this.end = end;
+    }
+
+    from (target: {}): void
+    {
+        const current = target[ this.name ];
+        const end = this.getEnd(current);
+
+        this.start = end;
+        this.end = current;
+
+        target[ this.name ] = end;
     }
 
     update (target: {}, v: number): void
     {
-        const current = this.start + ((this.end - this.start) * v);
-
-        this.current = current;
-
-        target[ this.name ] = current;
+        target[ this.name ] = this.start + ((this.end - this.start) * v);
     }
 }
