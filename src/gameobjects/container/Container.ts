@@ -13,7 +13,7 @@ export class Container extends GameObject implements IContainer
         this.type = 'Container';
     }
 
-    setSize (width: number, height: number): this
+    setSize (width: number, height: number = width): this
     {
         this.transform.updateExtent(width, height);
 
@@ -27,21 +27,21 @@ export class Container extends GameObject implements IContainer
         return this;
     }
 
-    setOrigin (x: number, y: number): this
+    setOrigin (x: number, y: number = x): this
     {
         this.transform.origin.set(x, y);
 
         return this;
     }
 
-    setSkew (x: number, y: number): this
+    setSkew (x: number, y: number = x): this
     {
         this.transform.skew.set(x, y);
 
         return this;
     }
 
-    setScale (x: number, y: number): this
+    setScale (x: number, y: number = x): this
     {
         this.transform.scale.set(x, y);
 

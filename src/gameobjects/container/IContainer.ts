@@ -15,10 +15,10 @@ export interface IContainer extends IGameObject
     originY: number;
     alpha: number;
     // setAlpha (value?: number): this;
-    setSize (width: number, height: number): this;
+    setSize (width: number, height?: number): this;
     setPosition (x: number, y: number): this;
-    setOrigin (x: number, y: number): this;
-    setSkew (x: number, y: number): this;
-    setScale (x: number, y: number): this;
+    setOrigin (x: number, y?: number): this;
+    setSkew (x: number, y?: number): this;
+    setScale (x: number, y?: number): this;
     setRotation (value: number): this;
 }
