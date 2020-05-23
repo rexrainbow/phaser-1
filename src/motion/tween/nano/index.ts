@@ -1,7 +1,7 @@
+import { AddTween } from './AddTween';
 import { NanoTween } from './NanoTween';
-import { NanoTweenHandler } from './NanoTweenHandler';
 
 export {
-    NanoTween,
-    NanoTweenHandler
+    AddTween,
+    NanoTween
 };
