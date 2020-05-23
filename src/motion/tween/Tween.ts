@@ -74,7 +74,7 @@ export class Tween
 
         properties.forEach(property =>
         {
-            property.init(target, this.reversed);
+            // property.init(target, this.reversed);
         });
 
         this._delayElapsed = this._delay;
@@ -126,7 +126,7 @@ export class Tween
                 {
                     properties.forEach(property =>
                     {
-                        property.reverse();
+                        // property.reverse();
                     });
 
                     this.elapsed = 0;
