@@ -29,6 +29,10 @@
         "src/**/*"
     ],
     "exclude": [
-        "src/stats/"
+        "src/stats/",
+        "src/motion/tween/index.ts",
+        "src/motion/tween/Tween.ts",
+        "src/motion/tween/TweenPlugin.ts",
+        "src/motion/tween/ITweenPlugin.ts"
     ]
 }
