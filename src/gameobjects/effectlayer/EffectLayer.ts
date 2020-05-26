@@ -20,7 +20,7 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
         this.type = 'EffectLayer';
     }
 
-    postRender <T extends IWebGLRenderer> (renderer: T): void
+    postRenderGL <T extends IWebGLRenderer> (renderer: T): void
     {
         const shaders = this.shaders;
         const texture = this.texture;
