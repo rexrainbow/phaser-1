@@ -27,7 +27,7 @@ class Demo extends Scene
         loader.add(ImageFile('star', 'star.png'));
         loader.add(ImageFile('bubble', 'bubble256.png'));
 
-        loader.start(() => this.create());
+        loader.start().then(() => this.create());
     }
 
     create ()

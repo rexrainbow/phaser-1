@@ -30,9 +30,9 @@
 
 // import runTest from './tween 1';
 
-import runTest from './tween 2';
+// import runTest from './tween 2';
 
-// import runTest from './render layer 1';
+import runTest from './render layer 1';
 
 // import runTest from './sprite image';
 
