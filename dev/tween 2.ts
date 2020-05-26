@@ -1,7 +1,7 @@
 import * as Easing from '../src/math/easing';
 
 import { AddChild, AddChildren } from '../src/display';
-import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
+import { BackgroundColor, CanvasRenderer, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
 
 import { AddTween } from '../src/motion/tween/nano/AddTween';
 import { Game } from '../src/Game';
@@ -12,13 +12,7 @@ import { Sprite } from '../src/gameobjects';
 import { StaticWorld } from '../src/world/StaticWorld';
 
 // import { ITweenPlugin } from '../src/motion/tween/ITweenPlugin';
-
-
-
-
-
 // import { TweenPlugin } from '../src/motion/tween/TweenPlugin';
-
 
 class Demo extends Scene
 {
@@ -47,7 +41,7 @@ class Demo extends Scene
             // AddTween(logo).to(3, { y: 500, rotation: 0 }).easing(Easing.Bounce.Out).repeat(1);
             // AddTween(rocket).delay(2).to(1.5, { x: 800 }).easing(Easing.Quadratic.In);
 
-            AddTween(bubble).to(2000, { y: '-300' }).easing(Easing.Bounce.Out).repeat(2).yoyo();
+            // AddTween(bubble).to(2000, { y: '-300' }).easing(Easing.Bounce.Out).repeat(2).yoyo();
 
             // AddTween(bubble).to(2, { y: 600 }).yoyo().easing(Easing.Bounce.Out).hold(2);
 
@@ -68,7 +62,7 @@ class Demo extends Scene
 export default function (): void
 {
     new Game(
-        WebGLRenderer(),
+        CanvasRenderer(),
         Size(800, 600),
         Parent('gameParent'),
         BackgroundColor(0x2d2d2d),
