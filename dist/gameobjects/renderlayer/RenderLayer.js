@@ -71,11 +71,11 @@ class RenderLayer extends Layer {
             }
             else {
                 renderer.fbo.add(this.framebuffer, false);
-                this.postRender(renderer);
+                this.postRenderGL(renderer);
             }
         }
     }
-    postRender(renderer) {
+    postRenderGL(renderer) {
         const texture = this.texture;
         renderer.flush();
         renderer.fbo.pop();

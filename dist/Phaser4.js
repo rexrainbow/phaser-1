@@ -2781,7 +2781,7 @@
         pop() {
             this.stack.pop();
             const len = this.stack.length;
-            if (len > 1) {
+            if (len > 0) {
                 const entry = this.stack[len - 1];
                 this.set(entry.framebuffer, false, entry.width, entry.height);
             }
@@ -3614,11 +3614,11 @@ void main (void)
                 }
                 else {
                     renderer.fbo.add(this.framebuffer, false);
-                    this.postRender(renderer);
+                    this.postRenderGL(renderer);
                 }
             }
         }
-        postRender(renderer) {
+        postRenderGL(renderer) {
             const texture = this.texture;
             renderer.flush();
             renderer.fbo.pop();

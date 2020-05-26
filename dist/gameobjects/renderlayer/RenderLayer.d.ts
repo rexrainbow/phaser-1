@@ -7,6 +7,6 @@ export declare class RenderLayer extends Layer implements IRenderLayer {
     framebuffer: WebGLFramebuffer;
     constructor();
     renderGL<T extends IWebGLRenderer>(renderer: T): void;
-    postRender<T extends IWebGLRenderer>(renderer: T): void;
+    postRenderGL<T extends IWebGLRenderer>(renderer: T): void;
 }
 //# sourceMappingURL=RenderLayer.d.ts.map
