@@ -1,6 +1,6 @@
-import '../circle/Contains.js';
 import '../../math/vec2/Vec2.js';
 import '../line/Line.js';
+import '../circle/Contains.js';
 import './LineToCircle.js';
 import { GetLineToCircle } from './GetLineToCircle.js';
 import { GetEdges } from '../triangle/GetEdges.js';

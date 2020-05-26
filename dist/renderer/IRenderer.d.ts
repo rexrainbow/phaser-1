@@ -4,6 +4,13 @@ export interface IRenderer {
     width: number;
     height: number;
     resolution: number;
+    clearBeforeRender: boolean;
+    optimizeRedraw: boolean;
+    autoResize: boolean;
+    initContext(): void;
+    resize(width: number, height: number, resolution?: number): void;
+    setBackgroundColor(color: number): this;
     render(renderData: ISceneRenderData): void;
+    destroy(): void;
 }
 //# sourceMappingURL=IRenderer.d.ts.map

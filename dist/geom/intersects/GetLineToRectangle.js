@@ -1,6 +1,6 @@
 import { Vec2 } from '../../math/vec2/Vec2.js';
 import '../line/Line.js';
-import { G as GetEdges } from '../../GetEdges-95a2b4b0.js';
+import { GetEdges } from '../rectangle/GetEdges.js';
 import { LineToLine } from './LineToLine.js';
 import { LineToRectangle } from './LineToRectangle.js';
 

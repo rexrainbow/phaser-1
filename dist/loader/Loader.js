@@ -25,24 +25,26 @@ class Loader extends EventEmitter {
         });
         return this;
     }
-    start(onComplete) {
+    start() {
         if (this.isLoading) {
-            return this;
+            return null;
         }
-        this.completed.clear();
-        this.progress = 0;
-        if (this.queue.size > 0) {
-            this.isLoading = true;
-            this.onComplete = onComplete;
-            Emit(this, 'start');
-            this.nextFile();
-        }
-        else {
-            this.progress = 1;
-            Emit(this, 'complete');
-            onComplete();
-        }
-        return this;
+        return new Promise((resolve, reject) => {
+            this.completed.clear();
+            this.progress = 0;
+            if (this.queue.size > 0) {
+                this.isLoading = true;
+                this.onComplete = resolve;
+                this.onError = reject;
+                Emit(this, 'start');
+                this.nextFile();
+            }
+            else {
+                this.progress = 1;
+                Emit(this, 'complete');
+                resolve();
+            }
+        });
     }
     nextFile() {
         let limit = this.queue.size;
@@ -55,7 +57,9 @@ class Loader extends EventEmitter {
                 const file = iterator.next().value;
                 this.inflight.add(file);
                 this.queue.delete(file);
-                file.load().then((file) => this.fileComplete(file)).catch((file) => this.fileError(file));
+                file.load()
+                    .then((file) => this.fileComplete(file))
+                    .catch((file) => this.fileError(file));
                 limit--;
             }
         }
@@ -64,6 +68,9 @@ class Loader extends EventEmitter {
         }
     }
     stop() {
+        if (!this.isLoading) {
+            return;
+        }
         this.isLoading = false;
         Emit(this, 'complete', this.completed);
         this.onComplete();

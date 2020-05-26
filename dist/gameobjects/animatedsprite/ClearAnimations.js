@@ -1,7 +1,8 @@
-function ClearAnimations(...sprite) {
-    sprite.forEach(entity => {
-        entity.anims.clear();
+function ClearAnimations(...sprites) {
+    sprites.forEach(sprite => {
+        sprite.anims.clear();
     });
+    return sprites;
 }
 
 export { ClearAnimations };

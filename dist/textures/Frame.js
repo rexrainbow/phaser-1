@@ -34,6 +34,51 @@ class Frame {
         this.spriteSourceSizeWidth = w;
         this.spriteSourceSizeHeight = h;
     }
+    getExtent(originX, originY) {
+        const sourceSizeWidth = this.sourceSizeWidth;
+        const sourceSizeHeight = this.sourceSizeHeight;
+        let left;
+        let right;
+        let top;
+        let bottom;
+        if (this.trimmed) {
+            left = this.spriteSourceSizeX - (originX * sourceSizeWidth);
+            right = left + this.spriteSourceSizeWidth;
+            top = this.spriteSourceSizeY - (originY * sourceSizeHeight);
+            bottom = top + this.spriteSourceSizeHeight;
+        }
+        else {
+            left = -originX * sourceSizeWidth;
+            right = left + sourceSizeWidth;
+            top = -originY * sourceSizeHeight;
+            bottom = top + sourceSizeHeight;
+        }
+        return { left, right, top, bottom };
+    }
+    setExtent(child) {
+        const transform = child.transform;
+        const originX = transform.origin.x;
+        const originY = transform.origin.y;
+        const sourceSizeWidth = this.sourceSizeWidth;
+        const sourceSizeHeight = this.sourceSizeHeight;
+        let x;
+        let y;
+        let width;
+        let height;
+        if (this.trimmed) {
+            x = this.spriteSourceSizeX - (originX * sourceSizeWidth);
+            y = this.spriteSourceSizeY - (originY * sourceSizeHeight);
+            width = this.spriteSourceSizeWidth;
+            height = this.spriteSourceSizeHeight;
+        }
+        else {
+            x = -originX * sourceSizeWidth;
+            y = -originY * sourceSizeHeight;
+            width = sourceSizeWidth;
+            height = sourceSizeHeight;
+        }
+        transform.setExtent(x, y, width, height);
+    }
     updateUVs() {
         const { x, y, width, height } = this;
         const baseTextureWidth = this.texture.width;

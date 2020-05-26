@@ -37,7 +37,7 @@ function SpriteSheetParser(texture, x, y, width, height, frameConfig) {
         if (h > height) {
             ay = h - height;
         }
-        texture.add(i, x + fx, y + fy, frameWidth - ax, frameHeight - ay);
+        texture.addFrame(i, x + fx, y + fy, frameWidth - ax, frameHeight - ay);
         fx += frameWidth + spacing;
         if (fx + frameWidth > width) {
             fx = margin;

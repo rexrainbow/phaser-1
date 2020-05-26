@@ -30,4 +30,3 @@ export { RotateAroundPoint } from './RotateAroundPoint.js';
 export { SetToAngle } from './SetToAngle.js';
 export { Slope } from './Slope.js';
 export { Width } from './Width.js';
-import '../../index-dd8c68bf.js';

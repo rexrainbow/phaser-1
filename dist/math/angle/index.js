@@ -11,4 +11,3 @@ export { ShortestAngleBetween } from './ShortestAngleBetween.js';
 import '../Wrap.js';
 export { WrapAngle } from './WrapAngle.js';
 export { WrapAngleDegrees } from './WrapAngleDegrees.js';
-import '../../index-80f9ca38.js';

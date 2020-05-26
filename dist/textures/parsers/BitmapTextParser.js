@@ -31,7 +31,7 @@ function BitmapTextParser(texture, xml, frame) {
                 xAdvance: GetValue(node, 'xadvance') + xSpacing,
                 kerning: {}
             };
-        texture.add(charCode, x, y, width, height);
+        texture.addFrame(charCode, x, y, width, height);
     }
     const kernings = xml.getElementsByTagName('kerning');
     for (let i = 0; i < kernings.length; i++) {

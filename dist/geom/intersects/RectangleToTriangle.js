@@ -1,12 +1,12 @@
 import { Contains } from '../rectangle/Contains.js';
 import '../../math/vec2/Vec2.js';
+import { Decompose } from '../rectangle/Decompose.js';
 import '../line/Line.js';
-import { G as GetEdges$1 } from '../../GetEdges-95a2b4b0.js';
+import { GetEdges as GetEdges$1 } from '../rectangle/GetEdges.js';
 import { LineToLine } from './LineToLine.js';
 import { GetEdges } from '../triangle/GetEdges.js';
 import '../triangle/Contains.js';
 import { ContainsArray } from '../triangle/ContainsArray.js';
-import { Decompose } from '../rectangle/Decompose.js';
 
 function RectangleToTriangle(rect, triangle) {
     if (triangle.left > rect.right ||

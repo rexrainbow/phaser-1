@@ -1,5 +1,5 @@
 function Emit(emitter, event, ...args) {
-    if (!emitter.events.has(event)) {
+    if (emitter.events.size === 0 || !emitter.events.has(event)) {
         return false;
     }
     const listeners = emitter.events.get(event);

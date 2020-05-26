@@ -1,5 +1,13 @@
 import '../../../math/matrix2d/Matrix2D.js';
+import '../../../geom/rectangle/Contains.js';
+import '../../../geom/rectangle/Rectangle.js';
+import '../../../utils/NOOP.js';
+import '../../../math/vec2/Vec2Callback.js';
+import '../../../config/DefaultOrigin.js';
+import '../../DIRTY_CONST.js';
+export { GetVertices } from './GetVertices.js';
+import '../../../math/vec2/Vec2.js';
+export { UpdateLocalTransform } from './UpdateLocalTransform.js';
 import '../../../math/matrix2d/Copy.js';
 export { UpdateWorldTransform } from './UpdateWorldTransform.js';
-export { UpdateLocalTransform } from './UpdateLocalTransform.js';
 export { TransformComponent } from './TransformComponent.js';

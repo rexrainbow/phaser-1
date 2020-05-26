@@ -1,1 +1,1 @@
-{"version":3,"file":"AddTimer.d.ts","sourceRoot":"","sources":["../src/time/AddTimer.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,qBAAqB,CAAC;AACxD,OAAO,EAAE,MAAM,EAAE,MAAM,iBAAiB,CAAC;AAGzC,wBAAgB,QAAQ,CAAE,KAAK,EAAE,MAAM,EAAE,MAAM,EAAE,iBAAiB,GAAG,IAAI,CA2ExE"}
+{"version":3,"file":"AddTimer.d.ts","sourceRoot":"","sources":["../src/time/AddTimer.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,EAAE,MAAM,SAAS,CAAC;AAEhC,OAAO,EAAE,iBAAiB,EAAE,MAAM,qBAAqB,CAAC;AAGxD,wBAAgB,QAAQ,CAAE,KAAK,EAAE,KAAK,EAAE,MAAM,EAAE,iBAAiB,GAAG,IAAI,CA2EvE"}

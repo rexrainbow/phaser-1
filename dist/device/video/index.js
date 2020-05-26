@@ -5,4 +5,3 @@ export { CanPlayOGGVideo } from './CanPlayOGGVideo.js';
 export { CanPlayVP9Video } from './CanPlayVP9Video.js';
 export { CanPlayWebMVideo } from './CanPlayWebMVideo.js';
 export { GetVideo } from './GetVideo.js';
-import '../../index-ee6bd33e.js';

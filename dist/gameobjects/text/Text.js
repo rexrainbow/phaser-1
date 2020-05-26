@@ -1,35 +1,46 @@
 import { GameInstance } from '../../GameInstance.js';
-import '../../renderer/webgl1/GL.js';
-import '../../textures/CreateCanvas.js';
-import '../../math/pow2/IsSizePowerOfTwo.js';
-import { CreateGLTexture } from '../../renderer/webgl1/CreateGLTexture.js';
-import '../../renderer/webgl1/DeleteFramebuffer.js';
-import '../../renderer/webgl1/DeleteGLTexture.js';
-import '../../textures/Frame.js';
-import '../../renderer/webgl1/SetGLTextureFilterMode.js';
-import '../../renderer/webgl1/UpdateGLTexture.js';
-import '../../textures/Texture.js';
-import '../../textures/TextureManagerInstance.js';
 import '../../math/matrix2d/Matrix2D.js';
 import '../../geom/rectangle/Contains.js';
 import '../../geom/rectangle/Rectangle.js';
-import '../GetChildIndex.js';
-import '../RemoveChild.js';
-import '../SetParent.js';
+import '../../utils/NOOP.js';
+import '../../math/vec2/Vec2Callback.js';
+import '../../renderer/BindingQueue.js';
+import '../../config/DefaultOrigin.js';
+import '../../textures/Frame.js';
+import '../../textures/Texture.js';
+import '../../display/DepthFirstSearch.js';
+import '../../display/GetChildIndex.js';
+import '../../display/RemoveChildAt.js';
+import '../../display/RemoveChild.js';
+import '../events/AddedToWorldEvent.js';
+import '../events/DestroyEvent.js';
+import '../events/RemovedFromWorldEvent.js';
+import '../../events/Emit.js';
+import '../../display/SetWorld.js';
+import '../../display/SetParent.js';
+import { DIRTY_CONST } from '../DIRTY_CONST.js';
+import '../../display/RemoveChildrenBetween.js';
+import '../../display/DestroyChildren.js';
+import '../../display/ReparentChildren.js';
+import '../../textures/CreateCanvas.js';
+import '../../textures/TextureManagerInstance.js';
+import '../../renderer/webgl1/draw/BatchTexturedQuad.js';
+import '../components/transform/GetVertices.js';
+import '../components/bounds/BoundsComponent.js';
+import '../components/input/InputComponent.js';
+import '../../math/vec2/Vec2.js';
+import '../components/transform/UpdateLocalTransform.js';
 import '../../math/matrix2d/Copy.js';
 import '../components/transform/UpdateWorldTransform.js';
-import '../RemoveChildrenBetween.js';
-import '../DestroyChildren.js';
-import '../components/bounds/BoundsComponent.js';
-import '../components/dirty/DirtyComponent.js';
-import '../components/input/InputComponent.js';
-import '../components/transform/UpdateLocalTransform.js';
 import '../components/transform/TransformComponent.js';
-import '../ReparentChildren.js';
 import '../GameObject.js';
 import '../container/Container.js';
+import '../../renderer/canvas/draw/DrawTexturedQuad.js';
+import '../../renderer/webgl1/colors/PackColor.js';
+import '../../renderer/webgl1/colors/PackColors.js';
 import '../sprite/SetFrame.js';
 import '../sprite/SetTexture.js';
+import '../sprite/UpdateVertices.js';
 import { Sprite } from '../sprite/Sprite.js';
 import { CanvasTexture } from '../../textures/types/CanvasTexture.js';
 
@@ -55,7 +66,6 @@ class Text extends Sprite {
         this.resolution = game.renderer.resolution;
         this.canvas = this.texture.image;
         this.context = this.canvas.getContext('2d');
-        this.texture.glTexture = CreateGLTexture(this.canvas, 32, 32, false, this.antialias);
         if (font) {
             this.font = font;
         }
@@ -139,7 +149,7 @@ class Text extends Sprite {
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
             this.texture.setSize(displayWidth, displayHeight);
-            this.transform.setSize(displayWidth, displayHeight);
+            this.setSize(displayWidth, displayHeight);
         }
         ctx.save();
         ctx.scale(resolution, resolution);
@@ -181,8 +191,10 @@ class Text extends Sprite {
             }
         }
         ctx.restore();
-        this.texture.updateGL();
-        this.dirty.setRender();
+        if (this.texture.binding) {
+            this.texture.binding.update();
+        }
+        this.setDirty(DIRTY_CONST.TEXTURE);
         return this;
     }
     get text() {

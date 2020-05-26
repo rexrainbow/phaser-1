@@ -1,12 +1,12 @@
+import '../../cache/Cache.js';
 import '../../dom/ParseXML.js';
 import { TextureManagerInstance } from '../../textures/TextureManagerInstance.js';
-import '../../cache/Cache.js';
 import { BitmapTextParser } from '../../textures/parsers/BitmapTextParser.js';
 import { File } from '../File.js';
 import { GetURL } from '../GetURL.js';
 import '../ImageTagLoader.js';
-import '../XHRLoader.js';
 import { ImageFile } from './ImageFile.js';
+import '../XHRLoader.js';
 import { XMLFile } from './XMLFile.js';
 
 function BitmapTextFile(key, textureURL, fontDataURL) {

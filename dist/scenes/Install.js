@@ -10,7 +10,7 @@ function Install(scene, config = {}) {
         scene.key = config;
     }
     else if (config || (!config && firstScene)) {
-        scene.key = GetConfigValue(config, 'key', 'scene' + sceneIndex);
+        scene.key = GetConfigValue(config, 'key', 'scene' + sceneIndex.toString());
     }
     if (sceneManager.scenes.has(scene.key)) {
         console.warn('Scene key already in use: ' + scene.key);

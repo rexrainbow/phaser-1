@@ -1,5 +1,5 @@
-export { ClearEvent } from './ClearEvent.js';
 export { Emit } from './Emit.js';
+export { ClearEvent } from './ClearEvent.js';
 export { EventEmitter } from './EventEmitter.js';
 export { EventInstance } from './EventInstance.js';
 export { GetEventNames } from './GetEventNames.js';
@@ -9,4 +9,3 @@ export { Off } from './Off.js';
 export { On } from './On.js';
 export { Once } from './Once.js';
 export { RemoveAllListeners } from './RemoveAllListeners.js';
-import '../index-35a3c818.js';

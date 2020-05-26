@@ -12,7 +12,7 @@ function On(emitter, event, callback, context = emitter, once = false) {
     else {
         listeners.add(listener);
     }
-    return emitter;
+    return listener;
 }
 
 export { On };

@@ -1,7 +1,7 @@
-export { ExactEquals } from './ExactEquals.js';
 import '../matrix2d/Matrix2D.js';
-export { Add } from './Add.js';
+export { ExactEquals } from './ExactEquals.js';
 export { Append } from './Append.js';
+export { Add } from './Add.js';
 export { Clone } from './Clone.js';
 export { Equals } from './Equals.js';
 export { Rotate } from './Rotate.js';
@@ -17,4 +17,3 @@ export { MultiplyScalar } from './MultiplyScalar.js';
 export { MultiplyScalarAndAdd } from './MultiplyScalarAndAdd.js';
 export { Subtract } from './Subtract.js';
 export { Zero } from './Zero.js';
-import '../../index-ae18d254.js';

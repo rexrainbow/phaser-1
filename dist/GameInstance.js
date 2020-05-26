@@ -1,5 +1,6 @@
 let instance;
 let frame = 0;
+let elapsed = 0;
 const GameInstance = {
     get: () => {
         return instance;
@@ -12,7 +13,13 @@ const GameInstance = {
     },
     setFrame: (current) => {
         frame = current;
+    },
+    getElapsed: () => {
+        return elapsed;
+    },
+    setElapsed: (current) => {
+        elapsed = current;
     }
 };
 
-export { GameInstance };
+export { GameInstance, elapsed, frame, instance };

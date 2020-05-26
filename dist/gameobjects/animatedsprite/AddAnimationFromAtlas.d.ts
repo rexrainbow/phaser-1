@@ -7,5 +7,5 @@ export declare type AtlasFrameConfig = {
     zeroPad?: number;
     suffix?: string;
 };
-export declare function AddAnimationFromAtlas(config: AtlasFrameConfig, ...sprite: IAnimatedSprite[]): void;
+export declare function AddAnimationFromAtlas<T extends IAnimatedSprite>(config: AtlasFrameConfig, ...sprites: T[]): T[];
 //# sourceMappingURL=AddAnimationFromAtlas.d.ts.map

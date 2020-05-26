@@ -1,11 +1,11 @@
-import { ISprite } from '../gameobjects/sprite/ISprite';
-import { IStaticCamera } from '../camera/IStaticCamera';
+import { IBaseCamera } from '../camera/IBaseCamera';
+import { SearchEntry } from '../display/DepthFirstSearchRecursiveNested';
 export interface IWorldRenderData {
-    camera: IStaticCamera;
+    camera: IBaseCamera;
     gameFrame: number;
     dirtyFrame: number;
     numRendered: number;
     numRenderable: number;
-    renderList: ISprite[];
+    renderList: SearchEntry[];
 }
 //# sourceMappingURL=IWorldRenderData.d.ts.map

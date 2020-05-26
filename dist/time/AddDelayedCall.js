@@ -1,8 +1,8 @@
 import './NOOP.js';
 import { AddTimer } from './AddTimer.js';
 
-function AddDelayedCall(world, delay, callback) {
-    AddTimer(world, {
+function AddDelayedCall(clock, delay, callback) {
+    AddTimer(clock, {
         duration: 0,
         delay,
         onComplete: callback

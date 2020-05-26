@@ -1,10 +1,10 @@
-import { RenderCanvas } from './RenderCanvas';
-import { RenderWebGL } from './RenderWebGL';
+import { SetAlpha } from './SetAlpha';
 import { SetFrame } from './SetFrame';
 import { SetQuadAlpha } from './SetQuadAlpha';
 import { SetQuadTint } from './SetQuadTint';
 import { SetTexture } from './SetTexture';
+import { SetTint } from './SetTint';
 import { Sprite } from './Sprite';
-import { UploadBuffers } from './UploadBuffers';
-export { RenderCanvas, RenderWebGL, SetFrame, SetQuadAlpha, SetQuadTint, SetTexture, Sprite, UploadBuffers };
+import { UpdateVertices } from './UpdateVertices';
+export { SetAlpha, SetFrame, SetQuadAlpha, SetQuadTint, SetTexture, SetTint, Sprite, UpdateVertices };
 //# sourceMappingURL=index.d.ts.map

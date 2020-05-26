@@ -9,6 +9,7 @@ export declare class Game extends EventEmitter {
     willUpdate: boolean;
     willRender: boolean;
     lastTick: number;
+    elapsed: number;
     frame: number;
     renderer: IRenderer;
     textureManager: TextureManager;

@@ -1,7 +1,8 @@
-function RemoveAnimation(key, ...sprite) {
-    sprite.forEach(entity => {
-        entity.anims.delete(key);
+function RemoveAnimation(key, ...sprites) {
+    sprites.forEach(sprite => {
+        sprite.anims.delete(key);
     });
+    return sprites;
 }
 
 export { RemoveAnimation };

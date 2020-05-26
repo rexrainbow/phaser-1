@@ -6,6 +6,8 @@ export declare class CanvasRenderer {
     width: number;
     height: number;
     resolution: number;
+    textureIndex: number[];
+    flushTotal: number;
     clearBeforeRender: boolean;
     optimizeRedraw: boolean;
     autoResize: boolean;
@@ -15,5 +17,6 @@ export declare class CanvasRenderer {
     setBackgroundColor(color: number): this;
     reset(): void;
     render(renderData: ISceneRenderData): void;
+    destroy(): void;
 }
 //# sourceMappingURL=CanvasRenderer.d.ts.map

@@ -1,11 +1,11 @@
-import { TextureManagerInstance } from '../../textures/TextureManagerInstance.js';
 import '../../cache/Cache.js';
+import { TextureManagerInstance } from '../../textures/TextureManagerInstance.js';
 import { AtlasParser } from '../../textures/parsers/AtlasParser.js';
 import { File } from '../File.js';
 import { GetURL } from '../GetURL.js';
 import '../ImageTagLoader.js';
-import '../XHRLoader.js';
 import { ImageFile } from './ImageFile.js';
+import '../XHRLoader.js';
 import { JSONFile } from './JSONFile.js';
 
 function AtlasFile(key, textureURL, atlasURL) {

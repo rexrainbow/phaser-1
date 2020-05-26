@@ -1,11 +1,11 @@
 class InputComponent {
-    constructor(parent) {
+    constructor(entity) {
         this.enabled = false;
         this.enabledChildren = true;
-        this.parent = parent;
+        this.entity = entity;
     }
     destroy() {
-        this.parent = null;
+        this.entity = null;
         this.hitArea = null;
     }
 }

@@ -4,4 +4,3 @@ export { CGA } from './CGA.js';
 export { JMP } from './JMP.js';
 export { MSX } from './MSX.js';
 export { PICO8 } from './PICO8.js';
-import '../../index-d8a55c55.js';

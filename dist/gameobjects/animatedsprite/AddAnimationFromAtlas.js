@@ -1,10 +1,13 @@
-function AddAnimationFromAtlas(config, ...sprite) {
-    const { key, prefix = '', start = 0, end, zeroPad = 0, suffix = '' } = config;
-    sprite.forEach(entity => {
-        if (!entity.anims.has(key)) {
-            entity.anims.set(key, entity.texture.getFramesInRange(prefix, start, end, zeroPad, suffix));
+import { GetFramesInRange } from '../../textures/GetFramesInRange.js';
+
+function AddAnimationFromAtlas(config, ...sprites) {
+    const key = config.key;
+    sprites.forEach(sprite => {
+        if (!sprite.anims.has(key)) {
+            sprite.anims.set(key, GetFramesInRange(sprite.texture, config));
         }
     });
+    return sprites;
 }
 
 export { AddAnimationFromAtlas };

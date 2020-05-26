@@ -1,7 +1,7 @@
 import { GetBackgroundColor } from '../../config/BackgroundColor.js';
 import { GetCanvasContext } from '../../config/CanvasContext.js';
 import { GetWidth, GetHeight, GetResolution } from '../../config/Size.js';
-import { RenderCanvas } from '../../gameobjects/sprite/RenderCanvas.js';
+import { BindingQueue } from '../BindingQueue.js';
 
 class CanvasRenderer {
     constructor() {
@@ -29,8 +29,8 @@ class CanvasRenderer {
         canvas.width = this.width;
         canvas.height = this.height;
         if (this.autoResize) {
-            canvas.style.width = this.width / resolution + 'px';
-            canvas.style.height = this.height / resolution + 'px';
+            canvas.style.width = (this.width / resolution).toString() + 'px';
+            canvas.style.height = (this.height / resolution).toString() + 'px';
         }
     }
     setBackgroundColor(color) {
@@ -48,6 +48,7 @@ class CanvasRenderer {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
     render(renderData) {
+        BindingQueue.clear();
         const ctx = this.ctx;
         if (this.optimizeRedraw && renderData.numDirtyFrames === 0 && renderData.numDirtyCameras === 0) {
             return;
@@ -63,10 +64,9 @@ class CanvasRenderer {
             const { camera, renderList, numRendered } = worlds[i];
             const { a, b, c, d, tx, ty } = camera.worldTransform;
             ctx.setTransform(a, b, c, d, tx, ty);
-            for (let s = 0; s < numRendered; s++) {
-                RenderCanvas(renderList[s], ctx);
-            }
         }
+    }
+    destroy() {
     }
 }
 

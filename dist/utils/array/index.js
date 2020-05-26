@@ -1,6 +1,5 @@
 import '../../math/RoundAwayFromZero.js';
-export { NumberArray } from './NumberArray.js';
-export { NumberArrayStep } from './NumberArrayStep.js';
+export { GetRandom } from './GetRandom.js';
 import './matrix/CheckMatrix.js';
 import './matrix/MatrixToString.js';
 import './matrix/ReverseColumns.js';
@@ -10,5 +9,6 @@ import './matrix/RotateMatrix.js';
 import './matrix/Rotate180.js';
 import './matrix/RotateLeft.js';
 import './matrix/RotateRight.js';
-export { i as Matrix } from '../../index-96e3636b.js';
-import '../../index-1cfb8493.js';
+export { i as Matrix } from '../../index-4db7de45.js';
+export { NumberArray } from './NumberArray.js';
+export { NumberArrayStep } from './NumberArrayStep.js';

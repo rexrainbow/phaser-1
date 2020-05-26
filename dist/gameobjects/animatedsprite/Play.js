@@ -1,21 +1,21 @@
-function Play(key, config = {}, ...sprite) {
+function Play(key, config = {}, ...sprites) {
     const { speed = 24, repeat = 0, yoyo = false, startFrame = 0, delay = 0, repeatDelay = 0, onStart = null, onRepeat = null, onComplete = null, forceRestart = false } = config;
-    sprite.forEach(entity => {
-        const data = entity.animData;
+    sprites.forEach(sprite => {
+        const data = sprite.animData;
         if (data.isPlaying) {
             if (data.currentAnim !== key) {
                 data.isPlaying = false;
                 data.currentAnim = '';
                 if (data.onComplete) {
-                    data.onComplete(entity, data.currentAnim);
+                    data.onComplete(sprite, data.currentAnim);
                 }
             }
             else if (!forceRestart) {
                 return;
             }
         }
-        if (entity.anims.has(key)) {
-            data.currentFrames = entity.anims.get(key);
+        if (sprite.anims.has(key)) {
+            data.currentFrames = sprite.anims.get(key);
             data.currentAnim = key;
             data.frameIndex = startFrame;
             data.animSpeed = 1000 / speed;
@@ -30,9 +30,9 @@ function Play(key, config = {}, ...sprite) {
             data.onRepeat = onRepeat;
             data.onComplete = onComplete;
             if (delay === 0) {
-                entity.setFrame(data.currentFrames[data.frameIndex]);
+                sprite.setFrame(data.currentFrames[data.frameIndex]);
                 if (onStart) {
-                    onStart(entity, key);
+                    onStart(sprite, key);
                 }
             }
             else {
@@ -40,6 +40,7 @@ function Play(key, config = {}, ...sprite) {
             }
         }
     });
+    return sprites;
 }
 
 export { Play };

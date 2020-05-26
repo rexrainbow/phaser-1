@@ -8,4 +8,3 @@ export { CanPlayWebM } from './CanPlayWebM.js';
 export { HasAudio } from './HasAudio.js';
 export { HasWebAudio } from './HasWebAudio.js';
 export { GetAudio } from './GetAudio.js';
-import '../../index-9cd45848.js';

@@ -11,4 +11,3 @@ import '../SmoothStep.js';
 export { SmoothStepInterpolation } from './SmoothStepInterpolation.js';
 import '../SmootherStep.js';
 export { SmootherStepInterpolation } from './SmootherStepInterpolation.js';
-import '../../index-519cf613.js';

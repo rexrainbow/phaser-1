@@ -1,5 +1,5 @@
-import { Contains } from '../circle/Contains.js';
 import { Vec2 } from '../../math/vec2/Vec2.js';
+import { Contains } from '../circle/Contains.js';
 
 const tmp = new Vec2();
 function LineToCircle(line, circle, nearest) {

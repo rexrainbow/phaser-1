@@ -1,6 +1,6 @@
 import { NOOP } from './NOOP.js';
 
-function AddTimer(world, config) {
+function AddTimer(clock, config) {
     const { duration = 0, repeat = 0, delay = -1, onStart = NOOP, onUpdate = NOOP, onRepeat = NOOP, onComplete = NOOP } = config;
     const timer = {
         elapsed: duration,
@@ -44,7 +44,7 @@ function AddTimer(world, config) {
         }
         return (timer.elapsed === 0);
     };
-    world.clock.events.add(timer);
+    clock.events.add(timer);
 }
 
 export { AddTimer };

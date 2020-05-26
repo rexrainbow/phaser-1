@@ -1,3 +1,3 @@
 import { IAnimatedSprite } from './IAnimatedSprite';
-export declare function Stop(...sprite: IAnimatedSprite[]): void;
+export declare function Stop<T extends IAnimatedSprite>(...sprites: T[]): T[];
 //# sourceMappingURL=Stop.d.ts.map

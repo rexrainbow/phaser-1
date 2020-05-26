@@ -1,5 +1,5 @@
-import '../../math/distance/DistanceBetween.js';
 import { Vec2 } from '../../math/vec2/Vec2.js';
+import '../../math/distance/DistanceBetween.js';
 import { CircleToCircle } from './CircleToCircle.js';
 
 function GetCircleToCircle(circleA, circleB, out = []) {

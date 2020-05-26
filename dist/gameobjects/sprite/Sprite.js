@@ -1,48 +1,57 @@
 import '../../GameInstance.js';
-import '../../renderer/webgl1/GL.js';
-import '../../math/pow2/IsSizePowerOfTwo.js';
-import '../../renderer/webgl1/CreateGLTexture.js';
-import '../../renderer/webgl1/DeleteFramebuffer.js';
-import '../../renderer/webgl1/DeleteGLTexture.js';
-import '../../textures/Frame.js';
-import '../../renderer/webgl1/SetGLTextureFilterMode.js';
-import '../../renderer/webgl1/UpdateGLTexture.js';
-import '../../textures/Texture.js';
-import '../../textures/TextureManagerInstance.js';
 import '../../math/matrix2d/Matrix2D.js';
 import '../../geom/rectangle/Contains.js';
 import '../../geom/rectangle/Rectangle.js';
-import '../GetChildIndex.js';
-import '../RemoveChild.js';
-import '../SetParent.js';
+import '../../utils/NOOP.js';
+import '../../math/vec2/Vec2Callback.js';
+import '../../renderer/BindingQueue.js';
+import '../../config/DefaultOrigin.js';
+import '../../textures/Frame.js';
+import '../../textures/Texture.js';
+import '../../display/DepthFirstSearch.js';
+import '../../display/GetChildIndex.js';
+import '../../display/RemoveChildAt.js';
+import '../../display/RemoveChild.js';
+import '../events/AddedToWorldEvent.js';
+import '../events/DestroyEvent.js';
+import '../events/RemovedFromWorldEvent.js';
+import '../../events/Emit.js';
+import '../../display/SetWorld.js';
+import '../../display/SetParent.js';
+import { DIRTY_CONST } from '../DIRTY_CONST.js';
+import '../../display/RemoveChildrenBetween.js';
+import '../../display/DestroyChildren.js';
+import '../../display/ReparentChildren.js';
+import '../../textures/TextureManagerInstance.js';
+import { BatchTexturedQuad } from '../../renderer/webgl1/draw/BatchTexturedQuad.js';
+import '../components/transform/GetVertices.js';
+import '../components/bounds/BoundsComponent.js';
+import '../components/input/InputComponent.js';
+import '../../math/vec2/Vec2.js';
+import '../components/transform/UpdateLocalTransform.js';
 import '../../math/matrix2d/Copy.js';
 import '../components/transform/UpdateWorldTransform.js';
-import '../RemoveChildrenBetween.js';
-import '../DestroyChildren.js';
-import '../components/bounds/BoundsComponent.js';
-import '../components/dirty/DirtyComponent.js';
-import '../components/input/InputComponent.js';
-import '../components/transform/UpdateLocalTransform.js';
 import '../components/transform/TransformComponent.js';
-import '../ReparentChildren.js';
 import '../GameObject.js';
 import { Container } from '../container/Container.js';
+import { DrawTexturedQuad } from '../../renderer/canvas/draw/DrawTexturedQuad.js';
+import '../../renderer/webgl1/colors/PackColor.js';
+import { PackColors } from '../../renderer/webgl1/colors/PackColors.js';
 import { SetFrame } from './SetFrame.js';
 import { SetTexture } from './SetTexture.js';
+import { UpdateVertices } from './UpdateVertices.js';
 
 class Sprite extends Container {
     constructor(x, y, texture, frame) {
         super(x, y);
         this.hasTexture = false;
-        this.prevTextureID = -1;
         this._tint = 0xffffff;
+        this.type = 'Sprite';
         this.vertexData = new Float32Array(24).fill(0);
         this.vertexColor = new Uint32Array(4).fill(4294967295);
         this.vertexAlpha = new Float32Array(4).fill(1);
         this.vertexTint = new Uint32Array(4).fill(0xffffff);
-        this.type = 'Sprite';
         this.setTexture(texture, frame);
-        this.bounds.setArea(x, y, this.width, this.height);
     }
     setTexture(key, frame) {
         SetTexture(key, frame, this);
@@ -55,56 +64,51 @@ class Sprite extends Container {
     isRenderable() {
         return (this.visible && this.willRender && this.hasTexture && this.alpha > 0);
     }
-    updateVertices() {
-        const data = this.vertexData;
-        this.dirty.render = false;
-        const frame = this.frame;
-        const originX = this.originX;
-        const originY = this.originY;
-        let w0;
-        let w1;
-        let h0;
-        let h1;
-        const { a, b, c, d, tx, ty } = this.transform.world;
-        if (frame.trimmed) {
-            w1 = frame.spriteSourceSizeX - (originX * frame.sourceSizeWidth);
-            w0 = w1 + frame.spriteSourceSizeWidth;
-            h1 = frame.spriteSourceSizeY - (originY * frame.sourceSizeHeight);
-            h0 = h1 + frame.spriteSourceSizeHeight;
+    preRender() {
+        if (this.isDirty(DIRTY_CONST.COLORS)) {
+            PackColors(this);
+            this.clearDirty(DIRTY_CONST.COLORS);
         }
-        else {
-            w1 = -originX * frame.sourceSizeWidth;
-            w0 = w1 + frame.sourceSizeWidth;
-            h1 = -originY * frame.sourceSizeHeight;
-            h0 = h1 + frame.sourceSizeHeight;
+        if (this.isDirty(DIRTY_CONST.TRANSFORM)) {
+            UpdateVertices(this);
+            this.clearDirty(DIRTY_CONST.TRANSFORM);
         }
-        const x0 = (w1 * a) + (h1 * c) + tx;
-        const y0 = (w1 * b) + (h1 * d) + ty;
-        const x1 = (w1 * a) + (h0 * c) + tx;
-        const y1 = (w1 * b) + (h0 * d) + ty;
-        const x2 = (w0 * a) + (h0 * c) + tx;
-        const y2 = (w0 * b) + (h0 * d) + ty;
-        const x3 = (w0 * a) + (h1 * c) + tx;
-        const y3 = (w0 * b) + (h1 * d) + ty;
-        data[0] = x0;
-        data[1] = y0;
-        data[6] = x1;
-        data[7] = y1;
-        data[12] = x2;
-        data[13] = y2;
-        data[18] = x3;
-        data[19] = y3;
-        const boundsX = Math.min(x0, x1, x2, x3);
-        const boundsY = Math.min(y0, y1, y2, y3);
-        const boundsRight = Math.max(x0, x1, x2, x3);
-        const boundsBottom = Math.max(y0, y1, y2, y3);
-        this.bounds.setArea(boundsX, boundsY, boundsRight, boundsBottom);
+    }
+    renderGL(renderer) {
+        this.preRender();
+        BatchTexturedQuad(this, renderer);
+    }
+    renderCanvas(renderer) {
+        this.preRender();
+        DrawTexturedQuad(this, renderer);
+    }
+    get alpha() {
+        return this._alpha;
+    }
+    set alpha(value) {
+        if (value !== this._alpha) {
+            this._alpha = value;
+            const vertexAlpha = this.vertexAlpha;
+            vertexAlpha[0] = value;
+            vertexAlpha[1] = value;
+            vertexAlpha[2] = value;
+            vertexAlpha[3] = value;
+            this.setDirty(DIRTY_CONST.ALPHA);
+        }
     }
     get tint() {
         return this._tint;
     }
     set tint(value) {
-        this._tint = value;
+        if (value !== this._tint) {
+            this._tint = value;
+            const vertexTint = this.vertexTint;
+            vertexTint[0] = value;
+            vertexTint[1] = value;
+            vertexTint[2] = value;
+            vertexTint[3] = value;
+            this.setDirty(DIRTY_CONST.COLORS);
+        }
     }
     destroy(reparentChildren) {
         super.destroy(reparentChildren);

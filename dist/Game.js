@@ -1,30 +1,24 @@
+import { GameInstance } from './GameInstance.js';
+import { GetBanner } from './config/Banner.js';
+import './renderer/BindingQueue.js';
+import { GetRenderer } from './config/SetRenderer.js';
 import './dom/GetElement.js';
+import { GetParent } from './config/Parent.js';
+import './config/Scenes.js';
+import './textures/Frame.js';
+import './textures/Texture.js';
+import { Emit } from './events/Emit.js';
 import { AddToDOM } from './dom/AddToDOM.js';
 import { DOMContentLoaded } from './dom/DOMContentLoaded.js';
-import { Emit } from './events/Emit.js';
 import { EventEmitter } from './events/EventEmitter.js';
 import './events/EventInstance.js';
 import './events/On.js';
 import './events/Once.js';
-import { GameInstance } from './GameInstance.js';
-import { GetBanner } from './config/Banner.js';
-import { GetRenderer } from './config/SetRenderer.js';
-import { GetParent } from './config/Parent.js';
-import './config/Scenes.js';
-import './renderer/webgl1/GL.js';
 import './scenes/CreateSceneRenderData.js';
 import './scenes/ResetSceneRenderData.js';
 import './scenes/SceneManagerInstance.js';
 import { SceneManager } from './scenes/SceneManager.js';
 import './textures/CreateCanvas.js';
-import './math/pow2/IsSizePowerOfTwo.js';
-import './renderer/webgl1/CreateGLTexture.js';
-import './renderer/webgl1/DeleteFramebuffer.js';
-import './renderer/webgl1/DeleteGLTexture.js';
-import './textures/Frame.js';
-import './renderer/webgl1/SetGLTextureFilterMode.js';
-import './renderer/webgl1/UpdateGLTexture.js';
-import './textures/Texture.js';
 import './textures/TextureManagerInstance.js';
 import { TextureManager } from './textures/TextureManager.js';
 
@@ -37,6 +31,7 @@ class Game extends EventEmitter {
         this.willUpdate = true;
         this.willRender = true;
         this.lastTick = 0;
+        this.elapsed = 0;
         this.frame = 0;
         GameInstance.set(this);
         DOMContentLoaded(() => this.boot(settings));
@@ -67,9 +62,11 @@ class Game extends EventEmitter {
     step(time) {
         const delta = time - this.lastTick;
         this.lastTick = time;
+        this.elapsed += delta;
         if (!this.isPaused) {
             if (this.willUpdate) {
                 this.sceneManager.update(delta, time);
+                Emit(this, 'update', delta, time);
             }
             if (this.willRender) {
                 this.renderer.render(this.sceneManager.render(this.frame));
@@ -77,6 +74,7 @@ class Game extends EventEmitter {
         }
         this.frame++;
         GameInstance.setFrame(this.frame);
+        GameInstance.setElapsed(this.elapsed);
         requestAnimationFrame(now => this.step(now));
     }
     destroy() {

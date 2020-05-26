@@ -1,4 +1,4 @@
+import { Clock } from './Clock';
 import { ITimerEventConfig } from './ITimerEventConfig';
-import { IWorld } from '../world/IWorld';
-export declare function AddTimer(world: IWorld, config: ITimerEventConfig): void;
+export declare function AddTimer(clock: Clock, config: ITimerEventConfig): void;
 //# sourceMappingURL=AddTimer.d.ts.map

@@ -1,3 +1,5 @@
+import '../rectangle/Contains.js';
+import '../rectangle/Rectangle.js';
 import '../../math/const.js';
 import '../../math/vec2/Vec2.js';
 import '../../math/Clamp.js';
@@ -18,4 +20,3 @@ export { GetPoints } from './GetPoints.js';
 export { Offset } from './Offset.js';
 export { OffsetPoint } from './OffsetPoint.js';
 export { Random } from './Random.js';
-import '../../index-f3fb1b9d.js';

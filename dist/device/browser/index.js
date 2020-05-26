@@ -10,4 +10,3 @@ export { IsSafari } from './IsSafari.js';
 export { IsSilk } from './IsSilk.js';
 export { IsTrident } from './IsTrident.js';
 export { GetBrowser } from './GetBrowser.js';
-import '../../index-9e021782.js';

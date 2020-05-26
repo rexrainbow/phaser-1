@@ -1,10 +1,10 @@
 import { IRenderer } from '../renderer/IRenderer';
 import { IStaticCamera } from './IStaticCamera';
-import { IWorld } from '../world/IWorld';
+import { IStaticWorld } from '../world/IStaticWorld';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
 import { Rectangle } from '../geom/rectangle/Rectangle';
 export declare class StaticCamera implements IStaticCamera {
-    world: IWorld;
+    world: IStaticWorld;
     matrix: Float32Array;
     renderer: IRenderer;
     type: string;

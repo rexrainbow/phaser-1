@@ -13,6 +13,9 @@ class Vec2 {
     fromArray(src) {
         return this.set(src[0], src[1]);
     }
+    toString() {
+        return `[x=${this.x}, y=${this.y}]`;
+    }
 }
 
 export { Vec2 };

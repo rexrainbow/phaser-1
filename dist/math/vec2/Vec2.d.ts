@@ -5,5 +5,6 @@ export declare class Vec2 {
     set(x?: number, y?: number): this;
     getArray(): number[];
     fromArray(src: number[]): this;
+    toString(): string;
 }
 //# sourceMappingURL=Vec2.d.ts.map

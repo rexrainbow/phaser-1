@@ -1,8 +1,8 @@
 import { MATH_CONST } from '../../math/const.js';
-import { Circumference } from './Circumference.js';
 import '../../math/vec2/Vec2.js';
-import { CircumferencePoint } from './CircumferencePoint.js';
 import '../../math/Clamp.js';
+import { Circumference } from './Circumference.js';
+import { CircumferencePoint } from './CircumferencePoint.js';
 import { FromPercent } from '../../math/FromPercent.js';
 
 function GetPoints(circle, step, quantity = 0, out = []) {

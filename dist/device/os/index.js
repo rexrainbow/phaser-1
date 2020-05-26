@@ -13,4 +13,3 @@ export { IsNodeWebkit } from './IsNodeWebkit.js';
 export { IsWebApp } from './IsWebApp.js';
 export { IsWindows } from './IsWindows.js';
 export { GetOS } from './GetOS.js';
-import '../../index-29b9f851.js';

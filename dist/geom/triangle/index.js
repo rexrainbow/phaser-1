@@ -26,4 +26,3 @@ export { Random } from './Random.js';
 export { RotateAroundXY } from './RotateAroundXY.js';
 export { Rotate } from './Rotate.js';
 export { RotateAroundPoint } from './RotateAroundPoint.js';
-import '../../index-ccd9ef0a.js';

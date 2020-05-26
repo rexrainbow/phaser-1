@@ -1,10 +1,10 @@
+import { RectangleToRectangle } from './RectangleToRectangle.js';
 import '../../math/vec2/Vec2.js';
 import '../line/Line.js';
-import { G as GetEdges } from '../../GetEdges-95a2b4b0.js';
+import { GetEdges } from '../rectangle/GetEdges.js';
 import './LineToLine.js';
 import './LineToRectangle.js';
 import { GetLineToRectangle } from './GetLineToRectangle.js';
-import { RectangleToRectangle } from './RectangleToRectangle.js';
 
 function GetRectangleToRectangle(rectA, rectB, out = []) {
     if (RectangleToRectangle(rectA, rectB)) {

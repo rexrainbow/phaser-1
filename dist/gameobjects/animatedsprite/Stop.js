@@ -1,12 +1,13 @@
-function Stop(...sprite) {
-    sprite.forEach(entity => {
-        const data = entity.animData;
+function Stop(...sprites) {
+    sprites.forEach(sprite => {
+        const data = sprite.animData;
         data.isPlaying = false;
         data.currentAnim = '';
         if (data.onComplete) {
-            data.onComplete(entity, data.currentAnim);
+            data.onComplete(sprite, data.currentAnim);
         }
     });
+    return sprites;
 }
 
 export { Stop };

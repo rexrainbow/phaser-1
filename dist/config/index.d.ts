@@ -2,6 +2,8 @@ export * from './BackgroundColor';
 export * from './Banner';
 export * from './CanvasContext';
 export * from './CanvasRenderer';
+export * from './DefaultOrigin';
+export * from './MaxTextures';
 export * from './Parent';
 export * from './SetRenderer';
 export * from './Scenes';

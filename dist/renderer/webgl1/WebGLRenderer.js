@@ -1,26 +1,40 @@
 import { GetBackgroundColor } from '../../config/BackgroundColor.js';
 import { GetWidth, GetHeight, GetResolution } from '../../config/Size.js';
+import '../BindingQueue.js';
+import '../../config/MaxTextures.js';
 import { GetWebGLContext } from '../../config/WebGLContext.js';
-import { CheckShaderMaxIfStatements } from './shaders/CheckShaderMaxIfStatements.js';
+import { FBOSystem } from './fbo/FBOSystem.js';
 import { GL } from './GL.js';
+import { GetRGBArray } from './colors/GetRGBArray.js';
 import { ExactEquals } from '../../math/matrix2d-funcs/ExactEquals.js';
+import './fbo/CreateFramebuffer.js';
+import './textures/CreateGLTexture.js';
+import './fbo/DeleteFramebuffer.js';
+import './textures/DeleteGLTexture.js';
+import '../../math/pow2/IsSizePowerOfTwo.js';
+import './textures/SetGLTextureFilterMode.js';
+import './textures/UpdateGLTexture.js';
+import './textures/GLTextureBinding.js';
+import './buffers/IndexedBuffer.js';
+import '../../textures/Frame.js';
+import '../../textures/Texture.js';
+import { WebGLRendererInstance } from './WebGLRendererInstance.js';
+import './shaders/SingleTextureQuadShader.js';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader.js';
-import { Ortho } from './Ortho.js';
-import '../../gameobjects/sprite/UploadBuffers.js';
-import { RenderWebGL } from '../../gameobjects/sprite/RenderWebGL.js';
+import { Ortho } from './cameras/Ortho.js';
+import { ShaderSystem } from './shaders/ShaderSystem.js';
+import './shaders/CheckShaderMaxIfStatements.js';
+import { TextureSystem } from './textures/TextureSystem.js';
 
 class WebGLRenderer {
     constructor() {
         this.clearColor = [0, 0, 0, 1];
         this.flushTotal = 0;
-        this.maxTextures = 0;
-        this.currentActiveTexture = 0;
-        this.startActiveTexture = 0;
-        this.tempTextures = [];
         this.clearBeforeRender = true;
-        this.optimizeRedraw = true;
+        this.optimizeRedraw = false;
         this.autoResize = true;
         this.contextLost = false;
+        this.currentCamera = null;
         this.width = GetWidth();
         this.height = GetHeight();
         this.resolution = GetResolution();
@@ -29,21 +43,20 @@ class WebGLRenderer {
         canvas.addEventListener('webglcontextlost', (event) => this.onContextLost(event), false);
         canvas.addEventListener('webglcontextrestored', () => this.onContextRestored(), false);
         this.canvas = canvas;
+        this.fbo = new FBOSystem(this);
+        this.textures = new TextureSystem(this);
         this.initContext();
-        this.shader = new MultiTextureQuadShader(this);
+        WebGLRendererInstance.set(this);
+        this.shaders = new ShaderSystem(this, MultiTextureQuadShader);
     }
     initContext() {
         const gl = this.canvas.getContext('webgl', GetWebGLContext());
         GL.set(gl);
         this.gl = gl;
-        this.elementIndexExtension = gl.getExtension('OES_element_index_uint');
-        this.getMaxTextures();
-        if (this.shader) {
-            this.shader.gl = gl;
-        }
         gl.disable(gl.DEPTH_TEST);
         gl.disable(gl.CULL_FACE);
         this.resize(this.width, this.height, this.resolution);
+        this.textures.init();
     }
     resize(width, height, resolution = 1) {
         this.width = width * resolution;
@@ -53,8 +66,8 @@ class WebGLRenderer {
         canvas.width = this.width;
         canvas.height = this.height;
         if (this.autoResize) {
-            canvas.style.width = this.width / resolution + 'px';
-            canvas.style.height = this.height / resolution + 'px';
+            canvas.style.width = (this.width / resolution).toString() + 'px';
+            canvas.style.height = (this.height / resolution).toString() + 'px';
         }
         this.gl.viewport(0, 0, this.width, this.height);
         this.projectionMatrix = Ortho(width, height);
@@ -68,37 +81,8 @@ class WebGLRenderer {
         this.initContext();
     }
     setBackgroundColor(color) {
-        const clearColor = this.clearColor;
-        const r = color >> 16 & 0xFF;
-        const g = color >> 8 & 0xFF;
-        const b = color & 0xFF;
-        const a = (color > 16777215) ? color >>> 24 : 255;
-        clearColor[0] = r / 255;
-        clearColor[1] = g / 255;
-        clearColor[2] = b / 255;
-        clearColor[3] = a / 255;
+        GetRGBArray(color, this.clearColor);
         return this;
-    }
-    getMaxTextures() {
-        const gl = this.gl;
-        const maxTextures = CheckShaderMaxIfStatements(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS), gl);
-        const tempTextures = this.tempTextures;
-        if (tempTextures.length) {
-            tempTextures.forEach(texture => {
-                gl.deleteTexture(texture);
-            });
-        }
-        for (let texturesIndex = 0; texturesIndex < maxTextures; texturesIndex++) {
-            const tempTexture = gl.createTexture();
-            gl.activeTexture(gl.TEXTURE0 + texturesIndex);
-            gl.bindTexture(gl.TEXTURE_2D, tempTexture);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
-            tempTextures[texturesIndex] = tempTexture;
-        }
-        this.maxTextures = maxTextures;
-        this.textureIndex = Array.from(Array(maxTextures).keys());
-        this.activeTextures = Array(maxTextures);
-        this.currentActiveTexture = 0;
     }
     reset(framebuffer = null, width = this.width, height = this.height) {
         const gl = this.gl;
@@ -106,68 +90,60 @@ class WebGLRenderer {
         gl.viewport(0, 0, width, height);
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        this.currentActiveTexture = 0;
-        this.startActiveTexture++;
         this.flushTotal = 0;
+        this.currentCamera = null;
+        this.textures.update();
     }
     render(renderData) {
         if (this.contextLost) {
             return;
         }
-        const gl = this.gl;
         this.reset();
         if (this.optimizeRedraw && renderData.numDirtyFrames === 0 && renderData.numDirtyCameras === 0) {
             return;
         }
-        const shader = this.shader;
-        const cls = this.clearColor;
+        const gl = this.gl;
         if (this.clearBeforeRender) {
+            const cls = this.clearColor;
             gl.clearColor(cls[0], cls[1], cls[2], cls[3]);
             gl.clear(gl.COLOR_BUFFER_BIT);
         }
-        const projectionMatrix = this.projectionMatrix;
-        let prevCamera;
         const worlds = renderData.worldData;
         for (let i = 0; i < worlds.length; i++) {
-            const { camera, renderList, numRendered } = worlds[i];
-            if (!prevCamera || !ExactEquals(camera.worldTransform, prevCamera.worldTransform)) {
-                shader.flush();
-                shader.bind(projectionMatrix, camera.matrix);
-                prevCamera = camera;
+            const { camera, renderList } = worlds[i];
+            if (!this.currentCamera || !ExactEquals(camera.worldTransform, this.currentCamera.worldTransform)) {
+                this.flush();
+                this.currentCamera = camera;
+                this.shaders.rebind();
             }
-            for (let s = 0; s < numRendered; s++) {
-                RenderWebGL(renderList[s], this, shader, this.startActiveTexture);
+            renderList.forEach(entry => {
+                if (entry.children.length) {
+                    this.renderNode(entry);
+                }
+                else {
+                    entry.node.renderGL(this);
+                }
+            });
+        }
+        this.flush();
+    }
+    renderNode(entry) {
+        entry.node.renderGL(this);
+        entry.children.forEach(child => {
+            if (child.children.length > 0) {
+                this.renderNode(child);
             }
-        }
-        shader.flush();
+            else {
+                child.node.renderGL(this);
+            }
+        });
+        entry.node.postRenderGL(this);
     }
-    resetTextures(texture) {
-        const gl = this.gl;
-        const active = this.activeTextures;
-        active.fill(null);
-        this.currentActiveTexture = 0;
-        this.startActiveTexture++;
-        if (texture) {
-            active[0] = texture;
-            gl.activeTexture(gl.TEXTURE0);
-            gl.bindTexture(gl.TEXTURE_2D, texture.glTexture);
-            this.currentActiveTexture = 1;
-        }
+    flush() {
+        this.shaders.flush();
     }
-    requestTexture(texture) {
-        const gl = this.gl;
-        texture.glIndexCounter = this.startActiveTexture;
-        if (this.currentActiveTexture < this.maxTextures) {
-            this.activeTextures[this.currentActiveTexture] = texture;
-            texture.glIndex = this.currentActiveTexture;
-            gl.activeTexture(gl.TEXTURE0 + this.currentActiveTexture);
-            gl.bindTexture(gl.TEXTURE_2D, texture.glTexture);
-            this.currentActiveTexture++;
-        }
-        else {
-            this.shader.flush();
-            this.resetTextures(texture);
-        }
+    destroy() {
+        WebGLRendererInstance.set(undefined);
     }
 }
 

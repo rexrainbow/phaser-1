@@ -1,3 +1,4 @@
+import { IGameObject } from '../gameobjects/IGameObject';
 import { Texture } from './Texture';
 export declare class Frame {
     texture: Texture;
@@ -26,6 +27,13 @@ export declare class Frame {
     setSize(width: number, height: number): void;
     setSourceSize(width: number, height: number): void;
     setTrim(width: number, height: number, x: number, y: number, w: number, h: number): void;
+    getExtent(originX: number, originY: number): {
+        left: number;
+        right: number;
+        top: number;
+        bottom: number;
+    };
+    setExtent(child: IGameObject): void;
     updateUVs(): void;
 }
 //# sourceMappingURL=Frame.d.ts.map

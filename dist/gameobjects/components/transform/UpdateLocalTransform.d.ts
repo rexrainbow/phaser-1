@@ -1,3 +1,3 @@
-import { IGameObject } from '../../IGameObject';
-export declare function UpdateLocalTransform(gameObject: IGameObject): void;
+import { ITransformComponent } from './ITransformComponent';
+export declare function UpdateLocalTransform(transform: ITransformComponent): void;
 //# sourceMappingURL=UpdateLocalTransform.d.ts.map

@@ -7,4 +7,3 @@ export { RotateMatrix } from './RotateMatrix.js';
 export { Rotate180 } from './Rotate180.js';
 export { RotateLeft } from './RotateLeft.js';
 export { RotateRight } from './RotateRight.js';
-import '../../../index-96e3636b.js';

@@ -1,5 +1,23 @@
+import { GetWidth, GetHeight, GetResolution } from '../../../config/Size.js';
+import '../../BindingQueue.js';
+import '../GL.js';
+import { CreateFramebuffer } from '../fbo/CreateFramebuffer.js';
+import '../textures/CreateGLTexture.js';
+import '../fbo/DeleteFramebuffer.js';
+import '../textures/DeleteGLTexture.js';
+import '../../../math/pow2/IsSizePowerOfTwo.js';
+import '../textures/SetGLTextureFilterMode.js';
+import '../textures/UpdateGLTexture.js';
+import { GLTextureBinding } from '../textures/GLTextureBinding.js';
+import { IndexedBuffer } from '../buffers/IndexedBuffer.js';
+import '../../../textures/Frame.js';
+import { Texture } from '../../../textures/Texture.js';
+import { WebGLRendererInstance } from '../WebGLRendererInstance.js';
+
 const shaderSource = {
     fragmentShader: `
+#define SHADER_NAME SINGLE_QUAD_FRAG
+
 precision highp float;
 
 varying vec2 vTextureCoord;
@@ -15,6 +33,8 @@ void main (void)
     gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);
 }`,
     vertexShader: `
+#define SHADER_NAME SINGLE_QUAD_VERT
+
 precision highp float;
 
 attribute vec2 aVertexPosition;
@@ -39,52 +59,45 @@ void main (void)
 }`
 };
 class SingleTextureQuadShader {
-    constructor(renderer, config = {}) {
+    constructor(config = {}) {
         this.attribs = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
-        this.uniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0 };
-        this.dataSize = 4;
-        this.indexSize = 4;
-        this.vertexElementSize = 6;
-        this.vertexByteSize = 6 * 4;
-        this.quadByteSize = (6 * 4) * 4;
-        this.quadElementSize = 6 * 4;
-        this.quadIndexSize = 6;
-        this.renderer = renderer;
-        this.gl = renderer.gl;
-        const { batchSize = 4096, fragmentShader = shaderSource.fragmentShader, vertexShader = shaderSource.vertexShader } = config;
-        this.batchSize = batchSize;
-        this.bufferByteSize = batchSize * this.quadByteSize;
-        this.createBuffers();
+        this.uniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0, uTime: 0, uResolution: 0 };
+        this.renderToFBO = false;
+        this.renderer = WebGLRendererInstance.get();
+        const { batchSize = 4096, dataSize = 4, indexSize = 4, vertexElementSize = 6, quadIndexSize = 6, fragmentShader = shaderSource.fragmentShader, vertexShader = shaderSource.vertexShader, width = GetWidth(), height = GetHeight(), resolution = GetResolution(), renderToFBO = false } = config;
+        this.buffer = new IndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, quadIndexSize);
         this.createShaders(fragmentShader, vertexShader);
         this.count = 0;
-    }
-    createBuffers() {
-        let ibo = [];
-        for (let i = 0; i < (this.batchSize * this.indexSize); i += this.indexSize) {
-            ibo.push(i + 0, i + 1, i + 2, i + 2, i + 3, i + 0);
-        }
-        this.data = new ArrayBuffer(this.bufferByteSize);
-        this.index = new Uint16Array(ibo);
-        this.vertexViewF32 = new Float32Array(this.data);
-        this.vertexViewU32 = new Uint32Array(this.data);
-        const gl = this.gl;
-        this.vertexBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.DYNAMIC_DRAW);
-        this.indexBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.index, gl.STATIC_DRAW);
-        gl.bindBuffer(gl.ARRAY_BUFFER, null);
-        ibo = [];
+        this.renderToFBO = renderToFBO;
+        const texture = new Texture(null, width * resolution, height * resolution);
+        const binding = new GLTextureBinding(texture);
+        texture.binding = binding;
+        binding.framebuffer = CreateFramebuffer(binding.texture);
+        this.texture = texture;
+        this.framebuffer = binding.framebuffer;
     }
     createShaders(fragmentShaderSource, vertexShaderSource) {
-        const gl = this.gl;
+        const gl = this.renderer.gl;
         const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(fragmentShader, fragmentShaderSource);
         gl.compileShader(fragmentShader);
+        let failed = false;
+        let message = gl.getShaderInfoLog(fragmentShader);
+        if (message.length > 0) {
+            failed = true;
+            console.error(message);
+        }
         const vertexShader = gl.createShader(gl.VERTEX_SHADER);
         gl.shaderSource(vertexShader, vertexShaderSource);
         gl.compileShader(vertexShader);
+        message = gl.getShaderInfoLog(fragmentShader);
+        if (message.length > 0) {
+            failed = true;
+            console.error(message);
+        }
+        if (failed) {
+            return;
+        }
         const program = gl.createProgram();
         gl.attachShader(program, vertexShader);
         gl.attachShader(program, fragmentShader);
@@ -100,19 +113,25 @@ class SingleTextureQuadShader {
             this.uniforms[key] = gl.getUniformLocation(program, key);
         }
     }
-    bind(projectionMatrix, cameraMatrix) {
-        const gl = this.gl;
+    bind(projectionMatrix, cameraMatrix, textureID) {
+        if (!this.program) {
+            return false;
+        }
         const renderer = this.renderer;
+        const gl = renderer.gl;
         const uniforms = this.uniforms;
         gl.useProgram(this.program);
         gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
         gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
-        gl.uniform1iv(uniforms.uTexture, renderer.textureIndex);
-        this.bindBuffers(this.indexBuffer, this.vertexBuffer);
+        gl.uniform1i(uniforms.uTexture, renderer.textures.textureIndex[textureID]);
+        gl.uniform1f(uniforms.uTime, performance.now());
+        gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
+        this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
+        return true;
     }
     bindBuffers(indexBuffer, vertexBuffer) {
-        const gl = this.gl;
-        const stride = this.vertexByteSize;
+        const gl = this.renderer.gl;
+        const stride = this.buffer.vertexByteSize;
         const attribs = this.attribs;
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -123,16 +142,23 @@ class SingleTextureQuadShader {
         this.count = 0;
     }
     draw(count) {
-        const gl = this.gl;
-        const offset = count * this.quadByteSize;
-        if (offset === this.bufferByteSize) {
-            gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.DYNAMIC_DRAW);
+        const renderer = this.renderer;
+        const gl = renderer.gl;
+        const buffer = this.buffer;
+        if (count === buffer.batchSize) {
+            gl.bufferData(gl.ARRAY_BUFFER, buffer.data, gl.DYNAMIC_DRAW);
         }
         else {
-            const view = this.vertexViewF32.subarray(0, offset);
+            const view = buffer.vertexViewF32.subarray(0, count * buffer.quadElementSize);
             gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
         }
-        gl.drawElements(gl.TRIANGLES, count * this.quadIndexSize, gl.UNSIGNED_SHORT, 0);
+        if (this.renderToFBO) {
+            renderer.fbo.add(this.framebuffer, true);
+        }
+        gl.drawElements(gl.TRIANGLES, count * buffer.quadIndexSize, gl.UNSIGNED_SHORT, 0);
+        if (this.renderToFBO) {
+            renderer.fbo.pop();
+        }
     }
     flush() {
         const count = this.count;
@@ -142,7 +168,6 @@ class SingleTextureQuadShader {
         this.draw(count);
         this.prevCount = count;
         this.count = 0;
-        this.renderer.flushTotal++;
         return true;
     }
 }

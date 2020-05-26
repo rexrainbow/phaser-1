@@ -1,5 +1,5 @@
-import { ParseXML } from '../../dom/ParseXML.js';
 import { Cache } from '../../cache/Cache.js';
+import { ParseXML } from '../../dom/ParseXML.js';
 import { File } from '../File.js';
 import { GetURL } from '../GetURL.js';
 import { XHRLoader } from '../XHRLoader.js';

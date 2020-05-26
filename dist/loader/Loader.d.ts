@@ -11,10 +11,11 @@ export declare class Loader extends EventEmitter {
     inflight: Set<File>;
     completed: Set<File>;
     onComplete: Function;
+    onError: Function;
     constructor();
     reset(): void;
     add(...file: File[]): this;
-    start(onComplete: Function): this;
+    start(): Promise<Loader>;
     nextFile(): void;
     stop(): void;
     private updateProgress;

@@ -1,11 +1,11 @@
+import { IBaseWorld } from '../world/IBaseWorld';
 import { ITimerEvent } from './ITimerEvent';
-import { IWorld } from '../world/IWorld';
 export declare class Clock {
-    world: IWorld;
+    world: IBaseWorld;
     now: number;
     timeScale: number;
     events: Set<ITimerEvent>;
-    constructor(world: IWorld);
+    constructor(world: IBaseWorld);
     update(delta: number, time: number): void;
 }
 //# sourceMappingURL=Clock.d.ts.map

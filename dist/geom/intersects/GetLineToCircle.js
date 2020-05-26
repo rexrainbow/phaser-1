@@ -1,5 +1,5 @@
-import '../circle/Contains.js';
 import { Vec2 } from '../../math/vec2/Vec2.js';
+import '../circle/Contains.js';
 import { LineToCircle } from './LineToCircle.js';
 
 function GetLineToCircle(line, circle, out = []) {

@@ -1,10 +1,14 @@
 import { IGameObject } from '../../IGameObject';
 import { Rectangle } from '../../../geom/rectangle';
 export interface IBoundsComponent {
-    parent: IGameObject;
-    area: Rectangle;
+    entity: IGameObject;
     fixed: boolean;
-    setArea(x: number, y: number, width: number, height: number): void;
+    includeChildren: boolean;
+    visibleOnly: boolean;
+    set(x: number, y: number, width: number, height: number): void;
+    get(): Rectangle;
+    update(): Rectangle;
+    updateLocal(): Rectangle;
     destroy(): void;
 }
 //# sourceMappingURL=IBoundsComponent.d.ts.map

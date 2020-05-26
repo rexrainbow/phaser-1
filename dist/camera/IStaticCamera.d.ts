@@ -1,9 +1,9 @@
 import { IMatrix2D } from '../math/matrix2d/IMatrix2D';
 import { IRectangle } from '../geom/rectangle/IRectangle';
 import { IRenderer } from '../renderer/IRenderer';
-import { IWorld } from '../world/IWorld';
+import { IStaticWorld } from '../world/IStaticWorld';
 export interface IStaticCamera {
-    world: IWorld;
+    world: IStaticWorld;
     matrix: Float32Array;
     renderer: IRenderer;
     type: string;

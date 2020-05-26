@@ -2,11 +2,16 @@ import { IBoundsComponent } from './IBoundsComponent';
 import { IGameObject } from '../../IGameObject';
 import { Rectangle } from '../../../geom/rectangle/Rectangle';
 export declare class BoundsComponent implements IBoundsComponent {
-    parent: IGameObject;
-    area: Rectangle;
+    entity: IGameObject;
+    private area;
     fixed: boolean;
-    constructor(parent: IGameObject);
-    setArea(x: number, y: number, width: number, height: number): void;
+    includeChildren: boolean;
+    visibleOnly: boolean;
+    constructor(entity: IGameObject);
+    set(x: number, y: number, width: number, height: number): void;
+    get(): Rectangle;
+    updateLocal(): Rectangle;
+    update(): Rectangle;
     destroy(): void;
 }
 //# sourceMappingURL=BoundsComponent.d.ts.map
