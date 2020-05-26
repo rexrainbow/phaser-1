@@ -31,7 +31,7 @@ export function SetTexture <T extends ISprite> (key: string | Texture, frame: st
 
         if (!texture)
         {
-            console.warn('Invalid Texture key: ' + key);
+            console.warn(`Invalid Texture key: ${key as string}`);
         }
         else
         {

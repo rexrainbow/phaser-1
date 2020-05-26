@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
 import { Frame } from '../Frame';
 import { Texture } from '../Texture';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function AtlasParser (texture: Texture, data: any): void
 {
     let frames;

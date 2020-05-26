@@ -79,7 +79,7 @@ export class Texture implements ITexture
 
         if (!frame)
         {
-            console.warn('Frame missing: ' + key);
+            console.warn(`Frame missing: ${key}`);
 
             frame = this.firstFrame;
         }

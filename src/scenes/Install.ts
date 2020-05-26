@@ -17,7 +17,7 @@ export function Install (scene: IScene, config: string | ISceneConfig = {}): voi
     }
     else if (config || (!config && firstScene))
     {
-        scene.key = GetConfigValue(config, 'key', 'scene' + sceneIndex);
+        scene.key = GetConfigValue(config, 'key', 'scene' + sceneIndex.toString());
     }
 
     if (sceneManager.scenes.has(scene.key))

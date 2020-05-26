@@ -107,7 +107,7 @@ export class SpriteBatch extends Layer implements ISpriteBatch
 
         if (!texture)
         {
-            console.warn('Invalid Texture key: ' + key);
+            console.warn(`Invalid Texture key: ${key as string}`);
         }
         else
         {

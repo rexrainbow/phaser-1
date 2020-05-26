@@ -1,7 +1,6 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
 import { BindingQueue } from '../BindingQueue';
-import { DIRTY_CONST } from '../../gameobjects/DIRTY_CONST';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetCanvasContext } from '../../config/CanvasContext';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
@@ -63,8 +62,8 @@ export class CanvasRenderer
 
         if (this.autoResize)
         {
-            canvas.style.width = this.width / resolution + 'px';
-            canvas.style.height = this.height / resolution + 'px';
+            canvas.style.width = (this.width / resolution).toString() + 'px';
+            canvas.style.height = (this.height / resolution).toString() + 'px';
         }
     }
 

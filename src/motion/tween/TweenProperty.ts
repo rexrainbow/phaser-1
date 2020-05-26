@@ -39,7 +39,7 @@ export class TweenProperty
         }
     }
 
-    to (target: {}): void
+    to (target: unknown): void
     {
         const current = target[ this.name ];
         const end = this.getEnd(current);
@@ -48,7 +48,7 @@ export class TweenProperty
         this.end = end;
     }
 
-    from (target: {}): void
+    from (target: unknown): void
     {
         const current = target[ this.name ];
         const end = this.getEnd(current);
@@ -59,7 +59,7 @@ export class TweenProperty
         target[ this.name ] = end;
     }
 
-    update (target: {}, v: number): void
+    update (target: unknown, v: number): void
     {
         target[ this.name ] = this.start + ((this.end - this.start) * v);
     }

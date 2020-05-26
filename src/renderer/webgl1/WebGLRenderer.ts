@@ -1,6 +1,5 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
-import { DIRTY_CONST } from '../../gameobjects/DIRTY_CONST';
 import { FBOSystem } from './fbo/FBOSystem';
 import { GL } from './GL';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
@@ -99,8 +98,8 @@ export class WebGLRenderer
 
         if (this.autoResize)
         {
-            canvas.style.width = this.width / resolution + 'px';
-            canvas.style.height = this.height / resolution + 'px';
+            canvas.style.width = (this.width / resolution).toString() + 'px';
+            canvas.style.height = (this.height / resolution).toString() + 'px';
         }
 
         this.gl.viewport(0, 0, this.width, this.height);

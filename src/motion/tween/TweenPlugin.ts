@@ -20,7 +20,7 @@ export class TweenPlugin implements ITweenPlugin
         On(world, UpdateEvent, (delta: number) => this.update(delta));
     }
 
-    add (target: {}, autoStart: boolean = true): Tween
+    add (target: unknown, autoStart: boolean = true): Tween
     {
         const tween = new Tween(target, autoStart);
 
@@ -61,7 +61,7 @@ export class TweenPlugin implements ITweenPlugin
         tweens.clear();
     }
 
-    killTweensOf (target: {}): void
+    killTweensOf (target: unknown): void
     {
         const tweens = this.tweens;
 

@@ -6,7 +6,7 @@ export function GetChildAt (parent: IGameObject, index: number): IGameObject
 
     if (index < 0 || index > children.length)
     {
-        throw new Error('Index out of bounds: ' + index);
+        throw new Error(`Index out of bounds: ${index}`);
     }
 
     return children[index];

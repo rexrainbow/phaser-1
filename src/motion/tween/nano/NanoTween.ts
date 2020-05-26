@@ -70,21 +70,23 @@ type TweenCounters = {
     elapsed: number;
 };
 
+type EaseFunction = (v: number) => number;
+
 export class NanoTween
 {
-    target: {};
+    target: unknown;
 
     state: TweenState = { running: false, repeat: false, hold: false, delay: false, yoyo: false, yoyoing: false, autoStart: true, reversed: false };
     init: TweenInit = { duration: 0, repeat: 0, repeatDelay: 0, hold: 0, delay: 0 };
     counters: TweenCounters = { repeat: 0, delay: 0, progress: 0, elapsed: 0 };
 
-    ease: Function = Linear;
+    ease: EaseFunction = Linear;
     listener: IEventInstance;
     emitter: IEventEmitter;
 
     private properties: TweenProperty[] = [];
 
-    constructor (target: {}, emitter: IEventEmitter, autoStart: boolean = true)
+    constructor (target: unknown, emitter: IEventEmitter, autoStart: boolean = true)
     {
         if (!emitter)
         {
@@ -315,7 +317,7 @@ export class NanoTween
         return this;
     }
 
-    easing (f: Function): this
+    easing (f: EaseFunction): this
     {
         this.ease = f;
 
