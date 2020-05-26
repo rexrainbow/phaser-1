@@ -66,12 +66,12 @@ export class RenderLayer extends Layer implements IRenderLayer
                 //  This RenderLayer doesn't have any dirty children, so we'll use the previous fbo contents
                 renderer.fbo.add(this.framebuffer, false);
 
-                this.postRender(renderer);
+                this.postRenderGL(renderer);
             }
         }
     }
 
-    postRender <T extends IWebGLRenderer> (renderer: T): void
+    postRenderGL <T extends IWebGLRenderer> (renderer: T): void
     {
         const texture = this.texture;
 
