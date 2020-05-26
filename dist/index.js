@@ -228,7 +228,7 @@ import './math/Clamp.js';
 import './gameobjects/spritebatch/SpriteBatch.js';
 import './textures/types/CanvasTexture.js';
 import './gameobjects/text/Text.js';
-export { i as GameObjects } from './index-81a09f6c.js';
+export { i as GameObjects } from './index-e09b4e4b.js';
 import './math/FromPercent.js';
 import './math/distance/DistanceBetween.js';
 import './input/keyboard/Key.js';

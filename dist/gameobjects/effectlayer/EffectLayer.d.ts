@@ -5,6 +5,6 @@ import { RenderLayer } from '../renderlayer/RenderLayer';
 export declare class EffectLayer extends RenderLayer implements IEffectLayer {
     shaders: IShader[];
     constructor();
-    postRender<T extends IWebGLRenderer>(renderer: T): void;
+    postRenderGL<T extends IWebGLRenderer>(renderer: T): void;
 }
 //# sourceMappingURL=EffectLayer.d.ts.map

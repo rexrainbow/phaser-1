@@ -52,7 +52,7 @@ class EffectLayer extends RenderLayer {
         this.shaders = [];
         this.type = 'EffectLayer';
     }
-    postRender(renderer) {
+    postRenderGL(renderer) {
         const shaders = this.shaders;
         const texture = this.texture;
         renderer.flush();
