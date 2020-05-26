@@ -66,7 +66,7 @@ export class FBOSystem
 
         const len = this.stack.length;
 
-        if (len > 1)
+        if (len > 0)
         {
             const entry = this.stack[len - 1];
 
