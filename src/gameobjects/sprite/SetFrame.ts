@@ -26,21 +26,13 @@ export function SetFrame <T extends ISprite> (texture: Texture, key?: string | n
 
         child.hasTexture = true;
 
-        const data = child.vertexData;
+        const vertices = child.vertices;
 
         //  This rarely changes, so we'll set it here, rather than every game step:
-
-        data[2] = u0;
-        data[3] = v0;
-
-        data[8] = u0;
-        data[9] = v1;
-
-        data[14] = u1;
-        data[15] = v1;
-
-        data[20] = u1;
-        data[21] = v0;
+        vertices[0].setUV(u0, v0);
+        vertices[1].setUV(u0, v1);
+        vertices[2].setUV(u1, v1);
+        vertices[3].setUV(u1, v0);
     });
 
     return children;

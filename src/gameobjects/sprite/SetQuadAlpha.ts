@@ -1,18 +1,18 @@
+import { DIRTY_CONST } from '../DIRTY_CONST';
 import { ISprite } from './ISprite';
-import { PackColors } from '../../renderer/webgl1/colors/PackColors';
 
 export function SetQuadAlpha <T extends ISprite> (topLeft: number, topRight: number, bottomLeft: number, bottomRight: number, ...children: T[]): T[]
 {
     children.forEach(child =>
     {
-        const alpha = child.vertexAlpha;
+        const vertices = child.vertices;
 
-        alpha[0] = topLeft;
-        alpha[1] = topRight;
-        alpha[2] = bottomLeft;
-        alpha[3] = bottomRight;
+        vertices[0].setAlpha(topLeft);
+        vertices[1].setAlpha(topRight);
+        vertices[2].setAlpha(bottomLeft);
+        vertices[3].setAlpha(bottomRight);
 
-        PackColors(child);
+        child.setDirty(DIRTY_CONST.COLORS);
     });
 
     return children;

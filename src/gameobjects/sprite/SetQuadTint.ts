@@ -1,18 +1,18 @@
+import { DIRTY_CONST } from '../DIRTY_CONST';
 import { ISprite } from './ISprite';
-import { PackColors } from '../../renderer/webgl1/colors/PackColors';
 
 export function SetQuadTint <T extends ISprite> (topLeft: number, topRight: number, bottomLeft: number, bottomRight: number, ...children: T[]): T[]
 {
     children.forEach(child =>
     {
-        const tint = child.vertexTint;
+        const vertices = child.vertices;
 
-        tint[0] = topLeft;
-        tint[1] = topRight;
-        tint[2] = bottomLeft;
-        tint[3] = bottomRight;
+        vertices[0].setAlpha(topLeft);
+        vertices[1].setAlpha(topRight);
+        vertices[2].setAlpha(bottomLeft);
+        vertices[3].setAlpha(bottomRight);
 
-        PackColors(child);
+        child.setDirty(DIRTY_CONST.COLORS);
     });
 
     return children;

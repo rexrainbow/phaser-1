@@ -13,31 +13,60 @@ export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: IWeb
         renderer.flush();
     }
 
-    const data = sprite.vertexData;
-
     renderer.textures.request(texture);
 
     const textureIndex = binding.index;
 
-    //  Inject the texture ID
-    data[4] = textureIndex;
-    data[10] = textureIndex;
-    data[16] = textureIndex;
-    data[22] = textureIndex;
+    const vertices = sprite.vertices;
 
-    const offset = shader.count * buffer.quadElementSize;
-
-    //  Copy the data to the array buffer
-    buffer.vertexViewF32.set(data, offset);
-
-    const color = sprite.vertexColor;
+    const F32 = buffer.vertexViewF32;
     const U32 = buffer.vertexViewU32;
 
-    //  Copy the vertex colors to the Uint32 view (as the data copy above overwrites them)
-    U32[offset + 5] = color[0];
-    U32[offset + 11] = color[2];
-    U32[offset + 17] = color[3];
-    U32[offset + 23] = color[1];
+    let offset = shader.count * buffer.quadElementSize;
+
+    vertices.forEach(vertex =>
+    {
+        F32[offset + 0] = vertex.x;
+        F32[offset + 1] = vertex.y;
+        F32[offset + 2] = vertex.u;
+        F32[offset + 3] = vertex.v;
+        F32[offset + 4] = textureIndex;
+        U32[offset + 5] = vertex.color;
+
+        offset += 6;
+    });
 
     shader.count++;
 }
+
+/*
+    vertexData array structure:
+
+    0 = topLeft.x
+    1 = topLeft.y
+    2 = frame.u0
+    3 = frame.v0
+    4 = textureIndex
+    5 = topLeft.packedColor
+
+    6 = bottomLeft.x
+    7 = bottomLeft.y
+    8 = frame.u0
+    9 = frame.v1
+    10 = textureIndex
+    11 = bottomLeft.packedColor
+
+    12 = bottomRight.x
+    13 = bottomRight.y
+    14 = frame.u1
+    15 = frame.v1
+    16 = textureIndex
+    17 = bottomRight.packedColor
+
+    18 = topRight.x
+    19 = topRight.y
+    20 = frame.u1
+    21 = frame.v0
+    22 = textureIndex
+    23 = topRight.packedColor
+*/
