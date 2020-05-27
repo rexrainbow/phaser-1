@@ -1,7 +1,7 @@
 import * as Easing from '../src/math/easing';
 
 import { AddChild, AddChildren } from '../src/display';
-import { BackgroundColor, CanvasRenderer, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
+import { BackgroundColor, Parent, Scenes, SetCanvas, SetWebGL, Size } from '../src/config';
 
 import { AddTween } from '../src/motion/tween/nano/AddTween';
 import { Game } from '../src/Game';
@@ -34,18 +34,18 @@ class Demo extends Scene
 
         loader.start().then(() => {
 
-            // const logo = new Sprite(400, 100, 'logo').setRotation(0.5);
-            // const rocket = new Sprite(-200, 300, 'rocket');
+            const logo = new Sprite(400, 100, 'logo').setRotation(0.5);
+            const rocket = new Sprite(200, 300, 'rocket');
             const bubble = new Sprite(400, 500, 'bubble').setScale(0.5);
 
-            // AddTween(logo).to(3, { y: 500, rotation: 0 }).easing(Easing.Bounce.Out).repeat(1);
-            // AddTween(rocket).delay(2).to(1.5, { x: 800 }).easing(Easing.Quadratic.In);
+            AddTween(logo).to(3000, { y: 500, rotation: 0 }).easing(Easing.Bounce.Out).repeat(100);
+            AddTween(rocket).delay(2000).to(1500, { x: 800 }).easing(Easing.Quadratic.In);
 
             // AddTween(bubble).to(2000, { y: '-300' }).easing(Easing.Bounce.Out).repeat(2).yoyo();
 
             // AddTween(bubble).to(2, { y: 600 }).yoyo().easing(Easing.Bounce.Out).hold(2);
 
-            // AddTween(bubble).from(2000, { y: '-600' }).yoyo().easing(Easing.Bounce.Out).repeat(2, 2000).hold(500).delay(1000);
+            AddTween(bubble).from(2000, { y: '-600' }).yoyo().easing(Easing.Bounce.Out).repeat(2, 2000).hold(500).delay(1000);
 
             // AddTween(bubble).from(3, { y: 600 }).yoyo().easing(Easing.Bounce.Out);
 
@@ -53,7 +53,7 @@ class Demo extends Scene
 
             // AddChildren(world, logo, rocket);
 
-            AddChildren(world, bubble);
+            AddChildren(world, logo, rocket, bubble);
 
         });
     }
@@ -62,7 +62,7 @@ class Demo extends Scene
 export default function (): void
 {
     new Game(
-        CanvasRenderer(),
+        SetWebGL(),
         Size(800, 600),
         Parent('gameParent'),
         BackgroundColor(0x2d2d2d),
