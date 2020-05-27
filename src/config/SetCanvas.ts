@@ -1,7 +1,7 @@
 import { CanvasRenderer as Renderer } from '../renderer/canvas/CanvasRenderer';
 import { SetRenderer } from './SetRenderer';
 
-function CanvasRenderer (): () => void
+function SetCanvas (): () => void
 {
     return (): void =>
     {
@@ -10,5 +10,5 @@ function CanvasRenderer (): () => void
 }
 
 export {
-    CanvasRenderer
+    SetCanvas
 };

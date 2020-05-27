@@ -1,7 +1,7 @@
 import { WebGLRenderer as Renderer } from '../renderer/webgl1/WebGLRenderer';
 import { SetRenderer } from './SetRenderer';
 
-function WebGLRenderer (): () => void
+function SetWebGL (): () => void
 {
     return (): void =>
     {
@@ -10,5 +10,5 @@ function WebGLRenderer (): () => void
 }
 
 export {
-    WebGLRenderer
+    SetWebGL
 };
