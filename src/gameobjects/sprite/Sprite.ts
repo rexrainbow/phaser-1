@@ -12,18 +12,14 @@ import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
 import { Texture } from '../../textures/Texture';
 import { UpdateVertices } from './UpdateVertices';
+import { Vertex } from '../components/Vertex';
 
 export class Sprite extends Container implements ISprite
 {
     texture: Texture;
     frame: Frame;
     hasTexture: boolean = false;
-
-    vertexData: Float32Array;
-    vertexColor: Uint32Array;
-
-    vertexAlpha: Float32Array;
-    vertexTint: Uint32Array;
+    vertices: Vertex[];
 
     protected _tint: number = 0xffffff;
 
@@ -33,11 +29,7 @@ export class Sprite extends Container implements ISprite
 
         this.type = 'Sprite';
 
-        this.vertexData = new Float32Array(24).fill(0);
-        this.vertexColor = new Uint32Array(4).fill(4294967295);
-
-        this.vertexAlpha = new Float32Array(4).fill(1);
-        this.vertexTint = new Uint32Array(4).fill(0xffffff);
+        this.vertices = [ new Vertex(), new Vertex(), new Vertex(), new Vertex() ];
 
         this.setTexture(texture, frame);
     }
@@ -103,14 +95,12 @@ export class Sprite extends Container implements ISprite
         {
             this._alpha = value;
 
-            const vertexAlpha = this.vertexAlpha;
+            this.vertices.forEach(vertex =>
+            {
+                vertex.setAlpha(value);
+            });
 
-            vertexAlpha[0] = value;
-            vertexAlpha[1] = value;
-            vertexAlpha[2] = value;
-            vertexAlpha[3] = value;
-
-            this.setDirty(DIRTY_CONST.ALPHA);
+            this.setDirty(DIRTY_CONST.COLORS);
         }
     }
 
@@ -125,12 +115,10 @@ export class Sprite extends Container implements ISprite
         {
             this._tint = value;
 
-            const vertexTint = this.vertexTint;
-
-            vertexTint[0] = value;
-            vertexTint[1] = value;
-            vertexTint[2] = value;
-            vertexTint[3] = value;
+            this.vertices.forEach(vertex =>
+            {
+                vertex.setTint(value);
+            });
 
             this.setDirty(DIRTY_CONST.COLORS);
         }
@@ -143,9 +131,6 @@ export class Sprite extends Container implements ISprite
         this.texture = null;
         this.frame = null;
         this.hasTexture = false;
-        this.vertexData = null;
-        this.vertexColor = null;
-        this.vertexAlpha = null;
-        this.vertexTint = null;
+        this.vertices = [];
     }
 }
