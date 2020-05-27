@@ -1,5 +1,4 @@
-import { BoundsComponent, InputComponent, TransformComponent } from './components';
-
+import { BoundsComponent } from './components/bounds/BoundsComponent';
 import { DIRTY_CONST } from './DIRTY_CONST';
 import { DestroyChildren } from '../display/DestroyChildren';
 import { DestroyEvent } from './events/DestroyEvent';
@@ -13,7 +12,9 @@ import { IGameObject } from './IGameObject';
 import { IInputComponent } from './components/input/IInputComponent';
 import { ITransformComponent } from './components/transform/ITransformComponent';
 import { IWebGLRenderer } from '../renderer/webgl1/IWebGLRenderer';
+import { InputComponent } from './components/input/InputComponent';
 import { ReparentChildren } from '../display/ReparentChildren';
+import { TransformComponent } from './components/transform/TransformComponent';
 
 export class GameObject
 {
