@@ -8,7 +8,7 @@ export function BatchSingleQuad (renderer: IWebGLRenderer, x: number, y: number,
     const F32 = buffer.vertexViewF32;
     const U32 = buffer.vertexViewU32;
 
-    const offset = shader.count * buffer.quadElementSize;
+    const offset = shader.count * buffer.entryElementSize;
 
     //  top left
     F32[offset + 0] = x;

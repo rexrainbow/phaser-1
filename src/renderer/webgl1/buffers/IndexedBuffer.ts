@@ -3,7 +3,7 @@ import { GL } from '../GL';
 export class IndexedBuffer
 {
     /**
-     * Maximum number of quads per batch before a flush takes place.
+     * Maximum number of entries per batch before a flush takes place.
      *
      * @type {number}
      */
@@ -47,39 +47,39 @@ export class IndexedBuffer
     vertexByteSize: number;
 
     /**
-     * The size, in bytes, of a single quad in the array buffer.
+     * The size, in bytes, of a single entry in the array buffer.
      *
-     * This is `vertexByteSize * 4`.
-     *
-     * @type {number}
-     */
-    quadByteSize: number;
-
-    /**
-     * The size, in quantity of elements, of a single quad in the element index array.
-     *
-     * This is `vertexElementSize * 4`.
+     * This is `vertexByteSize * 4` for a quad.
      *
      * @type {number}
      */
-    quadElementSize: number;
+    entryByteSize: number;
 
     /**
-     * The total number of entries per quad in the element index array.
+     * The size, in quantity of elements, of a single entry in the element index array.
      *
-     * The IBO contains 6 entries per quad:
+     * This is `vertexElementSize * 4` for a quad.
+     *
+     * @type {number}
+     */
+    entryElementSize: number;
+
+    /**
+     * The total number of entries per entry in the element index array.
+     *
+     * For a quad, the IBO contains 6 entries per entry:
      *
      * 0, 1, 2
      * 2, 3, 0
      *
      * @type {number}
      */
-    quadIndexSize: number;
+    entryIndexSize: number;
 
     /**
      * The size, in bytes, of the Array Buffer.
      *
-     * This is `batchSize * quadByteSize`
+     * This is `batchSize * entryByteSize`
      *
      * @type {number}
      */
@@ -127,45 +127,37 @@ export class IndexedBuffer
      */
     indexBuffer: WebGLBuffer;
 
-    constructor (batchSize: number, dataSize: number, indexSize: number, vertexElementSize: number, quadIndexSize: number)
+    constructor (batchSize: number, dataSize: number, indexSize: number, vertexElementSize: number, entryIndexSize: number, quantity: number)
     {
         this.batchSize = batchSize;
         this.dataSize = dataSize;
         this.indexSize = indexSize;
         this.vertexElementSize = vertexElementSize;
-        this.quadIndexSize = quadIndexSize;
+        this.vertexByteSize = vertexElementSize * dataSize;
+        this.entryIndexSize = entryIndexSize;
 
         //  Derive the remaining values
-        this.vertexByteSize = vertexElementSize * dataSize;
-        this.quadByteSize = this.vertexByteSize * 4;
-        this.quadElementSize = vertexElementSize * 4;
-        this.bufferByteSize = batchSize * this.quadByteSize;
-
-        this.create();
+        this.entryByteSize = this.vertexByteSize * quantity;
+        this.entryElementSize = vertexElementSize * quantity;
+        this.bufferByteSize = batchSize * this.entryByteSize;
     }
 
-    create (): void
+    create (ibo: number[]): void
     {
-        let ibo: number[] = [];
+        const data = new ArrayBuffer(this.bufferByteSize);
 
-        //  Seed the index buffer
-        for (let i = 0; i < (this.batchSize * this.indexSize); i += this.indexSize)
-        {
-            ibo.push(i + 0, i + 1, i + 2, i + 2, i + 3, i + 0);
-        }
-
-        this.data = new ArrayBuffer(this.bufferByteSize);
+        this.data = data;
         this.index = new Uint16Array(ibo);
 
-        this.vertexViewF32 = new Float32Array(this.data);
-        this.vertexViewU32 = new Uint32Array(this.data);
+        this.vertexViewF32 = new Float32Array(data);
+        this.vertexViewU32 = new Uint32Array(data);
 
         const gl = GL.get();
 
         this.vertexBuffer = gl.createBuffer();
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, this.data, gl.DYNAMIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, data, gl.DYNAMIC_DRAW);
 
         this.indexBuffer = gl.createBuffer();
 
@@ -179,6 +171,5 @@ export class IndexedBuffer
 
     destroy (): void
     {
-
     }
 }

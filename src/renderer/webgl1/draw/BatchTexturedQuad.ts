@@ -22,7 +22,7 @@ export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: IWeb
     const F32 = buffer.vertexViewF32;
     const U32 = buffer.vertexViewU32;
 
-    let offset = shader.count * buffer.quadElementSize;
+    let offset = shader.count * buffer.entryElementSize;
 
     vertices.forEach(vertex =>
     {

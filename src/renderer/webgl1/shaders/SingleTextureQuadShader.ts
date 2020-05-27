@@ -7,7 +7,7 @@ import { IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
 import { IShaderUniforms } from './IShaderUniforms';
 import { IWebGLRenderer } from '../IWebGLRenderer';
-import { IndexedBuffer } from '../buffers/IndexedBuffer';
+import { QuadIndexedBuffer } from '../buffers/QuadIndexedBuffer';
 import { Texture } from '../../../textures/Texture';
 import { WebGLRendererInstance } from '../WebGLRendererInstance';
 
@@ -67,7 +67,7 @@ export class SingleTextureQuadShader implements IShader
     attribs: IShaderAttributes = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
     uniforms: IShaderUniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0, uTime: 0, uResolution: 0 };
 
-    buffer: IndexedBuffer;
+    buffer: QuadIndexedBuffer;
 
     /**
      * The total number of quads added to the batch so far.
@@ -107,7 +107,7 @@ export class SingleTextureQuadShader implements IShader
             renderToFBO = false
         } = config;
 
-        this.buffer = new IndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, quadIndexSize);
+        this.buffer = new QuadIndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, quadIndexSize);
 
         this.createShaders(fragmentShader, vertexShader);
 
@@ -247,7 +247,7 @@ export class SingleTextureQuadShader implements IShader
         }
         else
         {
-            const view = buffer.vertexViewF32.subarray(0, count * buffer.quadElementSize);
+            const view = buffer.vertexViewF32.subarray(0, count * buffer.entryElementSize);
 
             gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
         }
@@ -257,7 +257,7 @@ export class SingleTextureQuadShader implements IShader
             renderer.fbo.add(this.framebuffer, true);
         }
 
-        gl.drawElements(gl.TRIANGLES, count * buffer.quadIndexSize, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES, count * buffer.entryIndexSize, gl.UNSIGNED_SHORT, 0);
 
         if (this.renderToFBO)
         {
