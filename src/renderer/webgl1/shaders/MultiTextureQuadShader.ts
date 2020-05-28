@@ -1,33 +1,15 @@
 import { GetMaxTextures } from '../../../config/MaxTextures';
 import { IShader } from './IShader';
 import { IShaderConfig } from './IShaderConfig';
-import { SingleTextureQuadShader } from './SingleTextureQuadShader';
+import { MULTI_QUAD_FRAG } from '../glsl/MULTI_QUAD_FRAG';
+import { SINGLE_QUAD_VERT } from '../glsl/SINGLE_QUAD_VERT';
+import { Shader } from './Shader';
 
-const fragmentShader = `
-#define SHADER_NAME MULTI_QUAD_FRAG
-
-precision highp float;
-
-varying vec2 vTextureCoord;
-varying float vTextureId;
-varying vec4 vTintColor;
-
-uniform sampler2D uTexture[%count%];
-
-void main (void)
+export class MultiTextureQuadShader extends Shader implements IShader
 {
-    vec4 color;
-
-    %forloop%
-
-    gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);
-}`;
-
-export class MultiTextureQuadShader extends SingleTextureQuadShader implements IShader
-{
-    constructor (config: IShaderConfig = { fragmentShader })
+    constructor (config: IShaderConfig = {})
     {
-        super(config);
+        super(config, MULTI_QUAD_FRAG, SINGLE_QUAD_VERT);
     }
 
     createShaders (fragmentShaderSource: string, vertexShaderSource: string): void
