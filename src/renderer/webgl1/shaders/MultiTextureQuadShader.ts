@@ -7,12 +7,14 @@ import { Shader } from './Shader';
 
 export class MultiTextureQuadShader extends Shader implements IShader
 {
+    uniforms: { uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array, uTexture: number[] };
+
     constructor (config: IShaderConfig = {})
     {
         super(config, MULTI_QUAD_FRAG, SINGLE_QUAD_VERT);
     }
 
-    createShaders (fragmentShaderSource: string, vertexShaderSource: string): void
+    create (fragmentShaderSource: string, vertexShaderSource: string): void
     {
         const maxTextures = GetMaxTextures();
 
@@ -40,11 +42,19 @@ export class MultiTextureQuadShader extends Shader implements IShader
 
         // console.log(fragmentShaderSource);
 
-        super.createShaders(fragmentShaderSource, vertexShaderSource);
+        super.create(fragmentShaderSource, vertexShaderSource);
+
+        this.uniforms.uTexture = this.renderer.textures.textureIndex;
     }
 
-    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array): boolean
+    bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array): boolean
     {
+        this.uniforms.uProjectionMatrix = uProjectionMatrix;
+        this.uniforms.uCameraMatrix = uCameraMatrix;
+
+        return this.setUniforms();
+
+        /*
         if (!this.program)
         {
             return false;
@@ -52,18 +62,40 @@ export class MultiTextureQuadShader extends Shader implements IShader
 
         const renderer = this.renderer;
         const gl = renderer.gl;
-        const uniforms = this.uniforms;
 
         gl.useProgram(this.program);
 
-        gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
-        gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
-        gl.uniform1iv(uniforms.uTexture, renderer.textures.textureIndex);
-        gl.uniform1f(uniforms.uTime, performance.now());
-        gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
+        const config = {
+            uProjectionMatrix,
+            uCameraMatrix,
+            uTexture: renderer.textures.textureIndex
+        };
 
-        this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
+        for (const [ name, setter ] of this.uniforms.entries())
+        {
+            setter(config[name]);
+        }
+        */
 
-        return true;
+        // if (!this.program)
+        // {
+        //     return false;
+        // }
+
+        // const renderer = this.renderer;
+        // const gl = renderer.gl;
+        // const uniforms = this.uniforms;
+
+        // gl.useProgram(this.program);
+
+        // gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
+        // gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
+        // gl.uniform1iv(uniforms.uTexture, renderer.textures.textureIndex);
+        // gl.uniform1f(uniforms.uTime, performance.now());
+        // gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
+
+        // this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
+
+        // return true;
     }
 }
