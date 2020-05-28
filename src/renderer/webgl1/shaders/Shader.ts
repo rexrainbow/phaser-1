@@ -1,25 +1,31 @@
 import { GetHeight, GetResolution, GetWidth } from '../../../config/Size';
 
 import { CreateFramebuffer } from '../fbo/CreateFramebuffer';
+import { CreateProgram } from './CreateProgram';
+import { CreateShader } from './CreateShader';
+import { CreateUniforms } from './CreateUniforms';
 import { GLTextureBinding } from '../textures/GLTextureBinding';
 import { IShader } from './IShader';
 import { IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
-import { IShaderUniforms } from './IShaderUniforms';
 import { IWebGLRenderer } from '../IWebGLRenderer';
 import { QuadIndexedBuffer } from '../buffers/QuadIndexedBuffer';
 import { Texture } from '../../../textures/Texture';
 import { WebGLRendererInstance } from '../WebGLRendererInstance';
 
-export class Shader implements IShader
+export class Shader
 {
     renderer: IWebGLRenderer;
 
     program: WebGLProgram;
 
     attribs: IShaderAttributes = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
-    uniforms: IShaderUniforms = { uProjectionMatrix: 0, uCameraMatrix: 0, uTexture: 0, uTime: 0, uResolution: 0 };
 
+    uniforms: {} = {};
+
+    uniformSetters: Map<string, Function>;
+
+    //  TODO - Set by the parent shader
     buffer: QuadIndexedBuffer;
 
     /**
@@ -28,14 +34,14 @@ export class Shader implements IShader
      *
      * @type {number}
      */
-    count: number;
+    count: number = 0;
 
     /**
      * The total number of quads previously flushed.
      *
      * @type {number}
      */
-    prevCount: number;
+    prevCount: number = 0;
 
     texture: Texture;
     framebuffer: WebGLFramebuffer;
@@ -60,9 +66,7 @@ export class Shader implements IShader
 
         this.buffer = new QuadIndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, quadIndexSize);
 
-        this.createShaders(fragmentShader, vertexShader);
-
-        this.count = 0;
+        this.create(fragmentShader, vertexShader);
 
         this.renderToFBO = renderToFBO;
 
@@ -77,54 +81,32 @@ export class Shader implements IShader
         this.framebuffer = binding.framebuffer;
     }
 
-    createShaders (fragmentShaderSource: string, vertexShaderSource: string): void
+    create (fragmentShaderSource: string, vertexShaderSource: string): void
     {
         const gl = this.renderer.gl;
 
-        //  Create the shaders
+        const fragmentShader = CreateShader(gl, fragmentShaderSource, gl.FRAGMENT_SHADER);
+        const vertexShader = CreateShader(gl, vertexShaderSource, gl.VERTEX_SHADER);
 
-        const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-
-        gl.shaderSource(fragmentShader, fragmentShaderSource);
-        gl.compileShader(fragmentShader);
-
-        let failed = false;
-        let message = gl.getShaderInfoLog(fragmentShader);
-
-        if (message.length > 0)
-        {
-            failed = true;
-            console.error(message);
-        }
-
-        const vertexShader = gl.createShader(gl.VERTEX_SHADER);
-
-        gl.shaderSource(vertexShader, vertexShaderSource);
-        gl.compileShader(vertexShader);
-
-        message = gl.getShaderInfoLog(fragmentShader);
-
-        if (message.length > 0)
-        {
-            failed = true;
-            console.error(message);
-        }
-
-        if (failed)
+        if (!fragmentShader || !vertexShader)
         {
             return;
         }
 
-        const program = gl.createProgram();
+        const program = CreateProgram(gl, fragmentShader, vertexShader);
 
-        gl.attachShader(program, vertexShader);
-        gl.attachShader(program, fragmentShader);
-        gl.linkProgram(program);
+        if (!program)
+        {
+            return;
+        }
 
         gl.useProgram(program);
 
         this.program = program;
 
+        this.uniformSetters = CreateUniforms(gl, program);
+
+        //  TODO - CreateAttributes
         for (const key of Object.keys(this.attribs) as Array<keyof IShaderAttributes>)
         {
             const location = gl.getAttribLocation(program, key);
@@ -133,14 +115,9 @@ export class Shader implements IShader
 
             this.attribs[key] = location;
         }
-
-        for (const key of Object.keys(this.uniforms) as Array<keyof IShaderUniforms>)
-        {
-            this.uniforms[key] = gl.getUniformLocation(program, key);
-        }
     }
 
-    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array, textureID: number): boolean
+    setUniforms (): boolean
     {
         if (!this.program)
         {
@@ -149,18 +126,28 @@ export class Shader implements IShader
 
         const renderer = this.renderer;
         const gl = renderer.gl;
-        const uniforms = this.uniforms;
 
         gl.useProgram(this.program);
 
-        gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
-        gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
+        //  TODO - Defined in the parent shader?
+        // const config = {
+        //     uProjectionMatrix,
+        //     uCameraMatrix,
+        //     uTexture
+        // };
 
-        //  0
-        gl.uniform1i(uniforms.uTexture, renderer.textures.textureIndex[textureID]);
+        const uniforms = this.uniforms;
 
-        gl.uniform1f(uniforms.uTime, performance.now());
-        gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
+        for (const [ name, setter ] of this.uniformSetters.entries())
+        {
+            setter(uniforms[name]);
+        }
+
+        // gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
+        // gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
+        // gl.uniform1i(uniforms.uTexture, renderer.textures.textureIndex[textureID]);
+        // gl.uniform1f(uniforms.uTime, performance.now());
+        // gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
 
         this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
 
