@@ -12,9 +12,10 @@ export interface IShader
     texture: Texture;
     framebuffer: WebGLFramebuffer;
     renderToFBO: boolean;
-    createShaders (fragmentShaderSource: string, vertexShaderSource: string): void;
-    bind (projectionMatrix: Float32Array, cameraMatrix: Float32Array, textureID?: number): boolean;
+    create (fragmentShaderSource: string, vertexShaderSource: string): void;
+    bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array, uTexture?: number): boolean;
     bindBuffers (indexBuffer: WebGLBuffer, vertexBuffer: WebGLBuffer): void;
+    setUniforms (): boolean;
     draw (count: number): void;
     flush (): boolean;
 }
