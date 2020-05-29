@@ -21,7 +21,7 @@ export function CreateProgram (gl: WebGLRenderingContext, ...shaders: WebGLShade
 
         gl.deleteProgram(program);
 
-        DeleteShaders(gl, ...shaders);
+        DeleteShaders(...shaders);
 
         return null;
     }
