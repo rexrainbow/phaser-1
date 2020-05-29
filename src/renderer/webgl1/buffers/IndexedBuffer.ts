@@ -130,16 +130,17 @@ export class IndexedBuffer
 
     indexLayout: number[];
 
+    //  quantity = number of elements per entry
     constructor (batchSize: number, dataSize: number, indexSize: number, vertexElementSize: number, entryIndexSize: number, quantity: number, indexLayout?: number[])
     {
         this.batchSize = batchSize;
         this.dataSize = dataSize;
         this.indexSize = indexSize;
         this.vertexElementSize = vertexElementSize;
-        this.vertexByteSize = vertexElementSize * dataSize;
         this.entryIndexSize = entryIndexSize;
 
         //  Derive the remaining values
+        this.vertexByteSize = vertexElementSize * dataSize;
         this.entryByteSize = this.vertexByteSize * quantity;
         this.entryElementSize = vertexElementSize * quantity;
         this.bufferByteSize = batchSize * this.entryByteSize;
