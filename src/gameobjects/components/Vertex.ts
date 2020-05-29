@@ -4,6 +4,7 @@ export class Vertex
 {
     x: number = 0;
     y: number = 0;
+    z: number = 0;
 
     u: number = 0;
     v: number = 0;
@@ -14,10 +15,18 @@ export class Vertex
     alpha: number = 1;
     color: number = 4294967295;
 
-    setPosition (x: number, y: number): this
+    constructor (x: number = 0, y: number = 0, z: number = 0)
     {
         this.x = x;
         this.y = y;
+        this.z = z;
+    }
+
+    setPosition (x: number, y: number, z: number = 0): this
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
 
         return this;
     }
@@ -26,6 +35,16 @@ export class Vertex
     {
         this.u = u;
         this.v = v;
+
+        return this;
+    }
+
+    setColor (color: number, alpha: number = 1): this
+    {
+        this.tint = color;
+        this.alpha = alpha;
+
+        this.packColor();
 
         return this;
     }
