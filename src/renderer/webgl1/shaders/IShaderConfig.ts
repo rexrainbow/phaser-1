@@ -1,14 +1,19 @@
 export type IShaderConfig = {
-    maxTextures?: number;
+    attributes?: Object;
     batchSize?: number;
     dataSize?: number;
-    indexSize?: number;
-    vertexElementSize?: number;
-    quadIndexSize?: number;
+    entryIndexSize?: number;
     fragmentShader?: string;
+    height?: number;
+    indexLayout?: number[];
+    indexSize?: number;
+    maxTextures?: number;
+    quadIndexSize?: number;
+    quantity?: number;
+    renderToFBO?: boolean;
+    resolution?: number;
+    uniforms?: Object;
+    vertexElementSize?: number;
     vertexShader?: string;
     width?: number;
-    height?: number;
-    resolution?: number;
-    renderToFBO?: boolean;
 };
