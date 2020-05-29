@@ -8,7 +8,6 @@ export type IShaderConfig = {
     indexLayout?: number[];
     indexSize?: number;
     maxTextures?: number;
-    quadIndexSize?: number;
     quantity?: number;
     renderToFBO?: boolean;
     resolution?: number;
