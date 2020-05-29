@@ -1,17 +1,23 @@
 import { GetMaxTextures } from '../../../config/MaxTextures';
-import { IShader } from './IShader';
+import { IDefaultAttribs } from './IDefaultAttribs';
+import { IMultiTextureQuadShaderUniforms } from './IMultiTextureQuadShaderUniforms';
 import { IShaderConfig } from './IShaderConfig';
 import { MULTI_QUAD_FRAG } from '../glsl/MULTI_QUAD_FRAG';
-import { SINGLE_QUAD_VERT } from '../glsl/SINGLE_QUAD_VERT';
 import { Shader } from './Shader';
 
-export class MultiTextureQuadShader extends Shader implements IShader
+export class MultiTextureQuadShader extends Shader
 {
-    uniforms: { uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array, uTexture: number[] };
+    attributes: IDefaultAttribs;
+    uniforms: IMultiTextureQuadShaderUniforms;
 
     constructor (config: IShaderConfig = {})
     {
-        super(config, MULTI_QUAD_FRAG, SINGLE_QUAD_VERT);
+        if (!config.fragmentShader)
+        {
+            config.fragmentShader = MULTI_QUAD_FRAG;
+        }
+
+        super(config);
     }
 
     create (fragmentShaderSource: string, vertexShaderSource: string): void
@@ -49,53 +55,6 @@ export class MultiTextureQuadShader extends Shader implements IShader
 
     bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array): boolean
     {
-        this.uniforms.uProjectionMatrix = uProjectionMatrix;
-        this.uniforms.uCameraMatrix = uCameraMatrix;
-
-        return this.setUniforms();
-
-        /*
-        if (!this.program)
-        {
-            return false;
-        }
-
-        const renderer = this.renderer;
-        const gl = renderer.gl;
-
-        gl.useProgram(this.program);
-
-        const config = {
-            uProjectionMatrix,
-            uCameraMatrix,
-            uTexture: renderer.textures.textureIndex
-        };
-
-        for (const [ name, setter ] of this.uniforms.entries())
-        {
-            setter(config[name]);
-        }
-        */
-
-        // if (!this.program)
-        // {
-        //     return false;
-        // }
-
-        // const renderer = this.renderer;
-        // const gl = renderer.gl;
-        // const uniforms = this.uniforms;
-
-        // gl.useProgram(this.program);
-
-        // gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, projectionMatrix);
-        // gl.uniformMatrix4fv(uniforms.uCameraMatrix, false, cameraMatrix);
-        // gl.uniform1iv(uniforms.uTexture, renderer.textures.textureIndex);
-        // gl.uniform1f(uniforms.uTime, performance.now());
-        // gl.uniform2f(uniforms.uResolution, renderer.width, renderer.height);
-
-        // this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
-
-        // return true;
+        return super.bind(uProjectionMatrix, uCameraMatrix);
     }
 }
