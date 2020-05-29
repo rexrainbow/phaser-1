@@ -11,6 +11,7 @@ import { SetGLTextureFilterMode } from './textures/SetGLTextureFilterMode';
 import { UpdateGLTexture } from './textures/UpdateGLTexture';
 import { WebGLRenderer } from './WebGLRenderer';
 
+// TODO - Create indexes in all sub-folders and just export those
 export {
     CreateFramebuffer,
     CreateGLTexture,
