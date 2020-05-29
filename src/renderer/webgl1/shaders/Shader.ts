@@ -5,28 +5,29 @@ import { CreateProgram } from './CreateProgram';
 import { CreateShader } from './CreateShader';
 import { CreateUniforms } from './CreateUniforms';
 import { GLTextureBinding } from '../textures/GLTextureBinding';
+import { IDefaultAttribs } from './IDefaultAttribs';
 import { IShader } from './IShader';
-import { IShaderAttributes } from './IShaderAttributes';
 import { IShaderConfig } from './IShaderConfig';
 import { IWebGLRenderer } from '../IWebGLRenderer';
-import { QuadIndexedBuffer } from '../buffers/QuadIndexedBuffer';
+import { IndexedBuffer } from '../buffers/IndexedBuffer';
+import { SINGLE_QUAD_FRAG } from '../glsl/SINGLE_QUAD_FRAG';
+import { SINGLE_QUAD_VERT } from '../glsl/SINGLE_QUAD_VERT';
 import { Texture } from '../../../textures/Texture';
 import { WebGLRendererInstance } from '../WebGLRendererInstance';
 
-export class Shader
+export class Shader implements IShader
 {
     renderer: IWebGLRenderer;
 
     program: WebGLProgram;
 
-    attribs: IShaderAttributes = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 };
+    attributes: Object;
 
-    uniforms: {} = {};
+    uniforms: Object;
 
     uniformSetters: Map<string, Function>;
 
-    //  TODO - Set by the parent shader
-    buffer: QuadIndexedBuffer;
+    buffer: IndexedBuffer;
 
     /**
      * The total number of quads added to the batch so far.
@@ -48,23 +49,32 @@ export class Shader
 
     renderToFBO: boolean = false;
 
-    constructor (config: IShaderConfig = {}, fragmentShader: string, vertexShader: string)
+    constructor (config: IShaderConfig = {})
     {
         this.renderer = WebGLRendererInstance.get();
 
         const {
+            attributes = { aVertexPosition: 0, aTextureCoord: 0, aTextureId: 0, aTintColor: 0 },
             batchSize = 4096,
             dataSize = 4,
-            indexSize = 4,
-            vertexElementSize = 6,
-            quadIndexSize = 6,
-            width = GetWidth(),
+            entryIndexSize = 6,
+            fragmentShader = SINGLE_QUAD_FRAG,
             height = GetHeight(),
+            indexLayout = [ 0, 1, 2, 2, 3, 0 ],
+            indexSize = 4,
+            quantity = 4,
+            renderToFBO = false,
             resolution = GetResolution(),
-            renderToFBO = false
+            vertexElementSize = 6,
+            vertexShader = SINGLE_QUAD_VERT,
+            width = GetWidth(),
+            uniforms = { uProjectionMatrix: new Float32Array(), uCameraMatrix: new Float32Array(), uTexture: 0 }
         } = config;
 
-        this.buffer = new QuadIndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, quadIndexSize);
+        this.buffer = new IndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, entryIndexSize, quantity, indexLayout);
+
+        this.attributes = attributes;
+        this.uniforms = uniforms;
 
         this.create(fragmentShader, vertexShader);
 
@@ -106,15 +116,32 @@ export class Shader
 
         this.uniformSetters = CreateUniforms(gl, program);
 
-        //  TODO - CreateAttributes
-        for (const key of Object.keys(this.attribs) as Array<keyof IShaderAttributes>)
+        //  TODO - Turn this into CreateAttributes
+        const attribs = this.attributes;
+
+        for (const key of Object.keys(attribs) as Array<keyof IDefaultAttribs>)
         {
             const location = gl.getAttribLocation(program, key);
 
             gl.enableVertexAttribArray(location);
 
-            this.attribs[key] = location;
+            attribs[key] = location;
         }
+    }
+
+    bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array, uTexture?: number): boolean
+    {
+        const uniforms = this.uniforms;
+
+        uniforms['uProjectionMatrix'] = uProjectionMatrix;
+        uniforms['uCameraMatrix'] = uCameraMatrix;
+
+        if (uTexture)
+        {
+            uniforms['uTexture'] = uTexture;
+        }
+
+        return this.setUniforms();
     }
 
     setUniforms (): boolean
@@ -128,13 +155,6 @@ export class Shader
         const gl = renderer.gl;
 
         gl.useProgram(this.program);
-
-        //  TODO - Defined in the parent shader?
-        // const config = {
-        //     uProjectionMatrix,
-        //     uCameraMatrix,
-        //     uTexture
-        // };
 
         const uniforms = this.uniforms;
 
@@ -158,7 +178,7 @@ export class Shader
     {
         const gl = this.renderer.gl;
         const stride = this.buffer.vertexByteSize;
-        const attribs = this.attribs;
+        const attribs = this.attributes as IDefaultAttribs;
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
