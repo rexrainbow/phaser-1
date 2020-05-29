@@ -127,7 +127,9 @@ export class IndexedBuffer
      */
     indexBuffer: WebGLBuffer;
 
-    constructor (batchSize: number, dataSize: number, indexSize: number, vertexElementSize: number, entryIndexSize: number, quantity: number)
+    indexLayout: number[];
+
+    constructor (batchSize: number, dataSize: number, indexSize: number, vertexElementSize: number, entryIndexSize: number, quantity: number, indexLayout?: number[])
     {
         this.batchSize = batchSize;
         this.dataSize = dataSize;
@@ -140,14 +142,36 @@ export class IndexedBuffer
         this.entryByteSize = this.vertexByteSize * quantity;
         this.entryElementSize = vertexElementSize * quantity;
         this.bufferByteSize = batchSize * this.entryByteSize;
+
+        const seededIndexBuffer = [];
+
+        if (indexLayout)
+        {
+            this.indexLayout = indexLayout;
+
+            //  [ 0, 1, 2, 2, 3, 0 ]
+
+            //  Seed the index buffer
+            for (let i = 0; i < (batchSize * indexSize); i += indexSize)
+            {
+                for (let c = 0; c < indexLayout.length; c++)
+                {
+                    seededIndexBuffer.push(i + indexLayout[c]);
+                }
+
+                // ibo.push(i + 0, i + 1, i + 2, i + 2, i + 3, i + 0);
+            }
+        }
+
+        this.create(seededIndexBuffer);
     }
 
-    create (ibo: number[]): void
+    create (seededIndex: number[]): void
     {
         const data = new ArrayBuffer(this.bufferByteSize);
 
         this.data = data;
-        this.index = new Uint16Array(ibo);
+        this.index = new Uint16Array(seededIndex);
 
         this.vertexViewF32 = new Float32Array(data);
         this.vertexViewU32 = new Uint32Array(data);
@@ -166,7 +190,7 @@ export class IndexedBuffer
 
         //  Tidy-up
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
-        ibo = [];
+        seededIndex = [];
     }
 
     destroy (): void
