@@ -1,3 +1,4 @@
+import { DeleteGLBuffer } from './DeleteGLBuffer';
 import { GL } from '../GL';
 
 export class IndexedBuffer
@@ -149,8 +150,6 @@ export class IndexedBuffer
         {
             this.indexLayout = indexLayout;
 
-            //  [ 0, 1, 2, 2, 3, 0 ]
-
             //  Seed the index buffer
             for (let i = 0; i < (batchSize * indexSize); i += indexSize)
             {
@@ -158,8 +157,6 @@ export class IndexedBuffer
                 {
                     seededIndexBuffer.push(i + indexLayout[c]);
                 }
-
-                // ibo.push(i + 0, i + 1, i + 2, i + 2, i + 3, i + 0);
             }
         }
 
@@ -188,12 +185,22 @@ export class IndexedBuffer
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.index, gl.STATIC_DRAW);
 
-        //  Tidy-up
+        //  Free memory
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
         seededIndex = [];
     }
 
     destroy (): void
     {
+        DeleteGLBuffer(this.vertexBuffer);
+        DeleteGLBuffer(this.indexBuffer);
+
+        this.data = null;
+        this.vertexViewF32 = null;
+        this.vertexViewU32 = null;
+        this.index = null;
+        this.indexLayout = null;
+        this.vertexBuffer = null;
+        this.indexBuffer = null;
     }
 }
