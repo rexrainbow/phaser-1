@@ -1,4 +1,8 @@
+import * as GLMatrix from 'gl-matrix';
 import * as GL_CONST from '../src/renderer/webgl1/GL_CONST';
+import * as mat4 from 'gl-matrix/mat4';
+import * as quat from 'gl-matrix/quat';
+import * as vec3 from 'gl-matrix/vec3';
 
 import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
@@ -45,7 +49,7 @@ precision highp float;
 void main (void)
 {
     // gl_FragColor = vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);
-    gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+    gl_FragColor = vec4(0.0, 1.0, 0.0, 0.1);
 }`;
 
 const spikeVerts = [
@@ -90,29 +94,6 @@ const spikeFaces = [
     [ 8, 4, 14 ],
     [ 4, 2, 14 ],
     [ 2, 6, 14 ]
-]
-
-const shipVerts = [
-    [ -1.961901, -0.491214, 0.960000 ],
-    [ -1.594960, 0.497596, 0.649128 ],
-    [ -1.961901, -0.491214, -1.086735 ],
-    [ -1.594960, 0.497596, -0.775863 ],
-    [ 1.962349, -0.491214, 0.960000 ],
-    [ 1.595409, 0.497596, 0.649128 ],
-    [ 1.962349, -0.491214, -1.086735 ],
-    [ 1.595409, 0.497596, -0.775863 ],
-    [ -0.512424, 0.295207, -0.922810 ],
-    [ -0.630348, -0.288825, -1.086735 ],
-    [ 0.630797, -0.288825, -1.086735 ],
-    [ 0.512872, 0.295207, -0.922810 ],
-    [ -0.512424, 0.295207, -2.229589 ],
-    [ -0.630348, -0.288825, -2.229589 ],
-    [ 0.630797, -0.288825, -2.229589 ],
-    [ 0.512872, 0.295207, -2.229589 ],
-    [ -0.512424, 0.295207, -2.841997 ],
-    [ -0.630348, -0.288825, -2.841997 ],
-    [ 0.630797, -0.288825, -2.841997 ],
-    [ 0.512872, 0.295207, -2.841997 ]
 ];
 
 class Cube extends Layer
@@ -130,24 +111,23 @@ class Cube extends Layer
 
         this.vertices = [];
 
-        const s = 100;
+        const s = 1;
+        const offx = 0;
+        const offy = 0;
+        const offz = 0;
 
         for (let i = 0; i < spikeFaces.length; i++)
         {
             const face = spikeFaces[i];
 
-            const v1 = spikeVerts[face[0]];
-            const v2 = spikeVerts[face[1]];
-            const v3 = spikeVerts[face[2]];
+            const v1 = spikeVerts[face[0] - 1];
+            const v2 = spikeVerts[face[1] - 1];
+            const v3 = spikeVerts[face[2] - 1];
 
-            // this.vertices.push(new Vertex(100 + (v1 * s), 100 + (v2 * s), 100 + (v3 * s)).setColor(0xff0000));
+            this.vertices.push(new Vertex(offx + (v1[0] * s), offy + (v1[1] * s), offz + (v1[2] * s)));
+            this.vertices.push(new Vertex(offx + (v2[0] * s), offy + (v2[1] * s), offz + (v2[2] * s)));
+            this.vertices.push(new Vertex(offx + (v3[0] * s), offy + (v3[1] * s), offz + (v3[2] * s)));
         }
-
-        console.log(this.vertices);
-
-        // new Vertex(0, 0, 0).setColor(0xff0000),
-        // new Vertex(0, 300, 0).setColor(0xff0000),
-        // new Vertex(300, 300, 0).setColor(0xff0000)
     }
 
     renderGL <T extends IWebGLRenderer> (renderer: T): void
@@ -180,6 +160,238 @@ class Cube extends Layer
     }
 }
 
+class Camera3D
+{
+    left: vec3;
+    up: vec3;
+    dir: vec3;
+    pos: vec3;
+
+    projectionTransform: mat4;
+    projectionMatrix: mat4;
+    viewMatrix: mat4;
+
+    fov: number = 55;
+    near: number = 0.1;
+    far: number = 1000;
+
+    aspectRatio: number = 800 / 600;
+
+    constructor ()
+    {
+        this.left = vec3.fromValues(1, 0, 0);
+        this.up = vec3.fromValues(0, 1, 0);
+        this.dir = vec3.fromValues(0, 0, 1);
+        this.pos = vec3.fromValues(0, 0, 0);
+
+        this.setPosition([ 0, 0, 0.1 ]);
+
+        this.refresh();
+    }
+
+    getLeft (): vec3
+    {
+        return vec3.clone(this.left);
+    }
+
+    getUp (): vec3
+    {
+        return vec3.clone(this.up);
+    }
+
+    getPosition (): vec3
+    {
+        return vec3.clone(this.pos);
+    }
+
+    getProjectionMatrix (): mat4
+    {
+        return mat4.clone(this.projectionMatrix);
+    }
+
+    getViewMatrix (): mat4
+    {
+        return mat4.clone(this.viewMatrix);
+    }
+
+    getNearClippingPlane (): number
+    {
+        return this.near;
+    }
+
+    getFarClippingPlane (): number
+    {
+        return this.far;
+    }
+
+    getFieldOfView (): number
+    {
+        return this.fov;
+    }
+
+    setFarClippingPlane (far: number)
+    {
+        if (far > 0)
+        {
+            this.far = far;
+        }
+    }
+
+    setNearClippingPlane (near: number)
+    {
+        if (near > 0)
+        {
+            this.near = near;
+        }
+    }
+
+    setFieldOfView (fov: number)
+    {
+        if (fov > 0 && fov < 180)
+        {
+            this.fov = fov;
+        }
+    }
+
+    setZ (value: number)
+    {
+        this.pos[2] = value;
+    }
+
+    //  Hello?
+
+    setPosition (newVec: vec3)
+    {
+        this.pos = vec3.fromValues(newVec[0], newVec[1], newVec[2]);
+    }
+
+    setLookAtPoint (newVec: vec3)
+    {
+        vec3.subtract(this.dir, newVec, this.pos);
+        vec3.normalize(this.dir, this.dir);
+        vec3.cross(this.left, vec3.fromValues(0, 1, 0), this.dir);
+        vec3.normalize(this.left, this.left);
+        vec3.cross(this.up, this.dir, this.left);
+        vec3.normalize(this.up, this.up);
+    }
+
+    rotateOnAxis (axisVec: vec3, angle: number)
+    {
+        let q = quat.create();
+
+        quat.setAxisAngle(q, axisVec, angle);
+
+        vec3.transformQuat(this.dir, this.dir, q);
+        vec3.transformQuat(this.left, this.left, q);
+        vec3.transformQuat(this.up, this.up, q);
+
+        vec3.normalize(this.up, this.up);
+        vec3.normalize(this.left, this.left);
+        vec3.normalize(this.dir, this.dir);
+    }
+
+    yaw (angle: number)
+    {
+        this.rotateOnAxis(this.up, angle);
+    }
+
+    pitch (angle: number)
+    {
+        this.rotateOnAxis(this.left, angle);
+    }
+
+    roll (angle: number)
+    {
+        this.rotateOnAxis(this.dir, angle);
+    }
+
+    moveForward (s: number)
+    {
+        let newPosition = [
+            this.pos[0] - s * this.dir[0],
+            this.pos[1] - s * this.dir[1],
+            this.pos[2] - s * this.dir[2]
+        ];
+
+        this.setPosition(newPosition);
+    }
+
+    refresh ()
+    {
+        let matView = mat4.create();
+        let lookAtPosition = vec3.create();
+
+        vec3.add(lookAtPosition, this.pos, this.dir);
+
+        mat4.lookAt(matView, this.pos, lookAtPosition, this.up);
+
+        mat4.translate(matView, matView, vec3.fromValues(-this.pos[0], -this.pos[1], -this.pos[2]));
+
+        this.viewMatrix = matView;
+
+        this.projectionMatrix = mat4.create();
+
+        mat4.perspective(this.projectionMatrix, GLMatrix.glMatrix.toRadian(this.fov), this.aspectRatio, this.near, this.far);
+    }
+}
+
+class TestShader extends Shader
+{
+    camera: Camera3D;
+
+    constructor ()
+    {
+        /**
+         * The amount of elements / floats a single vertex consists of.
+         *
+         * position (x,y,z - 3 floats)
+         * color (uint)
+         */
+        // const vertexElementSize = 4;
+        const vertexElementSize = 3;
+
+        // const indexLayout = [ 0, 1, 2, 3 ];
+        const indexLayout = [ 0, 1, 2 ];
+
+        /**
+         * The total number of elements per entry in the index array.
+         */
+        //  This is just indexLayout.length:
+        const entryIndexSize = indexLayout.length;
+
+        //  Number of vertices per entry
+        const quantity = 3;
+
+        super({
+            fragmentShader,
+            vertexShader,
+            entryIndexSize,
+            indexLayout,
+            quantity,
+            vertexElementSize,
+            attributes: {
+                aVertexPosition: { size: 3 }
+            }
+        });
+
+        this.camera = new Camera3D();
+
+        window['camera'] = this.camera;
+    }
+
+    bind (): boolean
+    {
+        this.camera.refresh();
+
+        const uniforms = this.uniforms;
+
+        uniforms.set('uProjectionMatrix', this.camera.projectionMatrix);
+        uniforms.set('uCameraMatrix', this.camera.viewMatrix);
+
+        return this.updateUniforms();
+    }
+}
+
 class Demo extends Scene
 {
     constructor ()
@@ -190,63 +402,20 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        loader.setPath('/phaser4-examples/public/assets/');
-        // loader.setPath('/examples/public/assets/');
+        // loader.setPath('/phaser4-examples/public/assets/');
+        loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('bg', 'checker.png'));
         loader.add(ImageFile('logo', 'logo.png'));
 
         loader.start().then(() => {
 
-            /**
-             * The amount of elements / floats a single vertex consists of.
-             *
-             * position (x,y,z - 3 floats)
-             * color (uint)
-             */
-            // const vertexElementSize = 4;
-            const vertexElementSize = 3;
-
-            // const indexLayout = [ 0, 1, 2, 3 ];
-            const indexLayout = [ 0, 1, 2 ];
-
-            /**
-             * The total number of elements per entry in the index array.
-             */
-            //  This is just indexLayout.length:
-            const entryIndexSize = indexLayout.length;
-
-            //  Number of vertices per entry
-            const quantity = 3;
-
-            // const coneShader = new Shader({
-            //     fragmentShader,
-            //     vertexShader,
-            //     entryIndexSize,
-            //     indexLayout,
-            //     quantity,
-            //     vertexElementSize,
-            //     attributes: {
-            //         aVertexPosition: { size: 3 },
-            //         aTintColor: { size: 4, type: GL_CONST.UNSIGNED_BYTE, normalized: true, offset: 12 }
-            //     }
-            // });
-
-            const coneShader = new Shader({
-                fragmentShader,
-                vertexShader,
-                entryIndexSize,
-                indexLayout,
-                quantity,
-                vertexElementSize,
-                attributes: {
-                    aVertexPosition: { size: 3 }
-                }
-            });
-
             const bg = new Sprite(400, 300, 'bg');
-            const cube = new Cube(coneShader);
+            const cube = new Cube(new TestShader());
             const logo = new Sprite(400, 300, 'logo');
+
+            bg.alpha = 0.5;
+            logo.alpha = 0.5;
 
             // AddChildren(world, bg, cube);
             AddChildren(world, bg, cube, logo);
@@ -258,13 +427,14 @@ class Demo extends Scene
     }
 }
 
+
 export default function (): void
 {
     new Game(
         SetWebGL(),
         Size(800, 600),
         Parent('gameParent'),
-        BackgroundColor(0x2d2d2d),
+        BackgroundColor(0xffffff),
         Scenes(Demo)
     );
 }
