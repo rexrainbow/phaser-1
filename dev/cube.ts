@@ -7,8 +7,9 @@ import * as vec3 from 'gl-matrix/vec3';
 import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
 import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
-import { EffectLayer, Layer, Sprite } from '../src/gameobjects';
+import { EffectLayer, Layer, RenderLayer, Sprite } from '../src/gameobjects';
 
+import { DrawTexturedQuad } from '../src/renderer/webgl1/draw/DrawTexturedQuad';
 import { Game } from '../src/Game';
 import { IShader } from '../src/renderer/webgl1/shaders/IShader';
 import { IWebGLRenderer } from '../src/renderer/webgl1/IWebGLRenderer';
@@ -98,7 +99,7 @@ const spikeFaces = [
     [ 2, 6, 14 ]
 ];
 
-class Cube extends Layer
+class Cube extends RenderLayer
 {
     shader: IShader;
     vertices: Vertex[];
@@ -106,8 +107,6 @@ class Cube extends Layer
     constructor (shader: IShader)
     {
         super();
-
-        this.willRender = true;
 
         this.shader = shader;
 
@@ -134,9 +133,19 @@ class Cube extends Layer
 
     renderGL <T extends IWebGLRenderer> (renderer: T): void
     {
-        const shader = this.shader;
+        renderer.flush();
 
-        renderer.shaders.set(shader);
+        renderer.fbo.add(this.framebuffer, true);
+
+        const shader = this.shader;
+        const gl = renderer.gl;
+
+        gl.enable(gl.DEPTH_TEST);
+        // gl.enable(gl.CULL_FACE);
+
+        renderer.shaders.set(shader, 0);
+
+        shader.renderToFBO = false;
 
         const buffer = shader.buffer;
 
@@ -158,7 +167,26 @@ class Cube extends Layer
             shader.count++;
         });
 
-        renderer.shaders.popAndRebind();
+        renderer.shaders.pop();
+
+        const texture = this.texture;
+
+        // renderer.flush();
+
+        renderer.fbo.pop();
+
+        const { u0, v0, u1, v1 } = texture.firstFrame;
+
+        renderer.textures.bind(texture);
+
+        DrawTexturedQuad(renderer, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
+
+        renderer.textures.unbind();
+
+        // this.postRenderGL(renderer);
+
+        gl.disable(gl.DEPTH_TEST);
+        // gl.disable(gl.CULL_FACE);
     }
 }
 
@@ -371,14 +399,13 @@ class TestShader extends Shader
             indexLayout,
             quantity,
             vertexElementSize,
+            renderToFBO: true,
             attributes: {
                 aVertexPosition: { size: 3 }
             }
         });
 
         this.camera = new Camera3D();
-
-        window['camera'] = this.camera;
     }
 
     bind (): boolean
