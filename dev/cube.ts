@@ -6,12 +6,14 @@ import * as vec3 from 'gl-matrix/vec3';
 
 import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
+import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { EffectLayer, Layer, Sprite } from '../src/gameobjects';
 
 import { Game } from '../src/Game';
 import { IShader } from '../src/renderer/webgl1/shaders/IShader';
 import { IWebGLRenderer } from '../src/renderer/webgl1/IWebGLRenderer';
 import { ImageFile } from '../src/loader/files/ImageFile';
+import { Keyboard } from '../src/input/keyboard';
 import { Loader } from '../src/loader/Loader';
 import { On } from '../src/events';
 import { Scene } from '../src/scenes/Scene';
@@ -49,7 +51,7 @@ precision highp float;
 void main (void)
 {
     // gl_FragColor = vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);
-    gl_FragColor = vec4(0.0, 1.0, 0.0, 0.1);
+    gl_FragColor = vec4(0.0, 1.0, 0.0, 0.5);
 }`;
 
 const spikeVerts = [
@@ -184,7 +186,7 @@ class Camera3D
         this.dir = vec3.fromValues(0, 0, 1);
         this.pos = vec3.fromValues(0, 0, 0);
 
-        this.setPosition([ 0, 0, 0.1 ]);
+        this.setPosition([ 0, 0, -3 ]);
 
         this.refresh();
     }
@@ -394,6 +396,11 @@ class TestShader extends Shader
 
 class Demo extends Scene
 {
+    leftKey: LeftKey;
+    rightKey: RightKey;
+    upKey: UpKey;
+    downKey: DownKey;
+
     constructor ()
     {
         super();
@@ -410,19 +417,49 @@ class Demo extends Scene
 
         loader.start().then(() => {
 
+            const keyboard = new Keyboard();
+
+            this.leftKey = new LeftKey();
+            this.rightKey = new RightKey();
+            this.upKey = new UpKey();
+            this.downKey = new DownKey();
+
+            keyboard.addKeys(this.leftKey, this.rightKey, this.upKey, this.downKey);
+
+            const shader = new TestShader();
+            const camera = shader.camera;
+
             const bg = new Sprite(400, 300, 'bg');
-            const cube = new Cube(new TestShader());
+            const cube = new Cube(shader);
             const logo = new Sprite(400, 300, 'logo');
 
             bg.alpha = 0.5;
-            logo.alpha = 0.5;
+            // logo.alpha = 0.5;
 
             // AddChildren(world, bg, cube);
             AddChildren(world, bg, cube, logo);
 
             On(this, 'update', (delta, time) => {
-            });
 
+                if (this.leftKey.isDown)
+                {
+                    camera.roll(0.1);
+                }
+                else if (this.rightKey.isDown)
+                {
+                    camera.roll(-0.1);
+                }
+
+                if (this.upKey.isDown)
+                {
+                    camera.moveForward(0.1);
+                }
+                else if (this.downKey.isDown)
+                {
+                    camera.moveForward(-0.1);
+                }
+
+            });
         });
     }
 }
