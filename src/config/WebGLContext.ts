@@ -1,7 +1,7 @@
 let _contextAttributes: WebGLContextAttributes = {
     alpha: false,
     antialias: false,
-    depth: false,
+    depth: true,
     premultipliedAlpha: false
 };
 
