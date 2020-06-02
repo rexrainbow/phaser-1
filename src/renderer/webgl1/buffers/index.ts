@@ -1,7 +1,9 @@
 import { DeleteGLBuffer } from './DeleteGLBuffer';
-import { IndexedBuffer } from './IndexedBuffer';
+import { IndexedVertexBuffer } from './IndexedVertexBuffer';
+import { VertexBuffer } from './VertexBuffer';
 
 export {
     DeleteGLBuffer,
-    IndexedBuffer
+    IndexedVertexBuffer,
+    VertexBuffer
 };
