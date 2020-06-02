@@ -16,6 +16,7 @@ export interface IVertexBuffer
     vertexBuffer: WebGLBuffer;
     indexBuffer?: WebGLBuffer;
     indexLayout?: number[];
+    indexed: boolean;
 
     create (seededIndex?: number[]): void;
     destroy (): void;

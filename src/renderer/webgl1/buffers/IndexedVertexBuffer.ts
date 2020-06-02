@@ -48,6 +48,8 @@ export class IndexedVertexBuffer extends VertexBuffer
 
     indexLayout: number[];
 
+    indexed: boolean = true;
+
     //  quantity = number of elements per entry
     constructor (batchSize: number, dataSize: number, indexSize: number, vertexElementSize: number, entryIndexSize: number, quantity: number, indexLayout?: number[])
     {

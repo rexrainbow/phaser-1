@@ -248,29 +248,32 @@ export class Shader implements IShader
         const gl = renderer.gl;
         const buffer = this.buffer;
 
+        if (this.renderToFBO)
+        {
+            renderer.fbo.add(this.framebuffer, true);
+        }
+
         if (count === buffer.batchSize)
         {
             gl.bufferData(gl.ARRAY_BUFFER, buffer.data, gl.DYNAMIC_DRAW);
         }
         else
         {
-            const view = buffer.vertexViewF32.subarray(0, count * buffer.entryElementSize);
+            const subsize = (buffer.indexed) ? count * buffer.entryElementSize : count * buffer.vertexElementSize;
+
+            const view = buffer.vertexViewF32.subarray(0, subsize);
 
             gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
         }
 
-        if (this.renderToFBO)
-        {
-            renderer.fbo.add(this.framebuffer, true);
-        }
-
-        if (buffer.entryIndexSize > 0)
+        if (buffer.indexed)
         {
             gl.drawElements(gl.TRIANGLES, count * buffer.entryIndexSize, gl.UNSIGNED_SHORT, 0);
         }
         else
         {
-            gl.drawArrays(gl.TRIANGLES, 0, count * 6);
+            //  TODO - Fix :)
+            gl.drawArrays(gl.TRIANGLES, 0, count * buffer.vertexElementSize);
         }
 
         if (this.renderToFBO)

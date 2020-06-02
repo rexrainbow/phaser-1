@@ -87,6 +87,8 @@ export class VertexBuffer implements IVertexBuffer
      */
     vertexBuffer: WebGLBuffer;
 
+    indexed: boolean = false;
+
     //  quantity = number of elements per entry
     constructor (batchSize: number, dataSize: number, vertexElementSize: number, quantity: number)
     {
