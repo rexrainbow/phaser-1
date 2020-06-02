@@ -5,7 +5,7 @@ import * as GL_CONST from '../GL_CONST';
 // gl.vertexAttribPointer(attribs.aTextureId, 1, gl.FLOAT, false, stride, 16);         // size = 4, offset = position + tex coord
 // gl.vertexAttribPointer(attribs.aTintColor, 4, gl.UNSIGNED_BYTE, true, stride, 20);  // size = 4, offset = position + tex coord + index
 
-export const DefaultAttributes =
+export const DefaultQuadAttributes =
 {
     aVertexPosition: { size: 2, type: GL_CONST.FLOAT, normalized: false, offset: 0 },
     aTextureCoord: { size: 2, type: GL_CONST.FLOAT, normalized: false, offset: 8 },
