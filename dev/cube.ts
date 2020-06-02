@@ -17,6 +17,7 @@ import { IWebGLRenderer } from '../src/renderer/webgl1/IWebGLRenderer';
 import { ImageFile } from '../src/loader/files/ImageFile';
 import { Keyboard } from '../src/input/keyboard';
 import { Loader } from '../src/loader/Loader';
+import OBJFile from './OBJFile';
 import { On } from '../src/events';
 import { Scene } from '../src/scenes/Scene';
 import { Shader } from '../src/renderer/webgl1/shaders/Shader';
@@ -543,25 +544,37 @@ f 4 2 14
 f 2 6 14
 `;
 
+type vec3Like = {
+    x: number;
+    y: number;
+    z: number;
+};
+
 class Face
 {
     vertex1: Vertex;
     vertex2: Vertex;
     vertex3: Vertex;
 
-    normal1: vec3;
-    normal2: vec3;
-    normal3: vec3;
+    normal1: vec3Like;
+    normal2: vec3Like;
+    normal3: vec3Like;
 
-    constructor (v1: vec3, v2: vec3, v3: vec3, n1: vec3, n2: vec3, n3: vec3, scale: number = 1)
+    constructor (v1: vec3Like, v2: vec3Like, v3: vec3Like, n1: vec3Like, n2: vec3Like, n3: vec3Like, scale: number = 1)
     {
-        this.vertex1 = new Vertex(v1[0] * scale, v1[1] * scale, v1[2] * scale);
-        this.vertex2 = new Vertex(v2[0] * scale, v2[1] * scale, v2[2] * scale);
-        this.vertex3 = new Vertex(v3[0] * scale, v3[1] * scale, v3[2] * scale);
+        // this.vertex1 = new Vertex(v1[0] * scale, v1[1] * scale, v1[2] * scale);
+        // this.vertex2 = new Vertex(v2[0] * scale, v2[1] * scale, v2[2] * scale);
+        // this.vertex3 = new Vertex(v3[0] * scale, v3[1] * scale, v3[2] * scale);
+
+        this.vertex1 = new Vertex(v1.x * scale, v1.y * scale, v1.z * scale);
+        this.vertex2 = new Vertex(v2.x * scale, v2.y * scale, v2.z * scale);
+        this.vertex3 = new Vertex(v3.x * scale, v3.y * scale, v3.z * scale);
 
         this.normal1 = n1;
         this.normal2 = n2;
         this.normal3 = n3;
+
+        // console.log(v1, v2, v3, n1, n2, n3);
     }
 
     addToBuffer (F32: Float32Array, offset: number): number
@@ -576,29 +589,37 @@ class Face
         F32[offset + 0] = v1.x;
         F32[offset + 1] = v1.y;
         F32[offset + 2] = v1.z;
-        F32[offset + 3] = n1[0];
-        F32[offset + 4] = n1[1];
-        F32[offset + 5] = n1[2];
+        F32[offset + 3] = n1.x;
+        F32[offset + 4] = n1.y;
+        F32[offset + 5] = n1.z;
 
         F32[offset + 6] = v2.x;
         F32[offset + 7] = v2.y;
         F32[offset + 8] = v2.z;
-        F32[offset + 9] = n2[0];
-        F32[offset + 10] = n2[1];
-        F32[offset + 11] = n2[2];
+        F32[offset + 9] = n2.x;
+        F32[offset + 10] = n2.y;
+        F32[offset + 11] = n2.z;
 
         F32[offset + 12] = v3.x;
         F32[offset + 13] = v3.y;
         F32[offset + 14] = v3.z;
-        F32[offset + 15] = n3[0];
-        F32[offset + 16] = n3[1];
-        F32[offset + 17] = n3[2];
+        F32[offset + 15] = n3.x;
+        F32[offset + 16] = n3.y;
+        F32[offset + 17] = n3.z;
 
         return offset + 18;
     }
 }
 
+const obj = new OBJFile(cube);
+const data = obj.parse();
 
+// const data = ParseWavefrontObj(cube);
+
+console.log(data);
+
+// const expanded = expandVertexData(data, { facesToTriangles: true });
+// console.log(expanded);
 
 class Cube extends RenderLayer
 {
@@ -611,14 +632,6 @@ class Cube extends RenderLayer
 
         this.shader = shader;
 
-        const data = ParseWavefrontObj(cube);
-
-        console.log(data);
-
-        const expanded = expandVertexData(data);
-
-        console.log(expanded);
-
         // const { verts, faces, normals } = parseObj(cube);
         // const { verts, faces, normals } = parseObj(spike);
 
@@ -626,37 +639,35 @@ class Cube extends RenderLayer
         // console.log(faces);
         // console.log(normals);
 
-        /*
-        for (let i = 0; i < faces.length; i++)
+        const model = data.models[0];
+        const verts = model.vertices;
+        const normals = model.vertexNormals;
+
+        for (let i = 0; i < model.faces.length; i++)
         {
-            const face = faces[i];
+            const face = model.faces[i];
 
-            const v1 = verts[face.A].pos;
-            const v2 = verts[face.B].pos;
-            const v3 = verts[face.C].pos;
+            // console.log(i, face);
 
-            let n1 = verts[face.A].normal;
-            let n2 = verts[face.B].normal;
-            let n3 = verts[face.C].normal;
+            const v1 = face.vertices[0];
+            const v2 = face.vertices[1];
+            const v3 = face.vertices[2];
 
-            if (n1 === null)
-            {
-                n1 = normals[];
-            }
-
-            // console.log(v1, v2, v3);
-
-            this.faces.push(new Face(v1, v2, v3, n1, n2, n3));
+            this.faces.push(new Face(
+                verts[v1.vertexIndex],
+                verts[v2.vertexIndex],
+                verts[v3.vertexIndex],
+                normals[v1.vertexNormalIndex],
+                normals[v2.vertexNormalIndex],
+                normals[v3.vertexNormalIndex]
+            ));
         }
 
         console.log(this.faces);
-        */
     }
 
     renderGL <T extends IWebGLRenderer> (renderer: T): void
     {
-        return;
-
         renderer.flush();
 
         renderer.fbo.add(this.framebuffer, true);
@@ -664,11 +675,11 @@ class Cube extends RenderLayer
         const shader = this.shader;
         const gl = renderer.gl;
 
-        gl.clearDepth(1000.0);
+        // gl.clearDepth(1000.0);
 
-        gl.enable(gl.DEPTH_TEST);
-        gl.depthFunc(gl.LEQUAL);
-        gl.clear(gl.DEPTH_BUFFER_BIT);
+        // gl.enable(gl.DEPTH_TEST);
+        // gl.depthFunc(gl.LEQUAL);
+        // gl.clear(gl.DEPTH_BUFFER_BIT);
         // gl.enable(gl.CULL_FACE);
 
         renderer.shaders.set(shader, 0);
@@ -703,7 +714,7 @@ class Cube extends RenderLayer
 
         renderer.textures.unbind();
 
-        gl.disable(gl.DEPTH_TEST);
+        // gl.disable(gl.DEPTH_TEST);
         // gl.disable(gl.CULL_FACE);
     }
 }
@@ -899,8 +910,8 @@ class TestShader extends Shader
         // const vertexElementSize = 4;
         const vertexElementSize = 6;
 
-        // const indexLayout = [ 0, 1, 2, 3 ];
-        const indexLayout = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ];
+        // const indexLayout = expanded.positionIndices;
+        const indexLayout = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ];
 
         /**
          * The total number of elements per entry in the index array.
@@ -914,10 +925,10 @@ class TestShader extends Shader
         super({
             fragmentShader,
             vertexShader,
-            entryIndexSize,
-            indexLayout,
             quantity,
             vertexElementSize,
+            indexLayout,
+            entryIndexSize,
             attributes: {
                 aVertexPosition: { size: 3 },
                 aVertexNormal: { size: 3 }
@@ -925,7 +936,6 @@ class TestShader extends Shader
             uniforms: {
                 uProjectionMatrix: new Float32Array(),
                 uCameraMatrix: new Float32Array(),
-                // uNormalMatrix: new Float32Array(),
 
                 uLightDirection: vec3.fromValues(-0.25, -0.25, -0.25),
                 uLightAmbient: vec4.fromValues(0.03, 0.03, 0.03, 1.0),
@@ -970,8 +980,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        loader.setPath('/phaser4-examples/public/assets/');
-        // loader.setPath('/examples/public/assets/');
+        // loader.setPath('/phaser4-examples/public/assets/');
+        loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('bg', 'checker.png'));
         loader.add(ImageFile('logo', 'logo.png'));
@@ -995,7 +1005,7 @@ class Demo extends Scene
             const logo = new Sprite(400, 300, 'logo');
 
             bg.alpha = 0.5;
-            // logo.alpha = 0.5;
+            logo.alpha = 0.5;
 
             // AddChildren(world, bg, cube);
             AddChildren(world, bg, cube, logo);
