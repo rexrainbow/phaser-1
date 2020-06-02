@@ -5,7 +5,8 @@ import { CreateFramebuffer } from '../fbo/CreateFramebuffer';
 import { CreateProgram } from './CreateProgram';
 import { CreateShader } from './CreateShader';
 import { CreateUniforms } from './CreateUniforms';
-import { DefaultAttributes } from './DefaultAttributes';
+import { DefaultQuadAttributes } from './DefaultQuadAttributes';
+import { DefaultQuadUniforms } from './DefaultQuadUniforms';
 import { DeleteFramebuffer } from '../fbo/DeleteFramebuffer';
 import { DeleteGLTexture } from '../textures/DeleteGLTexture';
 import { DeleteShaders } from './DeleteShaders';
@@ -13,11 +14,13 @@ import { GLTextureBinding } from '../textures/GLTextureBinding';
 import { IShader } from './IShader';
 import { IShaderConfig } from './IShaderConfig';
 import { IVertexAttribPointer } from './IVertexAttribPointer';
+import { IVertexBuffer } from '../buffers/IVertexBuffer';
 import { IWebGLRenderer } from '../IWebGLRenderer';
-import { IndexedBuffer } from '../buffers/IndexedBuffer';
+import { IndexedVertexBuffer } from '../buffers/IndexedVertexBuffer';
 import { SINGLE_QUAD_FRAG } from '../glsl/SINGLE_QUAD_FRAG';
 import { SINGLE_QUAD_VERT } from '../glsl/SINGLE_QUAD_VERT';
 import { Texture } from '../../../textures/Texture';
+import { VertexBuffer } from '../buffers/VertexBuffer';
 import { WebGLRendererInstance } from '../WebGLRendererInstance';
 
 export class Shader implements IShader
@@ -32,7 +35,7 @@ export class Shader implements IShader
 
     uniformSetters: Map<string, Function>;
 
-    buffer: IndexedBuffer;
+    buffer: IVertexBuffer;
 
     /**
      * The total number of quads added to the batch so far.
@@ -59,38 +62,48 @@ export class Shader implements IShader
         this.renderer = WebGLRendererInstance.get();
 
         const {
-            attributes = DefaultAttributes,
-            batchSize = 4096,
+            attributes = DefaultQuadAttributes,
+            batchSize = 1,
             dataSize = 4,
-            entryIndexSize = 6,
+            entryIndexSize = 0,
             fragmentShader = SINGLE_QUAD_FRAG,
             height = GetHeight(),
-            indexLayout = [ 0, 1, 2, 2, 3, 0 ],
-            indexSize = 4,
+            indexLayout = null,
+            indexSize = 0,
             quantity = 4,
             renderToFBO = false,
             resolution = GetResolution(),
             vertexElementSize = 6,
             vertexShader = SINGLE_QUAD_VERT,
             width = GetWidth(),
-            uniforms = { uProjectionMatrix: new Float32Array(), uCameraMatrix: new Float32Array(), uTexture: 0 }
+            uniforms = DefaultQuadUniforms
         } = config;
 
-        this.buffer = new IndexedBuffer(batchSize, dataSize, indexSize, vertexElementSize, entryIndexSize, quantity, indexLayout);
+        if (indexSize > 0)
+        {
+            this.buffer = new IndexedVertexBuffer(batchSize, dataSize, indexSize, vertexElementSize, entryIndexSize, quantity, indexLayout);
+        }
+        else
+        {
+            this.buffer = new VertexBuffer(batchSize, dataSize, vertexElementSize, quantity);
+        }
 
         this.create(fragmentShader, vertexShader, uniforms, attributes);
 
-        this.renderToFBO = renderToFBO;
+        if (renderToFBO)
+        {
+            this.renderToFBO = true;
 
-        const texture = new Texture(null, width * resolution, height * resolution);
-        const binding = new GLTextureBinding(texture);
+            const texture = new Texture(null, width * resolution, height * resolution);
+            const binding = new GLTextureBinding(texture);
 
-        texture.binding = binding;
+            texture.binding = binding;
 
-        binding.framebuffer = CreateFramebuffer(binding.texture);
+            binding.framebuffer = CreateFramebuffer(binding.texture);
 
-        this.texture = texture;
-        this.framebuffer = binding.framebuffer;
+            this.texture = texture;
+            this.framebuffer = binding.framebuffer;
+        }
     }
 
     create (fragmentShaderSource: string, vertexShaderSource: string, uniforms: Object, attribs: Object): void
@@ -129,22 +142,31 @@ export class Shader implements IShader
         this.attributes = CreateAttributes(gl, program, attribs);
     }
 
-    bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array, uTexture?: number): boolean
+    updateUniforms (): void
+    {
+        //  Use this to set any extra uniform values prior to the bind
+    }
+
+    bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array): boolean
     {
         const uniforms = this.uniforms;
 
         uniforms.set('uProjectionMatrix', uProjectionMatrix);
         uniforms.set('uCameraMatrix', uCameraMatrix);
 
-        if (uTexture)
+        this.updateUniforms();
+
+        if (this.setUniforms())
         {
-            uniforms.set('uTexture', uTexture);
+            this.bindBuffers();
+
+            return true;
         }
 
-        return this.updateUniforms();
+        return false;
     }
 
-    updateUniforms (): boolean
+    setUniforms (): boolean
     {
         if (!this.program)
         {
@@ -163,20 +185,55 @@ export class Shader implements IShader
             setter(uniforms.get(name));
         }
 
-        this.bindBuffers(this.buffer.indexBuffer, this.buffer.vertexBuffer);
-
         return true;
     }
 
-    bindBuffers (indexBuffer: WebGLBuffer, vertexBuffer: WebGLBuffer): void
+    setBuffers (vertexBuffer: WebGLBuffer, indexBuffer?: WebGLBuffer): void
     {
         const gl = this.renderer.gl;
         const stride = this.buffer.vertexByteSize;
 
-        //  attributes must be reset whenever you change buffers
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+        if (indexBuffer)
+        {
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+        }
+        else
+        {
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+        }
+
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 
+        //  attributes must be reset whenever you change buffers
+        this.attributes.forEach(attrib =>
+        {
+            gl.vertexAttribPointer(attrib.index, attrib.size, attrib.type, attrib.normalized, stride, attrib.offset);
+        });
+
+        this.count = 0;
+    }
+
+    bindBuffers (): void
+    {
+        const buffer = this.buffer;
+        const gl = this.renderer.gl;
+
+        const stride = buffer.vertexByteSize;
+        const indexBuffer = buffer.indexBuffer;
+        const vertexBuffer = buffer.vertexBuffer;
+
+        if (indexBuffer)
+        {
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+        }
+        else
+        {
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+        }
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+        //  attributes must be reset whenever you change buffers
         this.attributes.forEach(attrib =>
         {
             gl.vertexAttribPointer(attrib.index, attrib.size, attrib.type, attrib.normalized, stride, attrib.offset);
@@ -207,7 +264,14 @@ export class Shader implements IShader
             renderer.fbo.add(this.framebuffer, true);
         }
 
-        gl.drawElements(gl.TRIANGLES, count * buffer.entryIndexSize, gl.UNSIGNED_SHORT, 0);
+        if (buffer.entryIndexSize > 0)
+        {
+            gl.drawElements(gl.TRIANGLES, count * buffer.entryIndexSize, gl.UNSIGNED_SHORT, 0);
+        }
+        else
+        {
+            gl.drawArrays(gl.TRIANGLES, 0, count * 6);
+        }
 
         if (this.renderToFBO)
         {
