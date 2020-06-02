@@ -94,7 +94,7 @@ class Cube extends RenderLayer
         // gl.clearDepth(1000.0);
 
         gl.enable(gl.DEPTH_TEST);
-        // gl.depthFunc(gl.LEQUAL);
+        gl.depthFunc(gl.LEQUAL);
         gl.clear(gl.DEPTH_BUFFER_BIT);
         // gl.enable(gl.CULL_FACE);
 
@@ -144,6 +144,7 @@ class TestShader extends Shader
     constructor ()
     {
         super({
+            batchSize: 4096,
             fragmentShader: LIGHTS_FRAG,
             vertexShader: SIMPLE_LIGHTS_VERT,
             quantity: 3,
