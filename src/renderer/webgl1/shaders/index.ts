@@ -4,9 +4,11 @@ import { CreateProgram } from './CreateProgram';
 import { CreateShader } from './CreateShader';
 import { CreateUniformSetter } from './CreateUniformSetter';
 import { CreateUniforms } from './CreateUniforms';
-import { DefaultAttributes } from './DefaultAttributes';
+import { DefaultQuadAttributes } from './DefaultQuadAttributes';
+import { DefaultQuadUniforms } from './DefaultQuadUniforms';
 import { DeleteShaders } from './DeleteShaders';
 import { MultiTextureQuadShader } from './MultiTextureQuadShader';
+import { QuadShader } from './QuadShader';
 import { Shader } from './Shader';
 import { ShaderSystem } from './ShaderSystem';
 import { SingleTextureQuadShader } from './SingleTextureQuadShader';
@@ -18,10 +20,12 @@ export {
     CreateShader,
     CreateUniforms,
     CreateUniformSetter,
-    DefaultAttributes,
+    DefaultQuadAttributes,
+    DefaultQuadUniforms,
     DeleteShaders,
     MultiTextureQuadShader,
     Shader,
     ShaderSystem,
+    QuadShader,
     SingleTextureQuadShader
 };
