@@ -1,5 +1,4 @@
-export const Cube2 = `
-# Blender v2.80 (sub 75) OBJ File: ''
+export const Cube2 = `# Blender v2.80 (sub 75) OBJ File: ''
 # www.blender.org
 mtllib cube.mtl
 o Cube
