@@ -1,7 +1,7 @@
 import { IShaderConfig } from './IShaderConfig';
-import { Shader } from './Shader';
+import { QuadShader } from './QuadShader';
 
-export class SingleTextureQuadShader extends Shader
+export class SingleTextureQuadShader extends QuadShader
 {
     constructor (config: IShaderConfig = {})
     {

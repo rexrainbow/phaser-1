@@ -1,9 +1,9 @@
 import { GetMaxTextures } from '../../../config/MaxTextures';
 import { IShaderConfig } from './IShaderConfig';
 import { MULTI_QUAD_FRAG } from '../glsl/MULTI_QUAD_FRAG';
-import { Shader } from './Shader';
+import { QuadShader } from './QuadShader';
 
-export class MultiTextureQuadShader extends Shader
+export class MultiTextureQuadShader extends QuadShader
 {
     constructor (config: IShaderConfig = {})
     {
@@ -15,7 +15,7 @@ export class MultiTextureQuadShader extends Shader
         super(config);
     }
 
-    create (fragmentShaderSource: string, vertexShaderSource: string, uniforms: Object, attribs: Object): void
+    create (fragmentShaderSource: string, vertexShaderSource: string, uniforms: {}, attribs: {}): void
     {
         const maxTextures = GetMaxTextures();
 
@@ -41,13 +41,12 @@ export class MultiTextureQuadShader extends Shader
         fragmentShaderSource = fragmentShaderSource.replace(/%count%/gi, `${maxTextures}`);
         fragmentShaderSource = fragmentShaderSource.replace(/%forloop%/gi, src);
 
-        // console.log(fragmentShaderSource);
-
         super.create(fragmentShaderSource, vertexShaderSource, uniforms, attribs);
 
         this.uniforms.set('uTexture', this.renderer.textures.textureIndex);
     }
 
+    //  TODO - Needed?
     bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array): boolean
     {
         return super.bind(uProjectionMatrix, uCameraMatrix);
