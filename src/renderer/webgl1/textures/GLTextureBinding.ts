@@ -15,6 +15,7 @@ export class GLTextureBinding implements IGLTextureBinding
 
     texture: WebGLTexture;
     framebuffer: WebGLFramebuffer;
+    depthbuffer: WebGLRenderbuffer;
 
     index: number = 0;
     indexCounter: number = -1;
@@ -42,6 +43,7 @@ export class GLTextureBinding implements IGLTextureBinding
         const {
             texture = null,
             framebuffer = null,
+            depthbuffer = null,
             unpackPremultiplyAlpha = true,
             minFilter = gl.LINEAR,
             magFilter = gl.LINEAR,
@@ -62,6 +64,11 @@ export class GLTextureBinding implements IGLTextureBinding
         if (framebuffer)
         {
             this.framebuffer = framebuffer;
+        }
+
+        if (depthbuffer)
+        {
+            this.depthbuffer = depthbuffer;
         }
 
         if (texture)

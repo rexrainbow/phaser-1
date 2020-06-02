@@ -5,6 +5,7 @@ export interface IGLTextureBinding
     parent: ITexture;
     texture: WebGLTexture;
     framebuffer: WebGLFramebuffer;
+    depthbuffer?: WebGLRenderbuffer;
     index: number;
     indexCounter: number;
     unpackPremultiplyAlpha: boolean;

@@ -2,6 +2,7 @@ export interface IGLTextureBindingConfig
 {
     texture?: WebGLTexture;
     framebuffer?: WebGLFramebuffer;
+    depthbuffer?: WebGLRenderbuffer;
     unpackPremultiplyAlpha?: boolean;
     minFilter?: GLenum;
     magFilter?: GLenum;

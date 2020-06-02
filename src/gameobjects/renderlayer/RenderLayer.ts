@@ -1,5 +1,6 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config';
 
+import { CreateDepthBuffer } from '../../renderer/webgl1/fbo/CreateDepthBuffer';
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
 import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
@@ -38,14 +39,18 @@ export class RenderLayer extends Layer implements IRenderLayer
         const resolution = GetResolution();
 
         //  TODO: Allow them to set this via a filterArea
+        //  TODO: This code is duplicate of Shader constructor, consolidate
         const texture = new Texture(null, width * resolution, height * resolution);
 
-        texture.binding = new GLTextureBinding(texture);
+        const binding = new GLTextureBinding(texture);
 
-        texture.binding.framebuffer = CreateFramebuffer(texture.binding.texture);
+        texture.binding = binding;
+
+        binding.framebuffer = CreateFramebuffer(binding.texture);
+        binding.depthbuffer = CreateDepthBuffer(binding.framebuffer, texture.width, texture.height);
 
         this.texture = texture;
-        this.framebuffer = texture.binding.framebuffer;
+        this.framebuffer = binding.framebuffer;
     }
 
     renderGL <T extends IWebGLRenderer> (renderer: T): void
