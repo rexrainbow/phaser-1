@@ -1,3 +1,4 @@
+export const Spike = `
 # Blender v2.78 (sub 0) OBJ File: 'wireframes.blend'
 # www.blender.org
 v -1.000000 -1.000000 1.000000
@@ -39,3 +40,4 @@ f 5 1 13
 f 8 4 14
 f 4 2 14
 f 2 6 14
+`;

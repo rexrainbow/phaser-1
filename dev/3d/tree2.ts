@@ -1,3 +1,4 @@
+export const Tree = `
 # Blender v2.77 (sub 0) OBJ File: 'sapin 2.blend'
 # www.blender.org
 mtllib sapin 2.mtl
@@ -49,3 +50,4 @@ f 10//10 8//10 16//10 14//10 12//10
 f 13//11 14//11 16//11 15//11
 f 15//12 16//12 8//12 7//12
 f 7//13 9//13 11//13 13//13 15//13
+`;

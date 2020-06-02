@@ -1,3 +1,4 @@
+export const Ship = `
 # Blender v2.79 (sub 0) OBJ File: 'wireframes3 invaders.blend'
 # www.blender.org
 v -1.961901 -0.491214 0.960000
@@ -35,3 +36,4 @@ f 18 17 20 19
 f 13 16 20 17
 f 14 13 17 18
 f 16 15 19 20
+`;

@@ -1,3 +1,4 @@
+export const ImplodedCube = `
 # Blender v2.78 (sub 0) OBJ File: 'wireframes.blend'
 # www.blender.org
 v 1.000000 -1.000000 -1.000000
@@ -39,3 +40,4 @@ f 4 3 13
 f 1 4 14
 f 4 8 14
 f 8 5 14
+`;

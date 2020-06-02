@@ -1,3 +1,4 @@
+export const BevelledCube = `
 # Blender v2.78 (sub 0) OBJ File: 'wireframes.blend'
 # www.blender.org
 v -0.691000 -0.691000 1.000000
@@ -51,3 +52,4 @@ f 14 20 19 15
 f 16 5 4 17
 f 3 14 13 1
 f 6 12 9 2
+`;

@@ -1,3 +1,4 @@
+export const Bullet = `
 # Blender v2.79 (sub 0) OBJ File: 'wireframes3 invaders.blend'
 # www.blender.org
 v -0.502005 -0.171177 0.814265
@@ -19,3 +20,4 @@ f 7 8 6 5
 f 11 12 2 1
 f 5 6 12 11
 f 3 4 10 9
+`;
