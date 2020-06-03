@@ -1,6 +1,7 @@
 import { GetHeight, GetResolution, GetWidth } from '../../../config/Size';
 
 import { CreateAttributes } from './CreateAttributes';
+import { CreateDepthBuffer } from '../fbo/CreateDepthBuffer';
 import { CreateFramebuffer } from '../fbo/CreateFramebuffer';
 import { CreateProgram } from './CreateProgram';
 import { CreateShader } from './CreateShader';
@@ -100,6 +101,7 @@ export class Shader implements IShader
             texture.binding = binding;
 
             binding.framebuffer = CreateFramebuffer(binding.texture);
+            binding.depthbuffer = CreateDepthBuffer(binding.framebuffer, texture.width, texture.height);
 
             this.texture = texture;
             this.framebuffer = binding.framebuffer;
@@ -272,8 +274,7 @@ export class Shader implements IShader
         }
         else
         {
-            //  TODO - Fix :)
-            gl.drawArrays(gl.TRIANGLES, 0, count * buffer.vertexElementSize);
+            gl.drawArrays(gl.TRIANGLES, 0, count);
         }
 
         if (this.renderToFBO)
