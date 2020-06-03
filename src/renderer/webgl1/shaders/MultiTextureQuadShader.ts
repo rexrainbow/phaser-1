@@ -42,13 +42,12 @@ export class MultiTextureQuadShader extends QuadShader
         fragmentShaderSource = fragmentShaderSource.replace(/%forloop%/gi, src);
 
         super.create(fragmentShaderSource, vertexShaderSource, uniforms, attribs);
-
-        this.uniforms.set('uTexture', this.renderer.textures.textureIndex);
     }
 
-    //  TODO - Needed?
     bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array): boolean
     {
+        this.uniforms.set('uTexture', this.renderer.renderPass.textures.textureIndex);
+
         return super.bind(uProjectionMatrix, uCameraMatrix);
     }
 }

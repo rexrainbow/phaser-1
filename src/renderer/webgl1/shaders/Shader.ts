@@ -15,13 +15,10 @@ import { GLTextureBinding } from '../textures/GLTextureBinding';
 import { IShader } from './IShader';
 import { IShaderConfig } from './IShaderConfig';
 import { IVertexAttribPointer } from './IVertexAttribPointer';
-import { IVertexBuffer } from '../buffers/IVertexBuffer';
 import { IWebGLRenderer } from '../IWebGLRenderer';
-import { IndexedVertexBuffer } from '../buffers/IndexedVertexBuffer';
 import { SINGLE_QUAD_FRAG } from '../glsl/SINGLE_QUAD_FRAG';
 import { SINGLE_QUAD_VERT } from '../glsl/SINGLE_QUAD_VERT';
 import { Texture } from '../../../textures/Texture';
-import { VertexBuffer } from '../buffers/VertexBuffer';
 import { WebGLRendererInstance } from '../WebGLRendererInstance';
 
 export class Shader implements IShader
@@ -36,27 +33,11 @@ export class Shader implements IShader
 
     uniformSetters: Map<string, Function>;
 
-    buffer: IVertexBuffer;
-
-    /**
-     * The total number of quads added to the batch so far.
-     * Reset every bind and flush.
-     *
-     * @type {number}
-     */
-    count: number = 0;
-
-    /**
-     * The total number of quads previously flushed.
-     *
-     * @type {number}
-     */
-    prevCount: number = 0;
-
     texture: Texture;
+
     framebuffer: WebGLFramebuffer;
 
-    renderToFBO: boolean = false;
+    renderToFBO: boolean;
 
     constructor (config: IShaderConfig = {})
     {
@@ -64,30 +45,14 @@ export class Shader implements IShader
 
         const {
             attributes = DefaultQuadAttributes,
-            batchSize = 1,
-            dataSize = 4,
-            entryIndexSize = 0,
             fragmentShader = SINGLE_QUAD_FRAG,
             height = GetHeight(),
-            indexLayout = null,
-            indexSize = 0,
-            quantity = 4,
             renderToFBO = false,
             resolution = GetResolution(),
-            vertexElementSize = 6,
             vertexShader = SINGLE_QUAD_VERT,
             width = GetWidth(),
             uniforms = DefaultQuadUniforms
         } = config;
-
-        if (indexSize > 0)
-        {
-            this.buffer = new IndexedVertexBuffer(batchSize, dataSize, indexSize, vertexElementSize, entryIndexSize, quantity, indexLayout);
-        }
-        else
-        {
-            this.buffer = new VertexBuffer(batchSize, dataSize, vertexElementSize, quantity);
-        }
 
         this.create(fragmentShader, vertexShader, uniforms, attributes);
 
@@ -158,14 +123,7 @@ export class Shader implements IShader
 
         this.updateUniforms();
 
-        if (this.setUniforms())
-        {
-            this.bindBuffers();
-
-            return true;
-        }
-
-        return false;
+        return this.setUniforms();
     }
 
     setUniforms (): boolean
@@ -190,121 +148,18 @@ export class Shader implements IShader
         return true;
     }
 
-    setBuffers (vertexBuffer: WebGLBuffer, indexBuffer?: WebGLBuffer): void
+    setAttributes (stride: number): void
     {
         const gl = this.renderer.gl;
-        const stride = this.buffer.vertexByteSize;
 
-        if (indexBuffer)
-        {
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-        }
-        else
-        {
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-        }
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-
-        //  attributes must be reset whenever you change buffers
         this.attributes.forEach(attrib =>
         {
             gl.vertexAttribPointer(attrib.index, attrib.size, attrib.type, attrib.normalized, stride, attrib.offset);
         });
-
-        this.count = 0;
-    }
-
-    bindBuffers (): void
-    {
-        const buffer = this.buffer;
-        const gl = this.renderer.gl;
-
-        const stride = buffer.vertexByteSize;
-        const indexBuffer = buffer.indexBuffer;
-        const vertexBuffer = buffer.vertexBuffer;
-
-        if (indexBuffer)
-        {
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-        }
-        else
-        {
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-        }
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-
-        //  attributes must be reset whenever you change buffers
-        this.attributes.forEach(attrib =>
-        {
-            gl.vertexAttribPointer(attrib.index, attrib.size, attrib.type, attrib.normalized, stride, attrib.offset);
-        });
-
-        this.count = 0;
-    }
-
-    draw (count: number): void
-    {
-        const renderer = this.renderer;
-        const gl = renderer.gl;
-        const buffer = this.buffer;
-
-        if (this.renderToFBO)
-        {
-            renderer.fbo.add(this.framebuffer, true);
-        }
-
-        if (count === buffer.batchSize)
-        {
-            gl.bufferData(gl.ARRAY_BUFFER, buffer.data, gl.DYNAMIC_DRAW);
-        }
-        else
-        {
-            const subsize = (buffer.indexed) ? count * buffer.entryElementSize : count * buffer.vertexElementSize;
-
-            const view = buffer.vertexViewF32.subarray(0, subsize);
-
-            gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
-        }
-
-        if (buffer.indexed)
-        {
-            gl.drawElements(gl.TRIANGLES, count * buffer.entryIndexSize, gl.UNSIGNED_SHORT, 0);
-        }
-        else
-        {
-            gl.drawArrays(gl.TRIANGLES, 0, count);
-        }
-
-        if (this.renderToFBO)
-        {
-            renderer.fbo.pop();
-        }
-    }
-
-    flush (): boolean
-    {
-        const count = this.count;
-
-        if (count === 0)
-        {
-            return false;
-        }
-
-        this.draw(count);
-
-        this.prevCount = count;
-
-        this.count = 0;
-
-        return true;
     }
 
     destroy (): void
     {
-        this.buffer.destroy();
-
         DeleteShaders(this.program);
         DeleteGLTexture(this.texture);
         DeleteFramebuffer(this.framebuffer);
@@ -314,7 +169,6 @@ export class Shader implements IShader
         this.attributes.clear();
 
         this.renderer = null;
-        this.buffer = null;
         this.program = null;
         this.texture = null;
         this.framebuffer = null;

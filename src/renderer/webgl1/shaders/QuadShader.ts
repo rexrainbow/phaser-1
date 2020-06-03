@@ -14,12 +14,12 @@ export class QuadShader extends Shader implements IShader
 
         //  Dev can override
         shaderConfig.attributes = (!shaderConfig.attributes) ? DefaultQuadAttributes : shaderConfig.attributes;
-        shaderConfig.batchSize = (!shaderConfig.batchSize) ? 4096 : shaderConfig.batchSize;
+        // shaderConfig.batchSize = (!shaderConfig.batchSize) ? 4096 : shaderConfig.batchSize;
 
         //  Pre-configured
-        shaderConfig.indexLayout = [ 0, 1, 2, 2, 3, 0 ];
-        shaderConfig.indexSize = 4;
-        shaderConfig.entryIndexSize = 6;
+        // shaderConfig.indexLayout = [ 0, 1, 2, 2, 3, 0 ];
+        // shaderConfig.indexSize = 4;
+        // shaderConfig.entryIndexSize = 6;
 
         super(shaderConfig);
     }
