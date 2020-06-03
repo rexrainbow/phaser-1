@@ -1,3 +1,4 @@
+export * from './BatchSize';
 export * from './BackgroundColor';
 export * from './Banner';
 export * from './CanvasContext';
