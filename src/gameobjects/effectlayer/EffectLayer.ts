@@ -53,7 +53,9 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
 
                 if (renderPass.setShader(shader, 0))
                 {
-                    shader.renderToFBO = true;
+                    const renderToFBO = shader.renderToFramebuffer;
+
+                    shader.renderToFramebuffer = true;
 
                     //  The shaders input texture
                     renderPass.bindTexture(prevTexture);
@@ -61,6 +63,8 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
                     BatchSingleQuad(renderPass, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
 
                     renderPass.popShader();
+
+                    shader.renderToFramebuffer = renderToFBO;
 
                     renderPass.unbindTexture();
 
