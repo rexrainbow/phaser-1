@@ -1,28 +1,27 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
-import { FBOSystem } from './fbo/FBOSystem';
 import { GL } from './GL';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetRGBArray } from './colors/GetRGBArray';
 import { GetWebGLContext } from '../../config/WebGLContext';
 import { IBaseCamera } from '../../camera/IBaseCamera';
+import { IRenderPass } from './draw/IRenderPass';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
+import { IndexedVertexBuffer } from './buffers/IndexedVertexBuffer';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './cameras/Ortho';
+import { RenderPass } from './draw/RenderPass';
 import { SearchEntry } from '../../display/DepthFirstSearchRecursiveNested';
-import { ShaderSystem } from './shaders/ShaderSystem';
-import { TextureSystem } from './textures/TextureSystem';
 import { WebGLRendererInstance } from './WebGLRendererInstance';
+import { batchSize } from '../../config/BatchSize';
 
 export class WebGLRenderer
 {
     canvas: HTMLCanvasElement;
     gl: WebGLRenderingContext;
 
-    fbo: FBOSystem;
-    textures: TextureSystem;
-    shaders: ShaderSystem;
+    renderPass: RenderPass;
 
     clearColor = [ 0, 0, 0, 1 ];
 
@@ -31,9 +30,6 @@ export class WebGLRenderer
     resolution: number;
 
     projectionMatrix: Float32Array;
-
-    //  TODO - Move to stats object, so we can track texture creation, shader swaps, etc
-    flushTotal: number = 0;
 
     clearBeforeRender: boolean = true;
     optimizeRedraw: boolean = false;
@@ -58,15 +54,15 @@ export class WebGLRenderer
 
         this.canvas = canvas;
 
-        this.fbo = new FBOSystem(this);
-        this.textures = new TextureSystem(this);
-
         this.initContext();
 
         WebGLRendererInstance.set(this);
 
         //  Shaders need reference to the renderer, so create after the instance is set
-        this.shaders = new ShaderSystem(this, MultiTextureQuadShader);
+        const quadBuffer = new IndexedVertexBuffer(batchSize, 4, 4, 6, 6, 4, [ 0, 1, 2, 2, 3, 0 ]);
+
+        //  By this stage the context is available
+        this.renderPass = new RenderPass(this, quadBuffer, MultiTextureQuadShader);
     }
 
     initContext (): void
@@ -82,7 +78,10 @@ export class WebGLRenderer
 
         this.resize(this.width, this.height, this.resolution);
 
-        this.textures.init();
+        if (this.renderPass)
+        {
+            this.renderPass.init();
+        }
     }
 
     resize (width: number, height: number, resolution: number = 1): void
@@ -128,20 +127,11 @@ export class WebGLRenderer
         return this;
     }
 
-    reset (framebuffer: WebGLFramebuffer = null, width: number = this.width, height: number = this.height): void
+    reset (): void
     {
-        const gl = this.gl;
+        this.renderPass.reset();
 
-        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-        gl.viewport(0, 0, width, height);
-
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-
-        this.flushTotal = 0;
         this.currentCamera = null;
-
-        this.textures.update();
     }
 
     render (renderData: ISceneRenderData): void
@@ -170,6 +160,8 @@ export class WebGLRenderer
             gl.clearColor(cls[0], cls[1], cls[2], cls[3]);
             gl.clear(gl.COLOR_BUFFER_BIT);
         }
+
+        const renderPass = this.renderPass;
 
         //  Cache 2 - Only one dirty camera and one flush? We can re-use the buffers
         //  TODO - Per shader
@@ -204,53 +196,56 @@ export class WebGLRenderer
             //  This only needs rebinding if the camera matrix is different to before
             if (!this.currentCamera || !Matrix2dEqual(camera.worldTransform, this.currentCamera.worldTransform))
             {
-                this.flush();
+                if (i > 0)
+                {
+                    renderPass.flush();
+                }
 
                 this.currentCamera = camera;
 
-                this.shaders.rebind();
+                renderPass.begin();
             }
 
             //  Process the render list
             renderList.forEach(entry =>
             {
-                if (entry.children.length)
+                if (entry.children.length > 0)
                 {
-                    this.renderNode(entry);
+                    this.renderNode(entry, renderPass);
                 }
                 else
                 {
-                    entry.node.renderGL(this);
+                    console.log('1-rendering', entry.node.name);
+                    entry.node.renderGL(renderPass);
                 }
             });
         }
 
-        //  One final sweep
-        this.flush();
+        renderPass.end();
+
+        // eslint-disable-next-line no-debugger
+        debugger;
     }
 
-    renderNode (entry: SearchEntry): void
+    renderNode (entry: SearchEntry, renderPass: IRenderPass): void
     {
-        entry.node.renderGL(this);
+        console.log('2-rendering', entry.node.name);
+        entry.node.renderGL(renderPass);
 
         entry.children.forEach(child =>
         {
             if (child.children.length > 0)
             {
-                this.renderNode(child);
+                this.renderNode(child, renderPass);
             }
             else
             {
-                child.node.renderGL(this);
+                console.log('3-rendering', child.node.name);
+                child.node.renderGL(renderPass);
             }
         });
 
-        entry.node.postRenderGL(this);
-    }
-
-    flush (): void
-    {
-        this.shaders.flush();
+        entry.node.postRenderGL(renderPass);
     }
 
     destroy (): void

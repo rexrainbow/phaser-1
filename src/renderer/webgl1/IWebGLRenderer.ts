@@ -1,24 +1,21 @@
-import { FBOSystem } from './fbo/FBOSystem';
 import { IBaseCamera } from '../../camera/IBaseCamera';
+import { IRenderPass } from './draw/IRenderPass';
 import { IRenderer } from '../IRenderer';
-import { ShaderSystem } from './shaders/ShaderSystem';
-import { TextureSystem } from './textures/TextureSystem';
+import { RenderPass } from './draw/RenderPass';
+import { SearchEntry } from '../../display/DepthFirstSearchRecursiveNested';
 
 export interface IWebGLRenderer extends IRenderer
 {
     gl: WebGLRenderingContext;
 
-    fbo: FBOSystem;
-    textures: TextureSystem;
-    shaders: ShaderSystem;
+    renderPass: RenderPass;
 
     projectionMatrix: Float32Array;
-    flushTotal: number;
     contextLost: boolean;
     currentCamera: IBaseCamera;
 
     onContextLost (event: Event): void;
     onContextRestored (): void;
-    reset (framebuffer?: WebGLFramebuffer, width?: number, height?: number): void;
-    flush (): void;
+    reset (): void;
+    renderNode (entry: SearchEntry, renderPass: IRenderPass): void;
 }
