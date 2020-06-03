@@ -18,6 +18,7 @@ export interface IVertexBuffer
     indexLayout?: number[];
     indexed: boolean;
 
+    bind (): void;
     create (seededIndex?: number[]): void;
     destroy (): void;
 }

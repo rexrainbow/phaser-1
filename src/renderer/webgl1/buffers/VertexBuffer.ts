@@ -89,6 +89,21 @@ export class VertexBuffer implements IVertexBuffer
 
     indexed: boolean = false;
 
+    /**
+     * The total number of quads added to the batch so far.
+     * Reset every bind and flush.
+     *
+     * @type {number}
+     */
+    // count: number = 0;
+
+    /**
+     * The total number of quads previously flushed.
+     *
+     * @type {number}
+     */
+    // prevCount: number = 0;
+
     //  quantity = number of elements per entry
     constructor (batchSize: number, dataSize: number, vertexElementSize: number, quantity: number)
     {
@@ -121,6 +136,16 @@ export class VertexBuffer implements IVertexBuffer
         gl.bufferData(gl.ARRAY_BUFFER, data, gl.DYNAMIC_DRAW);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    }
+
+    bind (): void
+    {
+        const gl = GL.get();
+
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+
+        // this.count = 0;
     }
 
     destroy (): void

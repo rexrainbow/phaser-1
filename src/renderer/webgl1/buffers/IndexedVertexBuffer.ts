@@ -97,6 +97,16 @@ export class IndexedVertexBuffer extends VertexBuffer
         seededIndex = [];
     }
 
+    bind (): void
+    {
+        const gl = GL.get();
+
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+
+        // this.count = 0;
+    }
+
     destroy (): void
     {
         super.destroy();
