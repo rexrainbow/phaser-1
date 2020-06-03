@@ -7,6 +7,8 @@ export function WorldDepthFirstSearch (cachedLayers: SearchEntry[], parent: IGam
     {
         const node = parent.children[i];
 
+        console.log(node.name, node.isRenderable());
+
         if (node.isRenderable())
         {
             const children: SearchEntry[] = [];

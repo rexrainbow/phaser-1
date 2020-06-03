@@ -19,13 +19,13 @@ export function BuildRenderList (world: IBaseWorld): void
 
     if (cachedLayers.length > 0)
     {
-        UpdateCachedLayers(cachedLayers, world.camera.dirtyRender);
+        // UpdateCachedLayers(cachedLayers, world.camera.dirtyRender);
     }
 
     //  TODO: numRenderable probably needs to move to the search function
     entries.forEach(entry =>
     {
-        if (entry.children.length)
+        if (entry.children.length > 0)
         {
             CalculateTotalRenderable(entry, renderData);
         }
@@ -51,6 +51,7 @@ export function BuildRenderList (world: IBaseWorld): void
     }
 
     // console.log(entries);
+    // console.log(renderData);
     // eslint-disable-next-line no-debugger
     // debugger;
 }
