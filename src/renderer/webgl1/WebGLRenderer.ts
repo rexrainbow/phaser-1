@@ -215,7 +215,6 @@ export class WebGLRenderer
                 }
                 else
                 {
-                    console.log('1-rendering', entry.node.name);
                     entry.node.renderGL(renderPass);
                 }
             });
@@ -224,12 +223,11 @@ export class WebGLRenderer
         renderPass.end();
 
         // eslint-disable-next-line no-debugger
-        debugger;
+        // debugger;
     }
 
     renderNode (entry: SearchEntry, renderPass: IRenderPass): void
     {
-        console.log('2-rendering', entry.node.name);
         entry.node.renderGL(renderPass);
 
         entry.children.forEach(child =>
@@ -240,7 +238,6 @@ export class WebGLRenderer
             }
             else
             {
-                console.log('3-rendering', child.node.name);
                 child.node.renderGL(renderPass);
             }
         });

@@ -19,7 +19,7 @@ export function BuildRenderList (world: IBaseWorld): void
 
     if (cachedLayers.length > 0)
     {
-        // UpdateCachedLayers(cachedLayers, world.camera.dirtyRender);
+        UpdateCachedLayers(cachedLayers, world.camera.dirtyRender);
     }
 
     //  TODO: numRenderable probably needs to move to the search function
