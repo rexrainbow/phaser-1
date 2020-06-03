@@ -215,6 +215,8 @@ class TestShader extends Shader
             }
         });
 
+        //   TODO - LightPosition
+
         // this.camera = new Camera3D();
         this.camera = new OrbitCamera();
 

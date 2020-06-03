@@ -13,8 +13,10 @@ uniform mat4 uNormalMatrix;
 
 uniform vec3 uLightColor;
 uniform vec3 uLightDirection;
+// uniform vec3 uLightPosition;
 
-varying vec3 vColor;
+// varying vec3 vColor;
+varying vec4 vColor;
 
 void main (void)
 {
@@ -25,7 +27,10 @@ void main (void)
 
     float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
 
-    vColor = ambientLight + (uLightColor * directional * aVertexColor.rgb);
+    vec3 diffuse = uLightColor * aVertexColor.rgb * directional;
+
+    // vColor = ambientLight + (uLightColor * directional * aVertexColor.rgb);
+    vColor = vec4(diffuse, aVertexColor.a);
 
     gl_Position = uProjectionMatrix * uCameraMatrix * vec4(aVertexPosition, 1.0);
 }`;

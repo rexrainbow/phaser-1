@@ -3,11 +3,12 @@ export const LIGHTS_FRAG =
 
 precision highp float;
 
-varying vec3 vColor;
+// varying vec3 vColor;
+varying vec4 vColor;
 
 void main (void)
 {
-    gl_FragColor = vec4(vColor, 1.0);
+    gl_FragColor = vColor;
 
     // gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }`;
