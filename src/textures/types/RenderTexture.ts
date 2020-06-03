@@ -35,12 +35,10 @@ export class RenderTexture extends Texture
         const renderer = this.renderer;
         const gl = renderer.gl;
 
-        renderer.reset(this.binding.framebuffer, this.width, this.height);
-
-        gl.clearColor(0, 0, 0, 0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-
-        renderer.reset();
+        // renderer.reset(this.binding.framebuffer, this.width, this.height);
+        // gl.clearColor(0, 0, 0, 0);
+        // gl.clear(gl.COLOR_BUFFER_BIT);
+        // renderer.reset();
 
         return this;
     }
@@ -62,7 +60,7 @@ export class RenderTexture extends Texture
 
         for (let i = 0, len = sprites.length; i < len; i++)
         {
-            sprites[i].renderGL(renderer);
+            // sprites[i].renderGL(renderer);
         }
 
         return this;
@@ -72,7 +70,7 @@ export class RenderTexture extends Texture
     {
         const renderer = this.renderer;
 
-        renderer.flush();
+        // renderer.flush();
 
         renderer.reset();
 
