@@ -14,8 +14,8 @@ export class Camera3D
     projectionMatrix: mat4;
     viewMatrix: mat4;
 
-    fov: number = 55;
-    near: number = 0.1;
+    fov: number = 40;
+    near: number = 1;
     far: number = 1000;
 
     aspectRatio: number = 800 / 600;

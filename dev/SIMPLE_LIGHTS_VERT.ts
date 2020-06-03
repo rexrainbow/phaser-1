@@ -5,28 +5,27 @@ precision highp float;
 
 attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
+attribute vec4 aVertexColor;
 
 uniform mat4 uProjectionMatrix;
 uniform mat4 uCameraMatrix;
+uniform mat4 uNormalMatrix;
 
 uniform vec3 uLightColor;
 uniform vec3 uLightDirection;
 
-varying vec4 vColor;
+varying vec3 vColor;
 
 void main (void)
 {
-    // normalize the length
-    vec3 normal = normalize(aVertexNormal.xyz);
+    vec3 ambientLight = vec3(0.3, 0.3, 0.3);
+    vec3 directionalVector = normalize(uLightDirection);
 
-    // Dot product of the light direction and the orientation of a surface (the normal)
-    float nDotLight = max(dot(uLightDirection, normal), 0.0);
+    vec4 transformedNormal = uNormalMatrix * vec4(aVertexNormal, 1.0);
 
-    // Calculate the color due to diffuse reflection
-    vec4 aColor = vec4(0.0, 0.0, 1.0, 1.0);
-    vec3 diffuse = uLightColor * aColor.rgb * nDotLight;
+    float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
 
-    vColor = vec4(diffuse, aColor.a);
+    vColor = ambientLight + (uLightColor * directional * aVertexColor.rgb);
 
     gl_Position = uProjectionMatrix * uCameraMatrix * vec4(aVertexPosition, 1.0);
 }`;
