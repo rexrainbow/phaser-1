@@ -19,12 +19,14 @@ export class ShaderSystem
 
     stack: ShaderStackEntry[];
 
-    constructor (renderer: IWebGLRenderer, currentShader: IShaderConstructor)
+    isDefaultBound: boolean = false;
+
+    constructor (renderer: IWebGLRenderer, defaultShader: IShaderConstructor)
     {
         this.renderer = renderer;
 
         const stackEntry = {
-            shader: new currentShader()
+            shader: new defaultShader()
         };
 
         this.stack = [ stackEntry ];
@@ -45,8 +47,6 @@ export class ShaderSystem
 
     set (shader: IShader, textureID?: number): boolean
     {
-        this.flush();
-
         const renderer = this.renderer;
         const projectionMatrix = renderer.projectionMatrix;
         const cameraMatrix = renderer.currentCamera.matrix;
@@ -64,15 +64,34 @@ export class ShaderSystem
         return success;
     }
 
-    setDefault (textureID: number): void
+    setDefault (): void
+    {
+        if (!this.isDefaultBound)
+        {
+            const renderer = this.renderer;
+            const projectionMatrix = renderer.projectionMatrix;
+            const cameraMatrix = renderer.currentCamera.matrix;
+            const entry = this.stack[0];
+
+            const success = entry.shader.bind(projectionMatrix, cameraMatrix, entry.textureID);
+
+            if (success)
+            {
+                this.isDefaultBound = true;
+
+                this.currentEntry = entry;
+                this.current = entry.shader;
+            }
+        }
+    }
+
+    setSingleQuadShader (textureID: number): void
     {
         this.set(this.singleQuadShader, textureID);
     }
 
     pop (): void
     {
-        this.flush();
-
         const stack = this.stack;
 
         if (stack.length > 1)
@@ -83,26 +102,17 @@ export class ShaderSystem
 
         this.currentEntry = stack[stack.length - 1];
         this.current = this.currentEntry.shader;
+
+        this.isDefaultBound = false;
     }
 
     reset (): void
     {
         this.pop();
-        this.rebind();
+        // this.rebind();
     }
 
-    flush (): boolean
-    {
-        if (this.current.flush())
-        {
-            this.renderer.flushTotal++;
-
-            return true;
-        }
-
-        return false;
-    }
-
+    /*
     rebind (): void
     {
         const renderer = this.renderer;
@@ -119,6 +129,7 @@ export class ShaderSystem
         this.pop();
         this.rebind();
     }
+    */
 
     clear (): void
     {

@@ -11,8 +11,8 @@ export class TextureSystem
     renderer: IWebGLRenderer;
 
     //  The maximum number of combined image units the GPU supports
-    //  Accordingly to the WebGL spec the minimum is 8
-    maxTextures: number;
+    //  According to the WebGL spec the minimum is 8
+    maxTextures: number = 0;
 
     currentActiveTexture: number;
 
@@ -28,6 +28,8 @@ export class TextureSystem
 
         this.tempTextures = [];
         this.textureIndex = [];
+
+        this.init();
     }
 
     //  As per the WebGL spec, the browser should always support at least 8 texture units
@@ -147,18 +149,52 @@ export class TextureSystem
     }
 
     //  request the next available texture and bind it
-    //  returns true if the texture was assigned a new index, otherwise false
-    request (texture: Texture): boolean
+    //  returns the new ID
+    request (texture: Texture): number
     {
         const gl = this.renderer.gl;
         const binding = texture.binding;
         const currentActiveTexture = this.currentActiveTexture;
 
+        if (binding.indexCounter < this.startActiveTexture)
+        {
+            binding.indexCounter = this.startActiveTexture;
+
+            if (currentActiveTexture < this.maxTextures)
+            {
+                binding.setIndex(currentActiveTexture);
+
+                gl.activeTexture(gl.TEXTURE0 + currentActiveTexture);
+                gl.bindTexture(gl.TEXTURE_2D, binding.texture);
+
+                this.currentActiveTexture++;
+            }
+            else
+            {
+                //  We're out of textures, so flush the batch and reset back to 1
+                this.renderer.renderPass.flush();
+
+                this.startActiveTexture++;
+
+                binding.indexCounter = this.startActiveTexture;
+
+                binding.setIndex(1);
+
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, binding.texture);
+
+                this.currentActiveTexture = 2;
+            }
+        }
+
+        return binding.index;
+
+        /*
         if (binding.indexCounter >= this.startActiveTexture)
         {
             //  This texture was already bound this step, so we're good to go
-
-            return false;
+            // return false;
+            return binding.index;
         }
 
         binding.indexCounter = this.startActiveTexture;
@@ -188,7 +224,9 @@ export class TextureSystem
 
             this.currentActiveTexture = 2;
         }
+        */
 
-        return true;
+        // return true;
+        // return binding.index;
     }
 }
