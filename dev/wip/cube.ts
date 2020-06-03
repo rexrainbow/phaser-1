@@ -11,11 +11,7 @@ import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { EffectLayer, Layer, RenderLayer, Sprite } from '../src/gameobjects';
 
 import { Camera3D } from './Camera3D';
-// import { Cube as CubeOBJ } from './3d/cube';
 import { Cube2 as CubeOBJ } from './3d/cube2';
-// import { Chair as CubeOBJ } from './3d/chair';
-// import { Spike as CubeOBJ } from './3d/spike';
-// import { Plane as CubeOBJ } from './3d/plane';
 import { DrawTexturedQuad } from '../src/renderer/webgl1/draw/DrawTexturedQuad';
 import { ExpandVertexData } from './ExpandVertexData';
 import { Face } from './Face';
@@ -37,6 +33,33 @@ import { Shader } from '../src/renderer/webgl1/shaders/Shader';
 import { StaticWorld } from '../src/world/StaticWorld';
 import { Vertex } from '../src/gameobjects/components';
 import { parseOBJ } from "@thi.ng/geom-io-obj";
+
+// import { Cube as CubeOBJ } from './3d/cube';
+
+// import { Chair as CubeOBJ } from './3d/chair';
+// import { Spike as CubeOBJ } from './3d/spike';
+// import { Plane as CubeOBJ } from './3d/plane';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // const obj = new OBJFile(CubeOBJ);
 // const data = obj.parse();
@@ -261,8 +284,14 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        // loader.setPath('/phaser4-examples/public/assets/');
-        loader.setPath('/examples/public/assets/');
+        if (window.location.href.includes('192.168.0.100/phaser-genesis/'))
+        {
+            loader.setPath('/phaser4-examples/public/assets/');
+        }
+        else
+        {
+            loader.setPath('/examples/public/assets/');
+        }
 
         loader.add(ImageFile('bg', 'checker.png'));
         loader.add(ImageFile('logo', 'logo.png'));

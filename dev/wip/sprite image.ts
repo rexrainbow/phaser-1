@@ -1,5 +1,5 @@
 import { AddChild, AddChildren } from '../src/display/';
-import { BackgroundColor, CanvasRenderer, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
+import { BackgroundColor, BatchSize, Parent, Scenes, SetWebGL, Size } from '../src/config';
 
 import { Game } from '../src/Game';
 import { ImageFile } from '../src/loader/files/ImageFile';
@@ -23,21 +23,21 @@ class Demo extends Scene
 
         loader.add(ImageFile('logo', 'logo.png'));
 
-        loader.start(() => {
+        loader.start().then(() => {
 
             const block = new Sprite(400, 300, 'logo');
 
             AddChildren(world, block);
 
         });
-
     }
 }
 
 export default function (): void
 {
     new Game(
-        WebGLRenderer(),
+        SetWebGL(),
+        BatchSize(128),
         Size(800, 600),
         Parent('gameParent'),
         BackgroundColor(0x2d2d2d),

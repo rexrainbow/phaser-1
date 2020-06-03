@@ -24,10 +24,14 @@
 // import runTest from './effect layer 1';
 // import runTest from './tween 1';
 // import runTest from './tween 2';
-// import runTest from './render layer 1';
-// import runTest from './sprite image';
-// import runTest from './display list debug 1';
 
-import runTest from './cube';
+import runTest from './render layer 1';
+
+// import runTest from './sprite image';
+
+// import runTest from './webgl batch test';
+
+// import runTest from './display list debug 1';
+// import runTest from './cube';
 
 runTest();

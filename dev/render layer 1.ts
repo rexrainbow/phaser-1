@@ -1,4 +1,4 @@
-import { BackgroundColor, Parent, Scenes, Size, WebGLRenderer } from '../src/config';
+import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
 import { RenderLayer, Sprite } from '../src/gameobjects/';
 
 import { AddChildren } from '../src/display/AddChildren';
@@ -34,6 +34,8 @@ class Demo extends Scene
     {
         const world = new StaticWorld(this);
 
+        world.name = 'World!';
+
         const layer = new RenderLayer();
 
         const bg = new Sprite(400, 300, 'background');
@@ -62,7 +64,7 @@ class Demo extends Scene
 export default function (): void
 {
     new Game(
-        WebGLRenderer(),
+        SetWebGL(),
         Size(800, 600),
         Parent('gameParent'),
         BackgroundColor(0x2d2d2d),

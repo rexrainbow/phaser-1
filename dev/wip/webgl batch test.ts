@@ -1,5 +1,5 @@
 import { AddChild, AddChildren } from '../src/display/';
-import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
+import { BackgroundColor, BatchSize, DefaultOrigin, Parent, Scenes, SetWebGL, Size } from '../src/config';
 
 import { Game } from '../src/Game';
 import { ImageFile } from '../src/loader/files/ImageFile';
@@ -21,16 +21,22 @@ class Demo extends Scene
         loader.setPath('/phaser4-examples/public/assets/');
         // loader.setPath('/examples/public/assets/');
 
-        loader.add(ImageFile('logo', 'logo.png'));
+        loader.add(ImageFile('32', 'shinyball.png'));
 
         loader.start().then(() => {
 
-            const block = new Sprite(400, 300, 'logo');
+            //  450 sprites (batch size set to 256, so will be 2 draw calls to complete)
+            for (let y = 0; y < 18; y++)
+            {
+                for (let x = 0; x < 25; x++)
+                {
+                    const ball = new Sprite(x * 32, y * 32, '32');
 
-            AddChildren(world, block);
+                    AddChild(world, ball);
+                }
+            }
 
         });
-
     }
 }
 
@@ -38,6 +44,8 @@ export default function (): void
 {
     new Game(
         SetWebGL(),
+        BatchSize(256),
+        DefaultOrigin(0),
         Size(800, 600),
         Parent('gameParent'),
         BackgroundColor(0x2d2d2d),
