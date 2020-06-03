@@ -47,7 +47,9 @@ export class RenderLayer extends Layer implements IRenderLayer
         texture.binding = binding;
 
         binding.framebuffer = CreateFramebuffer(binding.texture);
-        binding.depthbuffer = CreateDepthBuffer(binding.framebuffer, texture.width, texture.height);
+
+        //  This must only be set for 3D layers!
+        // binding.depthbuffer = CreateDepthBuffer(binding.framebuffer, texture.width, texture.height);
 
         this.texture = texture;
         this.framebuffer = binding.framebuffer;
