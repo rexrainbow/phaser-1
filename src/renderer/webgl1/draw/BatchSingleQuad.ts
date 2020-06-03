@@ -1,14 +1,8 @@
-import { IWebGLRenderer } from '../IWebGLRenderer';
+import { IRenderPass } from './IRenderPass';
 
-export function BatchSingleQuad (renderer: IWebGLRenderer, x: number, y: number, width: number, height: number, u0: number, v0: number, u1: number, v1: number, textureIndex: number = 0, packedColor: number = 4294967295): void
+export function BatchSingleQuad (renderPass: IRenderPass, x: number, y: number, width: number, height: number, u0: number, v0: number, u1: number, v1: number, textureIndex: number = 0, packedColor: number = 4294967295): void
 {
-    const shader = renderer.shaders.current;
-    const buffer = shader.buffer;
-
-    const F32 = buffer.vertexViewF32;
-    const U32 = buffer.vertexViewU32;
-
-    const offset = shader.count * buffer.entryElementSize;
+    const { F32, U32, offset } = renderPass.getBuffer(1);
 
     //  top left
     F32[offset + 0] = x;
@@ -41,6 +35,4 @@ export function BatchSingleQuad (renderer: IWebGLRenderer, x: number, y: number,
     F32[offset + 21] = v1;
     F32[offset + 22] = textureIndex;
     U32[offset + 23] = packedColor;
-
-    shader.count++;
 }

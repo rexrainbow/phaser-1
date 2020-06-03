@@ -1,42 +1,48 @@
+import { IRenderPass } from './IRenderPass';
 import { ISprite } from '../../../gameobjects/sprite/ISprite';
-import { IWebGLRenderer } from '../IWebGLRenderer';
 
-export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderer: IWebGLRenderer): void
+export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderPass: IRenderPass): void
 {
-    const texture = sprite.texture;
-    const shader = renderer.shaders.current;
-    const buffer = shader.buffer;
-    const binding = texture.binding;
+    const { F32, U32, offset } = renderPass.getBuffer(1);
 
-    if (shader.count === buffer.batchSize)
+    // const texture = sprite.texture;
+    // const shader = renderer.shaders.current;
+    // const buffer = shader.buffer;
+    // const binding = texture.binding;
+
+    // if (shader.count === buffer.batchSize)
+    // {
+    //     renderer.flush();
+    // }
+
+    const textureIndex = renderPass.requestTexture(sprite.texture);
+
+    // const textureIndex = binding.index;
+
+    // const vertices = sprite.vertices;
+
+    // const F32 = buffer.vertexViewF32;
+    // const U32 = buffer.vertexViewU32;
+
+    // let offset = shader.count * buffer.entryElementSize;
+
+    let vertOffset = offset;
+
+    console.log(sprite.name, 'ti', textureIndex, 'offset', offset);
+
+    sprite.vertices.forEach(vertex =>
     {
-        renderer.flush();
-    }
+        F32[vertOffset + 0] = vertex.x;
+        F32[vertOffset + 1] = vertex.y;
+        F32[vertOffset + 2] = vertex.u;
+        F32[vertOffset + 3] = vertex.v;
+        F32[vertOffset + 4] = textureIndex;
+        U32[vertOffset + 5] = vertex.color;
 
-    renderer.textures.request(texture);
-
-    const textureIndex = binding.index;
-
-    const vertices = sprite.vertices;
-
-    const F32 = buffer.vertexViewF32;
-    const U32 = buffer.vertexViewU32;
-
-    let offset = shader.count * buffer.entryElementSize;
-
-    vertices.forEach(vertex =>
-    {
-        F32[offset + 0] = vertex.x;
-        F32[offset + 1] = vertex.y;
-        F32[offset + 2] = vertex.u;
-        F32[offset + 3] = vertex.v;
-        F32[offset + 4] = textureIndex;
-        U32[offset + 5] = vertex.color;
-
-        offset += 6;
+        vertOffset += 6;
     });
 
-    shader.count++;
+    // shader.count++;
 }
 
 /*

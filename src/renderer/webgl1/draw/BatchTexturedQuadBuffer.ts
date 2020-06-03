@@ -1,8 +1,9 @@
+import { IRenderPass } from './IRenderPass';
 import { ISpriteBatch } from '../../../gameobjects/spritebatch/ISpriteBatch';
-import { IWebGLRenderer } from '../IWebGLRenderer';
 
-export function BatchTexturedQuadBuffer <T extends ISpriteBatch> (batch: T, renderer: IWebGLRenderer): void
+export function BatchTexturedQuadBuffer <T extends ISpriteBatch> (batch: T, renderPass: IRenderPass): void
 {
+    /*
     const texture = batch.texture;
     const shader = renderer.shaders.current;
     const buffer = shader.buffer;
@@ -27,4 +28,5 @@ export function BatchTexturedQuadBuffer <T extends ISpriteBatch> (batch: T, rend
 
     //  Restore
     shader.bindBuffers();
+    */
 }
