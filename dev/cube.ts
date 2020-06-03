@@ -162,7 +162,7 @@ class Cube extends RenderLayer
         {
             offset = face.addToBuffer(F32, U32, offset);
 
-            shader.count++;
+            shader.count += 3;
         });
 
         gl.enable(gl.DEPTH_TEST);
