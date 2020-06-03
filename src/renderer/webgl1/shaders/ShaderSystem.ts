@@ -109,10 +109,9 @@ export class ShaderSystem
     reset (): void
     {
         this.pop();
-        // this.rebind();
+        this.rebind();
     }
 
-    /*
     rebind (): void
     {
         const renderer = this.renderer;
@@ -129,7 +128,6 @@ export class ShaderSystem
         this.pop();
         this.rebind();
     }
-    */
 
     clear (): void
     {
