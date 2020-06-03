@@ -28,7 +28,7 @@ export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderPass: IR
 
     let vertOffset = offset;
 
-    console.log(sprite.name, 'ti', textureIndex, 'offset', offset);
+    // console.log(sprite.name, 'ti', textureIndex, 'offset', offset);
 
     sprite.vertices.forEach(vertex =>
     {
