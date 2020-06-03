@@ -5,8 +5,8 @@ import { DrawTexturedQuad } from '../../renderer/canvas/draw/DrawTexturedQuad';
 import { Frame } from '../../textures/Frame';
 import { ICanvasRenderer } from '../../renderer/canvas/ICanvasRenderer';
 import { IGameObject } from '../IGameObject';
+import { IRenderPass } from '../../renderer/webgl1/draw/IRenderPass';
 import { ISprite } from './ISprite';
-import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
 import { PackColors } from '../../renderer/webgl1/colors/PackColors';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
@@ -70,11 +70,11 @@ export class Sprite extends Container implements ISprite
         }
     }
 
-    renderGL <T extends IWebGLRenderer> (renderer: T): void
+    renderGL <T extends IRenderPass> (renderPass: T): void
     {
         this.preRender();
 
-        BatchTexturedQuad(this, renderer);
+        BatchTexturedQuad(this, renderPass);
     }
 
     renderCanvas <T extends ICanvasRenderer> (renderer: T): void

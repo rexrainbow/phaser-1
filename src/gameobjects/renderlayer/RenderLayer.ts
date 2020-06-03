@@ -6,7 +6,7 @@ import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
 import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
 import { IRenderLayer } from './IRenderLayer';
-import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
+import { IRenderPass } from '../../renderer/webgl1/draw/IRenderPass';
 import { Layer } from '../layer/Layer';
 import { Texture } from '../../textures/Texture';
 
@@ -53,44 +53,44 @@ export class RenderLayer extends Layer implements IRenderLayer
         this.framebuffer = binding.framebuffer;
     }
 
-    renderGL <T extends IWebGLRenderer> (renderer: T): void
+    renderGL <T extends IRenderPass> (renderPass: T): void
     {
         if (this.numChildren > 0)
         {
-            renderer.flush();
+            renderPass.flush();
 
             if (this.isDirty(DIRTY_CONST.CHILD_CACHE))
             {
                 //  This RenderLayer has dirty children
-                renderer.fbo.add(this.framebuffer, true);
+                renderPass.setFramebuffer(this.framebuffer, true);
 
                 this.clearDirty(DIRTY_CONST.CHILD_CACHE);
             }
             else
             {
                 //  This RenderLayer doesn't have any dirty children, so we'll use the previous fbo contents
-                renderer.fbo.add(this.framebuffer, false);
+                renderPass.setFramebuffer(this.framebuffer, false);
 
-                this.postRenderGL(renderer);
+                this.postRenderGL(renderPass);
             }
         }
     }
 
-    postRenderGL <T extends IWebGLRenderer> (renderer: T): void
+    postRenderGL <T extends IRenderPass> (renderPass: T): void
     {
         const texture = this.texture;
 
-        renderer.flush();
+        renderPass.flush();
 
-        renderer.fbo.pop();
+        renderPass.popFramebuffer();
 
         const { u0, v0, u1, v1 } = texture.firstFrame;
 
-        renderer.textures.bind(texture);
+        renderPass.bindTexture(texture);
 
-        DrawTexturedQuad(renderer, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
+        DrawTexturedQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
 
-        renderer.textures.unbind();
+        renderPass.unbindTexture();
 
         this.clearDirty(DIRTY_CONST.TRANSFORM);
     }

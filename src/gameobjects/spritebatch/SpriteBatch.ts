@@ -5,6 +5,7 @@ import { DeleteFramebuffer } from '../../renderer/webgl1/fbo/DeleteFramebuffer';
 import { Frame } from '../../textures';
 import { GL } from '../../renderer/webgl1/GL';
 import { GetVerticesFromValues } from '../components/transform/GetVerticesFromValues';
+import { IRenderPass } from '../../renderer/webgl1/draw/IRenderPass';
 import { ISpriteBatch } from './ISpriteBatch';
 import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
 import { Layer } from '../layer/Layer';
@@ -246,9 +247,9 @@ export class SpriteBatch extends Layer implements ISpriteBatch
         }
     }
 
-    renderGL <T extends IWebGLRenderer> (renderer: T): void
+    renderGL <T extends IRenderPass> (renderPass: T): void
     {
-        BatchTexturedQuadBuffer(this, renderer);
+        BatchTexturedQuadBuffer(this, renderPass);
     }
 
     destroy (): void

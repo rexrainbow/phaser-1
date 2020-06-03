@@ -3,8 +3,8 @@ import { IBoundsComponent } from './components/bounds/IBoundsComponent';
 import { ICanvasRenderer } from '../renderer/canvas/ICanvasRenderer';
 import { IEventInstance } from '../events/IEventInstance';
 import { IInputComponent } from './components/input/IInputComponent';
+import { IRenderPass } from '../renderer/webgl1/draw/IRenderPass';
 import { ITransformComponent } from './components/transform/ITransformComponent';
-import { IWebGLRenderer } from '../renderer/webgl1/IWebGLRenderer';
 
 export interface IGameObject
 {
@@ -41,9 +41,9 @@ export interface IGameObject
     update (delta: number, time: number): void;
     postUpdate (delta: number, time: number): void;
 
-    renderGL <T extends IWebGLRenderer> (renderer: T): void;
+    renderGL <T extends IRenderPass> (renderPass: T): void;
     renderCanvas <T extends ICanvasRenderer> (renderer: T): void;
-    postRenderGL <T extends IWebGLRenderer> (renderer: T): void;
+    postRenderGL <T extends IRenderPass> (renderPass: T): void;
     postRenderCanvas <T extends ICanvasRenderer> (renderer: T): void;
 
     destroy (reparentChildren?: IGameObject): void;

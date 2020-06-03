@@ -2,8 +2,8 @@ import { BatchSingleQuad } from '../../renderer/webgl1/draw/BatchSingleQuad';
 import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
 import { IEffectLayer } from './IEffectLayer';
+import { IRenderPass } from '../../renderer/webgl1/draw/IRenderPass';
 import { IShader } from '../../renderer/webgl1/shaders/IShader';
-import { IWebGLRenderer } from '../../renderer/webgl1/IWebGLRenderer';
 import { RenderLayer } from '../renderlayer/RenderLayer';
 
 //  A WebGL specific EffectLayer
@@ -20,14 +20,14 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
         this.type = 'EffectLayer';
     }
 
-    postRenderGL <T extends IWebGLRenderer> (renderer: T): void
+    postRenderGL <T extends IRenderPass> (renderPass: T): void
     {
         const shaders = this.shaders;
         const texture = this.texture;
 
-        renderer.flush();
+        renderPass.flush();
 
-        renderer.fbo.pop();
+        renderPass.popFramebuffer();
 
         //  this.framebuffer contains a texture with all of this layers sprites drawn to it
 
@@ -35,11 +35,11 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
         {
             const { u0, v0, u1, v1 } = texture.firstFrame;
 
-            renderer.textures.bind(texture);
+            renderPass.bindTexture(texture);
 
-            DrawTexturedQuad(renderer, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
+            DrawTexturedQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
 
-            renderer.textures.unbind();
+            renderPass.unbindTexture();
         }
         else
         {
@@ -51,18 +51,18 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
 
                 const { u0, v0, u1, v1 } = prevTexture.firstFrame;
 
-                if (renderer.shaders.set(shader, 0))
+                if (renderPass.setShader(shader, 0))
                 {
                     shader.renderToFBO = true;
 
                     //  The shaders input texture
-                    renderer.textures.bind(prevTexture);
+                    renderPass.bindTexture(prevTexture);
 
-                    BatchSingleQuad(renderer, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
+                    BatchSingleQuad(renderPass, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
 
-                    renderer.shaders.pop();
+                    renderPass.popShader();
 
-                    renderer.textures.unbind();
+                    renderPass.unbindTexture();
 
                     prevTexture = shader.texture;
                 }
@@ -70,11 +70,11 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
 
             const { u0, v0, u1, v1 } = prevTexture.firstFrame;
 
-            renderer.textures.bind(prevTexture);
+            renderPass.bindTexture(prevTexture);
 
-            DrawTexturedQuad(renderer, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
+            DrawTexturedQuad(renderPass, 0, 0, prevTexture.width, prevTexture.height, u0, v0, u1, v1);
 
-            renderer.textures.unbind();
+            renderPass.unbindTexture();
         }
 
         this.clearDirty(DIRTY_CONST.TRANSFORM);
