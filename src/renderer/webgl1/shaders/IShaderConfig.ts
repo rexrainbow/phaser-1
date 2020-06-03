@@ -3,7 +3,8 @@ export type IShaderConfig = {
     fragmentShader?: string;
     height?: number;
     maxTextures?: number;
-    renderToFBO?: boolean;
+    renderToFramebuffer?: boolean;
+    renderToDepthbuffer?: boolean;
     resolution?: number;
     uniforms?: Object;
     vertexShader?: string;

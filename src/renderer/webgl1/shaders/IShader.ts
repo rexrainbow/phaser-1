@@ -8,7 +8,8 @@ export interface IShader
     framebuffer: WebGLFramebuffer;
     program: WebGLProgram;
     renderer: IWebGLRenderer;
-    renderToFBO: boolean;
+    renderToFramebuffer: boolean;
+    renderToDepthbuffer: boolean;
     texture: Texture;
     uniforms: Map<string, unknown>;
     bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array, uTexture?: number): boolean;

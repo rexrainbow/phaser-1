@@ -37,7 +37,9 @@ export class Shader implements IShader
 
     framebuffer: WebGLFramebuffer;
 
-    renderToFBO: boolean;
+    renderToFramebuffer: boolean = false;
+
+    renderToDepthbuffer: boolean = false;
 
     constructor (config: IShaderConfig = {})
     {
@@ -47,7 +49,8 @@ export class Shader implements IShader
             attributes = DefaultQuadAttributes,
             fragmentShader = SINGLE_QUAD_FRAG,
             height = GetHeight(),
-            renderToFBO = false,
+            renderToFramebuffer = false,
+            renderToDepthbuffer = false,
             resolution = GetResolution(),
             vertexShader = SINGLE_QUAD_VERT,
             width = GetWidth(),
@@ -56,9 +59,9 @@ export class Shader implements IShader
 
         this.create(fragmentShader, vertexShader, uniforms, attributes);
 
-        if (renderToFBO)
+        if (renderToFramebuffer)
         {
-            this.renderToFBO = true;
+            this.renderToFramebuffer = true;
 
             const texture = new Texture(null, width * resolution, height * resolution);
             const binding = new GLTextureBinding(texture);
@@ -66,14 +69,20 @@ export class Shader implements IShader
             texture.binding = binding;
 
             binding.framebuffer = CreateFramebuffer(binding.texture);
-            binding.depthbuffer = CreateDepthBuffer(binding.framebuffer, texture.width, texture.height);
+
+            if (renderToDepthbuffer)
+            {
+                this.renderToDepthbuffer = true;
+
+                binding.depthbuffer = CreateDepthBuffer(binding.framebuffer, texture.width, texture.height);
+            }
 
             this.texture = texture;
             this.framebuffer = binding.framebuffer;
         }
     }
 
-    create (fragmentShaderSource: string, vertexShaderSource: string, uniforms: Object, attribs: Object): void
+    create (fragmentShaderSource: string, vertexShaderSource: string, uniforms: {}, attribs: {}): void
     {
         const gl = this.renderer.gl;
 
@@ -92,6 +101,8 @@ export class Shader implements IShader
             return;
         }
 
+        const currentProgram = gl.getParameter(gl.CURRENT_PROGRAM);
+
         gl.useProgram(program);
 
         this.program = program;
@@ -107,6 +118,8 @@ export class Shader implements IShader
         }
 
         this.attributes = CreateAttributes(gl, program, attribs);
+
+        gl.useProgram(currentProgram);
     }
 
     updateUniforms (): void
