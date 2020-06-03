@@ -7,6 +7,7 @@ import { CreateUniforms } from './CreateUniforms';
 import { DefaultQuadAttributes } from './DefaultQuadAttributes';
 import { DefaultQuadUniforms } from './DefaultQuadUniforms';
 import { DeleteShaders } from './DeleteShaders';
+import { FXShader } from './FXShader';
 import { MultiTextureQuadShader } from './MultiTextureQuadShader';
 import { QuadShader } from './QuadShader';
 import { Shader } from './Shader';
@@ -23,6 +24,7 @@ export {
     DefaultQuadAttributes,
     DefaultQuadUniforms,
     DeleteShaders,
+    FXShader,
     MultiTextureQuadShader,
     Shader,
     ShaderSystem,
