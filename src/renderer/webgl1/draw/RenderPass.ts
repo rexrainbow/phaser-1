@@ -25,7 +25,7 @@ export class RenderPass implements IRenderPass
      *
      * @type {number}
      */
-    count: number;
+    count: number = 0;
 
     /**
      * The total number of quads previously flushed.
@@ -152,6 +152,13 @@ export class RenderPass implements IRenderPass
         this.shader.pop();
     }
 
+    popShaderAndRebind (): void
+    {
+        this.flush();
+
+        this.shader.popAndRebind();
+    }
+
     setFramebuffer (framebuffer: WebGLFramebuffer, clear: boolean = true, width: number = 0, height: number = 0): void
     {
         this.fbo.set(framebuffer, clear, width, height);
@@ -193,7 +200,7 @@ export class RenderPass implements IRenderPass
 
         const gl = renderer.gl;
 
-        if (shader.renderToFBO)
+        if (shader.renderToFramebuffer)
         {
             fbo.add(shader.framebuffer, true);
         }
@@ -220,7 +227,7 @@ export class RenderPass implements IRenderPass
             gl.drawArrays(gl.TRIANGLES, 0, count);
         }
 
-        if (shader.renderToFBO)
+        if (shader.renderToFramebuffer)
         {
             fbo.pop();
         }
@@ -229,8 +236,6 @@ export class RenderPass implements IRenderPass
     flush (rebindShaders: boolean = false): boolean
     {
         const count = this.count;
-
-        console.log('flush', count);
 
         if (count === 0)
         {

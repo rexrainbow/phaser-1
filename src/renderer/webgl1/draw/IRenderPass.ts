@@ -30,6 +30,7 @@ export interface IRenderPass
     popVertexBuffer (): void;
     setShader (shader: IShader, textureID?: number): boolean;
     popShader (): void;
+    popShaderAndRebind (): void;
     setFramebuffer (framebuffer: WebGLFramebuffer, clear?: boolean, width?: number, height?: number): void;
     popFramebuffer (): void;
     setBuffers (vertexBuffer: WebGLBuffer, indexBuffer?: WebGLBuffer): void;
