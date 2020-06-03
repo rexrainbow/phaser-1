@@ -58,6 +58,7 @@
         "uplot": "^1.0.9"
     },
     "dependencies": {
+        "@thi.ng/geom-io-obj": "^0.1.9",
         "gl-matrix": "^3.3.0"
     }
 }
