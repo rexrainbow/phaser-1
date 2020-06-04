@@ -11,7 +11,6 @@ import { FXShader } from './FXShader';
 import { MultiTextureQuadShader } from './MultiTextureQuadShader';
 import { QuadShader } from './QuadShader';
 import { Shader } from './Shader';
-import { ShaderSystem } from './ShaderSystem';
 import { SingleTextureQuadShader } from './SingleTextureQuadShader';
 
 export {
@@ -27,7 +26,6 @@ export {
     FXShader,
     MultiTextureQuadShader,
     Shader,
-    ShaderSystem,
     QuadShader,
     SingleTextureQuadShader
 };
