@@ -10,6 +10,7 @@ import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
 import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { EffectLayer, Layer, RenderLayer, Sprite } from '../src/gameobjects';
 
+import { BatchSingleQuad } from '../src/renderer/webgl1/draw/BatchSingleQuad';
 import { Camera3D } from './Camera3D';
 import { Cube2 as CubeOBJ } from './3d/cube2';
 import { DrawTexturedQuad } from '../src/renderer/webgl1/draw/DrawTexturedQuad';
@@ -70,6 +71,11 @@ class Cube extends RenderLayer3D
         this.buffer = new VertexBuffer(1040, 4, 7, 3);
 
         this.shader = shader;
+
+        this.buffer.vertexBuffer['__SPECTOR_Metadata'] = { name: 'Cube' };
+        this.texture.binding.framebuffer['__SPECTOR_Metadata'] = { name: 'CubeFramebuffer' };
+        this.texture.binding.depthbuffer['__SPECTOR_Metadata'] = { name: 'CubeDepthbuffer' };
+        this.texture.binding.texture['__SPECTOR_Metadata'] = { name: 'CubeTexture' };
 
         const colors = [
             0xff0000, 0xff0000,
@@ -152,14 +158,11 @@ class Cube extends RenderLayer3D
 
         renderPass.flush();
         renderPass.setFramebuffer(this.framebuffer, true);
+
         renderPass.setShader(shader, 0);
         renderPass.setVertexBuffer(this.buffer);
         shader.setAttributes(this.buffer.vertexByteSize);
 
-        // shader.renderToFBO = false;
-        // const buffer = shader.buffer;
-        // const F32 = buffer.vertexViewF32;
-        // const U32 = buffer.vertexViewU32;
         // let offset = shader.count * buffer.entryElementSize;
         let offset = 0;
 
@@ -176,29 +179,29 @@ class Cube extends RenderLayer3D
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
 
-        // renderer.shaders.pop();
-        // renderer.fbo.pop();
-
         renderPass.flush();
-
-        renderPass.popFramebuffer();
-        renderPass.popVertexBuffer();
-        renderPass.popShader();
-        // renderPass.popShaderAndRebind();
 
         gl.disable(gl.DEPTH_TEST);
         gl.disable(gl.CULL_FACE);
+
+        renderPass.popFramebuffer();
+        renderPass.popVertexBuffer();
+        renderPass.popShaderAndRebind();
 
         const texture = this.texture;
 
         const { u0, v0, u1, v1 } = texture.firstFrame;
 
-        // renderer.textures.bind(texture);
         renderPass.bindTexture(texture);
 
         DrawTexturedQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
 
-        // renderer.textures.unbind();
+        //  ^ =
+        // renderPass.shader.setSingleQuadShader(0);
+        // renderPass.shader.current.setAttributes(renderPass.buffer.current.vertexByteSize);
+        // BatchSingleQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1, 0, 4294967295);
+        // renderPass.popShaderAndRebind();
+
         renderPass.unbindTexture();
     }
 }
@@ -227,6 +230,9 @@ class TestShader extends Shader
                 uLightColor: vec3.fromValues(1, 1, 1, 1)
             }
         });
+
+        // this.framebuffer['__SPECTOR_Metadata'] = { name: 'TestShaderFramebuffer' };
+        this.program['__SPECTOR_Metadata'] = { name: 'TestShaderProgram' };
 
         //   TODO - LightPosition
 
