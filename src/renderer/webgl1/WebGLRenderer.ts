@@ -1,18 +1,25 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
+import { AddViewport } from './renderpass/AddViewport';
+import { Begin } from './renderpass/Begin';
+import { CreateTempTextures } from './renderpass/CreateTempTextures';
+import { End } from './renderpass/End';
+import { Flush } from './renderpass/Flush';
 import { GL } from './GL';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetRGBArray } from './colors/GetRGBArray';
 import { GetWebGLContext } from '../../config/WebGLContext';
 import { IBaseCamera } from '../../camera/IBaseCamera';
-import { IRenderPass } from './draw/IRenderPass';
+import { IRenderPass } from './renderpass/IRenderPass';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IndexedVertexBuffer } from './buffers/IndexedVertexBuffer';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './cameras/Ortho';
-import { RenderPass } from './draw/RenderPass';
+import { RenderPass } from './renderpass/RenderPass';
 import { SearchEntry } from '../../display/DepthFirstSearchRecursiveNested';
+import { SetDefaultShader } from './renderpass/SetDefaultShader';
+import { SetDefaultVertexBuffer } from './renderpass/SetDefaultVertexBuffer';
 import { WebGLRendererInstance } from './WebGLRendererInstance';
 import { batchSize } from '../../config/BatchSize';
 
@@ -58,11 +65,16 @@ export class WebGLRenderer
 
         WebGLRendererInstance.set(this);
 
-        //  Shaders need reference to the renderer, so create after the instance is set
-        const quadBuffer = new IndexedVertexBuffer(batchSize, 4, 4, 6, 6, 4, [ 0, 1, 2, 2, 3, 0 ]);
-
         //  By this stage the context is available
-        this.renderPass = new RenderPass(this, quadBuffer, MultiTextureQuadShader);
+
+        const renderPass = new RenderPass(this);
+
+        this.renderPass = renderPass;
+
+        CreateTempTextures(renderPass);
+        SetDefaultVertexBuffer(renderPass, new IndexedVertexBuffer(batchSize, 4, 4, 6, 6, 4, [ 0, 1, 2, 2, 3, 0 ]));
+        SetDefaultShader(renderPass, new MultiTextureQuadShader());
+        AddViewport(renderPass, 0, 0, this.width, this.height);
     }
 
     initContext (): void
@@ -78,10 +90,8 @@ export class WebGLRenderer
 
         this.resize(this.width, this.height, this.resolution);
 
-        if (this.renderPass)
-        {
-            this.renderPass.init();
-        }
+        //  TODO
+        //     this.renderPass.init();
     }
 
     resize (width: number, height: number, resolution: number = 1): void
@@ -127,11 +137,11 @@ export class WebGLRenderer
         return this;
     }
 
+    //  TODO - Remove?
     reset (): void
     {
-        this.renderPass.reset();
-
-        this.currentCamera = null;
+        // this.renderPass.reset();
+        // this.currentCamera = null;
     }
 
     render (renderData: ISceneRenderData): void
@@ -141,17 +151,20 @@ export class WebGLRenderer
             return;
         }
 
+        const gl = this.gl;
+        const renderPass = this.renderPass;
+
         //  This is only here because if we don't do _something_ with the context, GL Spector can't see it.
         //  Technically, we could move it below the dirty bail-out below.
-        this.reset();
+        // this.reset();
+
+        this.currentCamera = null;
 
         //  Cache 1 - Nothing dirty? Display the previous frame
         if (this.optimizeRedraw && renderData.numDirtyFrames === 0 && renderData.numDirtyCameras === 0)
         {
             return;
         }
-
-        const gl = this.gl;
 
         if (this.clearBeforeRender)
         {
@@ -160,8 +173,6 @@ export class WebGLRenderer
             gl.clearColor(cls[0], cls[1], cls[2], cls[3]);
             gl.clear(gl.COLOR_BUFFER_BIT);
         }
-
-        const renderPass = this.renderPass;
 
         //  Cache 2 - Only one dirty camera and one flush? We can re-use the buffers
         //  TODO - Per shader
@@ -198,12 +209,12 @@ export class WebGLRenderer
             {
                 if (i > 0)
                 {
-                    renderPass.flush();
+                    Flush(renderPass);
                 }
 
                 this.currentCamera = camera;
 
-                renderPass.begin();
+                Begin(renderPass);
             }
 
             //  Process the render list
@@ -220,7 +231,7 @@ export class WebGLRenderer
             });
         }
 
-        renderPass.end();
+        End(renderPass);
 
         // eslint-disable-next-line no-debugger
         // debugger;
