@@ -17,6 +17,7 @@ import { ExpandVertexData } from './ExpandVertexData';
 import { Face } from './Face';
 import { GL } from '../src/renderer/webgl1';
 import { Game } from '../src/Game';
+import { IRenderPass } from '../src/renderer/webgl1/draw/IRenderPass';
 import { IShader } from '../src/renderer/webgl1/shaders/IShader';
 import { IWebGLRenderer } from '../src/renderer/webgl1/IWebGLRenderer';
 import { ImageFile } from '../src/loader/files/ImageFile';
@@ -27,11 +28,13 @@ import OBJFile from './OBJFile';
 import { On } from '../src/events';
 import { OrbitCamera } from './OrbitCamera';
 import { ParseObj } from './ParseObj';
+import { RenderLayer3D } from '../src/gameobjects3d/renderlayer3d/RenderLayer3D';
 import { SIMPLE_LIGHTS_VERT } from './SIMPLE_LIGHTS_VERT';
 import { Scene } from '../src/scenes/Scene';
 import { Shader } from '../src/renderer/webgl1/shaders/Shader';
 import { StaticWorld } from '../src/world/StaticWorld';
 import { Vertex } from '../src/gameobjects/components';
+import { VertexBuffer } from '../src/renderer/webgl1/buffers/VertexBuffer';
 import { parseOBJ } from "@thi.ng/geom-io-obj";
 
 // import { Cube as CubeOBJ } from './3d/cube';
@@ -39,27 +42,6 @@ import { parseOBJ } from "@thi.ng/geom-io-obj";
 // import { Chair as CubeOBJ } from './3d/chair';
 // import { Spike as CubeOBJ } from './3d/spike';
 // import { Plane as CubeOBJ } from './3d/plane';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // const obj = new OBJFile(CubeOBJ);
 // const data = obj.parse();
@@ -75,14 +57,17 @@ import { parseOBJ } from "@thi.ng/geom-io-obj";
 const model = parseOBJ(CubeOBJ, { groups: false, tessellate: true });
 console.log(model);
 
-class Cube extends RenderLayer
+class Cube extends RenderLayer3D
 {
     shader: IShader;
     faces: Face[] = [];
+    buffer: VertexBuffer;
 
     constructor (shader: IShader)
     {
         super();
+
+        this.buffer = new VertexBuffer(1040, 4, 7, 3);
 
         this.shader = shader;
 
@@ -160,53 +145,61 @@ class Cube extends RenderLayer
         console.log(this.faces);
     }
 
-    renderGL <T extends IWebGLRenderer> (renderer: T): void
+    renderGL <T extends IRenderPass> (renderPass: T): void
     {
-        renderer.flush();
-
-        renderer.fbo.add(this.framebuffer, true);
-
         const shader = this.shader;
-        const gl = renderer.gl;
+        const gl = renderPass.renderer.gl;
 
-        renderer.shaders.set(shader, 0);
+        renderPass.flush();
+        renderPass.setFramebuffer(this.framebuffer, true);
+        renderPass.setShader(shader, 0);
+        renderPass.setVertexBuffer(this.buffer);
+        shader.setAttributes(this.buffer.vertexByteSize);
 
-        shader.renderToFBO = false;
-
-        const buffer = shader.buffer;
-
-        const F32 = buffer.vertexViewF32;
-        const U32 = buffer.vertexViewU32;
-
+        // shader.renderToFBO = false;
+        // const buffer = shader.buffer;
+        // const F32 = buffer.vertexViewF32;
+        // const U32 = buffer.vertexViewU32;
         // let offset = shader.count * buffer.entryElementSize;
         let offset = 0;
+
+        const F32 = this.buffer.vertexViewF32;
+        const U32 = this.buffer.vertexViewU32;
 
         this.faces.forEach(face =>
         {
             offset = face.addToBuffer(F32, U32, offset);
 
-            shader.count += 3;
+            renderPass.count += 3;
         });
 
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
 
-        renderer.shaders.pop();
+        // renderer.shaders.pop();
+        // renderer.fbo.pop();
 
-        const texture = this.texture;
+        renderPass.flush();
 
-        renderer.fbo.pop();
+        renderPass.popFramebuffer();
+        renderPass.popVertexBuffer();
+        renderPass.popShader();
+        // renderPass.popShaderAndRebind();
 
         gl.disable(gl.DEPTH_TEST);
         gl.disable(gl.CULL_FACE);
 
+        const texture = this.texture;
+
         const { u0, v0, u1, v1 } = texture.firstFrame;
 
-        renderer.textures.bind(texture);
+        // renderer.textures.bind(texture);
+        renderPass.bindTexture(texture);
 
-        DrawTexturedQuad(renderer, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
+        DrawTexturedQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
 
-        renderer.textures.unbind();
+        // renderer.textures.unbind();
+        renderPass.unbindTexture();
     }
 }
 
@@ -219,11 +212,8 @@ class TestShader extends Shader
     constructor ()
     {
         super({
-            batchSize: 4096,
             fragmentShader: LIGHTS_FRAG,
             vertexShader: SIMPLE_LIGHTS_VERT,
-            quantity: 3,
-            vertexElementSize: 7,
             attributes: {
                 aVertexPosition: { size: 3, type: GL_CONST.FLOAT, normalized: false, offset: 0 },
                 aVertexNormal: { size: 3, type: GL_CONST.FLOAT, normalized: false, offset: 12 },
