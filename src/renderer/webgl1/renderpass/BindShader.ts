@@ -1,5 +1,5 @@
 import { IRenderPass } from './IRenderPass';
-import { ShaderStackEntry } from '../shaders/ShaderSystem';
+import { ShaderStackEntry } from '../shaders/ShaderStackEntry';
 
 export function BindShader (renderPass: IRenderPass, projectionMatrix?: Float32Array, cameraMatrix?: Float32Array, entry?: ShaderStackEntry): boolean
 {
