@@ -157,6 +157,8 @@ export class RenderPass implements IRenderPass
         this.flush();
 
         this.shader.popAndRebind();
+
+        this.shader.current.setAttributes(this.buffer.current.vertexByteSize);
     }
 
     setFramebuffer (framebuffer: WebGLFramebuffer, clear: boolean = true, width: number = 0, height: number = 0): void
