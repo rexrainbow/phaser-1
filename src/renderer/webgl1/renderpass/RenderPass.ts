@@ -51,4 +51,6 @@ export class RenderPass implements IRenderPass
 
         // this.currentViewport = new Rectangle(0, 0, renderer.width, renderer.height);
     }
+
+    //  reset needs to: null fbo, default viewport, enable blend, set blendfunc, process binding queue, flushTotal = 0
 }

@@ -7,6 +7,11 @@ export function BindViewport (renderPass: IRenderPass, viewport?: Rectangle): vo
     if (!viewport)
     {
         viewport = renderPass.currentViewport;
+
+        if (!viewport)
+        {
+            return;
+        }
     }
 
     const gl = GL.get();
