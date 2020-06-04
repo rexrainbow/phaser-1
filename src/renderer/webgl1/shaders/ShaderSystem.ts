@@ -66,8 +66,8 @@ export class ShaderSystem
 
     setDefault (): void
     {
-        if (!this.isDefaultBound)
-        {
+        // if (!this.isDefaultBound)
+        // {
             const renderer = this.renderer;
             const projectionMatrix = renderer.projectionMatrix;
             const cameraMatrix = renderer.currentCamera.matrix;
@@ -82,7 +82,7 @@ export class ShaderSystem
                 this.currentEntry = entry;
                 this.current = entry.shader;
             }
-        }
+        // }
     }
 
     setSingleQuadShader (textureID: number): void

@@ -47,14 +47,14 @@ export class VertexBufferSystem
 
     setDefault (): void
     {
-        if (!this.isDefaultBound)
-        {
+        // if (!this.isDefaultBound)
+        // {
             this.current = this.stack[0];
 
             this.current.bind();
 
             this.isDefaultBound = true;
-        }
+        // }
     }
 
     set (buffer: IVertexBuffer): IVertexBuffer
@@ -64,6 +64,8 @@ export class VertexBufferSystem
         this.current = buffer;
 
         this.isDefaultBound = false;
+
+        buffer.bind();
 
         return buffer;
     }
@@ -79,6 +81,8 @@ export class VertexBufferSystem
         }
 
         this.current = stack[stack.length - 1];
+
+        this.current.bind();
 
         this.isDefaultBound = false;
     }
