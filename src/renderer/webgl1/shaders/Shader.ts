@@ -146,8 +146,7 @@ export class Shader implements IShader
             return false;
         }
 
-        const renderer = this.renderer;
-        const gl = renderer.gl;
+        const gl = this.renderer.gl;
 
         gl.useProgram(this.program);
 
@@ -161,6 +160,7 @@ export class Shader implements IShader
         return true;
     }
 
+    //  stride = vertexByteSize
     setAttributes (stride: number): void
     {
         const gl = this.renderer.gl;
