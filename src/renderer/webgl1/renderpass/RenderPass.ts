@@ -36,10 +36,12 @@ export class RenderPass implements IRenderPass
     //  VBO
     vertexBufferStack: IVertexBuffer[] = [];
     currentVertexBuffer: IVertexBuffer = null;
+    defaultVertexBuffer: IVertexBuffer = null;
 
     //  Shader
     shaderStack: ShaderStackEntry[] = [];
     currentShader: ShaderStackEntry = null;
+    defaultShader: ShaderStackEntry = null;
 
     //  Viewport
     viewportStack: Rectangle[] = [];
@@ -48,9 +50,8 @@ export class RenderPass implements IRenderPass
     constructor (renderer: IWebGLRenderer)
     {
         this.renderer = renderer;
-
-        // this.currentViewport = new Rectangle(0, 0, renderer.width, renderer.height);
     }
 
+    //  TODO - Call this START maybe? Only run once, at the start of the render loop, and only reset things that need it
     //  reset needs to: null fbo, default viewport, enable blend, set blendfunc, process binding queue, flushTotal = 0
 }

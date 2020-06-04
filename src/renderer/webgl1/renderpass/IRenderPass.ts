@@ -26,10 +26,12 @@ export interface IRenderPass
     //  VBO
     vertexBufferStack: IVertexBuffer[];
     currentVertexBuffer: IVertexBuffer;
+    defaultVertexBuffer: IVertexBuffer;
 
     //  Shader
     shaderStack: ShaderStackEntry[];
     currentShader: ShaderStackEntry;
+    defaultShader: ShaderStackEntry;
 
     //  Viewport
     viewportStack: Rectangle[];
