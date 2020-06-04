@@ -159,8 +159,8 @@ class Cube extends RenderLayer3D
         renderPass.flush();
         renderPass.setFramebuffer(this.framebuffer, true);
 
-        renderPass.setShader(shader, 0);
         renderPass.setVertexBuffer(this.buffer);
+        renderPass.setShader(shader, 0);
         shader.setAttributes(this.buffer.vertexByteSize);
 
         // let offset = shader.count * buffer.entryElementSize;
