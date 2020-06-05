@@ -46,7 +46,7 @@ export class MultiTextureQuadShader extends QuadShader
 
     bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array): boolean
     {
-        this.uniforms.set('uTexture', this.renderer.renderPass.textures.textureIndex);
+        this.uniforms.set('uTexture', this.renderer.renderPass.textureIndex);
 
         return super.bind(uProjectionMatrix, uCameraMatrix);
     }
