@@ -1,9 +1,10 @@
-import { RenderPass } from './RenderPass';
+import { Flush } from './Flush';
+import { IRenderPass } from './IRenderPass';
 import { Texture } from '../../../textures';
 
 //  request the next available texture and bind it
 //  returns the new ID
-export function SetTexture (renderPass: RenderPass, texture: Texture): number
+export function SetTexture (renderPass: IRenderPass, texture: Texture): number
 {
     const gl = renderPass.renderer.gl;
     const binding = texture.binding;
@@ -25,7 +26,7 @@ export function SetTexture (renderPass: RenderPass, texture: Texture): number
         else
         {
             //  We're out of textures, so flush the batch and reset back to 1
-            renderPass.flush();
+            Flush(renderPass);
 
             renderPass.startActiveTexture++;
 
