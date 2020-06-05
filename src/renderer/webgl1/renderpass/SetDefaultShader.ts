@@ -1,14 +1,16 @@
-import { AddShader } from './AddShader';
 import { BindShader } from './BindShader';
 import { IRenderPass } from './IRenderPass';
 import { IShader } from '../shaders/IShader';
 
-export function SetDefaultShader (renderPass: IRenderPass, shader: IShader): void
+export function SetDefaultShader (renderPass: IRenderPass, shader: IShader, textureID?: number): void
 {
-    const entry = AddShader(renderPass, shader);
+    const entry = { shader, textureID };
 
-    renderPass.defaultShader = entry;
+    //  The default entry always goes into index zero
+    renderPass.shaderStack[0] = entry;
+
     renderPass.currentShader = entry;
+    renderPass.defaultShader = entry;
 
     BindShader(renderPass);
 }
