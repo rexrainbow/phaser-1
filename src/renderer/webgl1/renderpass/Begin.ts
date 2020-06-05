@@ -1,7 +1,11 @@
-import { RenderPass } from './RenderPass';
+import { IRenderPass } from './IRenderPass';
 
-export function Begin (renderPass: RenderPass): void
+export function Begin (renderPass: IRenderPass): void
 {
+    const renderer = renderPass.renderer;
+
+    renderPass.defaultShader.shader.bind(renderer.projectionMatrix, renderer.currentCamera.matrix);
+
     //  Binds default shader and setsUniforms
     // this.shader.setDefault();
 
