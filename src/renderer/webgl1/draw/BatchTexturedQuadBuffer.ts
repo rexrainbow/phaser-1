@@ -1,4 +1,4 @@
-import { IRenderPass } from './IRenderPass';
+import { IRenderPass } from '../renderpass/IRenderPass';
 import { ISpriteBatch } from '../../../gameobjects/spritebatch/ISpriteBatch';
 
 export function BatchTexturedQuadBuffer <T extends ISpriteBatch> (batch: T, renderPass: IRenderPass): void
