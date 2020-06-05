@@ -1,11 +1,11 @@
 import { GetMaxTextures, SetMaxTextures } from '../../../config/MaxTextures';
 
 import { CheckShaderMaxIfStatements } from '../shaders/CheckShaderMaxIfStatements';
-import { RenderPass } from './RenderPass';
+import { IRenderPass } from './IRenderPass';
 
 //  As per the WebGL spec, the browser should always support at least 8 texture units
 
-export function CreateTempTextures (renderPass: RenderPass): void
+export function CreateTempTextures (renderPass: IRenderPass): void
 {
     const gl = renderPass.renderer.gl;
 

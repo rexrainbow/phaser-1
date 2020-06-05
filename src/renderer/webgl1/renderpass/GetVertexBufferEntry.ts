@@ -1,8 +1,8 @@
 import { BufferEntry } from '../draw/BufferEntry';
 import { Flush } from './Flush';
-import { RenderPass } from './RenderPass';
+import { IRenderPass } from './IRenderPass';
 
-export function GetVertexBufferEntry (renderPass: RenderPass, addToCount: number = 0): BufferEntry
+export function GetVertexBufferEntry (renderPass: IRenderPass, addToCount: number = 0): BufferEntry
 {
     const buffer = renderPass.currentVertexBuffer;
 

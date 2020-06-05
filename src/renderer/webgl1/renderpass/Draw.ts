@@ -1,8 +1,8 @@
+import { IRenderPass } from './IRenderPass';
 import { PopFramebuffer } from './PopFramebuffer';
-import { RenderPass } from './RenderPass';
 import { SetFramebuffer } from './SetFramebuffer';
 
-export function Draw (renderPass: RenderPass): void
+export function Draw (renderPass: IRenderPass): void
 {
     const count = renderPass.count;
 

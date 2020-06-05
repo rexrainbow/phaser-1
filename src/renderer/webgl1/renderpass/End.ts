@@ -1,7 +1,7 @@
 import { Flush } from './Flush';
-import { RenderPass } from './RenderPass';
+import { IRenderPass } from './IRenderPass';
 
-export function End (renderPass: RenderPass): void
+export function End (renderPass: IRenderPass): void
 {
     Flush(renderPass);
 }

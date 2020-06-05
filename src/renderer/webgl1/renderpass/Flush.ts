@@ -1,7 +1,7 @@
 import { Draw } from './Draw';
-import { RenderPass } from './RenderPass';
+import { IRenderPass } from './IRenderPass';
 
-export function Flush (renderPass: RenderPass): boolean
+export function Flush (renderPass: IRenderPass): boolean
 {
     const count = renderPass.count;
 
