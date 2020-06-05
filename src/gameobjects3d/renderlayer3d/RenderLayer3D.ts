@@ -6,7 +6,7 @@ import { DIRTY_CONST } from '../../gameobjects/DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
 import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
 import { IRenderLayer3D } from './IRenderLayer3D';
-import { IRenderPass } from '../../renderer/webgl1/draw/IRenderPass';
+import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
 import { Layer } from '../../gameobjects/layer/Layer';
 import { Texture } from '../../textures/Texture';
 
@@ -53,6 +53,7 @@ export class RenderLayer3D extends Layer implements IRenderLayer3D
         this.framebuffer = binding.framebuffer;
     }
 
+    /*
     renderGL <T extends IRenderPass> (renderPass: T): void
     {
         if (this.numChildren > 0)
@@ -94,4 +95,5 @@ export class RenderLayer3D extends Layer implements IRenderLayer3D
 
         this.clearDirty(DIRTY_CONST.TRANSFORM);
     }
+    */
 }

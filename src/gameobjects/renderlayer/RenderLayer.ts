@@ -6,7 +6,7 @@ import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
 import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
 import { IRenderLayer } from './IRenderLayer';
-import { IRenderPass } from '../../renderer/webgl1/draw/IRenderPass';
+import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
 import { Layer } from '../layer/Layer';
 import { Texture } from '../../textures/Texture';
 
@@ -55,6 +55,7 @@ export class RenderLayer extends Layer implements IRenderLayer
         this.framebuffer = binding.framebuffer;
     }
 
+    /*
     renderGL <T extends IRenderPass> (renderPass: T): void
     {
         if (this.numChildren > 0)
@@ -96,4 +97,5 @@ export class RenderLayer extends Layer implements IRenderLayer
 
         this.clearDirty(DIRTY_CONST.TRANSFORM);
     }
+    */
 }

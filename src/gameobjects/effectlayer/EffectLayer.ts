@@ -2,7 +2,7 @@ import { BatchSingleQuad } from '../../renderer/webgl1/draw/BatchSingleQuad';
 import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
 import { IEffectLayer } from './IEffectLayer';
-import { IRenderPass } from '../../renderer/webgl1/draw/IRenderPass';
+import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
 import { IShader } from '../../renderer/webgl1/shaders/IShader';
 import { RenderLayer } from '../renderlayer/RenderLayer';
 
@@ -20,6 +20,7 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
         this.type = 'EffectLayer';
     }
 
+    /*
     postRenderGL <T extends IRenderPass> (renderPass: T): void
     {
         const shaders = this.shaders;
@@ -83,4 +84,5 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
 
         this.clearDirty(DIRTY_CONST.TRANSFORM);
     }
+    */
 }
