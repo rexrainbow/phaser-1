@@ -16,10 +16,14 @@ import { IndexedVertexBuffer } from './buffers/IndexedVertexBuffer';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from './cameras/Ortho';
+import { ProcessBindingQueue } from './renderpass/ProcessBindingQueue';
 import { RenderPass } from './renderpass/RenderPass';
 import { SearchEntry } from '../../display/DepthFirstSearchRecursiveNested';
+import { SetDefaultBlendMode } from './renderpass/SetDefaultBlendMode';
+import { SetDefaultFramebuffer } from './renderpass/SetDefaultFramebuffer';
 import { SetDefaultShader } from './renderpass/SetDefaultShader';
 import { SetDefaultVertexBuffer } from './renderpass/SetDefaultVertexBuffer';
+import { SetDefaultViewport } from './renderpass/SetDefaultViewport';
 import { WebGLRendererInstance } from './WebGLRendererInstance';
 import { batchSize } from '../../config/BatchSize';
 
@@ -28,7 +32,7 @@ export class WebGLRenderer
     canvas: HTMLCanvasElement;
     gl: WebGLRenderingContext;
 
-    renderPass: RenderPass;
+    renderPass: IRenderPass;
 
     clearColor = [ 0, 0, 0, 1 ];
 
@@ -48,6 +52,10 @@ export class WebGLRenderer
 
     constructor ()
     {
+        const renderPass = new RenderPass(this);
+
+        this.renderPass = renderPass;
+
         this.width = GetWidth();
         this.height = GetHeight();
         this.resolution = GetResolution();
@@ -67,14 +75,14 @@ export class WebGLRenderer
 
         //  By this stage the context is available
 
-        const renderPass = new RenderPass(this);
-
-        this.renderPass = renderPass;
+        const gl = this.gl;
 
         CreateTempTextures(renderPass);
+
+        SetDefaultFramebuffer(renderPass);
+        SetDefaultBlendMode(renderPass, true, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
         SetDefaultVertexBuffer(renderPass, new IndexedVertexBuffer(batchSize, 4, 4, 6, 6, 4, [ 0, 1, 2, 2, 3, 0 ]));
         SetDefaultShader(renderPass, new MultiTextureQuadShader());
-        AddViewport(renderPass, 0, 0, this.width, this.height);
     }
 
     initContext (): void
@@ -89,31 +97,31 @@ export class WebGLRenderer
         gl.disable(gl.CULL_FACE);
 
         this.resize(this.width, this.height, this.resolution);
-
-        //  TODO
-        //     this.renderPass.init();
     }
 
     resize (width: number, height: number, resolution: number = 1): void
     {
-        this.width = width * resolution;
-        this.height = height * resolution;
+        const calcWidth = width * resolution;
+        const calcHeight = height * resolution;
+
+        this.width = calcWidth;
+        this.height = calcHeight;
         this.resolution = resolution;
 
         const canvas = this.canvas;
 
-        canvas.width = this.width;
-        canvas.height = this.height;
+        canvas.width = calcWidth;
+        canvas.height = calcHeight;
 
         if (this.autoResize)
         {
-            canvas.style.width = (this.width / resolution).toString() + 'px';
-            canvas.style.height = (this.height / resolution).toString() + 'px';
+            canvas.style.width = width.toString() + 'px';
+            canvas.style.height = height.toString() + 'px';
         }
 
-        this.gl.viewport(0, 0, this.width, this.height);
+        SetDefaultViewport(this.renderPass, 0, 0, calcWidth, calcHeight);
 
-        this.projectionMatrix = Ortho(width, height);
+        this.projectionMatrix = Ortho(calcWidth, calcHeight);
     }
 
     onContextLost (event: Event): void
@@ -157,6 +165,8 @@ export class WebGLRenderer
         //  This is only here because if we don't do _something_ with the context, GL Spector can't see it.
         //  Technically, we could move it below the dirty bail-out below.
         // this.reset();
+
+        ProcessBindingQueue();
 
         this.currentCamera = null;
 
