@@ -14,24 +14,31 @@ export type ShaderStackEntry = {
     textureID?: number;
 };
 
+export type BlendModeStackEntry = {
+    enable: boolean;
+    sfactor?: number;
+    dfactor?: number;
+};
+
 export class RenderPass implements IRenderPass
 {
     renderer: IWebGLRenderer;
     count: number = 0;
     prevCount: number = 0;
-    flushTotal: number;
+    flushTotal: number = 0;
 
     //  The maximum number of combined image units the GPU supports
     //  According to the WebGL spec the minimum is 8
     maxTextures: number = 0;
-    currentActiveTexture: number;
+    currentActiveTexture: number = 0;
     startActiveTexture: number = 0;
-    tempTextures: WebGLTexture[];
-    textureIndex: number[];
+    tempTextures: WebGLTexture[] = [];
+    textureIndex: number[] = [];
 
     //  FBO
     framebufferStack: FramebufferStackEntry[] = [];
     currentFramebuffer: FramebufferStackEntry = null;
+    defaultFramebuffer: FramebufferStackEntry = null;
 
     //  VBO
     vertexBufferStack: IVertexBuffer[] = [];
@@ -45,7 +52,13 @@ export class RenderPass implements IRenderPass
 
     //  Viewport
     viewportStack: Rectangle[] = [];
-    currentViewport: Rectangle;
+    currentViewport: Rectangle = null;
+    defaultViewport: Rectangle = null;
+
+    //  Blend Mode
+    blendModeStack: BlendModeStackEntry[] = [];
+    currentBlendMode: BlendModeStackEntry = null;
+    defaultBlendMode: BlendModeStackEntry = null;
 
     constructor (renderer: IWebGLRenderer)
     {

@@ -1,4 +1,4 @@
-import { FramebufferStackEntry, ShaderStackEntry } from './RenderPass';
+import { BlendModeStackEntry, FramebufferStackEntry, ShaderStackEntry } from './RenderPass';
 
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
 import { IWebGLRenderer } from '../IWebGLRenderer';
@@ -22,6 +22,7 @@ export interface IRenderPass
     //  FBO
     framebufferStack: FramebufferStackEntry[];
     currentFramebuffer: FramebufferStackEntry;
+    defaultFramebuffer: FramebufferStackEntry;
 
     //  VBO
     vertexBufferStack: IVertexBuffer[];
@@ -36,4 +37,9 @@ export interface IRenderPass
     //  Viewport
     viewportStack: Rectangle[];
     currentViewport: Rectangle;
+    defaultViewport: Rectangle;
+
+    blendModeStack: BlendModeStackEntry[];
+    currentBlendMode: BlendModeStackEntry;
+    defaultBlendMode: BlendModeStackEntry;
 }
