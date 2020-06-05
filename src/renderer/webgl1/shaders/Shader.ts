@@ -131,8 +131,15 @@ export class Shader implements IShader
     {
         const uniforms = this.uniforms;
 
-        uniforms.set('uProjectionMatrix', uProjectionMatrix);
-        uniforms.set('uCameraMatrix', uCameraMatrix);
+        if (uProjectionMatrix)
+        {
+            uniforms.set('uProjectionMatrix', uProjectionMatrix);
+        }
+
+        if (uCameraMatrix)
+        {
+            uniforms.set('uCameraMatrix', uCameraMatrix);
+        }
 
         this.updateUniforms();
 
