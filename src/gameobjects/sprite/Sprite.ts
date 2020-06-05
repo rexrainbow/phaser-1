@@ -5,7 +5,7 @@ import { DrawTexturedQuad } from '../../renderer/canvas/draw/DrawTexturedQuad';
 import { Frame } from '../../textures/Frame';
 import { ICanvasRenderer } from '../../renderer/canvas/ICanvasRenderer';
 import { IGameObject } from '../IGameObject';
-import { IRenderPass } from '../../renderer/webgl1/draw/IRenderPass';
+import { IRenderPass } from '../../renderer/webgl1/renderPass/IRenderPass';
 import { ISprite } from './ISprite';
 import { PackColors } from '../../renderer/webgl1/colors/PackColors';
 import { SetFrame } from './SetFrame';
