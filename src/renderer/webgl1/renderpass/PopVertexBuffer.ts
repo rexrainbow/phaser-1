@@ -5,14 +5,13 @@ export function PopVertexBuffer (renderPass: IRenderPass): void
 {
     const stack = renderPass.vertexBufferStack;
 
-    stack.pop();
-
-    const len = stack.length;
-
-    if (len > 0)
+    //  > 1 because index 0 contains the default, which we don't want to remove
+    if (stack.length > 1)
     {
-        renderPass.currentVertexBuffer = stack[ len - 1 ];
-
-        BindVertexBuffer(renderPass);
+        stack.pop();
     }
+
+    renderPass.currentVertexBuffer = stack[ stack.length - 1 ];
+
+    BindVertexBuffer(renderPass);
 }

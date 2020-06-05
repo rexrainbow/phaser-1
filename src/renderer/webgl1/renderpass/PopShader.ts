@@ -5,14 +5,13 @@ export function PopShader (renderPass: IRenderPass): void
 {
     const stack = renderPass.shaderStack;
 
-    stack.pop();
-
-    const len = stack.length;
-
-    if (len > 0)
+    //  > 1 because index 0 contains the default, which we don't want to remove
+    if (stack.length > 1)
     {
-        renderPass.currentShader = stack[ len - 1 ];
-
-        BindShader(renderPass);
+        stack.pop();
     }
+
+    renderPass.currentShader = stack[ stack.length - 1 ];
+
+    BindShader(renderPass);
 }

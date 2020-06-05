@@ -1,23 +1,23 @@
 import { BindFramebuffer } from './BindFramebuffer';
 import { IRenderPass } from './IRenderPass';
-import { ResetFramebuffer } from './ResetFramebuffer';
+import { PopViewport } from './PopViewport';
 
 export function PopFramebuffer (renderPass: IRenderPass): void
 {
     const stack = renderPass.framebufferStack;
 
-    stack.pop();
-
-    const len = stack.length;
-
-    if (len > 0)
+    //  > 1 because index 0 contains the default, which we don't want to remove
+    if (stack.length > 1)
     {
-        renderPass.currentFramebuffer = stack[ len - 1 ];
+        if (renderPass.currentFramebuffer.viewport)
+        {
+            PopViewport(renderPass);
+        }
 
-        BindFramebuffer(renderPass, false);
+        stack.pop();
     }
-    else
-    {
-        ResetFramebuffer(renderPass);
-    }
+
+    renderPass.currentFramebuffer = stack[ stack.length - 1 ];
+
+    BindFramebuffer(renderPass, false);
 }

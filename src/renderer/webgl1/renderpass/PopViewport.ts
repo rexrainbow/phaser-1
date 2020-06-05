@@ -1,23 +1,17 @@
 import { BindViewport } from './BindViewport';
 import { IRenderPass } from './IRenderPass';
-import { ResetViewport } from './ResetViewport';
 
 export function PopViewport (renderPass: IRenderPass): void
 {
     const stack = renderPass.viewportStack;
 
-    stack.pop();
-
-    const len = stack.length;
-
-    if (len > 0)
+    //  > 1 because index 0 contains the default, which we don't want to remove
+    if (stack.length > 1)
     {
-        renderPass.currentViewport = stack[ len - 1 ];
+        stack.pop();
+    }
 
-        BindViewport(renderPass);
-    }
-    else
-    {
-        ResetViewport(renderPass);
-    }
+    renderPass.currentViewport = stack[ stack.length - 1 ];
+
+    BindViewport(renderPass);
 }
