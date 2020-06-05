@@ -1,7 +1,7 @@
 import { IRenderPass } from './IRenderPass';
 import { ShaderStackEntry } from '../shaders/ShaderStackEntry';
 
-export function BindShader (renderPass: IRenderPass, projectionMatrix?: Float32Array, cameraMatrix?: Float32Array, entry?: ShaderStackEntry): boolean
+export function BindShader (renderPass: IRenderPass, projectionMatrix?: Float32Array, cameraMatrix?: Float32Array, entry?: ShaderStackEntry): void
 {
     if (!entry)
     {
@@ -28,6 +28,4 @@ export function BindShader (renderPass: IRenderPass, projectionMatrix?: Float32A
     {
         entry.shader.setAttributes(buffer.vertexByteSize);
     }
-
-    return success;
 }
