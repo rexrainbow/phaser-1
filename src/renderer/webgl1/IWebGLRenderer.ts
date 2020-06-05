@@ -1,14 +1,13 @@
 import { IBaseCamera } from '../../camera/IBaseCamera';
-import { IRenderPass } from './draw/IRenderPass';
+import { IRenderPass } from './renderpass/IRenderPass';
 import { IRenderer } from '../IRenderer';
-import { RenderPass } from './draw/RenderPass';
 import { SearchEntry } from '../../display/DepthFirstSearchRecursiveNested';
 
 export interface IWebGLRenderer extends IRenderer
 {
     gl: WebGLRenderingContext;
 
-    renderPass: RenderPass;
+    renderPass: IRenderPass;
 
     projectionMatrix: Float32Array;
     contextLost: boolean;
