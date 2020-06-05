@@ -1,7 +1,7 @@
 import { GL } from '../GL';
-import { RenderPass } from './RenderPass';
+import { IRenderPass } from './IRenderPass';
 
-export function UnbindTexture (renderPass: RenderPass, index: number = 0): void
+export function UnbindTexture (renderPass: IRenderPass, index: number = 0): void
 {
     const gl = GL.get();
 

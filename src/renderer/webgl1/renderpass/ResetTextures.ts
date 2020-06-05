@@ -1,6 +1,6 @@
-import { RenderPass } from './RenderPass';
+import { IRenderPass } from './IRenderPass';
 
-export function ResetTextures (renderPass: RenderPass): void
+export function ResetTextures (renderPass: IRenderPass): void
 {
     const gl = renderPass.renderer.gl;
     const temp = renderPass.tempTextures;
