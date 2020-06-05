@@ -1,8 +1,9 @@
-import { IRenderPass } from './IRenderPass';
+import { GetVertexBufferEntry } from '../renderpass/GetVertexBufferEntry';
+import { IRenderPass } from '../renderpass/IRenderPass';
 
 export function BatchSingleQuad (renderPass: IRenderPass, x: number, y: number, width: number, height: number, u0: number, v0: number, u1: number, v1: number, textureIndex: number = 0, packedColor: number = 4294967295): void
 {
-    const { F32, U32, offset } = renderPass.getBuffer(1);
+    const { F32, U32, offset } = GetVertexBufferEntry(renderPass, 1);
 
     //  top left
     F32[offset + 0] = x;

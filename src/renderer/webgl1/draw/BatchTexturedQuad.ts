@@ -1,34 +1,15 @@
-import { IRenderPass } from './IRenderPass';
+import { GetVertexBufferEntry } from '../renderpass/GetVertexBufferEntry';
+import { IRenderPass } from '../renderpass/IRenderPass';
 import { ISprite } from '../../../gameobjects/sprite/ISprite';
+import { SetTexture } from '../renderpass/SetTexture';
 
 export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderPass: IRenderPass): void
 {
-    const { F32, U32, offset } = renderPass.getBuffer(1);
+    const { F32, U32, offset } = GetVertexBufferEntry(renderPass, 1);
 
-    // const texture = sprite.texture;
-    // const shader = renderer.shaders.current;
-    // const buffer = shader.buffer;
-    // const binding = texture.binding;
-
-    // if (shader.count === buffer.batchSize)
-    // {
-    //     renderer.flush();
-    // }
-
-    const textureIndex = renderPass.requestTexture(sprite.texture);
-
-    // const textureIndex = binding.index;
-
-    // const vertices = sprite.vertices;
-
-    // const F32 = buffer.vertexViewF32;
-    // const U32 = buffer.vertexViewU32;
-
-    // let offset = shader.count * buffer.entryElementSize;
+    const textureIndex = SetTexture(renderPass, sprite.texture);
 
     let vertOffset = offset;
-
-    // console.log(sprite.name, 'ti', textureIndex, 'offset', offset);
 
     sprite.vertices.forEach(vertex =>
     {
@@ -41,8 +22,6 @@ export function BatchTexturedQuad <T extends ISprite> (sprite: T, renderPass: IR
 
         vertOffset += 6;
     });
-
-    // shader.count++;
 }
 
 /*
