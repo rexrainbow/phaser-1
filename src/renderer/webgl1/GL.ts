@@ -1,4 +1,4 @@
-let gl: WebGLRenderingContext;
+export let gl: WebGLRenderingContext;
 
 export const GL =
 {
