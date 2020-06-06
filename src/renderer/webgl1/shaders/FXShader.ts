@@ -1,11 +1,12 @@
 import { DefaultQuadAttributes } from './DefaultQuadAttributes';
+import { IRenderPass } from '../renderpass/IRenderPass';
 import { IShader } from './IShader';
 import { IShaderConfig } from './IShaderConfig';
-import { Shader } from './Shader';
+import { QuadShader } from './QuadShader';
 
 //  A Quad Shader with built in uTime and uResolution uniforms
 
-export class FXShader extends Shader implements IShader
+export class FXShader extends QuadShader implements IShader
 {
     constructor (config: IShaderConfig = {})
     {
@@ -18,13 +19,13 @@ export class FXShader extends Shader implements IShader
         super(shaderConfig);
     }
 
-    bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array): boolean
+    bind (renderPass: IRenderPass): boolean
     {
-        const renderer = this.renderer;
+        const renderer = renderPass.renderer;
 
         this.uniforms.set('uTime', performance.now());
         this.uniforms.set('uResolution', [ renderer.width, renderer.height ]);
 
-        return super.bind(uProjectionMatrix, uCameraMatrix);
+        return super.bind(renderPass);
     }
 }

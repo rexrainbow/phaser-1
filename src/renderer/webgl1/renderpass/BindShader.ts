@@ -1,31 +1,17 @@
 import { IRenderPass } from './IRenderPass';
 import { ShaderStackEntry } from '../shaders/ShaderStackEntry';
 
-export function BindShader (renderPass: IRenderPass, projectionMatrix?: Float32Array, cameraMatrix?: Float32Array, entry?: ShaderStackEntry): void
+export function BindShader (renderPass: IRenderPass, entry?: ShaderStackEntry): void
 {
     if (!entry)
     {
         entry = renderPass.currentShader;
     }
 
-    const renderer = renderPass.renderer;
+    const success = entry.shader.bind(renderPass, entry.textureID);
 
-    if (!projectionMatrix)
+    if (success)
     {
-        projectionMatrix = renderer.projectionMatrix;
-    }
-
-    if (!cameraMatrix && renderer.currentCamera)
-    {
-        cameraMatrix = renderer.currentCamera.matrix;
-    }
-
-    const success = entry.shader.bind(projectionMatrix, cameraMatrix, entry.textureID);
-
-    const buffer = renderPass.currentVertexBuffer;
-
-    if (success && buffer)
-    {
-        entry.shader.setAttributes(buffer.vertexByteSize);
+        entry.shader.setAttributes(renderPass);
     }
 }

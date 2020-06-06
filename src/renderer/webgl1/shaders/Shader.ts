@@ -12,19 +12,17 @@ import { DeleteFramebuffer } from '../fbo/DeleteFramebuffer';
 import { DeleteGLTexture } from '../textures/DeleteGLTexture';
 import { DeleteShaders } from './DeleteShaders';
 import { GLTextureBinding } from '../textures/GLTextureBinding';
+import { IRenderPass } from '../renderpass/IRenderPass';
 import { IShader } from './IShader';
 import { IShaderConfig } from './IShaderConfig';
 import { IVertexAttribPointer } from './IVertexAttribPointer';
-import { IWebGLRenderer } from '../IWebGLRenderer';
 import { SINGLE_QUAD_FRAG } from '../glsl/SINGLE_QUAD_FRAG';
 import { SINGLE_QUAD_VERT } from '../glsl/SINGLE_QUAD_VERT';
 import { Texture } from '../../../textures/Texture';
-import { WebGLRendererInstance } from '../WebGLRendererInstance';
+import { gl } from '../GL';
 
 export class Shader implements IShader
 {
-    renderer: IWebGLRenderer;
-
     program: WebGLProgram;
 
     attributes: Map<string, IVertexAttribPointer>;
@@ -43,8 +41,6 @@ export class Shader implements IShader
 
     constructor (config: IShaderConfig = {})
     {
-        this.renderer = WebGLRendererInstance.get();
-
         const {
             attributes = DefaultQuadAttributes,
             fragmentShader = SINGLE_QUAD_FRAG,
@@ -84,17 +80,15 @@ export class Shader implements IShader
 
     create (fragmentShaderSource: string, vertexShaderSource: string, uniforms: {}, attribs: {}): void
     {
-        const gl = this.renderer.gl;
-
-        const fragmentShader = CreateShader(gl, fragmentShaderSource, gl.FRAGMENT_SHADER);
-        const vertexShader = CreateShader(gl, vertexShaderSource, gl.VERTEX_SHADER);
+        const fragmentShader = CreateShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
+        const vertexShader = CreateShader(vertexShaderSource, gl.VERTEX_SHADER);
 
         if (!fragmentShader || !vertexShader)
         {
             return;
         }
 
-        const program = CreateProgram(gl, fragmentShader, vertexShader);
+        const program = CreateProgram(fragmentShader, vertexShader);
 
         if (!program)
         {
@@ -107,7 +101,7 @@ export class Shader implements IShader
 
         this.program = program;
 
-        this.uniformSetters = CreateUniforms(gl, program);
+        this.uniformSetters = CreateUniforms(program);
 
         this.uniforms = new Map();
 
@@ -117,43 +111,29 @@ export class Shader implements IShader
             this.uniforms.set(key, value);
         }
 
-        this.attributes = CreateAttributes(gl, program, attribs);
+        this.attributes = CreateAttributes(program, attribs);
 
         gl.useProgram(currentProgram);
     }
 
-    updateUniforms (): void
+    updateUniforms (renderPass: IRenderPass): void
     {
         //  Use this to set any extra uniform values prior to the bind
     }
 
-    bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array): boolean
+    bind (renderPass: IRenderPass): boolean
     {
-        const uniforms = this.uniforms;
+        this.updateUniforms(renderPass);
 
-        if (uProjectionMatrix)
-        {
-            uniforms.set('uProjectionMatrix', uProjectionMatrix);
-        }
-
-        if (uCameraMatrix)
-        {
-            uniforms.set('uCameraMatrix', uCameraMatrix);
-        }
-
-        this.updateUniforms();
-
-        return this.setUniforms();
+        return this.setUniforms(renderPass);
     }
 
-    setUniforms (): boolean
+    setUniforms (renderPass: IRenderPass): boolean
     {
         if (!this.program)
         {
             return false;
         }
-
-        const gl = this.renderer.gl;
 
         gl.useProgram(this.program);
 
@@ -168,9 +148,9 @@ export class Shader implements IShader
     }
 
     //  stride = vertexByteSize
-    setAttributes (stride: number): void
+    setAttributes (renderPass: IRenderPass): void
     {
-        const gl = this.renderer.gl;
+        const stride = renderPass.currentVertexBuffer.vertexByteSize;
 
         this.attributes.forEach(attrib =>
         {
@@ -188,7 +168,6 @@ export class Shader implements IShader
         this.uniformSetters.clear();
         this.attributes.clear();
 
-        this.renderer = null;
         this.program = null;
         this.texture = null;
         this.framebuffer = null;

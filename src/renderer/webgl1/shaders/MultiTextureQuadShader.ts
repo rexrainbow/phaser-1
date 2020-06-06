@@ -1,4 +1,5 @@
 import { GetMaxTextures } from '../../../config/MaxTextures';
+import { IRenderPass } from '../renderpass/IRenderPass';
 import { IShaderConfig } from './IShaderConfig';
 import { MULTI_QUAD_FRAG } from '../glsl/MULTI_QUAD_FRAG';
 import { QuadShader } from './QuadShader';
@@ -44,10 +45,10 @@ export class MultiTextureQuadShader extends QuadShader
         super.create(fragmentShaderSource, vertexShaderSource, uniforms, attribs);
     }
 
-    bind (uProjectionMatrix: Float32Array, uCameraMatrix: Float32Array): boolean
+    bind (renderPass: IRenderPass): boolean
     {
-        this.uniforms.set('uTexture', this.renderer.renderPass.textureIndex);
+        this.uniforms.set('uTexture', renderPass.textureIndex);
 
-        return super.bind(uProjectionMatrix, uCameraMatrix);
+        return super.bind(renderPass);
     }
 }
