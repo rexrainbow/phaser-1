@@ -113,6 +113,6 @@ export class Game extends EventEmitter
 
     destroy (): void
     {
-        //  TODO
+        //  TODO - Code destroy function
     }
 }
