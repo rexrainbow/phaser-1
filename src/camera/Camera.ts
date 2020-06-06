@@ -37,6 +37,7 @@ export class Camera implements ICamera
 
         this.renderer = game.renderer;
 
+        //  TODO - Swap for Mat4 Identity when ready
         this.matrix = new Float32Array([ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]);
 
         this.bounds = new Rectangle();
