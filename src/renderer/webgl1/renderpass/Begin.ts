@@ -1,19 +1,19 @@
+import { BindBlendMode } from './BindBlendMode';
+import { BindFramebuffer } from './BindFramebuffer';
+import { BindShader } from './BindShader';
+import { BindVertexBuffer } from './BindVertexBuffer';
+import { BindViewport } from './BindViewport';
 import { IRenderPass } from './IRenderPass';
 
-export function Begin (renderPass: IRenderPass): void
+export function Begin (renderPass: IRenderPass, projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
 {
-    const renderer = renderPass.renderer;
-
-    renderPass.defaultShader.shader.bind(renderer.projectionMatrix, renderer.currentCamera.matrix);
-
-    //  Binds default shader and setsUniforms
-    // this.shader.setDefault();
-
-    //  Binds default vertex buffer
-    // this.buffer.setDefault();
-
-    //  Sets shader attributes
-    // this.shader.current.setAttributes(this.buffer.current.vertexByteSize);
-
+    renderPass.projectionMatrix = projectionMatrix;
+    renderPass.cameraMatrix = cameraMatrix;
     renderPass.count = 0;
+
+    BindFramebuffer(renderPass, false);
+    BindBlendMode(renderPass);
+    BindViewport(renderPass);
+    BindVertexBuffer(renderPass);
+    BindShader(renderPass);
 }
