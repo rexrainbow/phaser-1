@@ -23,6 +23,10 @@ export type BlendModeStackEntry = {
 export class RenderPass implements IRenderPass
 {
     renderer: IWebGLRenderer;
+
+    projectionMatrix: Float32Array;
+    cameraMatrix: Float32Array;
+
     count: number = 0;
     prevCount: number = 0;
     flushTotal: number = 0;

@@ -7,6 +7,9 @@ import { Rectangle } from '../../../geom/rectangle/Rectangle';
 export interface IRenderPass
 {
     renderer: IWebGLRenderer;
+    projectionMatrix: Float32Array;
+    cameraMatrix: Float32Array;
+
     count: number;
     prevCount: number;
     flushTotal: number;

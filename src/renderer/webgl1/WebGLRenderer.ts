@@ -224,7 +224,7 @@ export class WebGLRenderer
 
                 this.currentCamera = camera;
 
-                Begin(renderPass);
+                Begin(renderPass, this.projectionMatrix, camera.matrix);
             }
 
             //  Process the render list
