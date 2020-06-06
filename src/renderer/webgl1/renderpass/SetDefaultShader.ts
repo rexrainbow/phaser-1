@@ -1,4 +1,3 @@
-import { BindShader } from './BindShader';
 import { IRenderPass } from './IRenderPass';
 import { IShader } from '../shaders/IShader';
 
@@ -11,6 +10,4 @@ export function SetDefaultShader (renderPass: IRenderPass, shader: IShader, text
 
     renderPass.currentShader = entry;
     renderPass.defaultShader = entry;
-
-    BindShader(renderPass);
 }

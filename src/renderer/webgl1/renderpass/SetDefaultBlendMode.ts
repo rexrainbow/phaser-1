@@ -1,4 +1,3 @@
-import { BindBlendMode } from './BindBlendMode';
 import { IRenderPass } from './IRenderPass';
 
 export function SetDefaultBlendMode (renderPass: IRenderPass, enable: boolean, sfactor?: number, dfactor?: number): void
@@ -10,6 +9,4 @@ export function SetDefaultBlendMode (renderPass: IRenderPass, enable: boolean, s
 
     renderPass.currentBlendMode = entry;
     renderPass.defaultBlendMode = entry;
-
-    BindBlendMode(renderPass);
 }

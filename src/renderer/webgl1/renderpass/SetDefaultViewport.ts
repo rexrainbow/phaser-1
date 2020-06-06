@@ -1,4 +1,3 @@
-import { BindViewport } from './BindViewport';
 import { IRenderPass } from './IRenderPass';
 import { Rectangle } from '../../../geom/rectangle/Rectangle';
 
@@ -11,6 +10,4 @@ export function SetDefaultViewport (renderPass: IRenderPass, x: number = 0, y: n
 
     renderPass.currentViewport = entry;
     renderPass.defaultViewport = entry;
-
-    BindViewport(renderPass);
 }

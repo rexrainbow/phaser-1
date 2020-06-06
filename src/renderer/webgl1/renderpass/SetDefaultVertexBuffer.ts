@@ -1,4 +1,3 @@
-import { BindVertexBuffer } from './BindVertexBuffer';
 import { IRenderPass } from './IRenderPass';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
 
@@ -9,6 +8,4 @@ export function SetDefaultVertexBuffer (renderPass: IRenderPass, buffer: IVertex
 
     renderPass.currentVertexBuffer = buffer;
     renderPass.defaultVertexBuffer = buffer;
-
-    BindVertexBuffer(renderPass);
 }

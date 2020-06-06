@@ -1,4 +1,3 @@
-import { BindFramebuffer } from './BindFramebuffer';
 import { IRenderPass } from './IRenderPass';
 import { Rectangle } from '../../../geom/rectangle/Rectangle';
 
@@ -11,6 +10,4 @@ export function SetDefaultFramebuffer (renderPass: IRenderPass, framebuffer: Web
 
     renderPass.currentFramebuffer = entry;
     renderPass.defaultFramebuffer = entry;
-
-    BindFramebuffer(renderPass, false);
 }
