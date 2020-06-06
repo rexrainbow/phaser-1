@@ -1,4 +1,6 @@
-export function CreateShader (gl: WebGLRenderingContext, source: string, type: GLenum): WebGLShader | null
+import { gl } from '../GL';
+
+export function CreateShader (source: string, type: GLenum): WebGLShader | null
 {
     const shader = gl.createShader(type);
 

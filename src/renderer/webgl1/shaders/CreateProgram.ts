@@ -1,6 +1,7 @@
 import { DeleteShaders } from './DeleteShaders';
+import { gl } from '../GL';
 
-export function CreateProgram (gl: WebGLRenderingContext, ...shaders: WebGLShader[]): WebGLProgram
+export function CreateProgram (...shaders: WebGLShader[]): WebGLProgram
 {
     const program = gl.createProgram();
 

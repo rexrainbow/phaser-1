@@ -1,8 +1,10 @@
+import { gl } from '../GL';
+
 export type FloatSetter = (v: number) => void;
 export type F32Setter = (v: Float32List) => void;
 export type I32Setter = (v: Int32List) => void;
 
-export function CreateUniformSetter (gl: WebGLRenderingContext, uniform: WebGLActiveInfo, location: WebGLUniformLocation, isArray: boolean = false): FloatSetter | F32Setter | I32Setter
+export function CreateUniformSetter (uniform: WebGLActiveInfo, location: WebGLUniformLocation, isArray: boolean = false): FloatSetter | F32Setter | I32Setter
 {
     switch (uniform.type)
     {

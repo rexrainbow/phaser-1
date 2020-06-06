@@ -1,15 +1,8 @@
-import { GL } from '../GL';
 import { IGLTextureBinding } from './IGLTextureBinding';
+import { gl } from '../GL';
 
 export function CreateGLTexture <T extends IGLTextureBinding> (binding: T): WebGLTexture
 {
-    const gl = GL.get();
-
-    if (!gl)
-    {
-        return;
-    }
-
     const { parent, flipY, unpackPremultiplyAlpha, minFilter, magFilter, wrapS, wrapT, generateMipmap, isPOT } = binding;
 
     const source = parent.image;

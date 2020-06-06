@@ -1,6 +1,6 @@
 import { BlendModeStackEntry } from './RenderPass';
-import { GL } from '../GL';
 import { IRenderPass } from './IRenderPass';
+import { gl } from '../GL';
 
 export function BindBlendMode (renderPass: IRenderPass, entry?: BlendModeStackEntry): void
 {
@@ -8,8 +8,6 @@ export function BindBlendMode (renderPass: IRenderPass, entry?: BlendModeStackEn
     {
         entry = renderPass.currentBlendMode;
     }
-
-    const gl = GL.get();
 
     if (entry.enable)
     {

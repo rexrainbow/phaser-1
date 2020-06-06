@@ -1,11 +1,9 @@
-import { GL } from '../GL';
 import { Texture } from '../../../textures';
+import { gl } from '../GL';
 
 //  directly bind a texture to an index slot
 export function BindTexture (texture: Texture, index: number = 0): void
 {
-    const gl = GL.get();
-
     const binding = texture.binding;
 
     binding.setIndex(index);

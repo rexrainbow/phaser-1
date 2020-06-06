@@ -1,9 +1,7 @@
-import { GL } from '../GL';
+import { gl } from '../GL';
 
 export function SetGLTextureFilterMode (texture: WebGLTexture, linear: boolean = true): void
 {
-    const gl = GL.get();
-
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture);
 

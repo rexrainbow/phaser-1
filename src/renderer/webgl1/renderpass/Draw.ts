@@ -1,6 +1,7 @@
 import { IRenderPass } from './IRenderPass';
 import { PopFramebuffer } from './PopFramebuffer';
 import { SetFramebuffer } from './SetFramebuffer';
+import { gl } from '../GL';
 
 export function Draw (renderPass: IRenderPass): void
 {
@@ -11,14 +12,10 @@ export function Draw (renderPass: IRenderPass): void
         return;
     }
 
-    const renderer = renderPass.renderer;
-
     const currentBuffer = renderPass.currentVertexBuffer;
     const currentShader = renderPass.currentShader;
 
     const renderToFramebuffer = currentShader.shader.renderToFramebuffer;
-
-    const gl = renderer.gl;
 
     if (renderToFramebuffer)
     {

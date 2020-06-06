@@ -1,6 +1,6 @@
-import { GL } from '../GL';
 import { IRenderPass } from './IRenderPass';
 import { Rectangle } from '../../../geom/rectangle';
+import { gl } from '../GL';
 
 export function BindViewport (renderPass: IRenderPass, viewport?: Rectangle): void
 {
@@ -13,8 +13,6 @@ export function BindViewport (renderPass: IRenderPass, viewport?: Rectangle): vo
             return;
         }
     }
-
-    const gl = GL.get();
 
     const glv = gl.getParameter(gl.VIEWPORT);
 

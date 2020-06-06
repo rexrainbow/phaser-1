@@ -1,7 +1,7 @@
 import { FramebufferStackEntry } from './RenderPass';
-import { GL } from '../GL';
 import { IRenderPass } from './IRenderPass';
 import { SetViewport } from './SetViewport';
+import { gl } from '../GL';
 
 export function BindFramebuffer (renderPass: IRenderPass, clear: boolean = true, entry?: FramebufferStackEntry): void
 {
@@ -11,8 +11,6 @@ export function BindFramebuffer (renderPass: IRenderPass, clear: boolean = true,
     }
 
     const { framebuffer, viewport } = entry;
-
-    const gl = GL.get();
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 

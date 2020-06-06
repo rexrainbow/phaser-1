@@ -3,7 +3,6 @@ import { Clamp } from '../../math/Clamp';
 import { DIRTY_CONST } from '../DIRTY_CONST';
 import { DeleteFramebuffer } from '../../renderer/webgl1/fbo/DeleteFramebuffer';
 import { Frame } from '../../textures';
-import { GL } from '../../renderer/webgl1/GL';
 import { GetVerticesFromValues } from '../components/transform/GetVerticesFromValues';
 import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
 import { ISpriteBatch } from './ISpriteBatch';
@@ -12,6 +11,7 @@ import { PackColor } from '../../renderer/webgl1/colors/PackColor';
 import { SpriteBatchAddConfig } from './SpriteBatchAddConfig';
 import { Texture } from '../../textures/Texture';
 import { TextureManagerInstance } from '../../textures/TextureManagerInstance';
+import { gl } from '../../renderer/webgl1/GL';
 
 export class SpriteBatch extends Layer implements ISpriteBatch
 {
@@ -57,8 +57,6 @@ export class SpriteBatch extends Layer implements ISpriteBatch
 
         this.vertexViewF32 = new Float32Array(this.data);
         this.vertexViewU32 = new Uint32Array(this.data);
-
-        const gl = GL.get();
 
         if (gl)
         {

@@ -1,9 +1,7 @@
-import { GL } from '../GL';
+import { gl } from '../GL';
 
 export function CreateDepthBuffer (framebuffer: WebGLFramebuffer, textureWidth: number, textureHeight: number): WebGLRenderbuffer
 {
-    const gl = GL.get();
-
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 
     const depthBuffer = gl.createRenderbuffer();

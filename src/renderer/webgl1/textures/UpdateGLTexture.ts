@@ -1,10 +1,8 @@
-import { GL } from '../GL';
 import { IGLTextureBinding } from './IGLTextureBinding';
+import { gl } from '../GL';
 
 export function UpdateGLTexture <T extends IGLTextureBinding> (binding: T): WebGLTexture
 {
-    const gl = GL.get();
-
     const source = binding.parent.image;
     const width = source.width;
     const height = source.height;

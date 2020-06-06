@@ -1,3 +1,5 @@
+import { gl } from '../GL';
+
 //  From Pixi v5
 
 const fragTemplate = [
@@ -29,7 +31,7 @@ function GenerateSrc (maxIfs: number): string
     return src;
 }
 
-export function CheckShaderMaxIfStatements (maxIfs: number, gl: WebGLRenderingContext): number
+export function CheckShaderMaxIfStatements (maxIfs: number): number
 {
     const shader = gl.createShader(gl.FRAGMENT_SHADER);
 

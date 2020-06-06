@@ -1,6 +1,7 @@
 import { IVertexAttribPointer } from './IVertexAttribPointer';
+import { gl } from '../GL';
 
-export function CreateAttributes (gl: WebGLRenderingContext, program: WebGLProgram, config: Object): Map<string, IVertexAttribPointer>
+export function CreateAttributes (program: WebGLProgram, config: Object): Map<string, IVertexAttribPointer>
 {
     const attributes = new Map();
 

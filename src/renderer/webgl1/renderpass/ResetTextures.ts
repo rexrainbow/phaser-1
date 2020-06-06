@@ -1,8 +1,8 @@
 import { IRenderPass } from './IRenderPass';
+import { gl } from '../GL';
 
 export function ResetTextures (renderPass: IRenderPass): void
 {
-    const gl = renderPass.renderer.gl;
     const temp = renderPass.tempTextures;
 
     for (let i: number = 0; i < temp.length; i++)

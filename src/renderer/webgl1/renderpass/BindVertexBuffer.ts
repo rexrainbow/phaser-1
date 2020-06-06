@@ -1,6 +1,6 @@
-import { GL } from '../GL';
 import { IRenderPass } from './IRenderPass';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
+import { gl } from '../GL';
 
 export function BindVertexBuffer (renderPass: IRenderPass, buffer?: IVertexBuffer): void
 {
@@ -8,8 +8,6 @@ export function BindVertexBuffer (renderPass: IRenderPass, buffer?: IVertexBuffe
     {
         buffer = renderPass.currentVertexBuffer;
     }
-
-    const gl = GL.get();
 
     const indexBuffer = (buffer.indexed) ? buffer.indexBuffer : null;
 

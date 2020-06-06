@@ -1,13 +1,13 @@
 import { CreateGLTexture } from './CreateGLTexture';
 import { DeleteFramebuffer } from '../fbo/DeleteFramebuffer';
 import { DeleteGLTexture } from './DeleteGLTexture';
-import { GL } from '../GL';
 import { IGLTextureBinding } from './IGLTextureBinding';
 import { IGLTextureBindingConfig } from './IGLTextureBindingConfig';
 import { ITexture } from '../../../textures/ITexture';
 import { IsSizePowerOfTwo } from '../../../math/pow2/IsSizePowerOfTwo';
 import { SetGLTextureFilterMode } from './SetGLTextureFilterMode';
 import { UpdateGLTexture } from './UpdateGLTexture';
+import { gl } from '../GL';
 
 export class GLTextureBinding implements IGLTextureBinding
 {
@@ -34,8 +34,6 @@ export class GLTextureBinding implements IGLTextureBinding
 
     constructor (parent: ITexture, config: IGLTextureBindingConfig = {})
     {
-        const gl = GL.get();
-
         this.parent = parent;
 
         this.isPOT = IsSizePowerOfTwo(parent.width, parent.height);

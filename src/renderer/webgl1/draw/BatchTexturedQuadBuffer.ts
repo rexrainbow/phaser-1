@@ -14,7 +14,7 @@ export function BatchTexturedQuadBuffer <T extends ISpriteBatch> (batch: T, rend
 
     batch.updateTextureIndex();
 
-    const gl = renderer.gl;
+    //const gl = renderer.gl; - use GL.gl
 
     shader.setBuffers(batch.vertexBuffer, batch.indexBuffer);
 

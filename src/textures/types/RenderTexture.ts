@@ -4,6 +4,7 @@ import { ISprite } from '../../gameobjects/sprite/ISprite';
 import { Ortho } from '../../renderer/webgl1/cameras/Ortho';
 import { Texture } from '../Texture';
 import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
+import { gl } from '../../renderer/webgl1/GL';
 
 export class RenderTexture extends Texture
 {
@@ -33,7 +34,6 @@ export class RenderTexture extends Texture
     cls (): this
     {
         const renderer = this.renderer;
-        const gl = renderer.gl;
 
         // renderer.reset(this.binding.framebuffer, this.width, this.height);
         // gl.clearColor(0, 0, 0, 0);

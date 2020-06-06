@@ -1,6 +1,6 @@
 import { DeleteGLBuffer } from './DeleteGLBuffer';
-import { GL } from '../GL';
 import { VertexBuffer } from './VertexBuffer';
+import { gl } from '../GL';
 
 export class IndexedVertexBuffer extends VertexBuffer
 {
@@ -85,8 +85,6 @@ export class IndexedVertexBuffer extends VertexBuffer
     {
         this.index = new Uint16Array(seededIndex);
 
-        const gl = GL.get();
-
         this.indexBuffer = gl.createBuffer();
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
@@ -99,8 +97,6 @@ export class IndexedVertexBuffer extends VertexBuffer
 
     bind (): void
     {
-        const gl = GL.get();
-
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
 

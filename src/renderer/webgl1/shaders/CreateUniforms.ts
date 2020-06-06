@@ -1,6 +1,7 @@
 import { CreateUniformSetter } from './CreateUniformSetter';
+import { gl } from '../GL';
 
-export function CreateUniforms (gl: WebGLRenderingContext, program: WebGLProgram): Map<string, Function>
+export function CreateUniforms (program: WebGLProgram): Map<string, Function>
 {
     const uniforms = new Map();
 
@@ -32,7 +33,7 @@ export function CreateUniforms (gl: WebGLRenderingContext, program: WebGLProgram
                 isArray = (uniform.size > 1);
             }
 
-            uniforms.set(name, CreateUniformSetter(gl, uniform, location, isArray));
+            uniforms.set(name, CreateUniformSetter(uniform, location, isArray));
         }
     }
 

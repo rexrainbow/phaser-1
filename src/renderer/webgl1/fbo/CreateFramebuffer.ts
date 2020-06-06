@@ -1,9 +1,7 @@
-import { GL } from '../GL';
+import { gl } from '../GL';
 
 export function CreateFramebuffer (texture: WebGLTexture, attachment?: GLenum): WebGLFramebuffer
 {
-    const gl = GL.get();
-
     if (!attachment)
     {
         attachment = gl.COLOR_ATTACHMENT0;

@@ -1,6 +1,6 @@
 import { DeleteGLBuffer } from './DeleteGLBuffer';
-import { GL } from '../GL';
 import { IVertexBuffer } from './IVertexBuffer';
+import { gl } from '../GL';
 
 export class VertexBuffer implements IVertexBuffer
 {
@@ -128,8 +128,6 @@ export class VertexBuffer implements IVertexBuffer
         this.vertexViewF32 = new Float32Array(data);
         this.vertexViewU32 = new Uint32Array(data);
 
-        const gl = GL.get();
-
         this.vertexBuffer = gl.createBuffer();
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
@@ -140,8 +138,6 @@ export class VertexBuffer implements IVertexBuffer
 
     bind (): void
     {
-        const gl = GL.get();
-
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
 
