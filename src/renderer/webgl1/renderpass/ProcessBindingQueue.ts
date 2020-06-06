@@ -13,15 +13,5 @@ export function ProcessBindingQueue (): void
         }
     });
 
-    // for (let i = 0; i < queue.length; i++)
-    // {
-    //     const texture = queue[i];
-
-    //     if (!texture.binding)
-    //     {
-    //         texture.binding = new GLTextureBinding(texture);
-    //     }
-    // }
-
     BindingQueue.clear();
 }
