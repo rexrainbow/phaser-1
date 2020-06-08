@@ -1,3 +1,4 @@
+import { Flush, PopFramebuffer, SetFramebuffer } from '../../renderer/webgl1/renderpass';
 import { GetHeight, GetResolution, GetWidth } from '../../config';
 
 import { CreateDepthBuffer } from '../../renderer/webgl1/fbo/CreateDepthBuffer';
@@ -9,13 +10,6 @@ import { IRenderLayer3D } from './IRenderLayer3D';
 import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
 import { Layer } from '../../gameobjects/layer/Layer';
 import { Texture } from '../../textures/Texture';
-
-//  The RenderLayer works like a normal Layer, except it automatically caches
-//  all of its renderable children to its own texture. The children are drawn
-//  to the RenderLayers texture and then the RenderLayer texture is drawn to
-//  the WebGL Renderer. You should use a RenderLayer if you've got a complex or
-//  large set of Game Objects that don't update very often, where you would
-//  benefit from not having to re-render every single child, every frame.
 
 export class RenderLayer3D extends Layer implements IRenderLayer3D
 {
@@ -53,24 +47,23 @@ export class RenderLayer3D extends Layer implements IRenderLayer3D
         this.framebuffer = binding.framebuffer;
     }
 
-    /*
     renderGL <T extends IRenderPass> (renderPass: T): void
     {
         if (this.numChildren > 0)
         {
-            renderPass.flush();
+            Flush(renderPass);
 
-            if (this.isDirty(DIRTY_CONST.CHILD_CACHE))
+            if (!this.willCacheChildren || this.isDirty(DIRTY_CONST.CHILD_CACHE))
             {
                 //  This RenderLayer has dirty children
-                renderPass.setFramebuffer(this.framebuffer, true);
+                SetFramebuffer(renderPass, this.framebuffer, true);
 
                 this.clearDirty(DIRTY_CONST.CHILD_CACHE);
             }
             else
             {
                 //  This RenderLayer doesn't have any dirty children, so we'll use the previous fbo contents
-                renderPass.setFramebuffer(this.framebuffer, false);
+                SetFramebuffer(renderPass, this.framebuffer, false);
 
                 this.postRenderGL(renderPass);
             }
@@ -79,21 +72,12 @@ export class RenderLayer3D extends Layer implements IRenderLayer3D
 
     postRenderGL <T extends IRenderPass> (renderPass: T): void
     {
-        const texture = this.texture;
+        Flush(renderPass);
 
-        renderPass.flush();
+        PopFramebuffer(renderPass);
 
-        renderPass.popFramebuffer();
-
-        const { u0, v0, u1, v1 } = texture.firstFrame;
-
-        renderPass.bindTexture(texture);
-
-        DrawTexturedQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
-
-        renderPass.unbindTexture();
+        DrawTexturedQuad(renderPass, this.texture);
 
         this.clearDirty(DIRTY_CONST.TRANSFORM);
     }
-    */
 }
