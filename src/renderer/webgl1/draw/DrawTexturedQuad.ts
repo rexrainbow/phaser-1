@@ -1,11 +1,31 @@
+import { BindTexture, Flush, PopShader, PopVertexBuffer, SetShader, SetVertexBuffer, UnbindTexture } from '../renderpass';
+
 import { BatchSingleQuad } from './BatchSingleQuad';
 import { IRenderPass } from '../renderpass/IRenderPass';
+import { IShader } from '../shaders/IShader';
+import { Texture } from '../../../textures';
 
-export function DrawTexturedQuad (renderPass: IRenderPass, x: number, y: number, width: number, height: number, u0: number, v0: number, u1: number, v1: number, textureIndex: number = 0, packedColor: number = 4294967295): void
+export function DrawTexturedQuad (renderPass: IRenderPass, texture: Texture, shader?: IShader): void
 {
-    // renderPass.shader.setSingleQuadShader(textureIndex);
+    if (!shader)
+    {
+        shader = renderPass.quadShader;
+    }
 
-    // BatchSingleQuad(renderPass, x, y, width, height, u0, v0, u1, v1, textureIndex, packedColor);
+    const { u0, v0, u1, v1 } = texture.firstFrame;
 
-    // renderPass.popShaderAndRebind();
+    BindTexture(texture, 0);
+
+    SetVertexBuffer(renderPass, renderPass.quadBuffer);
+    SetShader(renderPass, shader, 0);
+
+    BatchSingleQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1, 0);
+
+    Flush(renderPass);
+
+    //  Should always pop the vbo first, so when the shader is popped the attributes are set correctly
+    PopVertexBuffer(renderPass);
+    PopShader(renderPass);
+
+    UnbindTexture(renderPass);
 }

@@ -1,5 +1,5 @@
 import { DIRTY_CONST } from '../DIRTY_CONST';
-import { DrawSingleTexturedQuad } from '../../renderer/webgl1/draw/DrawSingleTexturedQuad';
+import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
 import { Flush } from '../../renderer/webgl1/renderpass/Flush';
 import { IEffectLayer } from './IEffectLayer';
 import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
@@ -39,7 +39,7 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
 
         if (shaders.length === 0)
         {
-            DrawSingleTexturedQuad(renderPass, texture);
+            DrawTexturedQuad(renderPass, texture);
         }
         else
         {
@@ -49,12 +49,12 @@ export class EffectLayer extends RenderLayer implements IEffectLayer
             {
                 const shader = shaders[i];
 
-                DrawSingleTexturedQuad(renderPass, prevTexture, shader);
+                DrawTexturedQuad(renderPass, prevTexture, shader);
 
                 prevTexture = shader.texture;
             }
 
-            DrawSingleTexturedQuad(renderPass, prevTexture);
+            DrawTexturedQuad(renderPass, prevTexture);
         }
 
         this.clearDirty(DIRTY_CONST.TRANSFORM);
