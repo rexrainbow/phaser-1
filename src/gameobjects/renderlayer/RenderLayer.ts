@@ -1,9 +1,9 @@
+import { Flush, PopFramebuffer, SetFramebuffer } from '../../renderer/webgl1/renderpass';
 import { GetHeight, GetResolution, GetWidth } from '../../config';
 
-import { CreateDepthBuffer } from '../../renderer/webgl1/fbo/CreateDepthBuffer';
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
 import { DIRTY_CONST } from '../DIRTY_CONST';
-import { DrawTexturedQuad } from '../../renderer/webgl1/draw/DrawTexturedQuad';
+import { DrawSingleTexturedQuad } from '../../renderer/webgl1/draw/DrawSingleTexturedQuad';
 import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
 import { IRenderLayer } from './IRenderLayer';
 import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
@@ -48,31 +48,27 @@ export class RenderLayer extends Layer implements IRenderLayer
 
         binding.framebuffer = CreateFramebuffer(binding.texture);
 
-        //  This must only be set for 3D layers!
-        // binding.depthbuffer = CreateDepthBuffer(binding.framebuffer, texture.width, texture.height);
-
         this.texture = texture;
         this.framebuffer = binding.framebuffer;
     }
 
-    /*
     renderGL <T extends IRenderPass> (renderPass: T): void
     {
         if (this.numChildren > 0)
         {
-            renderPass.flush();
+            Flush(renderPass);
 
-            if (this.isDirty(DIRTY_CONST.CHILD_CACHE))
+            if (!this.willCacheChildren || this.isDirty(DIRTY_CONST.CHILD_CACHE))
             {
                 //  This RenderLayer has dirty children
-                renderPass.setFramebuffer(this.framebuffer, true);
+                SetFramebuffer(renderPass, this.framebuffer, true);
 
                 this.clearDirty(DIRTY_CONST.CHILD_CACHE);
             }
             else
             {
                 //  This RenderLayer doesn't have any dirty children, so we'll use the previous fbo contents
-                renderPass.setFramebuffer(this.framebuffer, false);
+                SetFramebuffer(renderPass, this.framebuffer, false);
 
                 this.postRenderGL(renderPass);
             }
@@ -81,21 +77,12 @@ export class RenderLayer extends Layer implements IRenderLayer
 
     postRenderGL <T extends IRenderPass> (renderPass: T): void
     {
-        const texture = this.texture;
+        Flush(renderPass);
 
-        renderPass.flush();
+        PopFramebuffer(renderPass);
 
-        renderPass.popFramebuffer();
-
-        const { u0, v0, u1, v1 } = texture.firstFrame;
-
-        renderPass.bindTexture(texture);
-
-        DrawTexturedQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
-
-        renderPass.unbindTexture();
+        DrawSingleTexturedQuad(renderPass, this.texture);
 
         this.clearDirty(DIRTY_CONST.TRANSFORM);
     }
-    */
 }
