@@ -9,6 +9,7 @@ import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
 import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { EffectLayer, Layer, RenderLayer, Sprite } from '../src/gameobjects';
+import { Flush, PopFramebuffer, PopShader, PopVertexBuffer, SetFramebuffer, SetShader, SetVertexBuffer } from '../src/renderer/webgl1/renderpass';
 
 import { BatchSingleQuad } from '../src/renderer/webgl1/draw/BatchSingleQuad';
 import { Camera3D } from './Camera3D';
@@ -18,7 +19,7 @@ import { ExpandVertexData } from './ExpandVertexData';
 import { Face } from './Face';
 import { GL } from '../src/renderer/webgl1';
 import { Game } from '../src/Game';
-import { IRenderPass } from '../src/renderer/webgl1/draw/IRenderPass';
+import { IRenderPass } from '../src/renderer/webgl1/renderpass/IRenderPass';
 import { IShader } from '../src/renderer/webgl1/shaders/IShader';
 import { IWebGLRenderer } from '../src/renderer/webgl1/IWebGLRenderer';
 import { ImageFile } from '../src/loader/files/ImageFile';
@@ -148,7 +149,7 @@ class Cube extends RenderLayer3D
         }
         */
 
-        console.log(this.faces);
+        // console.log(this.faces);
     }
 
     renderGL <T extends IRenderPass> (renderPass: T): void
@@ -156,12 +157,11 @@ class Cube extends RenderLayer3D
         const shader = this.shader;
         const gl = renderPass.renderer.gl;
 
-        renderPass.flush();
-        renderPass.setFramebuffer(this.framebuffer, true);
+        Flush(renderPass);
 
-        renderPass.setVertexBuffer(this.buffer);
-        renderPass.setShader(shader, 0);
-        shader.setAttributes(this.buffer.vertexByteSize);
+        SetFramebuffer(renderPass, this.framebuffer, true);
+        SetVertexBuffer(renderPass, this.buffer);
+        SetShader(renderPass, shader, 0);
 
         // let offset = shader.count * buffer.entryElementSize;
         let offset = 0;
@@ -179,30 +179,16 @@ class Cube extends RenderLayer3D
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
 
-        renderPass.flush();
+        Flush(renderPass);
 
         gl.disable(gl.DEPTH_TEST);
         gl.disable(gl.CULL_FACE);
 
-        renderPass.popFramebuffer();
-        renderPass.popVertexBuffer();
-        renderPass.popShaderAndRebind();
+        PopFramebuffer(renderPass);
+        PopVertexBuffer(renderPass);
+        PopShader(renderPass);
 
-        const texture = this.texture;
-
-        const { u0, v0, u1, v1 } = texture.firstFrame;
-
-        renderPass.bindTexture(texture);
-
-        DrawTexturedQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1);
-
-        //  ^ =
-        // renderPass.shader.setSingleQuadShader(0);
-        // renderPass.shader.current.setAttributes(renderPass.buffer.current.vertexByteSize);
-        // BatchSingleQuad(renderPass, 0, 0, texture.width, texture.height, u0, v0, u1, v1, 0, 4294967295);
-        // renderPass.popShaderAndRebind();
-
-        renderPass.unbindTexture();
+        DrawTexturedQuad(renderPass, this.texture);
     }
 }
 
