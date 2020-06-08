@@ -56,8 +56,200 @@ import { parseOBJ } from "@thi.ng/geom-io-obj";
 // console.log('ParseObj');
 // console.log(data2);
 
-const model = parseOBJ(CubeOBJ, { groups: false, tessellate: true });
-console.log(model);
+// const model = parseOBJ(CubeOBJ, { groups: false, tessellate: true });
+// console.log(model);
+
+function buildSphere (radius = 1, widthSegments = 3, heightSegments = 3, phiStart = 0, phiLength = Math.PI * 2, thetaStart = 0, thetaLength = Math.PI)
+{
+    radius = radius || 1;
+
+	widthSegments = Math.max( 3, Math.floor( widthSegments ) || 8 );
+	heightSegments = Math.max( 2, Math.floor( heightSegments ) || 6 );
+
+	phiStart = phiStart !== undefined ? phiStart : 0;
+	phiLength = phiLength !== undefined ? phiLength : Math.PI * 2;
+
+	thetaStart = thetaStart !== undefined ? thetaStart : 0;
+	thetaLength = thetaLength !== undefined ? thetaLength : Math.PI;
+
+	var thetaEnd = Math.min( thetaStart + thetaLength, Math.PI );
+
+	var ix, iy;
+
+	var index = 0;
+	var grid = [];
+
+	var vertex = vec3.create();
+	var normal = vec3.create();
+
+	// buffers
+
+	var indices = [];
+	var vertices = [];
+	var normals = [];
+	var uvs = [];
+
+	// generate vertices, normals and uvs
+
+	for ( iy = 0; iy <= heightSegments; iy ++ ) {
+
+		var verticesRow = [];
+
+		var v = iy / heightSegments;
+
+		// special case for the poles
+
+		var uOffset = 0;
+
+		if ( iy == 0 && thetaStart == 0 ) {
+
+			uOffset = 0.5 / widthSegments;
+
+		} else if ( iy == heightSegments && thetaEnd == Math.PI ) {
+
+			uOffset = - 0.5 / widthSegments;
+
+		}
+
+		for ( ix = 0; ix <= widthSegments; ix ++ ) {
+
+			var u = ix / widthSegments;
+
+			// vertex
+
+			vertex[0] = - radius * Math.cos( phiStart + u * phiLength ) * Math.sin( thetaStart + v * thetaLength );
+			vertex[1] = radius * Math.cos( thetaStart + v * thetaLength );
+			vertex[2] = radius * Math.sin( phiStart + u * phiLength ) * Math.sin( thetaStart + v * thetaLength );
+
+			vertices.push( vertex[0], vertex[1], vertex[2] );
+
+			// normal
+
+            // normal.copy( vertex ).normalize();
+            vec3.normalize(normal, vertex);
+
+			normals.push( normal[0], normal[1], normal[2] );
+
+			// uv
+
+			uvs.push( u + uOffset, 1 - v );
+
+			verticesRow.push( index ++ );
+
+		}
+
+		grid.push( verticesRow );
+
+	}
+
+	// indices
+
+	for ( iy = 0; iy < heightSegments; iy ++ ) {
+
+		for ( ix = 0; ix < widthSegments; ix ++ ) {
+
+			var a = grid[ iy ][ ix + 1 ];
+			var b = grid[ iy ][ ix ];
+			var c = grid[ iy + 1 ][ ix ];
+			var d = grid[ iy + 1 ][ ix + 1 ];
+
+			if ( iy !== 0 || thetaStart > 0 ) indices.push( a, b, d );
+			if ( iy !== heightSegments - 1 || thetaEnd < Math.PI ) indices.push( b, c, d );
+
+		}
+
+    }
+
+    return { verts: vertices, normals, uvs, indices };
+}
+
+function buildPlane (vertices, normals, uvs, indices, numberOfVertices, u, v, w, udir, vdir, width, height, depth, gridX, gridY): number
+{
+    const segmentWidth = width / gridX;
+    const segmentHeight = height / gridY;
+
+    const widthHalf = width / 2;
+    const heightHalf = height / 2;
+    const depthHalf = depth / 2;
+
+    const gridX1 = gridX + 1;
+    const gridY1 = gridY + 1;
+
+    let vertexCounter = 0;
+
+    const vector = vec3.create();
+
+    // generate vertices, normals and uvs
+
+    for (let iy = 0; iy < gridY1; iy++)
+    {
+        const y = iy * segmentHeight - heightHalf;
+
+        for (let ix = 0; ix < gridX1; ix++)
+        {
+            const x = ix * segmentWidth - widthHalf;
+
+            // set values to correct vector component
+
+            vector[ u ] = x * udir;
+            vector[ v ] = y * vdir;
+            vector[ w ] = depthHalf;
+
+            // now apply vector to vertex buffer
+
+            vertices.push(vector[0], vector[1], vector[2]);
+            // vertices.push(vec3.clone(vector));
+
+            // set values to correct vector component
+
+            vector[ u ] = 0;
+            vector[ v ] = 0;
+            vector[ w ] = depth > 0 ? 1 : - 1;
+
+            // now apply vector to normal buffer
+
+            normals.push(vector[0], vector[1], vector[2]);
+            // normals.push(vec3.clone(vector));
+
+            // uvs
+
+            uvs.push(ix / gridX);
+            uvs.push(1 - ( iy / gridY ));
+
+            // counters
+
+            vertexCounter += 1;
+        }
+    }
+
+    // indices
+
+    // 1. you need three indices to draw a single face
+    // 2. a single segment consists of two faces
+    // 3. so we need to generate six (2*3) indices per segment
+
+    for (let iy = 0; iy < gridY; iy++)
+    {
+        for (let ix = 0; ix < gridX; ix++)
+        {
+            const a = numberOfVertices + ix + gridX1 * iy;
+            const b = numberOfVertices + ix + gridX1 * ( iy + 1 );
+            const c = numberOfVertices + ( ix + 1 ) + gridX1 * ( iy + 1 );
+            const d = numberOfVertices + ( ix + 1 ) + gridX1 * iy;
+
+            // faces
+
+            indices.push(a, b, d);
+            indices.push(b, c, d);
+        }
+    }
+
+    // update total number of vertices
+
+    numberOfVertices += vertexCounter;
+
+    return numberOfVertices;
+}
 
 class Cube extends RenderLayer3D
 {
@@ -73,10 +265,10 @@ class Cube extends RenderLayer3D
 
         this.shader = shader;
 
-        this.buffer.vertexBuffer['__SPECTOR_Metadata'] = { name: 'Cube' };
-        this.texture.binding.framebuffer['__SPECTOR_Metadata'] = { name: 'CubeFramebuffer' };
-        this.texture.binding.depthbuffer['__SPECTOR_Metadata'] = { name: 'CubeDepthbuffer' };
-        this.texture.binding.texture['__SPECTOR_Metadata'] = { name: 'CubeTexture' };
+        // this.buffer.vertexBuffer['__SPECTOR_Metadata'] = { name: 'Cube' };
+        // this.texture.binding.framebuffer['__SPECTOR_Metadata'] = { name: 'CubeFramebuffer' };
+        // this.texture.binding.depthbuffer['__SPECTOR_Metadata'] = { name: 'CubeDepthbuffer' };
+        // this.texture.binding.texture['__SPECTOR_Metadata'] = { name: 'CubeTexture' };
 
         const colors = [
             0xff0000, 0xff0000,
@@ -87,7 +279,86 @@ class Cube extends RenderLayer3D
             0x0000ff, 0x0000ff
         ];
 
+        /*
+        const verts = [];
+		const normals = [];
+        const uvs = [];
+        const indices = [];
+
+        const width = 1;
+        const height = 1;
+        const depth = 1;
+
+        const widthSegments = 1;
+        const heightSegments = 1;
+        const depthSegments = 1;
+
+        let numberOfVertices = 0;
+
+		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 2, 1, 0, -1, -1, depth, height, width, depthSegments, heightSegments); // px
+		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 2, 1, 0, 1, -1, depth, height, - width, depthSegments, heightSegments); // nx
+		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 2, 1, 1, 1, width, depth, height, widthSegments, depthSegments); // py
+		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 2, 1, 1, -1, width, depth, - height, widthSegments, depthSegments); // ny
+		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 1, 2, 1, -1, width, height, depth, widthSegments, heightSegments); // pz
+        numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 1, 2, -1, -1, width, height, - depth, widthSegments, heightSegments); // nz
+        */
+
+        const { verts, normals, indices, uvs } = buildSphere(2, 6, 6);
+
+        console.log(verts);
+        console.log(normals);
+        console.log(indices);
+
+        function getVert (verts, index): number[]
+        {
+            const x = verts[ (index * 3) + 0 ];
+            const y = verts[ (index * 3) + 1 ];
+            const z = verts[ (index * 3) + 2 ];
+
+            return [ x, y, z ];
+        }
+
+        function getNormal (normals, index): number[]
+        {
+            const x = normals[ (index * 3) + 0 ];
+            const y = normals[ (index * 3) + 1 ];
+            const z = normals[ (index * 3) + 2 ];
+
+            return [ x, y, z ];
+        }
+
+        for (let i = 0; i < indices.length; i += 3)
+        {
+            const i1 = indices[i + 0];
+            const i2 = indices[i + 1];
+            const i3 = indices[i + 2];
+
+            const v1 = getVert(verts, i1);
+            const v2 = getVert(verts, i2);
+            const v3 = getVert(verts, i3);
+
+            const n1 = getNormal(normals, i1);
+            const n2 = getNormal(normals, i2);
+            const n3 = getNormal(normals, i3);
+
+            const f = new Face(
+                { x: v1[0], y: v1[1], z: v1[2] },
+                { x: v2[0], y: v2[1], z: v2[2] },
+                { x: v3[0], y: v3[1], z: v3[2] },
+                { x: n1[0], y: n1[1], z: n1[2] },
+                { x: n2[0], y: n2[1], z: n2[2] },
+                { x: n3[0], y: n3[1], z: n3[2] },
+                1
+            );
+
+            // f.setColor(colors[i / 3]);
+            f.setColor(0x3d3dbb);
+
+            this.faces.push(f);
+        }
+
         //  @thing/geom
+        /*
         const faces = model.objects[0].groups[0].faces;
         const verts = model.vertices;
         const normals = model.normals;
@@ -119,6 +390,7 @@ class Cube extends RenderLayer3D
 
             this.faces.push(f);
         }
+        */
 
         /*
         //  ParseOBJ
@@ -149,7 +421,7 @@ class Cube extends RenderLayer3D
         }
         */
 
-        // console.log(this.faces);
+        console.log(this.faces);
     }
 
     renderGL <T extends IRenderPass> (renderPass: T): void
@@ -308,28 +580,28 @@ class Demo extends Scene
 
                 if (this.leftKey.isDown)
                 {
-                    // camera.yaw(0.1);
-                    camera.pitch(0.1);
-                    // camera.roll(0.1);
+                    // camera.yaw(0.05);
+                    camera.pitch(0.05);
+                    // camera.roll(0.05);
                 }
                 else if (this.rightKey.isDown)
                 {
-                    // camera.yaw(-0.1);
-                    camera.pitch(-0.1);
-                    // camera.roll(-0.1);
+                    // camera.yaw(-0.05);
+                    camera.pitch(-0.05);
+                    // camera.roll(-0.05);
                 }
 
                 if (this.upKey.isDown)
                 {
-                    camera.yaw(-0.1);
-                    // camera.moveForward(0.1);
-                    // camera.moveIn(0.1);
+                    camera.yaw(-0.05);
+                    // camera.moveForward(0.05);
+                    // camera.moveIn(0.05);
                 }
                 else if (this.downKey.isDown)
                 {
-                    camera.yaw(0.1);
-                    // camera.moveForward(-0.1);
-                    // camera.moveOut(0.1);
+                    camera.yaw(0.05);
+                    // camera.moveForward(-0.05);
+                    // camera.moveOut(0.05);
                 }
 
             });
