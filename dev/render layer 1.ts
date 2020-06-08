@@ -16,8 +16,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        // loader.setPath('/phaser4-examples/public/assets/');
-        loader.setPath('/examples/public/assets/');
+        loader.setPath('/phaser4-examples/public/assets/');
+        // loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('background', 'farm-background.png'));
         loader.add(ImageFile('ayu', 'ayu.png'));
@@ -34,8 +34,6 @@ class Demo extends Scene
     {
         const world = new StaticWorld(this);
 
-        world.name = 'World!';
-
         const layer = new RenderLayer();
 
         const bg = new Sprite(400, 300, 'background');
@@ -45,15 +43,6 @@ class Demo extends Scene
         const rocket = new Sprite(150, 500, 'rocket');
         const bubble = new Sprite(400, 450, 'bubble');
         const star = new Sprite(650, 500, 'star');
-
-        layer.name = 'RenderLayer';
-        bg.name = 'Background';
-        logo.name = 'Logo';
-        ayu.name = 'Ayu';
-        farm.name = 'Farm Logo';
-        rocket.name = 'Rocket';
-        bubble.name = 'Bubble';
-        star.name = 'Star';
 
         AddChildren(layer, ayu, logo, farm, rocket, bubble);
 

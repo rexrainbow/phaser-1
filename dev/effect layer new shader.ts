@@ -76,8 +76,8 @@ class Demo extends Scene
 
         const loader = new Loader();
 
-        // loader.setPath('/phaser4-examples/public/assets/');
-        loader.setPath('/examples/public/assets/');
+        loader.setPath('/phaser4-examples/public/assets/');
+        // loader.setPath('/examples/public/assets/');
 
         loader.add(ImageFile('bg', 'checker.png'));
         loader.add(ImageFile('logo', 'logo.png'));
@@ -94,9 +94,7 @@ class Demo extends Scene
 
             const bg = new Sprite(400, 300, 'bg');
 
-            const layer = new EffectLayer();
-
-            layer.shaders.push(sine, plasma);
+            const layer = new EffectLayer(sine, plasma);
 
             const logo = new Sprite(400, 300, 'logo');
 
