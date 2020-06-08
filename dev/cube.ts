@@ -16,6 +16,7 @@ import { Camera3D } from './Camera3D';
 import { Cube2 as CubeOBJ } from './3d/cube2';
 import { DrawTexturedQuad } from '../src/renderer/webgl1/draw/DrawTexturedQuad';
 import { ExpandVertexData } from './ExpandVertexData';
+import { FXShader } from '../src/renderer/webgl1/shaders/FXShader';
 import { Face } from './Face';
 import { GL } from '../src/renderer/webgl1';
 import { Game } from '../src/Game';
@@ -58,6 +59,62 @@ import { parseOBJ } from "@thi.ng/geom-io-obj";
 
 // const model = parseOBJ(CubeOBJ, { groups: false, tessellate: true });
 // console.log(model);
+
+const plasmaFragmentShader = `
+precision mediump float;
+
+varying vec2 vTextureCoord;
+varying float vTextureId;
+varying vec4 vTintColor;
+
+uniform sampler2D uTexture;
+uniform float uTime;
+uniform vec2 uResolution;
+
+const float PI = 3.14159265;
+float ptime = uTime * 0.0001;
+float alpha = 1.0;
+float size = 0.03;
+float redShift = 0.5;
+float greenShift = 0.5;
+float blueShift = 0.9;
+
+void main (void)
+{
+    vec4 tcolor = texture2D(uTexture, vTextureCoord);
+
+    float color1, color2, color;
+
+    color1 = (sin(dot(gl_FragCoord.xy, vec2(sin(ptime * 3.0), cos(ptime * 3.0))) * 0.02 + ptime * 3.0) + 1.0) / 2.0;
+    vec2 center = vec2(640.0 / 2.0, 360.0 / 2.0) + vec2(640.0 / 2.0 * sin(-ptime * 3.0), 360.0 / 2.0 * cos(-ptime * 3.0));
+    color2 = (cos(length(gl_FragCoord.xy - center) * size) + 1.0) / 2.0;
+    color = (color1 + color2) / 2.0;
+
+    float red = (cos(PI * color / redShift + ptime * 3.0) + 1.0) / 2.0;
+    float green = (sin(PI * color / greenShift + ptime * 3.0) + 1.0) / 2.0;
+    float blue = (sin(PI * color / blueShift + ptime * 3.0) + 1.0) / 2.0;
+
+    gl_FragColor = tcolor * vec4(red, green, blue, alpha);
+}`;
+
+const sineWaveFragmentShader = `
+precision highp float;
+
+varying vec2 vTextureCoord;
+varying float vTextureId;
+varying vec4 vTintColor;
+
+uniform sampler2D uTexture;
+uniform float uTime;
+uniform vec2 uResolution;
+
+void main (void)
+{
+    vec2 uv = gl_FragCoord.xy / uResolution.xy;
+    uv.y += (sin((uv.x + (uTime * 0.0005)) * 5.0) * 0.1) + (sin((uv.x + (uTime * 0.0002)) * 32.0) * 0.01);
+    gl_FragColor = texture2D(uTexture, uv);
+}`;
+
 
 function buildSphere (radius = 1, widthSegments = 3, heightSegments = 3, phiStart = 0, phiLength = Math.PI * 2, thetaStart = 0, thetaLength = Math.PI)
 {
@@ -279,15 +336,14 @@ class Cube extends RenderLayer3D
             0x0000ff, 0x0000ff
         ];
 
-        /*
         const verts = [];
 		const normals = [];
         const uvs = [];
         const indices = [];
 
-        const width = 1;
-        const height = 1;
-        const depth = 1;
+        const width = 2;
+        const height = 2;
+        const depth = 2;
 
         const widthSegments = 1;
         const heightSegments = 1;
@@ -301,13 +357,12 @@ class Cube extends RenderLayer3D
 		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 2, 1, 1, -1, width, depth, - height, widthSegments, depthSegments); // ny
 		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 1, 2, 1, -1, width, height, depth, widthSegments, heightSegments); // pz
         numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 1, 2, -1, -1, width, height, - depth, widthSegments, heightSegments); // nz
-        */
 
-        const { verts, normals, indices, uvs } = buildSphere(2, 6, 6);
+        // const { verts, normals, indices, uvs } = buildSphere(2, 12, 12);
 
-        console.log(verts);
-        console.log(normals);
-        console.log(indices);
+        // console.log(verts);
+        // console.log(normals);
+        // console.log(indices);
 
         function getVert (verts, index): number[]
         {
@@ -351,8 +406,8 @@ class Cube extends RenderLayer3D
                 1
             );
 
-            // f.setColor(colors[i / 3]);
-            f.setColor(0x3d3dbb);
+            f.setColor(colors[i / 3]);
+            // f.setColor(0x3d3dbb);
 
             this.faces.push(f);
         }
@@ -552,6 +607,14 @@ class Demo extends Scene
 
         loader.start().then(() => {
 
+            const sine = new FXShader({
+                fragmentShader: sineWaveFragmentShader
+            });
+
+            const plasma = new FXShader({
+                fragmentShader: plasmaFragmentShader
+            });
+
             const keyboard = new Keyboard();
 
             this.leftKey = new LeftKey();
@@ -564,15 +627,17 @@ class Demo extends Scene
             const shader = new TestShader();
             const camera = shader.camera;
 
+            const layer = new EffectLayer(sine);
+
             const bg = new Sprite(400, 300, 'bg');
             const cube = new Cube(shader);
             const logo = new Sprite(400, 300, 'logo');
 
-            // bg.alpha = 0.5;
-            // logo.alpha = 0.5;
+            AddChildren(layer, cube);
 
             // AddChildren(world, bg, cube);
-            AddChildren(world, bg, cube, logo);
+            // AddChildren(world, bg, cube, logo);
+            AddChildren(world, bg, layer, logo);
 
             // camera.setPosition()
 
