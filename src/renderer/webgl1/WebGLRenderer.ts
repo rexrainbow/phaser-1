@@ -52,10 +52,6 @@ export class WebGLRenderer
 
     constructor ()
     {
-        const renderPass = new RenderPass(this);
-
-        this.renderPass = renderPass;
-
         this.width = GetWidth();
         this.height = GetHeight();
         this.resolution = GetResolution();
@@ -71,9 +67,12 @@ export class WebGLRenderer
 
         this.initContext();
 
+        //  By this stage the context is available
         WebGLRendererInstance.set(this);
 
-        //  By this stage the context is available
+        const renderPass = new RenderPass(this);
+
+        this.renderPass = renderPass;
 
         const gl = this.gl;
 
@@ -83,6 +82,8 @@ export class WebGLRenderer
         SetDefaultBlendMode(renderPass, true, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
         SetDefaultVertexBuffer(renderPass, new IndexedVertexBuffer(batchSize, 4, 4, 6, 6, 4, [ 0, 1, 2, 2, 3, 0 ]));
         SetDefaultShader(renderPass, new MultiTextureQuadShader());
+
+        this.resize(this.width, this.height, this.resolution);
     }
 
     initContext (): void
@@ -95,8 +96,6 @@ export class WebGLRenderer
 
         gl.disable(gl.DEPTH_TEST);
         gl.disable(gl.CULL_FACE);
-
-        this.resize(this.width, this.height, this.resolution);
     }
 
     resize (width: number, height: number, resolution: number = 1): void
