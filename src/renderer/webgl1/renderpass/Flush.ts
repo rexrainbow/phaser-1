@@ -16,5 +16,7 @@ export function Flush (renderPass: IRenderPass): boolean
 
     renderPass.count = 0;
 
+    renderPass.flushTotal++;
+
     return true;
 }

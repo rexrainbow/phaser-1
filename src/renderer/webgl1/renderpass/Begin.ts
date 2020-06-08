@@ -9,7 +9,9 @@ export function Begin (renderPass: IRenderPass, projectionMatrix: Float32Array, 
 {
     renderPass.projectionMatrix = projectionMatrix;
     renderPass.cameraMatrix = cameraMatrix;
+
     renderPass.count = 0;
+    renderPass.flushTotal = 0;
 
     BindFramebuffer(renderPass, false);
     BindBlendMode(renderPass);
