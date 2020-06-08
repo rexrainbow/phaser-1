@@ -11,7 +11,6 @@ import { FXShader } from './FXShader';
 import { MultiTextureQuadShader } from './MultiTextureQuadShader';
 import { QuadShader } from './QuadShader';
 import { Shader } from './Shader';
-import { SingleTextureQuadShader } from './SingleTextureQuadShader';
 
 export {
     CheckShaderMaxIfStatements,
@@ -26,6 +25,5 @@ export {
     FXShader,
     MultiTextureQuadShader,
     Shader,
-    QuadShader,
-    SingleTextureQuadShader
+    QuadShader
 };
