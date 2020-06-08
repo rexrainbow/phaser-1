@@ -2,6 +2,8 @@ import { IRenderPass } from './IRenderPass';
 import { IShader } from '../shaders/IShader';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
 import { IWebGLRenderer } from '../IWebGLRenderer';
+import { IndexedVertexBuffer } from '../buffers/IndexedVertexBuffer';
+import { QuadShader } from '../shaders/QuadShader';
 import { Rectangle } from '../../../geom/rectangle';
 
 export type FramebufferStackEntry = {
@@ -64,11 +66,15 @@ export class RenderPass implements IRenderPass
     currentBlendMode: BlendModeStackEntry = null;
     defaultBlendMode: BlendModeStackEntry = null;
 
+    //  Single Texture Quad Shader
+    quadShader: IShader;
+    quadBuffer: IVertexBuffer;
+
     constructor (renderer: IWebGLRenderer)
     {
         this.renderer = renderer;
-    }
 
-    //  TODO - Call this START maybe? Only run once, at the start of the render loop, and only reset things that need it
-    //  reset needs to: null fbo, default viewport, enable blend, set blendfunc, process binding queue, flushTotal = 0
+        this.quadShader = new QuadShader();
+        this.quadBuffer = new IndexedVertexBuffer(1, 4, 4, 6, 6, 4, [ 0, 1, 2, 2, 3, 0 ]);
+    }
 }

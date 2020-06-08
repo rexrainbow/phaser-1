@@ -1,5 +1,6 @@
 import { BlendModeStackEntry, FramebufferStackEntry, ShaderStackEntry } from './RenderPass';
 
+import { IShader } from '../shaders/IShader';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
 import { IWebGLRenderer } from '../IWebGLRenderer';
 import { Rectangle } from '../../../geom/rectangle/Rectangle';
@@ -42,7 +43,11 @@ export interface IRenderPass
     currentViewport: Rectangle;
     defaultViewport: Rectangle;
 
+    //  Blend Mode
     blendModeStack: BlendModeStackEntry[];
     currentBlendMode: BlendModeStackEntry;
     defaultBlendMode: BlendModeStackEntry;
+
+    quadShader: IShader;
+    quadBuffer: IVertexBuffer;
 }
