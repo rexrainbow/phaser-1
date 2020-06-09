@@ -7,6 +7,8 @@ import * as Matrix2dFuncs from './matrix2d-funcs';
 import * as Pow2 from './pow2';
 import * as Snap from './snap';
 import * as Vec2 from './vec2';
+import * as Vec3 from './vec3';
+import * as Vec4 from './vec4';
 
 import { Average } from './Average';
 import { Bernstein } from './Bernstein';
@@ -39,40 +41,42 @@ import { Wrap } from './Wrap';
 
 export {
     Angle,
-    Distance,
-    Fuzzy,
-    Interpolation,
-    Matrix2d,
-    Matrix2dFuncs,
-    Pow2,
-    Snap,
-    Vec2,
     Average,
     Bernstein,
     Between,
     CatmullRom,
     CeilTo,
     Clamp,
-    MATH_CONST,
     DegToRad,
     Difference,
+    Distance,
     Factorial,
     FloatBetween,
     FloorTo,
     FromPercent,
+    Fuzzy,
     GetSpeed,
+    Interpolation,
     Linear,
+    MATH_CONST,
+    Matrix2d,
+    Matrix2dFuncs,
     MaxAdd,
     MinSub,
     Percent,
+    Pow2,
     RadToDeg,
     RoundAwayFromZero,
     RoundTo,
     SinCosTableGenerator,
     SmootherStep,
     SmoothStep,
+    Snap,
     ToXY,
     TransformXY,
+    Vec2,
+    Vec3,
+    Vec4,
     Within,
     Wrap
 };
