@@ -3,5 +3,7 @@ import { Vec3 } from './Vec3';
 
 export function Clone (source: IVec3): Vec3
 {
-    return new Vec3(source.x, source.y, source.z);
+    const { x, y, z } = source;
+
+    return new Vec3(x, y, z);
 }
