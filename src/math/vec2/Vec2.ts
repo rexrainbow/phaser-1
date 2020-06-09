@@ -63,7 +63,7 @@ export class Vec2 implements IVec2
 
     toString (): string
     {
-        return `[x=${this.x}, y=${this.y}]`;
+        return `[ x=${this.x}, y=${this.y} ]`;
     }
 
     get width (): number
