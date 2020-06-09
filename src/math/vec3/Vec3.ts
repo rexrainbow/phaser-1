@@ -71,34 +71,4 @@ export class Vec3 implements IVec3
     {
         return `[ x=${this.x}, y=${this.y}, z=${this.z} ]`;
     }
-
-    get width (): number
-    {
-        return this.x;
-    }
-
-    set width (value: number)
-    {
-        this.x = value;
-    }
-
-    get height (): number
-    {
-        return this.y;
-    }
-
-    set height (value: number)
-    {
-        this.y = value;
-    }
-
-    get depth (): number
-    {
-        return this.z;
-    }
-
-    set depth (value: number)
-    {
-        this.z = value;
-    }
 }
