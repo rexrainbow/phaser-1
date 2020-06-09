@@ -3,10 +3,12 @@ import { Vec4 } from './Vec4';
 
 export function DivideScalar (a: IVec4, scalar: number, out: Vec4 = new Vec4()): IVec4
 {
+    const { x, y, z, w } = a;
+
     return out.set(
-        a.x / scalar,
-        a.y / scalar,
-        a.z / scalar,
-        a.w / scalar
+        x / scalar,
+        y / scalar,
+        z / scalar,
+        w / scalar
     );
 }
