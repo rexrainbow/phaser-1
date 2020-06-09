@@ -11,6 +11,6 @@ export function Lerp (a: IVec4, b: IVec4, t: number, out: Vec4 = new Vec4()): IV
         x + t * (b.x - x),
         y + t * (b.y - y),
         z + t * (b.z - z),
-        w + t * (b.w - z)
+        w + t * (b.w - w)
     );
 }
