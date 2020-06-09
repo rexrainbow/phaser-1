@@ -1,14 +1,5 @@
 /**
- * @author       Richard Davey <rich@photonstorm.com>
- * @copyright    2020 Photon Storm Ltd.
- * @license      {@link https://opensource.org/licenses/MIT|MIT License}
- */
-
-/**
  * Calculates a Catmull-Rom value from the given points, based on an alpha of 0.5.
- *
- * @function Phaser.Math.CatmullRom
- * @since 3.0.0
  *
  * @param {number} t - The amount to interpolate by.
  * @param {number} p0 - The first control point.
