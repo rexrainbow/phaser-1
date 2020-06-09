@@ -1,4 +1,6 @@
-export class Vec2
+import { IVec2 } from './IVec2';
+
+export class Vec2 implements IVec2
 {
     /**
      * X component
@@ -25,7 +27,8 @@ export class Vec2
      */
     constructor (x: number = 0, y: number = 0)
     {
-        this.set(x, y);
+        this.x = x;
+        this.y = y;
     }
 
     set (x: number = 0, y: number = 0): this
@@ -37,32 +40,49 @@ export class Vec2
     }
 
     /**
-     * Returns a new array containg the Vector2 component values.
-     *
-     * @returns {number[]}
-     * @memberof Vec2
+     * Sets the Vector2 coordinates into the given array, or a new array, at
+     * the given index.
      */
-    getArray (): number[]
+    toArray (dst: Float32List = [], index: number = 0): Float32List
     {
-        return [ this.x, this.y ];
+        dst[ index ] = this.x;
+        dst[ index + 1 ] = this.y;
+
+        return dst;
     }
 
     /**
      * Sets the values of this Vector2 based on the given array, or array-like object, such as a Float32.
      *
      * The source must have 2 elements, starting from index 0 through to index 1.
-     *
-     * @param {number[]} src - The source array to copy the values from.
-     * @returns {Vec2}
-     * @memberof Vec2
      */
-    fromArray (src: number[]): this
+    fromArray (src: Float32List, index: number = 0): this
     {
-        return this.set(src[0], src[1]);
+        return this.set(src[ index ], src[ index + 1 ]);
     }
 
     toString (): string
     {
         return `[x=${this.x}, y=${this.y}]`;
+    }
+
+    get width (): number
+    {
+        return this.x;
+    }
+
+    set width (value: number)
+    {
+        this.x = value;
+    }
+
+    get height (): number
+    {
+        return this.y;
+    }
+
+    set height (value: number)
+    {
+        this.y = value;
     }
 }
