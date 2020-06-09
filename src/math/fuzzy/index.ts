@@ -10,6 +10,8 @@ import { FuzzyFloor } from './FuzzyFloor';
 import { FuzzyGreaterThan } from './FuzzyGreaterThan';
 import { FuzzyLessThan } from './FuzzyLessThan';
 
+// TODO - The Epsilon values can move to a Config setter
+
 export {
     FuzzyCeil,
     FuzzyEqual,
