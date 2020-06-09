@@ -1,0 +1,14 @@
+import { IVec4 } from './IVec4';
+import { Vec4 } from './Vec4';
+
+export function SubtractScalar (a: IVec4, scalar: number, out: Vec4 = new Vec4()): IVec4
+{
+    const { x, y, z, w } = a;
+
+    return out.set(
+        x - scalar,
+        y - scalar,
+        z - scalar,
+        w - scalar
+    );
+}
