@@ -1,11 +1,15 @@
+import { Dot } from './Dot';
 import { IVec3 } from './IVec3';
+import { Scale } from './Scale';
+import { Subtract } from './Subtract';
 import { Vec3 } from './Vec3';
 
-export function Reflect (a: IVec3, out: Vec3 = new Vec3()): IVec3
+// reflect incident vector off plane orthogonal to normal
+// normal is assumed to have unit length
+
+export function Reflect (a: IVec3, normal: IVec3, out: Vec3 = new Vec3()): IVec3
 {
-    return out.set(
-        (a.x < 0) ? Math.ceil(a.x) : Math.floor(a.x),
-        (a.y < 0) ? Math.ceil(a.y) : Math.floor(a.y),
-        (a.z < 0) ? Math.ceil(a.z) : Math.floor(a.z)
-    );
+    Scale(normal, 2 * Dot(a, normal), out);
+
+    return Subtract(a, out, out);
 }
