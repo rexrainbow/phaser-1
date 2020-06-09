@@ -1,11 +1,16 @@
 import { IVec3 } from './IVec3';
 import { Vec3 } from './Vec3';
 
-export function Max (a: IVec3, out: Vec3 = new Vec3()): IVec3
+// Returns the maximum of two vec3's
+
+export function Max (a: IVec3, b: IVec3, out: Vec3 = new Vec3()): IVec3
 {
+    const { x: ax, y: ay, z: az } = a;
+    const { x: bx, y: by, z: bz } = b;
+
     return out.set(
-        Math.max(a.x),
-        Math.max(a.y),
-        Math.max(a.z)
+        Math.max(ax, bx),
+        Math.max(ay, by),
+        Math.max(az, bz)
     );
 }
