@@ -245,14 +245,14 @@ class Cube extends RenderLayer3D
     {
         super();
 
-        this.buffer = new VertexBuffer({ batchSize: 2048, vertexElementSize: 7, elementsPerEntry: 3, isDynamic: false });
+        this.buffer = new VertexBuffer({ batchSize: 4096, vertexElementSize: 7, elementsPerEntry: 3, isDynamic: false });
 
         this.shader = shader;
 
         //  floor
         getCube(this, 0, -4, 0, 50, 0.1, 50, 0x770000);
 
-        for (let i = 0; i < 44; i++)
+        for (let i = 0; i < 52 * 2; i++)
         {
             const x = FloatBetween(-25, 25);
             const z = FloatBetween(-25, 25);
@@ -399,20 +399,31 @@ class Demo extends Scene
 
             // camera.setLookAtPoint([ 0, 0, 0 ]);
             camera.setPosition([ 0, -1, -5 ]);
+            camera.setNearClippingPlane(0.001);
 
             On(this, 'update', (delta, time) => {
 
                 if (this.leftKey.isDown)
                 {
-                    camera.yaw(0.05);
-                    // camera.pitch(0.05);
-                    // camera.roll(0.05);
+                    if (this.leftKey.shiftKey)
+                    {
+                        camera.pitch(0.025);
+                    }
+                    else
+                    {
+                        camera.yaw(0.025);
+                    }
                 }
                 else if (this.rightKey.isDown)
                 {
-                    camera.yaw(-0.05);
-                    // camera.pitch(-0.05);
-                    // camera.roll(-0.05);
+                    if (this.rightKey.shiftKey)
+                    {
+                        camera.pitch(-0.025);
+                    }
+                    else
+                    {
+                        camera.yaw(-0.025);
+                    }
                 }
 
                 if (this.upKey.isDown)
