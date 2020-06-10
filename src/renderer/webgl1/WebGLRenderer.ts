@@ -1,6 +1,5 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
-import { AddViewport } from './renderpass/AddViewport';
 import { Begin } from './renderpass/Begin';
 import { CreateTempTextures } from './renderpass/CreateTempTextures';
 import { End } from './renderpass/End';
@@ -80,7 +79,7 @@ export class WebGLRenderer
 
         SetDefaultFramebuffer(renderPass);
         SetDefaultBlendMode(renderPass, true, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        SetDefaultVertexBuffer(renderPass, new IndexedVertexBuffer(batchSize, 4, 4, 6, 6, 4, [ 0, 1, 2, 2, 3, 0 ]));
+        SetDefaultVertexBuffer(renderPass, new IndexedVertexBuffer({ batchSize, indexLayout: [ 0, 1, 2, 2, 3, 0 ] }));
         SetDefaultShader(renderPass, new MultiTextureQuadShader());
 
         this.resize(this.width, this.height, this.resolution);

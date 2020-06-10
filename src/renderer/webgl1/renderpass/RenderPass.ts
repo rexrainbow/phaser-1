@@ -75,6 +75,7 @@ export class RenderPass implements IRenderPass
         this.renderer = renderer;
 
         this.quadShader = new QuadShader();
-        this.quadBuffer = new IndexedVertexBuffer(1, 4, 4, 6, 6, 4, [ 0, 1, 2, 2, 3, 0 ]);
+
+        this.quadBuffer = new IndexedVertexBuffer({ isDynamic: false, indexLayout: [ 0, 1, 2, 2, 3, 0 ] });
     }
 }
