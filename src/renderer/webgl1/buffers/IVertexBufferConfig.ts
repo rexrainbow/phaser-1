@@ -4,6 +4,7 @@ export type IVertexBufferConfig = {
     entryIndexSize?: number;
     indexLayout?: number[];
     indexSize?: number;
-    quantity?: number;
+    isDynamic?: boolean;
+    elementsPerEntry?: number;
     vertexElementSize?: number;
 };

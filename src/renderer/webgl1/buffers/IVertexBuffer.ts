@@ -2,23 +2,32 @@ export interface IVertexBuffer
 {
     batchSize: number;
     dataSize: number;
-    indexSize?: number;
     vertexElementSize: number;
     vertexByteSize: number;
     entryByteSize: number;
-    entryElementSize?: number;
-    entryIndexSize?: number;
     bufferByteSize: number;
     data: ArrayBuffer;
     vertexViewF32: Float32Array;
     vertexViewU32: Uint32Array;
+    indexed: boolean;
+    isDynamic: boolean;
+    count: number;
+    offset: number;
+    elementsPerEntry: number;
+
+    indexSize?: number;
+    entryElementSize?: number;
+    entryIndexSize?: number;
     index?: Uint16Array;
     vertexBuffer: WebGLBuffer;
     indexBuffer?: WebGLBuffer;
     indexLayout?: number[];
-    indexed: boolean;
 
+    add (count: number): void;
+    canContain (count: number): boolean;
+    createIndexBuffer? (seededIndex: number[]): void;
     bind (): void;
-    create (seededIndex?: number[]): void;
+    create (): void;
     destroy (): void;
+    free (): number;
 }
