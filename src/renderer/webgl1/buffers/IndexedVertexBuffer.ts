@@ -1,8 +1,10 @@
 import { DeleteGLBuffer } from './DeleteGLBuffer';
+import { IIndexedVertexBuffer } from './IIndexedVertexBuffer';
+import { IVertexBufferConfig } from './IVertexBufferConfig';
 import { VertexBuffer } from './VertexBuffer';
 import { gl } from '../GL';
 
-export class IndexedVertexBuffer extends VertexBuffer
+export class IndexedVertexBuffer extends VertexBuffer implements IIndexedVertexBuffer
 {
     /**
      * The size, in bytes, per entry in the element index array.
@@ -48,18 +50,23 @@ export class IndexedVertexBuffer extends VertexBuffer
 
     indexLayout: number[];
 
-    indexed: boolean = true;
-
-    //  quantity = number of elements per entry
-    constructor (batchSize: number, dataSize: number, indexSize: number, vertexElementSize: number, entryIndexSize: number, quantity: number, indexLayout?: number[])
+    constructor (config: IVertexBufferConfig = {})
     {
-        super(batchSize, dataSize, vertexElementSize, quantity);
+        super(config);
+
+        const {
+            indexSize = 4,
+            entryIndexSize = 6,
+            indexLayout = null
+        } = config;
+
+        this.indexed = true;
 
         this.indexSize = indexSize;
         this.entryIndexSize = entryIndexSize;
 
         //  Derive the remaining values
-        this.entryElementSize = vertexElementSize * quantity;
+        this.entryElementSize = this.vertexElementSize * this.elementsPerEntry;
 
         const seededIndexBuffer = [];
 
@@ -68,7 +75,7 @@ export class IndexedVertexBuffer extends VertexBuffer
             this.indexLayout = indexLayout;
 
             //  Seed the index buffer
-            for (let i = 0; i < (batchSize * indexSize); i += indexSize)
+            for (let i = 0; i < (this.batchSize * indexSize); i += indexSize)
             {
                 for (let c = 0; c < indexLayout.length; c++)
                 {
@@ -99,8 +106,6 @@ export class IndexedVertexBuffer extends VertexBuffer
     {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-
-        // this.count = 0;
     }
 
     destroy (): void
