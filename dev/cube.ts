@@ -318,7 +318,7 @@ class Cube extends RenderLayer3D
     {
         super();
 
-        this.buffer = new VertexBuffer(1040, 4, 7, 3);
+        this.buffer = new VertexBuffer({ batchSize: 2048, vertexElementSize: 7, elementsPerEntry: 3 });
 
         this.shader = shader;
 

@@ -30,7 +30,8 @@
 // import runTest from './webgl batch test';
 // import runTest from './display list debug 1';
 // import runTest from './cube';
+// import runTest from './sphere';
 
-import runTest from './sphere';
+import runTest from './cube batch';
 
 runTest();
