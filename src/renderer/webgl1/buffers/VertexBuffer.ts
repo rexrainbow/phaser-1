@@ -1,5 +1,6 @@
 import { DeleteGLBuffer } from './DeleteGLBuffer';
 import { IVertexBuffer } from './IVertexBuffer';
+import { IVertexBufferConfig } from './IVertexBufferConfig';
 import { gl } from '../GL';
 
 export class VertexBuffer implements IVertexBuffer
@@ -89,31 +90,43 @@ export class VertexBuffer implements IVertexBuffer
 
     indexed: boolean = false;
 
+    isDynamic: boolean = false;
+
     /**
-     * The total number of quads added to the batch so far.
-     * Reset every bind and flush.
+     * The total number of entries added to the buffer so far.
      *
      * @type {number}
      */
-    // count: number = 0;
+    count: number = 0;
 
     /**
-     * The total number of quads previously flushed.
+     * The current buffer offset.
      *
      * @type {number}
      */
-    // prevCount: number = 0;
+    offset: number = 0;
 
-    //  quantity = number of elements per entry
-    constructor (batchSize: number, dataSize: number, vertexElementSize: number, quantity: number)
+    elementsPerEntry: number;
+
+    constructor (config: IVertexBufferConfig = {})
     {
+        const {
+            batchSize = 1,
+            dataSize = 4,
+            isDynamic = true,
+            elementsPerEntry = 4,
+            vertexElementSize = 6
+        } = config;
+
         this.batchSize = batchSize;
         this.dataSize = dataSize;
         this.vertexElementSize = vertexElementSize;
+        this.isDynamic = isDynamic;
+        this.elementsPerEntry = elementsPerEntry;
 
         //  Derive the remaining values
         this.vertexByteSize = vertexElementSize * dataSize;
-        this.entryByteSize = this.vertexByteSize * quantity;
+        this.entryByteSize = this.vertexByteSize * elementsPerEntry;
         this.bufferByteSize = batchSize * this.entryByteSize;
 
         this.create();
@@ -131,17 +144,34 @@ export class VertexBuffer implements IVertexBuffer
         this.vertexBuffer = gl.createBuffer();
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, data, gl.DYNAMIC_DRAW);
+
+        const type = (this.isDynamic) ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
+
+        gl.bufferData(gl.ARRAY_BUFFER, data, type);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    }
+
+    add (count: number): void
+    {
+        this.count += count;
+        this.offset += (this.vertexElementSize * count);
+    }
+
+    canContain (count: number): boolean
+    {
+        return (this.offset + (count * this.vertexElementSize)) <= this.bufferByteSize;
+    }
+
+    free (): number
+    {
+        return 1 - (this.count / this.batchSize);
     }
 
     bind (): void
     {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-
-        // this.count = 0;
     }
 
     destroy (): void
