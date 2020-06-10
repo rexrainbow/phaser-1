@@ -29,6 +29,10 @@ export class Key implements IKey
     //  The game time this key was last released
     timeUp: number = 0;
 
+    shiftKey: boolean;
+    ctrlKey: boolean;
+    altKey: boolean;
+
     downCallback: (key: IKey) => void;
     upCallback: (key: IKey) => void;
 
@@ -70,6 +74,10 @@ export class Key implements IKey
         {
             //  Key is first down
             this.isDown = true;
+            this.shiftKey = event.shiftKey;
+            this.ctrlKey = event.ctrlKey;
+            this.altKey = event.altKey;
+
             this.timeDown = event.timeStamp;
             this.timeUpdated = event.timeStamp;
 
