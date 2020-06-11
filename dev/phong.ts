@@ -511,17 +511,17 @@ class Cube extends RenderLayer3D
     {
         super();
 
-        this.buffer = new VertexBuffer({ batchSize: 4096 * 512, vertexElementSize: 7, elementsPerEntry: 3, isDynamic: false });
+        this.buffer = new VertexBuffer({ batchSize: 4096 * 256, vertexElementSize: 7, elementsPerEntry: 3, isDynamic: false });
 
         this.shader = shader;
 
         //  floor
-        getCube(this, 0, -4, 0, 100, 0.1, 100, 0x000077);
+        getCube(this, 0, -4, 0, 140, 0.1, 140, 0x1d1d1d);
 
-        for (let i = 0; i < 256 + 128; i++)
+        for (let i = 0; i < 1024; i++)
         {
-            const x = FloatBetween(-50, 50);
-            const z = FloatBetween(-50, 50);
+            const x = FloatBetween(-70, 70);
+            const z = FloatBetween(-70, 70);
             const r = FloatBetween(0.1, 1.5);
 
             const w = 0.1 + FloatBetween(0.1, 2);
@@ -532,7 +532,7 @@ class Cube extends RenderLayer3D
 
             const y = -4 + (h / 2);
 
-            if (Math.random() > 0.5)
+            if (Math.random() > 0.25)
             {
                 const success = getCube(this, x, y, z, w, h, d);
                 console.log('cube', i, success, this.buffer.free() + '%');
@@ -656,6 +656,7 @@ class Demo extends Scene
 
         loader.add(ImageFile('bg', 'farm-background.png'));
         loader.add(ImageFile('logo', 'logo.png'));
+        loader.add(ImageFile('bg2', 'http://192.168.0.100/phaser3-examples/public/assets/skies/space3.png'));
 
         loader.start().then(() => {
 
@@ -671,9 +672,9 @@ class Demo extends Scene
             const shader = new TestShader();
             const camera = shader.camera;
 
-            const bg = new Sprite(400, 300, 'bg');
+            const bg = new Sprite(400, 300, 'bg2');
             const cube = new Cube(shader);
-            const logo = new Sprite(400, 100, 'logo').setScale(0.5);
+            const logo = new Sprite(400, 50, 'logo').setScale(0.5);
 
             AddChildren(world, bg, cube, logo);
 
