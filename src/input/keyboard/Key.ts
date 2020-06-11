@@ -58,6 +58,10 @@ export class Key implements IKey
             event.preventDefault();
         }
 
+        this.shiftKey = event.shiftKey;
+        this.ctrlKey = event.ctrlKey;
+        this.altKey = event.altKey;
+
         if (this.isDown && this.canRepeat)
         {
             this.timeUpdated = event.timeStamp;
@@ -74,9 +78,6 @@ export class Key implements IKey
         {
             //  Key is first down
             this.isDown = true;
-            this.shiftKey = event.shiftKey;
-            this.ctrlKey = event.ctrlKey;
-            this.altKey = event.altKey;
 
             this.timeDown = event.timeStamp;
             this.timeUpdated = event.timeStamp;
@@ -99,6 +100,10 @@ export class Key implements IKey
         {
             event.preventDefault();
         }
+
+        this.shiftKey = event.shiftKey;
+        this.ctrlKey = event.ctrlKey;
+        this.altKey = event.altKey;
 
         if (this.isDown)
         {
