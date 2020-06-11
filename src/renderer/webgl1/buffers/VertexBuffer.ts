@@ -160,12 +160,12 @@ export class VertexBuffer implements IVertexBuffer
 
     canContain (count: number): boolean
     {
-        return (this.offset + (count * this.vertexElementSize)) <= this.bufferByteSize;
+        return ((this.count + count) <= this.batchSize);
     }
 
     free (): number
     {
-        return 1 - (this.count / this.batchSize);
+        return Math.max(0, 1 - (this.count / this.batchSize));
     }
 
     bind (): void
