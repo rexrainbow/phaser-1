@@ -29,5 +29,6 @@ export interface IVertexBuffer
     bind (): void;
     create (): void;
     destroy (): void;
+    resize (batchSize: number): void;
     free (): number;
 }

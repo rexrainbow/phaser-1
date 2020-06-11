@@ -132,6 +132,19 @@ export class VertexBuffer implements IVertexBuffer
         this.create();
     }
 
+    resize (batchSize: number): void
+    {
+        this.batchSize = batchSize;
+        this.bufferByteSize = batchSize * this.entryByteSize;
+
+        if (this.vertexBuffer)
+        {
+            DeleteGLBuffer(this.vertexBuffer);
+        }
+
+        this.create();
+    }
+
     create (): void
     {
         const data = new ArrayBuffer(this.bufferByteSize);
