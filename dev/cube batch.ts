@@ -7,6 +7,7 @@ import * as vec4 from 'gl-matrix/vec4';
 
 import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
+import { Between, FloatBetween } from '../src/math';
 import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { EffectLayer, Layer, RenderLayer, Sprite } from '../src/gameobjects';
 import { Flush, PopFramebuffer, PopShader, PopVertexBuffer, SetFramebuffer, SetShader, SetVertexBuffer } from '../src/renderer/webgl1/renderpass';
@@ -16,23 +17,126 @@ import { Camera3D } from './Camera3D';
 import { DrawTexturedQuad } from '../src/renderer/webgl1/draw/DrawTexturedQuad';
 import { FXShader } from '../src/renderer/webgl1/shaders/FXShader';
 import { Face } from './Face';
-import { FloatBetween } from '../src/math';
 import { Game } from '../src/Game';
 import { IRenderPass } from '../src/renderer/webgl1/renderpass/IRenderPass';
 import { IShader } from '../src/renderer/webgl1/shaders/IShader';
 import { ImageFile } from '../src/loader/files/ImageFile';
 import { IndexedVertexBuffer } from '../src/renderer/webgl1/buffers/IndexedVertexBuffer';
 import { Keyboard } from '../src/input/keyboard';
-import { LIGHTS_FRAG } from './LIGHTS_FRAG';
+import { LIGHTS2_FRAG } from './LIGHTS2_FRAG';
+import { LIGHTS3_VERT } from './LIGHTS3_VERT';
 import { Loader } from '../src/loader/Loader';
 import { On } from '../src/events';
 import { OrbitCamera } from './OrbitCamera';
 import { RenderLayer3D } from '../src/gameobjects3d/renderlayer3d/RenderLayer3D';
-import { SIMPLE_LIGHTS_VERT } from './SIMPLE_LIGHTS_VERT';
 import { Scene } from '../src/scenes/Scene';
 import { Shader } from '../src/renderer/webgl1/shaders/Shader';
 import { StaticWorld } from '../src/world/StaticWorld';
 import { VertexBuffer } from '../src/renderer/webgl1/buffers/VertexBuffer';
+
+function buildSphere (radius = 1, widthSegments = 3, heightSegments = 3, phiStart = 0, phiLength = Math.PI * 2, thetaStart = 0, thetaLength = Math.PI)
+{
+    radius = radius || 1;
+
+	widthSegments = Math.max( 3, Math.floor( widthSegments ) || 8 );
+	heightSegments = Math.max( 2, Math.floor( heightSegments ) || 6 );
+
+	phiStart = phiStart !== undefined ? phiStart : 0;
+	phiLength = phiLength !== undefined ? phiLength : Math.PI * 2;
+
+	thetaStart = thetaStart !== undefined ? thetaStart : 0;
+	thetaLength = thetaLength !== undefined ? thetaLength : Math.PI;
+
+	var thetaEnd = Math.min( thetaStart + thetaLength, Math.PI );
+
+	var ix, iy;
+
+	var index = 0;
+	var grid = [];
+
+	var vertex = vec3.create();
+	var normal = vec3.create();
+
+	// buffers
+
+	var indices = [];
+	var vertices = [];
+	var normals = [];
+	var uvs = [];
+
+	// generate vertices, normals and uvs
+
+	for ( iy = 0; iy <= heightSegments; iy ++ ) {
+
+		var verticesRow = [];
+
+		var v = iy / heightSegments;
+
+		// special case for the poles
+
+		var uOffset = 0;
+
+		if ( iy == 0 && thetaStart == 0 ) {
+
+			uOffset = 0.5 / widthSegments;
+
+		} else if ( iy == heightSegments && thetaEnd == Math.PI ) {
+
+			uOffset = - 0.5 / widthSegments;
+
+		}
+
+		for ( ix = 0; ix <= widthSegments; ix ++ ) {
+
+			var u = ix / widthSegments;
+
+			// vertex
+
+			vertex[0] = - radius * Math.cos( phiStart + u * phiLength ) * Math.sin( thetaStart + v * thetaLength );
+			vertex[1] = radius * Math.cos( thetaStart + v * thetaLength );
+			vertex[2] = radius * Math.sin( phiStart + u * phiLength ) * Math.sin( thetaStart + v * thetaLength );
+
+			vertices.push( vertex[0], vertex[1], vertex[2] );
+
+			// normal
+
+            // normal.copy( vertex ).normalize();
+            vec3.normalize(normal, vertex);
+
+			normals.push( normal[0], normal[1], normal[2] );
+
+			// uv
+
+			uvs.push( u + uOffset, 1 - v );
+
+			verticesRow.push( index ++ );
+
+		}
+
+		grid.push( verticesRow );
+
+	}
+
+	// indices
+
+	for ( iy = 0; iy < heightSegments; iy ++ ) {
+
+		for ( ix = 0; ix < widthSegments; ix ++ ) {
+
+			var a = grid[ iy ][ ix + 1 ];
+			var b = grid[ iy ][ ix ];
+			var c = grid[ iy + 1 ][ ix ];
+			var d = grid[ iy + 1 ][ ix + 1 ];
+
+			if ( iy !== 0 || thetaStart > 0 ) indices.push( a, b, d );
+			if ( iy !== heightSegments - 1 || thetaEnd < Math.PI ) indices.push( b, c, d );
+
+		}
+
+    }
+
+    return { verts: vertices, normals, uvs, indices };
+}
 
 function buildPlane (vertices, normals, uvs, indices, numberOfVertices, u, v, w, udir, vdir, width, height, depth, gridX, gridY): number
 {
@@ -143,12 +247,42 @@ function getNormal (normals, index): number[]
 function getCube (layer: Cube, x: number = 0, y: number = 0, z: number = 0, width: number = 1, height: number = 1, depth: number = 1, color?: number): boolean
 {
     const colors = [
-        0xff0000, 0xff0000,
-        0xffff00, 0xffff00,
-        0xff00ff, 0xff00ff,
-        0x00ff00, 0x00ff00,
-        0x00ffff, 0x00ffff,
-        0x0000ff, 0x0000ff
+        0xff0000,
+        0xffff00,
+        0xff00ff,
+        0x00ff00,
+        0x00ffff,
+        0x0000ff,
+        0x9D9D9D,
+        0xffffff,
+        0xBE2633,
+        0xE06F8B,
+        0x493C2B,
+        0xA46422,
+        0xEB8931,
+        0xF7E26B,
+        0x2F484E,
+        0x44891A,
+        0xA3CE27,
+        0x1B2632,
+        0x005784,
+        0x31A2F2,
+        0xB2DCEF,
+        0x1D2B53,
+        0x7E2553,
+        0x008751,
+        0xAB5236,
+        0x5F574F,
+        0xC2C3C7,
+        0xFFF1E8,
+        0xFF004D,
+        0xFFA300,
+        0xFFEC27,
+        0x00E436,
+        0x29ADFF,
+        0x83769C,
+        0xFF77A8,
+        0xFFCCAA
     ];
 
     const verts = [];
@@ -176,6 +310,17 @@ function getCube (layer: Cube, x: number = 0, y: number = 0, z: number = 0, widt
 
     if (layer.buffer.canContain(indices.length))
     {
+        let vcolor;
+
+        if (!color)
+        {
+            vcolor = PackColor(colors[ Between(0, colors.length) ], 1);
+        }
+        else
+        {
+            vcolor = PackColor(color, 1);
+        }
+
         for (let i = 0; i < indices.length; i += 3)
         {
             const i1 = indices[i + 0];
@@ -190,16 +335,137 @@ function getCube (layer: Cube, x: number = 0, y: number = 0, z: number = 0, widt
             const n2 = getNormal(normals, i2);
             const n3 = getNormal(normals, i3);
 
-            let vcolor;
+            // let vcolor;
 
-            if (!color)
-            {
-                vcolor = PackColor(colors[i / 3], 1);
-            }
-            else
-            {
-                vcolor = PackColor(color, 1);
-            }
+            // if (!color)
+            // {
+            //     vcolor = PackColor(colors[i / 3], 1);
+            // }
+            // else
+            // {
+            //     vcolor = PackColor(color, 1);
+            // }
+
+            F32[offset + 0] = v1[0] + x;
+            F32[offset + 1] = v1[1] + y;
+            F32[offset + 2] = v1[2] + z;
+            F32[offset + 3] = n1[0];
+            F32[offset + 4] = n1[1];
+            F32[offset + 5] = n1[2];
+            U32[offset + 6] = vcolor;
+
+            F32[offset + 7] = v2[0] + x;
+            F32[offset + 8] = v2[1] + y;
+            F32[offset + 9] = v2[2] + z;
+            F32[offset + 10] = n2[0];
+            F32[offset + 11] = n2[1];
+            F32[offset + 12] = n2[2];
+            U32[offset + 13] = vcolor;
+
+            F32[offset + 14] = v3[0] + x;
+            F32[offset + 15] = v3[1] + y;
+            F32[offset + 16] = v3[2] + z;
+            F32[offset + 17] = n3[0];
+            F32[offset + 18] = n3[1];
+            F32[offset + 19] = n3[2];
+            U32[offset + 20] = vcolor;
+
+            offset += 21;
+        }
+
+        layer.buffer.add(indices.length);
+
+        return true;
+    }
+
+    return false;
+}
+
+function getSphere (layer: Cube, x: number = 0, y: number = 0, z: number = 0, radius: number = 1, widthSegments: number = 1, heightSegments: number = 1, color?: number): boolean
+{
+    const colors = [
+        0xff0000,
+        0xffff00,
+        0xff00ff,
+        0x00ff00,
+        0x00ffff,
+        0x0000ff,
+        0x9D9D9D,
+        0xffffff,
+        0xBE2633,
+        0xE06F8B,
+        0x493C2B,
+        0xA46422,
+        0xEB8931,
+        0xF7E26B,
+        0x2F484E,
+        0x44891A,
+        0xA3CE27,
+        0x1B2632,
+        0x005784,
+        0x31A2F2,
+        0xB2DCEF,
+        0x1D2B53,
+        0x7E2553,
+        0x008751,
+        0xAB5236,
+        0x5F574F,
+        0xC2C3C7,
+        0xFFF1E8,
+        0xFF004D,
+        0xFFA300,
+        0xFFEC27,
+        0x00E436,
+        0x29ADFF,
+        0x83769C,
+        0xFF77A8,
+        0xFFCCAA
+    ];
+
+    const { verts, normals, uvs, indices } = buildSphere(radius, widthSegments, heightSegments);
+
+    const F32 = layer.buffer.vertexViewF32;
+    const U32 = layer.buffer.vertexViewU32;
+
+    let offset = layer.buffer.offset;
+
+    if (layer.buffer.canContain(indices.length))
+    {
+        let vcolor;
+
+        if (!color)
+        {
+            vcolor = PackColor(colors[ Between(0, colors.length) ], 1);
+        }
+        else
+        {
+            vcolor = PackColor(color, 1);
+        }
+
+        for (let i = 0; i < indices.length; i += 3)
+        {
+            const i1 = indices[i + 0];
+            const i2 = indices[i + 1];
+            const i3 = indices[i + 2];
+
+            const v1 = getVert(verts, i1);
+            const v2 = getVert(verts, i2);
+            const v3 = getVert(verts, i3);
+
+            const n1 = getNormal(normals, i1);
+            const n2 = getNormal(normals, i2);
+            const n3 = getNormal(normals, i3);
+
+            // let vcolor;
+
+            // if (!color)
+            // {
+            //     vcolor = PackColor(colors[i / 3], 1);
+            // }
+            // else
+            // {
+            //     vcolor = PackColor(color, 1);
+            // }
 
             F32[offset + 0] = v1[0] + x;
             F32[offset + 1] = v1[1] + y;
@@ -245,28 +511,40 @@ class Cube extends RenderLayer3D
     {
         super();
 
-        this.buffer = new VertexBuffer({ batchSize: 4096, vertexElementSize: 7, elementsPerEntry: 3, isDynamic: false });
+        this.buffer = new VertexBuffer({ batchSize: 4096 * 512, vertexElementSize: 7, elementsPerEntry: 3, isDynamic: false });
 
         this.shader = shader;
 
         //  floor
-        getCube(this, 0, -4, 0, 50, 0.1, 50, 0x770000);
+        getCube(this, 0, -4, 0, 100, 0.1, 100, 0x000077);
 
-        for (let i = 0; i < 52 * 2; i++)
+        for (let i = 0; i < 256 + 128; i++)
         {
-            const x = FloatBetween(-25, 25);
-            const z = FloatBetween(-25, 25);
+            const x = FloatBetween(-50, 50);
+            const z = FloatBetween(-50, 50);
+            const r = FloatBetween(0.1, 1.5);
 
-            const w = 0.1 + FloatBetween(0.1, 4);
+            const w = 0.1 + FloatBetween(0.1, 2);
             const h = 0.1 + FloatBetween(0.1, 8);
-            const d = 0.1 + FloatBetween(0.1, 4);
+            const d = 0.1 + FloatBetween(0.1, 2);
+
+            const ws = Between(12, 48);
 
             const y = -4 + (h / 2);
 
-            const success = getCube(this, x, y, z, w, h, d);
-
-            console.log('cube', i, success, this.buffer.free() + '%');
+            if (Math.random() > 0.5)
+            {
+                const success = getCube(this, x, y, z, w, h, d);
+                console.log('cube', i, success, this.buffer.free() + '%');
+            }
+            else
+            {
+                const success = getSphere(this, x, y, z, r, ws, ws);
+                console.log('sphere', i, success, this.buffer.free() + '%');
+            }
         }
+
+        console.log('total verts', this.buffer.count);
     }
 
     renderGL <T extends IRenderPass> (renderPass: T): void
@@ -305,8 +583,8 @@ class TestShader extends Shader
     constructor ()
     {
         super({
-            fragmentShader: LIGHTS_FRAG,
-            vertexShader: SIMPLE_LIGHTS_VERT,
+            fragmentShader: LIGHTS2_FRAG,
+            vertexShader: LIGHTS3_VERT,
             attributes: {
                 aVertexPosition: { size: 3, type: GL_CONST.FLOAT, normalized: false, offset: 0 },
                 aVertexNormal: { size: 3, type: GL_CONST.FLOAT, normalized: false, offset: 12 },
@@ -316,10 +594,39 @@ class TestShader extends Shader
                 uProjectionMatrix: new Float32Array(),
                 uCameraMatrix: new Float32Array(),
                 uNormalMatrix: new Float32Array(),
-                uLightDirection: vec3.fromValues(-10, 30, 50),
-                uLightColor: vec3.fromValues(1, 1, 1, 1)
+
+                uShininess: 30.0,
+                uLightDirection: vec3.fromValues(0, -1, -2),
+
+                uLightAmbient: vec4.fromValues(0.05, 0.05, 0.05, 1),
+                uLightDiffuse: vec4.fromValues(1, 1, 1, 1),
+                uLightSpecular: vec4.fromValues(1, 1, 1, 1),
+
+                uMaterialAmbient: vec4.fromValues(1, 1, 1, 1),
+                uMaterialDiffuse: vec4.fromValues(46/256, 99/256, 191/256, 1),
+                uMaterialSpecular: vec4.fromValues(1, 1, 1, 1)
             }
         });
+
+        /*
+        uniforms: {
+            uProjectionMatrix: new Float32Array(),
+            uCameraMatrix: new Float32Array(),
+            uNormalMatrix: new Float32Array(),
+
+            uShininess: 0.5,
+            uLightDirection: vec3.fromValues(0, 1, 1),
+
+            uLightAmbient: vec4.fromValues(1, 1, 1, 1),
+            uLightDiffuse: vec4.fromValues(1, 1, 1, 1),
+            uLightSpecular: vec4.fromValues(1, 1, 1, 1),
+
+            uMaterialAmbient: vec4.fromValues(0, 0, 1, 1),
+            uMaterialDiffuse: vec4.fromValues(0.5, 0.8, 0.1, 1),
+            uMaterialSpecular: vec4.fromValues(0.7, 0.7, 0.7, 1)
+        }
+        */
+
 
         this.camera = new Camera3D();
 
@@ -398,10 +705,12 @@ class Demo extends Scene
             AddChildren(world, bg, cube, logo);
 
             // camera.setLookAtPoint([ 0, 0, 0 ]);
-            camera.setPosition([ 0, -1, -5 ]);
+            camera.setPosition([ 0, -1, -10 ]);
             camera.setNearClippingPlane(0.001);
 
             On(this, 'update', (delta, time) => {
+
+                const pos = camera.getPosition();
 
                 if (this.leftKey.isDown)
                 {
@@ -428,15 +737,21 @@ class Demo extends Scene
 
                 if (this.upKey.isDown)
                 {
-                    // camera.yaw(-0.05);
+                    if (this.upKey.shiftKey)
+                    {
+                        camera.pos[1] += 0.04;
+                    }
+
                     camera.moveForward(-0.05);
-                    // camera.moveIn(0.05);
                 }
                 else if (this.downKey.isDown)
                 {
-                    // camera.yaw(0.05);
+                    if (this.downKey.shiftKey)
+                    {
+                        camera.pos[1] -= 0.04;
+                    }
+
                     camera.moveForward(0.05);
-                    // camera.moveOut(0.05);
                 }
 
             });
