@@ -102,8 +102,6 @@ export class Camera3D
         this.pos[2] = value;
     }
 
-    //  Hello?
-
     setPosition (newVec: vec3)
     {
         this.pos = vec3.fromValues(newVec[0], newVec[1], newVec[2]);
