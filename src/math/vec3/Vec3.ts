@@ -41,7 +41,7 @@ export class Vec3 implements IVec3
     }
 
     /**
-     * Sets the Vector2 coordinates into the given array, or a new array, at
+     * Sets the Vector3 coordinates into the given array, or a new array, at
      * the given index.
      */
     toArray (dst: Float32List = [], index: number = 0): Float32List
