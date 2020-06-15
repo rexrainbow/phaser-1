@@ -1,15 +1,13 @@
-import * as GLMatrix from 'gl-matrix';
+// import * as GLMatrix from 'gl-matrix';
+
 import * as GL_CONST from '../src/renderer/webgl1/GL_CONST';
-import * as mat4 from 'gl-matrix/mat4';
-import * as quat from 'gl-matrix/quat';
-import * as vec3 from 'gl-matrix/vec3';
-import * as vec4 from 'gl-matrix/vec4';
 
 import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
 import { BindTexture, Flush, PopFramebuffer, PopShader, PopVertexBuffer, SetFramebuffer, SetShader, SetTexture, SetVertexBuffer, UnbindTexture } from '../src/renderer/webgl1/renderpass';
 import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { EffectLayer, Layer, RenderLayer, Sprite } from '../src/gameobjects';
+import { Invert, Matrix4, Transpose } from '../src/math/mat4/';
 
 import { DrawTexturedQuad } from '../src/renderer/webgl1/draw/DrawTexturedQuad';
 import { FXShader } from '../src/renderer/webgl1/shaders/FXShader';
@@ -30,7 +28,14 @@ import { Shader } from '../src/renderer/webgl1/shaders/Shader';
 import { StaticWorld } from '../src/world/StaticWorld';
 import { Texture } from '../src/textures';
 import { TextureManagerInstance } from '../src/textures/TextureManagerInstance';
+import { Vec3 } from '../src/math/vec3/';
+import { Vec4 } from '../src/math/vec4/';
 import { VertexBuffer } from '../src/renderer/webgl1/buffers/VertexBuffer';
+
+// import * as mat4 from 'gl-matrix/mat4';
+// import * as quat from 'gl-matrix/quat';
+// import * as vec3 from 'gl-matrix/vec3';
+// import * as vec4 from 'gl-matrix/vec4';
 
 function buildPlane (vertices, normals, uvs, indices, numberOfVertices, u, v, w, udir, vdir, width, height, depth, gridX, gridY): number
 {
@@ -46,7 +51,7 @@ function buildPlane (vertices, normals, uvs, indices, numberOfVertices, u, v, w,
 
     let vertexCounter = 0;
 
-    const vector = vec3.create();
+    // const vector = new Vec3();
 
     // generate vertices, normals and uvs
 
@@ -60,25 +65,19 @@ function buildPlane (vertices, normals, uvs, indices, numberOfVertices, u, v, w,
 
             // set values to correct vector component
 
-            vector[ u ] = x * udir;
-            vector[ v ] = y * vdir;
-            vector[ w ] = depthHalf;
+            // vector.set(
+            //     x * udir,
+            //     y * vdir,
+            //     depthHalf
+            // );
 
             // now apply vector to vertex buffer
-
-            vertices.push(vector[0], vector[1], vector[2]);
-            // vertices.push(vec3.clone(vector));
+            vertices.push(x * udir, y * vdir, depthHalf);
 
             // set values to correct vector component
 
-            vector[ u ] = 0;
-            vector[ v ] = 0;
-            vector[ w ] = depth > 0 ? 1 : - 1;
-
             // now apply vector to normal buffer
-
-            normals.push(vector[0], vector[1], vector[2]);
-            // normals.push(vec3.clone(vector));
+            normals.push(0, 0, depth > 0 ? 1 : - 1);
 
             // uvs
 
@@ -306,7 +305,7 @@ class TestShader extends Shader
 {
     // camera: Camera3D;
     camera: OrbitCamera;
-    normalMatrix: mat4;
+    normalMatrix: Matrix4;
 
     constructor ()
     {
@@ -326,15 +325,15 @@ class TestShader extends Shader
 
                 uTexture: 0,
                 uShininess: 10.10,
-                uLightDirection: vec3.fromValues(0, -1, 1),
+                uLightDirection: new Vec3(0, -1, 1),
 
-                uLightAmbient: vec4.fromValues(0.75, 0.75, 0.75, 1),
-                uLightDiffuse: vec4.fromValues(0.5, 0.5, 0.5, 1),
-                uLightSpecular: vec4.fromValues(0.4, 0.4, 0.4, 1),
+                uLightAmbient: new Vec4(0.75, 0.75, 0.75, 1),
+                uLightDiffuse: new Vec4(0.5, 0.5, 0.5, 1),
+                uLightSpecular: new Vec4(0.4, 0.4, 0.4, 1),
 
-                uMaterialAmbient: vec4.fromValues(0.2, 0.2, 0.2, 1),
-                uMaterialDiffuse: vec4.fromValues(0.2, 0.2, 0.2, 1),
-                uMaterialSpecular: vec4.fromValues(0.91, 0.91, 0.91, 1)
+                uMaterialAmbient: new Vec4(0.2, 0.2, 0.2, 1),
+                uMaterialDiffuse: new Vec4(0.2, 0.2, 0.2, 1),
+                uMaterialSpecular: new Vec4(0.91, 0.91, 0.91, 1)
             }
         });
 
@@ -346,7 +345,7 @@ class TestShader extends Shader
         this.camera.setOrbitPoint(0, -1, 0);
         this.camera.setDistance(5);
 
-        this.normalMatrix = mat4.create();
+        this.normalMatrix = new Matrix4();
     }
 
     updateUniforms ()
@@ -360,8 +359,11 @@ class TestShader extends Shader
 
         const normalMatrix = this.normalMatrix;
 
-        mat4.invert(normalMatrix, this.camera.viewMatrix);
-        mat4.transpose(normalMatrix, normalMatrix);
+        Invert(this.camera.viewMatrix, normalMatrix);
+        Transpose(normalMatrix, normalMatrix);
+
+        // mat4.invert(normalMatrix, this.camera.viewMatrix);
+        // mat4.transpose(normalMatrix, normalMatrix);
 
         uniforms.set('uNormalMatrix', normalMatrix);
     }
