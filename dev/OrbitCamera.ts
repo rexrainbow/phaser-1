@@ -1,4 +1,5 @@
-import { Add, Clone, CopyFrom, Cross, Distance, Equals, Length, Normalize, Scale, Subtract, TransformQuat, UP, Vec3, ZERO } from '../src/math/vec3/index';
+import { Add, Clone, CopyFrom, Cross, Distance, Equals, Length, Normalize, Scale, Subtract, TransformQuat, Vec3 } from '../src/math/vec3/';
+import { UP, ZERO } from '../src/math/vec3/const';
 
 import { Camera3D } from './Camera3D';
 import { SetAxisAngle } from '../src/math/quaternion';

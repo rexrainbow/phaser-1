@@ -1,8 +1,9 @@
-import { Add, Clone, Cross, Normalize, Subtract, TransformQuat, UP, Vec3 } from '../src/math/Vec3';
+import { Add, Clone, Cross, Normalize, Subtract, TransformQuat, Vec3 } from '../src/math/Vec3';
 import { Clone as CloneMat4, LookAt, Matrix4, Perspective, TranslateFromFloats } from '../src/math/mat4';
 
 import { DegToRad } from '../src/math';
 import { SetAxisAngle } from '../src/math/quaternion';
+import { UP } from '../src/math/vec3/const';
 
 export class Camera3D
 {
