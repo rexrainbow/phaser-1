@@ -41,6 +41,7 @@ import { ScaleAndAdd } from './ScaleAndAdd';
 import { SetLength } from './SetLength';
 import { Subtract } from './Subtract';
 import { SubtractScalar } from './SubtractScalar';
+import { TransformMat4 } from './TransformMat4';
 import { Vec4 } from './Vec4';
 import { Zero } from './Zero';
 
@@ -88,6 +89,7 @@ export {
     SetLength,
     Subtract,
     SubtractScalar,
+    TransformMat4,
     Vec4,
     Zero
 };

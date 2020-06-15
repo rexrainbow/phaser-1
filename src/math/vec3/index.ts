@@ -1,6 +1,7 @@
 import { Abs } from './Abs';
 import { Add } from './Add';
 import { AddScalar } from './AddScalar';
+import { Angle } from './Angle';
 import { Backward } from './Backward';
 import { Bezier } from './Bezier';
 import { CatmullRom } from './CatmullRom';
@@ -41,6 +42,9 @@ import { One } from './One';
 import { Random } from './Random';
 import { Reflect } from './Reflect';
 import { Right } from './Right';
+import { RotateX } from './RotateX';
+import { RotateY } from './RotateY';
+import { RotateZ } from './RotateZ';
 import { RotationFromAxis } from './RotationFromAxis';
 import { Round } from './Round';
 import { RoundToZero } from './RoundToZero';
@@ -51,6 +55,8 @@ import { SetFromSphericalCoords } from './SetFromSphericalCoords';
 import { SetLength } from './SetLength';
 import { Subtract } from './Subtract';
 import { SubtractScalar } from './SubtractScalar';
+import { TransformMat4 } from './TransformMat4';
+import { TransformQuat } from './TransformQuat';
 import { Up } from './Up';
 import { Vec3 } from './Vec3';
 import { Zero } from './Zero';
@@ -59,6 +65,7 @@ export {
     Abs,
     Add,
     AddScalar,
+    Angle,
     Backward,
     Bezier,
     CatmullRom,
@@ -99,6 +106,9 @@ export {
     Random,
     Reflect,
     Right,
+    RotateX,
+    RotateY,
+    RotateZ,
     RotationFromAxis,
     Round,
     RoundToZero,
@@ -109,6 +119,8 @@ export {
     SetLength,
     Subtract,
     SubtractScalar,
+    TransformMat4,
+    TransformQuat,
     Up,
     Vec3,
     Zero
