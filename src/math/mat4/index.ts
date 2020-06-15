@@ -41,6 +41,7 @@ import { SetTranslationFromFloats } from './SetTranslationFromFloats';
 import { Subtract } from './Subtract';
 import { TargetTo } from './TargetTo';
 import { Translate } from './Translate';
+import { TranslateFromFloats } from './TranslateFromFloats';
 import { Transpose } from './Transpose';
 import { Zero } from './Zero';
 
@@ -88,6 +89,7 @@ export {
     Subtract,
     TargetTo,
     Translate,
+    TranslateFromFloats,
     Transpose,
     Zero
 };
