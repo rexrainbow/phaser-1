@@ -23,7 +23,7 @@ import { RotateY } from './RotateY';
 import { RotateZ } from './RotateZ';
 import { Scale } from './Scale';
 import { ScaleAndAdd } from './ScaleAndAdd';
-import { SetFromAxisAngle } from './SetFromAxisAngle';
+import { SetAxisAngle } from './SetAxisAngle';
 import { SetFromUnitVectors } from './SetFromUnitVectors';
 import { Slerp } from './Slerp';
 import { Subtract } from './Subtract';
@@ -56,7 +56,7 @@ export {
     RotateZ,
     Scale,
     ScaleAndAdd,
-    SetFromAxisAngle,
+    SetAxisAngle,
     SetFromUnitVectors,
     Slerp,
     Subtract,

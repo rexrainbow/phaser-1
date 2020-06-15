@@ -6,7 +6,7 @@ import { Quaternion } from './Quaternion';
 
 // assumes axis is normalized
 
-export function SetFromAxisAngle (a: IQuaternion, axis: IVec3, angle: number, out: Quaternion = new Quaternion()): IQuaternion
+export function SetAxisAngle (axis: IVec3, angle: number, out: Quaternion = new Quaternion()): IQuaternion
 {
     const { x, y, z } = axis;
 
