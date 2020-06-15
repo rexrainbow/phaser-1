@@ -1,3 +1,5 @@
+import { BACKWARD, DOWN, FORWARD, LEFT, RIGHT, UP, ZERO } from './const';
+
 import { Abs } from './Abs';
 import { Add } from './Add';
 import { AddScalar } from './AddScalar';
@@ -123,5 +125,12 @@ export {
     TransformQuat,
     Up,
     Vec3,
-    Zero
+    Zero,
+    BACKWARD,
+    DOWN,
+    FORWARD,
+    LEFT,
+    RIGHT,
+    UP,
+    ZERO
 };
