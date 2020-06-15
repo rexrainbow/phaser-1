@@ -1,9 +1,9 @@
 import { IMatrix4 } from './IMatrix4';
 import { Matrix4 } from './Matrix4';
 
-export function Invert (mat: IMatrix4, out: IMatrix4 = new Matrix4()): IMatrix4
+export function Invert (matrix: IMatrix4, out: IMatrix4 = new Matrix4()): IMatrix4
 {
-    const [ m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33 ] = mat.data;
+    const [ m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33 ] = matrix.data;
 
     // the inverse of a Matrix is the transpose of cofactor matrix divided by the determinant
     const det22x33 = m22 * m33 - m32 * m23;

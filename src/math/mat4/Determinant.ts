@@ -1,8 +1,8 @@
 import { IMatrix4 } from './IMatrix4';
 
-export function Determinant (mat: IMatrix4): number
+export function Determinant (matrix: IMatrix4): number
 {
-    const [ m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33 ] = mat.data;
+    const [ m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33 ] = matrix.data;
 
     // https://en.wikipedia.org/wiki/Laplace_expansion
     // to compute the deterrminant of a 4x4 Matrix we compute the cofactors of any row or column,
