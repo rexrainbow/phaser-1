@@ -93,4 +93,10 @@ export class Matrix4 implements IMatrix4
 
         return this;
     }
+
+    toString (): string
+    {
+        return '[ mat4=' + this.data.join(', ') + ' ]';
+    }
+
 }
