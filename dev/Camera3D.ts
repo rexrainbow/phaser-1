@@ -1,18 +1,19 @@
-import * as GLMatrix from 'gl-matrix';
-import * as mat4 from 'gl-matrix/mat4';
-import * as quat from 'gl-matrix/quat';
-import * as vec3 from 'gl-matrix/vec3';
+import { Add, Clone, Cross, Normalize, Subtract, TransformQuat, UP, Vec3 } from '../src/math/Vec3';
+import { Clone as CloneMat4, LookAt, Matrix4, Perspective, TranslateFromFloats } from '../src/math/mat4';
+
+import { DegToRad } from '../src/math';
+import { SetAxisAngle } from '../src/math/quaternion';
 
 export class Camera3D
 {
-    left: vec3;
-    up: vec3;
-    dir: vec3;
-    pos: vec3;
+    left: Vec3;
+    up: Vec3;
+    dir: Vec3;
+    pos: Vec3;
 
-    projectionTransform: mat4;
-    projectionMatrix: mat4;
-    viewMatrix: mat4;
+    // projectionTransform: Matrix4;
+    projectionMatrix: Matrix4;
+    viewMatrix: Matrix4;
 
     fov: number = 40;
     near: number = 1;
@@ -22,10 +23,13 @@ export class Camera3D
 
     constructor ()
     {
-        this.left = vec3.fromValues(1, 0, 0);
-        this.up = vec3.fromValues(0, 1, 0);
-        this.dir = vec3.fromValues(0, 0, 1);
-        this.pos = vec3.fromValues(0, 0, 0);
+        this.left = new Vec3(1, 0, 0);
+        this.up = new Vec3(0, 1, 0);
+        this.dir = new Vec3(0, 0, 1);
+        this.pos = new Vec3(0, 0, 0);
+
+        this.projectionMatrix = new Matrix4();
+        this.viewMatrix = new Matrix4();
 
         // this.setPosition([ 0, 2, -3 ]);
         // this.setLookAtPoint([ 0, 0, 0 ]);
@@ -33,29 +37,29 @@ export class Camera3D
         // this.refresh();
     }
 
-    getLeft (): vec3
+    getLeft (): Vec3
     {
-        return vec3.clone(this.left);
+        return Clone(this.left);
     }
 
-    getUp (): vec3
+    getUp (): Vec3
     {
-        return vec3.clone(this.up);
+        return Clone(this.up);
     }
 
-    getPosition (): vec3
+    getPosition (): Vec3
     {
-        return vec3.clone(this.pos);
+        return Clone(this.pos);
     }
 
-    getProjectionMatrix (): mat4
+    getProjectionMatrix (): Matrix4
     {
-        return mat4.clone(this.projectionMatrix);
+        return CloneMat4(this.projectionMatrix);
     }
 
-    getViewMatrix (): mat4
+    getViewMatrix (): Matrix4
     {
-        return mat4.clone(this.viewMatrix);
+        return CloneMat4(this.viewMatrix);
     }
 
     getNearClippingPlane (): number
@@ -99,37 +103,60 @@ export class Camera3D
 
     setZ (value: number)
     {
-        this.pos[2] = value;
+        this.pos.z = value;
     }
 
-    setPosition (newVec: vec3)
+    setPosition (position: Vec3)
     {
-        this.pos = vec3.fromValues(newVec[0], newVec[1], newVec[2]);
+        this.pos.set(position.x, position.y, position.z);
+        // this.pos = Vec3.fromValues(newVec[0], newVec[1], newVec[2]);
     }
 
-    setLookAtPoint (newVec: vec3)
+    setLookAtPoint (newVec: Vec3)
     {
-        vec3.subtract(this.dir, newVec, this.pos);
-        vec3.normalize(this.dir, this.dir);
-        vec3.cross(this.left, vec3.fromValues(0, 1, 0), this.dir);
-        vec3.normalize(this.left, this.left);
-        vec3.cross(this.up, this.dir, this.left);
-        vec3.normalize(this.up, this.up);
+        Subtract(newVec, this.pos, this.dir);
+        // Vec3.subtract(this.dir, newVec, this.pos);
+
+        Normalize(this.dir, this.dir);
+        // Vec3.normalize(this.dir, this.dir);
+
+        Cross(UP, this.dir, this.left);
+        // Vec3.cross(this.left, Vec3.fromValues(0, 1, 0), this.dir);
+
+        Normalize(this.left, this.left);
+        // Vec3.normalize(this.left, this.left);
+
+        Cross(this.dir, this.left, this.up);
+        // Vec3.cross(this.up, this.dir, this.left);
+
+        Normalize(this.up, this.up);
+        // Vec3.normalize(this.up, this.up);
     }
 
-    rotateOnAxis (axisVec: vec3, angle: number)
+    rotateOnAxis (axisVec: Vec3, angle: number)
     {
-        let q = quat.create();
+        let q = SetAxisAngle(axisVec, angle);
 
-        quat.setAxisAngle(q, axisVec, angle);
+        // let q = quat.create();
+        // quat.setAxisAngle(q, axisVec, angle);
 
-        vec3.transformQuat(this.dir, this.dir, q);
-        vec3.transformQuat(this.left, this.left, q);
-        vec3.transformQuat(this.up, this.up, q);
+        TransformQuat(this.dir, q, this.dir);
+        // Vec3.transformQuat(this.dir, this.dir, q);
 
-        vec3.normalize(this.up, this.up);
-        vec3.normalize(this.left, this.left);
-        vec3.normalize(this.dir, this.dir);
+        TransformQuat(this.left, q, this.left);
+        // Vec3.transformQuat(this.left, this.left, q);
+
+        TransformQuat(this.up, q, this.up);
+        // Vec3.transformQuat(this.up, this.up, q);
+
+        Normalize(this.up, this.up);
+        // Vec3.normalize(this.up, this.up);
+
+        Normalize(this.left, this.left);
+        // Vec3.normalize(this.left, this.left);
+
+        Normalize(this.dir, this.dir);
+        // Vec3.normalize(this.dir, this.dir);
     }
 
     yaw (angle: number)
@@ -149,30 +176,33 @@ export class Camera3D
 
     moveForward (s: number)
     {
-        let newPosition = [
-            this.pos[0] - s * this.dir[0],
-            this.pos[1] - s * this.dir[1],
-            this.pos[2] - s * this.dir[2]
-        ];
+        const x = this.pos.x - s * this.dir.x;
+        const y = this.pos.y - s * this.dir.y;
+        const z = this.pos.z - s * this.dir.z;
 
-        this.setPosition(newPosition);
+        const tempPos = new Vec3(x, y, z);
+
+        this.setPosition(tempPos);
     }
 
     refresh ()
     {
-        let matView = mat4.create();
-        let lookAtPosition = vec3.create();
+        // let matView = mat4.create();
 
-        vec3.add(lookAtPosition, this.pos, this.dir);
+        // let lookAtPosition = Vec3.create();
 
-        mat4.lookAt(matView, this.pos, lookAtPosition, this.up);
+        let lookAtPosition = Add(this.pos, this.dir);
+        // Vec3.add(lookAtPosition, this.pos, this.dir);
 
-        mat4.translate(matView, matView, vec3.fromValues(-this.pos[0], -this.pos[1], -this.pos[2]));
+        let matView = LookAt(this.pos, lookAtPosition, this.up);
+        // mat4.lookAt(matView, this.pos, lookAtPosition, this.up);
 
-        this.viewMatrix = matView;
+        TranslateFromFloats(matView, -this.pos.x, -this.pos.y, -this.pos.z, this.viewMatrix);
+        // mat4.translate(matView, matView, Vec3.fromValues(-this.pos[0], -this.pos[1], -this.pos[2]));
+        // this.viewMatrix = matView;
+        // this.projectionMatrix = mat4.create();
 
-        this.projectionMatrix = mat4.create();
-
-        mat4.perspective(this.projectionMatrix, GLMatrix.glMatrix.toRadian(this.fov), this.aspectRatio, this.near, this.far);
+        Perspective(DegToRad(this.fov), this.aspectRatio, this.near, this.far, this.projectionMatrix);
+        // mat4.perspective(this.projectionMatrix, GLMatrix.glMatrix.toRadian(this.fov), this.aspectRatio, this.near, this.far);
     }
 }
