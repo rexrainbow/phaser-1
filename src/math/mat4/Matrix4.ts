@@ -2,6 +2,25 @@ import { IMatrix4 } from './IMatrix4';
 
 //  4x4 Matrix in column-major format
 
+/**
+ * data[0] = m00
+ * data[1] = m01
+ * data[2] = m02
+ * data[3] = m03
+ * data[4] = m10
+ * data[5] = m11
+ * data[6] = m12
+ * data[7] = m13
+ * data[8] = m20
+ * data[9] = m21
+ * data[10] = m22
+ * data[11] = m23
+ * data[12] = m30
+ * data[13] = m31
+ * data[14] = m32
+ * data[15] = m33
+ */
+
 export class Matrix4 implements IMatrix4
 {
     data: Float32Array;
