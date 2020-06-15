@@ -5,7 +5,7 @@ import { Matrix4 } from './Matrix4';
 
 //  Creates a matrix from a quaternion rotation, vector translation and vector scale, rotating and scaling around the given origin
 
-export function FromRotationTranslationScale (q: IQuaternion, v: IVec3, s: IVec3, o: IVec3, out: IMatrix4 = new Matrix4()): IMatrix4
+export function FromRotationTranslationScaleOrigin (q: IQuaternion, v: IVec3, s: IVec3, o: IVec3, out: IMatrix4 = new Matrix4()): IMatrix4
 {
     // Quaternion math
     const { x, y, z, w } = q;
