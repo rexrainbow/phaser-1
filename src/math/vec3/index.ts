@@ -15,6 +15,7 @@ import { ClampScalar } from './ClampScalar';
 import { Clone } from './Clone';
 import { CopyFrom } from './CopyFrom';
 import { Cross } from './Cross';
+import { CrossNormalize } from './CrossNormalize';
 import { Distance } from './Distance';
 import { DistanceSquared } from './DistanceSquared';
 import { Divide } from './Divide';
@@ -79,6 +80,7 @@ export {
     Clone,
     CopyFrom,
     Cross,
+    CrossNormalize,
     Distance,
     DistanceSquared,
     Divide,
