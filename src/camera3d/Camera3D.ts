@@ -1,4 +1,4 @@
-import { Add, Cross, Forward, Left, Normalize, Subtract, TransformQuat, UP, Up, Vec3 } from '../math/vec3';
+import { Add, Cross, CrossNormalize, Forward, Left, Normalize, Subtract, TransformQuat, UP, Up, Vec3 } from '../math/vec3';
 import { LookAt, Matrix4, Perspective, TranslateFromFloats } from '../math/mat4';
 import { Quaternion, SetAxisAngle } from '../math/quaternion';
 
@@ -83,13 +83,8 @@ export class Camera3D
 
         Normalize(this.direction, this.direction);
 
-        Cross(UP, this.direction, this.left);
-
-        Normalize(this.left, this.left);
-
-        Cross(this.direction, this.left, this.up);
-
-        Normalize(this.up, this.up);
+        CrossNormalize(UP, this.direction, this.left);
+        CrossNormalize(this.direction, this.left, this.up);
 
         return this.update();
     }
