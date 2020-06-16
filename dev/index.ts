@@ -33,7 +33,8 @@
 // import runTest from './sphere';
 // import runTest from './cube batch';
 // import runTest from './phong';
+// import runTest from './textured cube';
 
-import runTest from './textured cube';
+import runTest from './new camera';
 
 runTest();
