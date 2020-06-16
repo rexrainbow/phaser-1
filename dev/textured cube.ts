@@ -7,7 +7,7 @@ import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
 import { BindTexture, Flush, PopFramebuffer, PopShader, PopVertexBuffer, SetFramebuffer, SetShader, SetTexture, SetVertexBuffer, UnbindTexture } from '../src/renderer/webgl1/renderpass';
 import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { EffectLayer, Layer, RenderLayer, Sprite } from '../src/gameobjects';
-import { Invert, Matrix4, Transpose } from '../src/math/mat4/';
+import { Invert, Matrix4, Transpose } from '../src/math/mat4';
 
 import { DrawTexturedQuad } from '../src/renderer/webgl1/draw/DrawTexturedQuad';
 import { FXShader } from '../src/renderer/webgl1/shaders/FXShader';
@@ -28,8 +28,8 @@ import { Shader } from '../src/renderer/webgl1/shaders/Shader';
 import { StaticWorld } from '../src/world/StaticWorld';
 import { Texture } from '../src/textures';
 import { TextureManagerInstance } from '../src/textures/TextureManagerInstance';
-import { Vec3 } from '../src/math/vec3/';
-import { Vec4 } from '../src/math/vec4/';
+import { Vec3 } from '../src/math/vec3';
+import { Vec4 } from '../src/math/vec4';
 import { VertexBuffer } from '../src/renderer/webgl1/buffers/VertexBuffer';
 
 // import * as mat4 from 'gl-matrix/mat4';
