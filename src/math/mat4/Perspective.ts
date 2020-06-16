@@ -6,12 +6,12 @@ import { Matrix4 } from './Matrix4';
 
 export function Perspective (fovY: number, aspect: number, near: number, far: number, out: IMatrix4 = new Matrix4()): IMatrix4
 {
-    const f = 1.0 / Math.tan(fovY / 2);
+    const f = 1 / Math.tan(fovY / 2);
 
     let m22 = -1;
     let m32 = -2 * near;
 
-    if (far != null && far !== Infinity)
+    if (far !== null && far !== Infinity)
     {
         const nf = 1 / (near - far);
         m22 = (far + near) * nf;
