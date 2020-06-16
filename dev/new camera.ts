@@ -379,15 +379,16 @@ class Demo extends Scene
 
                 if (this.leftKey.isDown)
                 {
-                    camera.yaw(0.05);
+                    // camera.yaw(0.05);
                     // camera.pitch(0.05);
-                    // camera.roll(0.05);
+                    camera.roll(0.05);
+
                 }
                 else if (this.rightKey.isDown)
                 {
-                    camera.yaw(-0.05);
+                    // camera.yaw(-0.05);
                     // camera.pitch(-0.05);
-                    // camera.roll(-0.05);
+                    camera.roll(-0.05);
                 }
 
                 if (this.upKey.isDown)
@@ -395,12 +396,14 @@ class Demo extends Scene
                     // camera.yaw(-0.05);
                     camera.forward(0.05);
                     // camera.moveIn(0.05);
+                    camera.lookAt(new Vec3(0, 1, 0));
                 }
                 else if (this.downKey.isDown)
                 {
                     // camera.yaw(0.05);
                     camera.forward(-0.05);
                     // camera.moveOut(0.05);
+                    camera.lookAt(new Vec3(0, 1, 0));
                 }
 
             });
