@@ -11,7 +11,6 @@ export class Camera3D
     dir: Vec3;
     pos: Vec3;
 
-    // projectionTransform: Matrix4;
     projectionMatrix: Matrix4;
     viewMatrix: Matrix4;
 
@@ -30,11 +29,6 @@ export class Camera3D
 
         this.projectionMatrix = new Matrix4();
         this.viewMatrix = new Matrix4();
-
-        // this.setPosition([ 0, 2, -3 ]);
-        // this.setLookAtPoint([ 0, 0, 0 ]);
-
-        // this.refresh();
     }
 
     getLeft (): Vec3
@@ -109,54 +103,34 @@ export class Camera3D
     setPosition (position: Vec3)
     {
         this.pos.set(position.x, position.y, position.z);
-        // this.pos = Vec3.fromValues(newVec[0], newVec[1], newVec[2]);
     }
 
     setLookAtPoint (newVec: Vec3)
     {
         Subtract(newVec, this.pos, this.dir);
-        // Vec3.subtract(this.dir, newVec, this.pos);
 
         Normalize(this.dir, this.dir);
-        // Vec3.normalize(this.dir, this.dir);
 
         Cross(UP, this.dir, this.left);
-        // Vec3.cross(this.left, Vec3.fromValues(0, 1, 0), this.dir);
 
         Normalize(this.left, this.left);
-        // Vec3.normalize(this.left, this.left);
 
         Cross(this.dir, this.left, this.up);
-        // Vec3.cross(this.up, this.dir, this.left);
 
         Normalize(this.up, this.up);
-        // Vec3.normalize(this.up, this.up);
     }
 
     rotateOnAxis (axisVec: Vec3, angle: number)
     {
         let q = SetAxisAngle(axisVec, angle);
 
-        // let q = quat.create();
-        // quat.setAxisAngle(q, axisVec, angle);
-
         TransformQuat(this.dir, q, this.dir);
-        // Vec3.transformQuat(this.dir, this.dir, q);
-
         TransformQuat(this.left, q, this.left);
-        // Vec3.transformQuat(this.left, this.left, q);
-
         TransformQuat(this.up, q, this.up);
-        // Vec3.transformQuat(this.up, this.up, q);
 
         Normalize(this.up, this.up);
-        // Vec3.normalize(this.up, this.up);
-
         Normalize(this.left, this.left);
-        // Vec3.normalize(this.left, this.left);
-
         Normalize(this.dir, this.dir);
-        // Vec3.normalize(this.dir, this.dir);
     }
 
     yaw (angle: number)
@@ -187,22 +161,12 @@ export class Camera3D
 
     refresh ()
     {
-        // let matView = mat4.create();
-
-        // let lookAtPosition = Vec3.create();
-
         let lookAtPosition = Add(this.pos, this.dir);
-        // Vec3.add(lookAtPosition, this.pos, this.dir);
 
         let matView = LookAt(this.pos, lookAtPosition, this.up);
-        // mat4.lookAt(matView, this.pos, lookAtPosition, this.up);
 
         TranslateFromFloats(matView, -this.pos.x, -this.pos.y, -this.pos.z, this.viewMatrix);
-        // mat4.translate(matView, matView, Vec3.fromValues(-this.pos[0], -this.pos[1], -this.pos[2]));
-        // this.viewMatrix = matView;
-        // this.projectionMatrix = mat4.create();
 
         Perspective(DegToRad(this.fov), this.aspectRatio, this.near, this.far, this.projectionMatrix);
-        // mat4.perspective(this.projectionMatrix, GLMatrix.glMatrix.toRadian(this.fov), this.aspectRatio, this.near, this.far);
     }
 }
