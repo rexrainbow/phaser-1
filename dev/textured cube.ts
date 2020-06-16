@@ -1,5 +1,3 @@
-// import * as GLMatrix from 'gl-matrix';
-
 import * as GL_CONST from '../src/renderer/webgl1/GL_CONST';
 
 import { AddChild, AddChildren } from '../src/display';
@@ -7,10 +5,9 @@ import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
 import { BindTexture, Flush, PopFramebuffer, PopShader, PopVertexBuffer, SetFramebuffer, SetShader, SetTexture, SetVertexBuffer, UnbindTexture } from '../src/renderer/webgl1/renderpass';
 import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { EffectLayer, Layer, RenderLayer, Sprite } from '../src/gameobjects';
-import { Invert, Matrix4, Transpose } from '../src/math/mat4';
+import { Invert, Matrix4, Perspective, Transpose } from '../src/math/mat4';
 
 import { DrawTexturedQuad } from '../src/renderer/webgl1/draw/DrawTexturedQuad';
-import { FXShader } from '../src/renderer/webgl1/shaders/FXShader';
 import { Face } from './Face2';
 import { Game } from '../src/Game';
 import { IRenderPass } from '../src/renderer/webgl1/renderpass/IRenderPass';
@@ -28,14 +25,7 @@ import { Shader } from '../src/renderer/webgl1/shaders/Shader';
 import { StaticWorld } from '../src/world/StaticWorld';
 import { Texture } from '../src/textures';
 import { TextureManagerInstance } from '../src/textures/TextureManagerInstance';
-import { Vec3 } from '../src/math/vec3';
-import { Vec4 } from '../src/math/vec4';
 import { VertexBuffer } from '../src/renderer/webgl1/buffers/VertexBuffer';
-
-// import * as mat4 from 'gl-matrix/mat4';
-// import * as quat from 'gl-matrix/quat';
-// import * as vec3 from 'gl-matrix/vec3';
-// import * as vec4 from 'gl-matrix/vec4';
 
 function buildPlane (vertices, normals, uvs, indices, numberOfVertices, u, v, w, udir, vdir, width, height, depth, gridX, gridY): number
 {
@@ -51,7 +41,7 @@ function buildPlane (vertices, normals, uvs, indices, numberOfVertices, u, v, w,
 
     let vertexCounter = 0;
 
-    // const vector = new Vec3();
+    const vector = [];
 
     // generate vertices, normals and uvs
 
@@ -65,19 +55,21 @@ function buildPlane (vertices, normals, uvs, indices, numberOfVertices, u, v, w,
 
             // set values to correct vector component
 
-            // vector.set(
-            //     x * udir,
-            //     y * vdir,
-            //     depthHalf
-            // );
+            vector[ u ] = x * udir;
+            vector[ v ] = y * vdir;
+            vector[ w ] = depthHalf;
 
             // now apply vector to vertex buffer
-            vertices.push(x * udir, y * vdir, depthHalf);
+            vertices.push(vector[0], vector[1], vector[2]);
 
             // set values to correct vector component
 
+            vector[ u ] = 0;
+            vector[ v ] = 0;
+            vector[ w ] = depth > 0 ? 1 : - 1;
+
             // now apply vector to normal buffer
-            normals.push(0, 0, depth > 0 ? 1 : - 1);
+            normals.push(vector[0], vector[1], vector[2]);
 
             // uvs
 
@@ -152,11 +144,11 @@ class Cube extends RenderLayer3D
         let numberOfVertices = 0;
 
 		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 2, 1, 0, -1, -1, depth, height, width, depthSegments, heightSegments); // px
-		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 2, 1, 0, 1, -1, depth, height, - width, depthSegments, heightSegments); // nx
+		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 2, 1, 0, 1, -1, depth, height, -width, depthSegments, heightSegments); // nx
 		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 2, 1, 1, 1, width, depth, height, widthSegments, depthSegments); // py
-		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 2, 1, 1, -1, width, depth, - height, widthSegments, depthSegments); // ny
+		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 2, 1, 1, -1, width, depth, -height, widthSegments, depthSegments); // ny
 		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 1, 2, 1, -1, width, height, depth, widthSegments, heightSegments); // pz
-        numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 1, 2, -1, -1, width, height, - depth, widthSegments, heightSegments); // nz
+        numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 1, 2, -1, -1, width, height, -depth, widthSegments, heightSegments); // nz
 
         function getVert (verts, index): number[]
         {
@@ -185,11 +177,9 @@ class Cube extends RenderLayer3D
         }
 
         console.log(verts);
-        // console.log(normals);
+        console.log(normals);
         console.log(uvs);
         console.log(indices);
-
-        // let b = 0;
 
         for (let i = 0; i < indices.length; i += 3)
         {
@@ -209,24 +199,6 @@ class Cube extends RenderLayer3D
             const uv2 = getUV(uvs, i2);
             const uv3 = getUV(uvs, i3);
 
-            // 0.0,  0.0,
-            // 1.0,  0.0,
-            // 1.0,  1.0,
-            // 0.0,  1.0,
-
-            // let uv1 = [ 1, 1 ];
-            // let uv2 = [ 0, 0 ];
-            // let uv3 = [ 0, 1 ];
-
-            // if (b === 1)
-            // {
-            //     uv1 = [ 1, 1 ];
-            //     uv2 = [ 1, 0 ];
-            //     uv3 = [ 0, 0 ];
-            // }
-
-            // b++;
-
             const f = new Face(
                 { x: v1[0], y: v1[1], z: v1[2] },
                 { x: v2[0], y: v2[1], z: v2[2] },
@@ -241,11 +213,6 @@ class Cube extends RenderLayer3D
             );
 
             this.faces.push(f);
-
-            // if (b === 2)
-            // {
-            //     b = 0;
-            // }
         }
 
         console.log(this.faces);
@@ -257,7 +224,6 @@ class Cube extends RenderLayer3D
         const gl = renderPass.renderer.gl;
 
         Flush(renderPass);
-
 
         // console.log(textureIndex);
 
@@ -284,12 +250,12 @@ class Cube extends RenderLayer3D
         });
 
         gl.enable(gl.DEPTH_TEST);
-        // gl.enable(gl.CULL_FACE);
+        gl.enable(gl.CULL_FACE);
 
         Flush(renderPass);
 
         gl.disable(gl.DEPTH_TEST);
-        // gl.disable(gl.CULL_FACE);
+        gl.disable(gl.CULL_FACE);
 
         UnbindTexture(renderPass);
 
@@ -303,7 +269,6 @@ class Cube extends RenderLayer3D
 
 class TestShader extends Shader
 {
-    // camera: Camera3D;
     camera: OrbitCamera;
     normalMatrix: Matrix4;
 
@@ -325,19 +290,18 @@ class TestShader extends Shader
 
                 uTexture: 0,
                 uShininess: 10.10,
-                uLightDirection: new Vec3(0, -1, 1),
+                uLightDirection: [ 0, -1, 1 ],
 
-                uLightAmbient: new Vec4(0.75, 0.75, 0.75, 1),
-                uLightDiffuse: new Vec4(0.5, 0.5, 0.5, 1),
-                uLightSpecular: new Vec4(0.4, 0.4, 0.4, 1),
+                uLightAmbient: [ 0.75, 0.75, 0.75, 1 ],
+                uLightDiffuse: [ 0.5, 0.5, 0.5, 1 ],
+                uLightSpecular: [ 0.4, 0.4, 0.4, 1 ],
 
-                uMaterialAmbient: new Vec4(0.2, 0.2, 0.2, 1),
-                uMaterialDiffuse: new Vec4(0.2, 0.2, 0.2, 1),
-                uMaterialSpecular: new Vec4(0.91, 0.91, 0.91, 1)
+                uMaterialAmbient: [ 0.2, 0.2, 0.2, 1 ],
+                uMaterialDiffuse: [ 0.2, 0.2, 0.2, 1 ],
+                uMaterialSpecular: [ 0.91, 0.91, 0.91, 1 ]
             }
         });
 
-        // this.camera = new Camera3D();
         this.camera = new OrbitCamera();
 
         this.camera.setFarthestDistance(100);
@@ -354,18 +318,15 @@ class TestShader extends Shader
 
         const uniforms = this.uniforms;
 
-        uniforms.set('uProjectionMatrix', this.camera.projectionMatrix);
-        uniforms.set('uCameraMatrix', this.camera.viewMatrix);
+        uniforms.set('uProjectionMatrix', this.camera.projectionMatrix.data);
+        uniforms.set('uCameraMatrix', this.camera.viewMatrix.data);
 
         const normalMatrix = this.normalMatrix;
 
         Invert(this.camera.viewMatrix, normalMatrix);
         Transpose(normalMatrix, normalMatrix);
 
-        // mat4.invert(normalMatrix, this.camera.viewMatrix);
-        // mat4.transpose(normalMatrix, normalMatrix);
-
-        uniforms.set('uNormalMatrix', normalMatrix);
+        uniforms.set('uNormalMatrix', normalMatrix.data);
     }
 }
 
@@ -417,7 +378,7 @@ class Demo extends Scene
 
             AddChildren(world, bg, cube, logo);
 
-            // camera.setPosition()
+            // camera.setPosition(new Vec3(0, 0, -2));
 
             On(this, 'update', (delta, time) => {
 
