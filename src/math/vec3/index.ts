@@ -62,6 +62,7 @@ import { TransformMat4 } from './TransformMat4';
 import { TransformQuat } from './TransformQuat';
 import { Up } from './Up';
 import { Vec3 } from './Vec3';
+import { Vec3Callback } from './Vec3Callback';
 import { Zero } from './Zero';
 
 export {
@@ -127,6 +128,7 @@ export {
     TransformQuat,
     Up,
     Vec3,
+    Vec3Callback,
     Zero,
 
     BACKWARD,
