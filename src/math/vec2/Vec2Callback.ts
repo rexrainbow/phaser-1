@@ -47,7 +47,7 @@ export class Vec2Callback
 
     set y (value: number)
     {
-        if (!this.compareValue || (this.compareValue && value !== this._x))
+        if (!this.compareValue || (this.compareValue && value !== this._y))
         {
             this._y = value;
 
