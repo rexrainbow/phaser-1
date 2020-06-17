@@ -4,7 +4,6 @@ import { DeleteFramebuffer } from './fbo/DeleteFramebuffer';
 import { DeleteGLBuffer } from './buffers/DeleteGLBuffer';
 import { DeleteGLTexture } from './textures/DeleteGLTexture';
 import { GL } from './GL';
-import { Ortho } from './cameras/Ortho';
 import { PackColor } from './colors/PackColor';
 import { PackColors } from './colors/PackColors';
 import { SetGLTextureFilterMode } from './textures/SetGLTextureFilterMode';
@@ -19,7 +18,6 @@ export {
     DeleteGLBuffer,
     DeleteGLTexture,
     GL,
-    Ortho,
     PackColor,
     PackColors,
     SetGLTextureFilterMode,
