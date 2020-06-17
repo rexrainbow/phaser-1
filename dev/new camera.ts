@@ -1,16 +1,18 @@
 import * as GL_CONST from '../src/renderer/webgl1/GL_CONST';
 
+import { AKey, DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { AddChild, AddChildren } from '../src/display';
 import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
 import { BindTexture, Flush, PopFramebuffer, PopShader, PopVertexBuffer, SetFramebuffer, SetShader, SetTexture, SetVertexBuffer, UnbindTexture } from '../src/renderer/webgl1/renderpass';
-import { DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { EffectLayer, Layer, RenderLayer, Sprite } from '../src/gameobjects';
 import { Invert, Matrix4, Perspective, Transpose } from '../src/math/mat4';
 
+import { Box } from '../src/primitives/Box';
 import { Camera3D } from '../src/camera3d/Camera3D';
 import { DrawTexturedQuad } from '../src/renderer/webgl1/draw/DrawTexturedQuad';
-import { Face } from './Face2';
 import { Game } from '../src/Game';
+import { GetFacesFromVertexSet } from '../src/primitives/faces/GetFacesFromVertexSet';
+import { IFace } from '../src/primitives/faces/IFace';
 import { IRenderPass } from '../src/renderer/webgl1/renderpass/IRenderPass';
 import { IShader } from '../src/renderer/webgl1/shaders/IShader';
 import { ImageFile } from '../src/loader/files/ImageFile';
@@ -22,100 +24,17 @@ import { On } from '../src/events';
 import { RenderLayer3D } from '../src/gameobjects3d/renderlayer3d/RenderLayer3D';
 import { Scene } from '../src/scenes/Scene';
 import { Shader } from '../src/renderer/webgl1/shaders/Shader';
+import { Sphere } from '../src/primitives/Sphere';
 import { StaticWorld } from '../src/world/StaticWorld';
 import { Texture } from '../src/textures';
 import { TextureManagerInstance } from '../src/textures/TextureManagerInstance';
 import { Vec3 } from '../src/math/vec3';
 import { VertexBuffer } from '../src/renderer/webgl1/buffers/VertexBuffer';
 
-function buildPlane (vertices, normals, uvs, indices, numberOfVertices, u, v, w, udir, vdir, width, height, depth, gridX, gridY): number
-{
-    const segmentWidth = width / gridX;
-    const segmentHeight = height / gridY;
-
-    const widthHalf = width / 2;
-    const heightHalf = height / 2;
-    const depthHalf = depth / 2;
-
-    const gridX1 = gridX + 1;
-    const gridY1 = gridY + 1;
-
-    let vertexCounter = 0;
-
-    const vector = [];
-
-    // generate vertices, normals and uvs
-
-    for (let iy = 0; iy < gridY1; iy++)
-    {
-        const y = iy * segmentHeight - heightHalf;
-
-        for (let ix = 0; ix < gridX1; ix++)
-        {
-            const x = ix * segmentWidth - widthHalf;
-
-            // set values to correct vector component
-
-            vector[ u ] = x * udir;
-            vector[ v ] = y * vdir;
-            vector[ w ] = depthHalf;
-
-            // now apply vector to vertex buffer
-            vertices.push(vector[0], vector[1], vector[2]);
-
-            // set values to correct vector component
-
-            vector[ u ] = 0;
-            vector[ v ] = 0;
-            vector[ w ] = depth > 0 ? 1 : - 1;
-
-            // now apply vector to normal buffer
-            normals.push(vector[0], vector[1], vector[2]);
-
-            // uvs
-
-            uvs.push(ix / gridX);
-            uvs.push(1 - ( iy / gridY ));
-
-            // counters
-
-            vertexCounter += 1;
-        }
-    }
-
-    // indices
-
-    // 1. you need three indices to draw a single face
-    // 2. a single segment consists of two faces
-    // 3. so we need to generate six (2*3) indices per segment
-
-    for (let iy = 0; iy < gridY; iy++)
-    {
-        for (let ix = 0; ix < gridX; ix++)
-        {
-            const a = numberOfVertices + ix + gridX1 * iy;
-            const b = numberOfVertices + ix + gridX1 * ( iy + 1 );
-            const c = numberOfVertices + ( ix + 1 ) + gridX1 * ( iy + 1 );
-            const d = numberOfVertices + ( ix + 1 ) + gridX1 * iy;
-
-            // faces
-
-            indices.push(a, b, d);
-            indices.push(b, c, d);
-        }
-    }
-
-    // update total number of vertices
-
-    numberOfVertices += vertexCounter;
-
-    return numberOfVertices;
-}
-
 class Cube extends RenderLayer3D
 {
     shader: IShader;
-    faces: Face[] = [];
+    faces: IFace[] = [];
     buffer: VertexBuffer;
     cubeTexture: Texture;
 
@@ -129,92 +48,10 @@ class Cube extends RenderLayer3D
 
         this.shader = shader;
 
-        const verts = [];
-		const normals = [];
-        const uvs = [];
-        const indices = [];
+        // const data = Box(2, 2, 2);
+        const data = Sphere(2, 8, 8);
 
-        const width = 2;
-        const height = 2;
-        const depth = 2;
-
-        const widthSegments = 1;
-        const heightSegments = 1;
-        const depthSegments = 1;
-
-        let numberOfVertices = 0;
-
-		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 2, 1, 0, -1, -1, depth, height, width, depthSegments, heightSegments); // px
-		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 2, 1, 0, 1, -1, depth, height, -width, depthSegments, heightSegments); // nx
-		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 2, 1, 1, 1, width, depth, height, widthSegments, depthSegments); // py
-		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 2, 1, 1, -1, width, depth, -height, widthSegments, depthSegments); // ny
-		numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 1, 2, 1, -1, width, height, depth, widthSegments, heightSegments); // pz
-        numberOfVertices = buildPlane(verts, normals, uvs, indices, numberOfVertices, 0, 1, 2, -1, -1, width, height, -depth, widthSegments, heightSegments); // nz
-
-        function getVert (verts, index): number[]
-        {
-            const x = verts[ (index * 3) + 0 ];
-            const y = verts[ (index * 3) + 1 ];
-            const z = verts[ (index * 3) + 2 ];
-
-            return [ x, y, z ];
-        }
-
-        function getNormal (normals, index): number[]
-        {
-            const x = normals[ (index * 3) + 0 ];
-            const y = normals[ (index * 3) + 1 ];
-            const z = normals[ (index * 3) + 2 ];
-
-            return [ x, y, z ];
-        }
-
-        function getUV (uvs, index): number[]
-        {
-            const x = uvs[ (index * 2) + 0 ];
-            const y = uvs[ (index * 2) + 1 ];
-
-            return [ x, y ];
-        }
-
-        console.log(verts);
-        console.log(normals);
-        console.log(uvs);
-        console.log(indices);
-
-        for (let i = 0; i < indices.length; i += 3)
-        {
-            const i1 = indices[i + 0];
-            const i2 = indices[i + 1];
-            const i3 = indices[i + 2];
-
-            const v1 = getVert(verts, i1);
-            const v2 = getVert(verts, i2);
-            const v3 = getVert(verts, i3);
-
-            const n1 = getNormal(normals, i1);
-            const n2 = getNormal(normals, i2);
-            const n3 = getNormal(normals, i3);
-
-            const uv1 = getUV(uvs, i1);
-            const uv2 = getUV(uvs, i2);
-            const uv3 = getUV(uvs, i3);
-
-            const f = new Face(
-                { x: v1[0], y: v1[1], z: v1[2] },
-                { x: v2[0], y: v2[1], z: v2[2] },
-                { x: v3[0], y: v3[1], z: v3[2] },
-                { x: n1[0], y: n1[1], z: n1[2] },
-                { x: n2[0], y: n2[1], z: n2[2] },
-                { x: n3[0], y: n3[1], z: n3[2] },
-                { x: uv1[0], y: uv1[1] },
-                { x: uv2[0], y: uv2[1] },
-                { x: uv3[0], y: uv3[1] },
-                1
-            );
-
-            this.faces.push(f);
-        }
+        this.faces = GetFacesFromVertexSet(data);
 
         console.log(this.faces);
     }
@@ -303,9 +140,9 @@ class TestShader extends Shader
             }
         });
 
-        this.camera = new Camera3D(40, 0, 1, -4);
+        this.camera = new Camera3D(0, 0, 4);
 
-        this.camera.lookAt(new Vec3(0, 1, 0));
+        // this.camera.lookAt(new Vec3(0, 1, 0));
 
         this.uniforms.set('uProjectionMatrix', this.camera.projectionMatrix.data);
 
@@ -333,6 +170,7 @@ class Demo extends Scene
     rightKey: RightKey;
     upKey: UpKey;
     downKey: DownKey;
+    aKey: AKey;
 
     constructor ()
     {
@@ -363,8 +201,24 @@ class Demo extends Scene
             this.rightKey = new RightKey();
             this.upKey = new UpKey();
             this.downKey = new DownKey();
+            this.aKey = new AKey();
 
-            keyboard.addKeys(this.leftKey, this.rightKey, this.upKey, this.downKey);
+            keyboard.addKeys(this.leftKey, this.rightKey, this.upKey, this.downKey, this.aKey);
+
+            let camMode = 0;
+
+            On(this.aKey, 'keydown', () => {
+
+                camMode++;
+
+                if (camMode === 3)
+                {
+                    camMode = 0;
+                }
+
+                console.log('cam mode: ' + camMode);
+
+            });
 
             const shader = new TestShader();
             const camera = shader.camera;
@@ -373,39 +227,73 @@ class Demo extends Scene
             const cube = new Cube(shader);
             const logo = new Sprite(400, 300, 'logo');
 
+            logo.alpha = 0.3;
+
             AddChildren(world, bg, cube, logo);
 
             On(this, 'update', (delta, time) => {
 
                 if (this.leftKey.isDown)
                 {
-                    // camera.yaw(0.05);
-                    // camera.pitch(0.05);
-                    camera.roll(0.05);
-
+                    if (camMode === 0)
+                    {
+                        camera.position.x += 0.05;
+                    }
+                    else if (camMode === 1)
+                    {
+                        camera.direction.x += 0.05;
+                    }
+                    else
+                    {
+                        camera.pitch(0.05);
+                    }
                 }
                 else if (this.rightKey.isDown)
                 {
-                    // camera.yaw(-0.05);
-                    // camera.pitch(-0.05);
-                    camera.roll(-0.05);
+                    if (camMode === 0)
+                    {
+                        camera.position.x -= 0.05;
+                    }
+                    else if (camMode === 1)
+                    {
+                        camera.direction.x -= 0.05;
+                    }
+                    else
+                    {
+                        camera.pitch(-0.05);
+                    }
                 }
 
                 if (this.upKey.isDown)
                 {
-                    // camera.yaw(-0.05);
-                    camera.forward(0.05);
-                    // camera.moveIn(0.05);
-                    camera.lookAt(new Vec3(0, 1, 0));
+                    if (camMode === 0)
+                    {
+                        camera.position.z -= 0.05;
+                    }
+                    else if (camMode === 1)
+                    {
+                        camera.direction.z -= 0.05;
+                    }
+                    else
+                    {
+                        camera.forward(0.05);
+                    }
                 }
                 else if (this.downKey.isDown)
                 {
-                    // camera.yaw(0.05);
-                    camera.forward(-0.05);
-                    // camera.moveOut(0.05);
-                    camera.lookAt(new Vec3(0, 1, 0));
+                    if (camMode === 0)
+                    {
+                        camera.position.z += 0.05;
+                    }
+                    else if (camMode === 1)
+                    {
+                        camera.direction.z += 0.05;
+                    }
+                    else
+                    {
+                        camera.forward(-0.05);
+                    }
                 }
-
             });
         });
     }
