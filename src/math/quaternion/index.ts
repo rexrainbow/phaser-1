@@ -17,6 +17,7 @@ import { Multiply } from './Multiply';
 import { MultiplyByFloats } from './MultiplyByFloats';
 import { Normalize } from './Normalize';
 import { Quaternion } from './Quaternion';
+import { QuaternionCallback } from './QuaternionCallback';
 import { RotateTowards } from './RotateTowards';
 import { RotateX } from './RotateX';
 import { RotateY } from './RotateY';
@@ -50,6 +51,7 @@ export {
     MultiplyByFloats,
     Normalize,
     Quaternion,
+    QuaternionCallback,
     RotateTowards,
     RotateX,
     RotateY,
