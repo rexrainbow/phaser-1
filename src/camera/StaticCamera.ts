@@ -1,14 +1,16 @@
 import { GameInstance } from '../GameInstance';
+import { IMatrix4 } from '../math/mat4/IMatrix4';
 import { IRenderer } from '../renderer/IRenderer';
 import { IStaticCamera } from './IStaticCamera';
 import { IStaticWorld } from '../world/IStaticWorld';
+import { Identity } from '../math/mat4';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
 import { Rectangle } from '../geom/rectangle/Rectangle';
 
 export class StaticCamera implements IStaticCamera
 {
     world: IStaticWorld;
-    matrix: Float32Array;
+    matrix: IMatrix4;
     renderer: IRenderer;
     type: string;
 
@@ -29,7 +31,7 @@ export class StaticCamera implements IStaticCamera
 
         this.renderer = game.renderer;
 
-        this.matrix = new Float32Array([ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ]);
+        this.matrix = Identity();
 
         this.bounds = new Rectangle();
 

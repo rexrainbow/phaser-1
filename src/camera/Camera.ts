@@ -1,7 +1,9 @@
 import { GameInstance } from '../GameInstance';
 import { ICamera } from './ICamera';
+import { IMatrix4 } from '../math/mat4/IMatrix4';
 import { IRenderer } from '../renderer/IRenderer';
 import { IWorld } from '../world/IWorld';
+import { Identity } from '../math/mat4';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
 import { Rectangle } from '../geom/rectangle/Rectangle';
 import { Vec2Callback } from '../math/vec2/Vec2Callback';
@@ -10,7 +12,7 @@ import { WrapAngle } from '../math/angle';
 export class Camera implements ICamera
 {
     world: IWorld;
-    matrix: Float32Array;
+    matrix: IMatrix4;
     renderer: IRenderer;
     type: string;
 
@@ -37,8 +39,7 @@ export class Camera implements ICamera
 
         this.renderer = game.renderer;
 
-        //  TODO - Swap for Mat4 Identity when ready
-        this.matrix = new Float32Array([ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]);
+        this.matrix = Identity();
 
         this.bounds = new Rectangle();
 
@@ -53,7 +54,7 @@ export class Camera implements ICamera
 
     updateTransform (): void
     {
-        const matrix = this.matrix;
+        const matrix = this.matrix.data;
 
         const px = this.position.x;
         const py = this.position.y;
@@ -101,8 +102,6 @@ export class Camera implements ICamera
             bw,
             bh
         );
-
-        // console.log('b', this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height);
 
         this.dirtyRender = true;
     }
