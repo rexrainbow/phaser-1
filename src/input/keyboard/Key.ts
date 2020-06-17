@@ -1,9 +1,13 @@
+import { Emit } from '../../events';
+import { IEventInstance } from '../../events/IEventInstance';
 import { IKey } from './IKey';
 
 export class Key implements IKey
 {
     //  The KeyEvent.key identifier
     readonly value: string;
+
+    events: Map<string, Set<IEventInstance>>;
 
     //  Will it invoke preventDefault?
     capture: boolean = true;
@@ -39,6 +43,7 @@ export class Key implements IKey
     constructor (value: string)
     {
         this.value = value;
+        this.events = new Map();
     }
 
     getValue (): string
@@ -69,9 +74,14 @@ export class Key implements IKey
             const delay = this.timeUpdated - this.timeDown;
 
             //  Key is repeating
-            if (this.downCallback && delay >= this.repeatRate)
+            if (delay >= this.repeatRate)
             {
-                this.downCallback(this);
+                Emit(this, 'keydown', this);
+
+                if (this.downCallback)
+                {
+                    this.downCallback(this);
+                }
             }
         }
         else
@@ -81,6 +91,8 @@ export class Key implements IKey
 
             this.timeDown = event.timeStamp;
             this.timeUpdated = event.timeStamp;
+
+            Emit(this, 'keydown', this);
 
             if (this.downCallback)
             {
@@ -112,6 +124,8 @@ export class Key implements IKey
             this.timeUp = event.timeStamp;
             this.timeUpdated = event.timeStamp;
 
+            Emit(this, 'keyup', this);
+
             if (this.upCallback)
             {
                 this.upCallback(this);
@@ -130,5 +144,7 @@ export class Key implements IKey
     {
         this.downCallback = null;
         this.upCallback = null;
+
+        this.events.clear();
     }
 }
