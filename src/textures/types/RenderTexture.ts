@@ -1,7 +1,6 @@
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';
 import { GLTextureBinding } from '../../renderer/webgl1/textures/GLTextureBinding';
 import { ISprite } from '../../gameobjects/sprite/ISprite';
-import { Ortho } from '../../renderer/webgl1/cameras/Ortho';
 import { Texture } from '../Texture';
 import { WebGLRenderer } from '../../renderer/webgl1/WebGLRenderer';
 import { gl } from '../../renderer/webgl1/GL';
@@ -33,7 +32,7 @@ export class RenderTexture extends Texture
 
     cls (): this
     {
-        const renderer = this.renderer;
+        // const renderer = this.renderer;
 
         // renderer.reset(this.binding.framebuffer, this.width, this.height);
         // gl.clearColor(0, 0, 0, 0);
@@ -56,7 +55,7 @@ export class RenderTexture extends Texture
 
     batchDraw (sprites: ISprite[]): this
     {
-        const renderer = this.renderer;
+        // const renderer = this.renderer;
 
         for (let i = 0, len = sprites.length; i < len; i++)
         {
