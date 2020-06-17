@@ -1,6 +1,6 @@
-import { Add, Cross, CrossNormalize, Forward, Left, Normalize, Subtract, TransformQuat, UP, Up, Vec3 } from '../math/vec3';
+import { Add, Cross, CrossNormalize, Forward, Left, Normalize, Subtract, TransformQuat, UP, Up, Vec3, Vec3Callback } from '../math/vec3';
 import { LookAt, Matrix4, Perspective, TranslateFromFloats } from '../math/mat4';
-import { Quaternion, SetAxisAngle } from '../math/quaternion';
+import { Quaternion, QuaternionCallback, SetAxisAngle } from '../math/quaternion';
 
 import { DegToRad } from '../math';
 import { GameInstance } from '../GameInstance';
@@ -12,19 +12,12 @@ export class Camera3D
     type: string;
     renderer: IRenderer;
 
-    position: Vec3;
-    direction: Vec3;
-    axis: Quaternion;
-
-    private lookAtPosition: Vec3;
-    private lookAtView: Matrix4;
+    position: Vec3Callback;
+    direction: Vec3Callback;
+    rotation: QuaternionCallback;
 
     up: Vec3;
     left: Vec3;
-
-    fov: number;
-    near: number;
-    far: number;
 
     aspectRatio: number;
 
@@ -33,7 +26,14 @@ export class Camera3D
     viewMatrix: Matrix4;
     projectionMatrix: Matrix4;
 
-    constructor (fov: number = 40, x: number = 0, y: number = 0, z: number = 0, near: number = 1, far: number = 10000)
+    private _lookAtPosition: Vec3;
+    private _lookAtView: Matrix4;
+
+    private _fov: number;
+    private _near: number;
+    private _far: number;
+
+    constructor (x: number = 0, y: number = 0, z: number = 0, fov: number = 45, near: number = 0.1, far: number = 1000)
     {
         this.type = 'Camera3D';
 
@@ -41,27 +41,66 @@ export class Camera3D
 
         this.renderer = game.renderer;
 
-        this.position = new Vec3(x, y, z);
-        this.direction = Forward();
-        this.axis = new Quaternion();
+        this.position = new Vec3Callback(() => this.update(), x, y, z, true);
+        this.direction = new Vec3Callback(() => this.update(), 0, 1, 0, true);
+        this.rotation = new QuaternionCallback(() => this.updateRotation(), 0, 0, 0, 1, true);
 
-        this.lookAtPosition = new Vec3();
-        this.lookAtView = new Matrix4();
+        this._lookAtPosition = new Vec3();
+        this._lookAtView = new Matrix4();
 
         this.up = Up();
         this.left = Left();
 
-        this.fov = fov;
-        this.near = near;
-        this.far = far;
+        this._fov = fov;
+        this._near = near;
+        this._far = far;
         this.aspectRatio = this.renderer.width / this.renderer.height;
 
         this.viewMatrix = new Matrix4();
         this.projectionMatrix = Perspective(DegToRad(fov), this.aspectRatio, near, far);
 
-        this.update();
+        this.lookAt(new Vec3());
     }
 
+    updateProjectionMatrix (): this
+    {
+        Perspective(DegToRad(this._fov), this.aspectRatio, this._near, this._far, this.projectionMatrix);
+
+        return this;
+    }
+
+    lookAt (point: IVec3): this
+    {
+        const pos = this.position;
+        const dir = this.direction;
+        const left = this.left;
+
+        Subtract(point, pos, dir);
+
+        Normalize(dir, dir);
+
+        CrossNormalize(UP, dir, left);
+        CrossNormalize(dir, left, this.up);
+
+        return this.update();
+    }
+
+    updateRotation (): this
+    {
+        const q = this.rotation;
+
+        TransformQuat(this.direction, q, this.direction);
+        TransformQuat(this.left, q, this.left);
+        TransformQuat(this.up, q, this.up);
+
+        Normalize(this.up, this.up);
+        Normalize(this.left, this.left);
+        Normalize(this.direction, this.direction);
+
+        return this.update();
+    }
+
+    /*
     rotateOnAxis (axisVec: Vec3, angle: number): this
     {
         const q = SetAxisAngle(axisVec, angle, this.axis);
@@ -119,15 +158,66 @@ export class Camera3D
 
         return this.update();
     }
+    */
 
     update (): this
     {
-        Add(this.position, this.direction, this.lookAtPosition);
+        const lookPosition = this._lookAtPosition;
+        const lookView = this._lookAtView;
+        const pos = this.position;
 
-        LookAt(this.position, this.lookAtPosition, this.up, this.lookAtView);
+        Add(pos, this.direction, lookPosition);
 
-        TranslateFromFloats(this.lookAtView, -this.position.x, -this.position.y, -this.position.z, this.viewMatrix);
+        LookAt(pos, lookPosition, this.up, lookView);
+
+        TranslateFromFloats(lookView, -pos.x, -pos.y, -pos.z, this.viewMatrix);
 
         return this;
     }
+
+    get fov (): number
+    {
+        return this._fov;
+    }
+
+    set fov (value: number)
+    {
+        if (value > 0 && value < 180)
+        {
+            this._fov = value;
+
+            this.updateProjectionMatrix();
+        }
+    }
+
+    get near (): number
+    {
+        return this._near;
+    }
+
+    set near (value: number)
+    {
+        if (value > 0)
+        {
+            this._near = value;
+
+            this.updateProjectionMatrix();
+        }
+    }
+
+    get far (): number
+    {
+        return this._far;
+    }
+
+    set far (value: number)
+    {
+        if (value > 0)
+        {
+            this._far = value;
+
+            this.updateProjectionMatrix();
+        }
+    }
+
 }
