@@ -1,6 +1,6 @@
-import { Add, Cross, CrossNormalize, Forward, Left, Normalize, Subtract, TransformQuat, UP, Up, Vec3, Vec3Callback } from '../math/vec3';
+import { Add, CrossNormalize, Left, Normalize, Subtract, TransformQuat, UP, Up, Vec3, Vec3Callback } from '../math/vec3';
 import { LookAt, Matrix4, Perspective, TranslateFromFloats } from '../math/mat4';
-import { Quaternion, QuaternionCallback, SetAxisAngle } from '../math/quaternion';
+import { Quaternion, SetAxisAngle } from '../math/quaternion';
 
 import { DegToRad } from '../math';
 import { GameInstance } from '../GameInstance';
@@ -14,7 +14,7 @@ export class Camera3D
 
     position: Vec3Callback;
     direction: Vec3Callback;
-    rotation: QuaternionCallback;
+    // rotation: Vec3Callback;
 
     up: Vec3;
     left: Vec3;
@@ -28,6 +28,7 @@ export class Camera3D
 
     private _lookAtPosition: Vec3;
     private _lookAtView: Matrix4;
+    private _axis: Quaternion;
 
     private _fov: number;
     private _near: number;
@@ -43,10 +44,11 @@ export class Camera3D
 
         this.position = new Vec3Callback(() => this.update(), x, y, z, true);
         this.direction = new Vec3Callback(() => this.update(), 0, 1, 0, true);
-        this.rotation = new QuaternionCallback(() => this.updateRotation(), 0, 0, 0, 1, true);
+        // this.rotation = new Vec3Callback(() => this.updateRotation(), 0, 1, 0, true);
 
         this._lookAtPosition = new Vec3();
         this._lookAtView = new Matrix4();
+        this._axis = new Quaternion();
 
         this.up = Up();
         this.left = Left();
@@ -85,45 +87,21 @@ export class Camera3D
         return this.update();
     }
 
-    updateRotation (): this
-    {
-        const q = this.rotation;
-
-        TransformQuat(this.direction, q, this.direction);
-        TransformQuat(this.left, q, this.left);
-        TransformQuat(this.up, q, this.up);
-
-        Normalize(this.up, this.up);
-        Normalize(this.left, this.left);
-        Normalize(this.direction, this.direction);
-
-        return this.update();
-    }
-
-    /*
     rotateOnAxis (axisVec: Vec3, angle: number): this
     {
-        const q = SetAxisAngle(axisVec, angle, this.axis);
+        const dir = this.direction;
+        const left = this.left;
+        const up = this.up;
 
-        TransformQuat(this.direction, q, this.direction);
-        TransformQuat(this.left, q, this.left);
-        TransformQuat(this.up, q, this.up);
+        const q = SetAxisAngle(axisVec, angle, this._axis);
 
-        Normalize(this.up, this.up);
-        Normalize(this.left, this.left);
-        Normalize(this.direction, this.direction);
+        TransformQuat(dir, q, dir);
+        TransformQuat(left, q, left);
+        TransformQuat(up, q, up);
 
-        return this.update();
-    }
-
-    lookAt (point: IVec3): this
-    {
-        Subtract(point, this.position, this.direction);
-
-        Normalize(this.direction, this.direction);
-
-        CrossNormalize(UP, this.direction, this.left);
-        CrossNormalize(this.direction, this.left, this.up);
+        Normalize(up, up);
+        Normalize(left, left);
+        Normalize(dir, dir);
 
         return this.update();
     }
@@ -158,7 +136,6 @@ export class Camera3D
 
         return this.update();
     }
-    */
 
     update (): this
     {
