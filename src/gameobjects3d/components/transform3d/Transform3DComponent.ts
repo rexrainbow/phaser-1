@@ -75,7 +75,7 @@ export class Transform3DComponent
         {
             const child = children[i];
 
-            child.transform.updateWorld();
+            // child.transform.updateWorld();
         }
     }
 
