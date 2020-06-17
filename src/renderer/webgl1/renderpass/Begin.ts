@@ -3,9 +3,10 @@ import { BindFramebuffer } from './BindFramebuffer';
 import { BindShader } from './BindShader';
 import { BindVertexBuffer } from './BindVertexBuffer';
 import { BindViewport } from './BindViewport';
+import { IMatrix4 } from '../../../math/mat4/IMatrix4';
 import { IRenderPass } from './IRenderPass';
 
-export function Begin (renderPass: IRenderPass, projectionMatrix: Float32Array, cameraMatrix: Float32Array): void
+export function Begin (renderPass: IRenderPass, projectionMatrix: IMatrix4, cameraMatrix: IMatrix4): void
 {
     renderPass.projectionMatrix = projectionMatrix;
     renderPass.cameraMatrix = cameraMatrix;

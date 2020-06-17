@@ -1,3 +1,4 @@
+import { IMatrix4 } from '../../../math/mat4/IMatrix4';
 import { IRenderPass } from './IRenderPass';
 import { IShader } from '../shaders/IShader';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
@@ -26,8 +27,8 @@ export class RenderPass implements IRenderPass
 {
     renderer: IWebGLRenderer;
 
-    projectionMatrix: Float32Array;
-    cameraMatrix: Float32Array;
+    projectionMatrix: IMatrix4;
+    cameraMatrix: IMatrix4;
 
     count: number = 0;
     prevCount: number = 0;

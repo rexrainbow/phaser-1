@@ -9,12 +9,13 @@ import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetRGBArray } from './colors/GetRGBArray';
 import { GetWebGLContext } from '../../config/WebGLContext';
 import { IBaseCamera } from '../../camera/IBaseCamera';
+import { IMatrix4 } from '../../math/mat4/IMatrix4';
 import { IRenderPass } from './renderpass/IRenderPass';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IndexedVertexBuffer } from './buffers/IndexedVertexBuffer';
 import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
-import { Ortho } from './cameras/Ortho';
+import { Ortho } from '../../math/mat4';
 import { ProcessBindingQueue } from './renderpass/ProcessBindingQueue';
 import { RenderPass } from './renderpass/RenderPass';
 import { SearchEntry } from '../../display/DepthFirstSearchRecursiveNested';
@@ -39,7 +40,7 @@ export class WebGLRenderer
     height: number;
     resolution: number;
 
-    projectionMatrix: Float32Array;
+    projectionMatrix: IMatrix4;
 
     clearBeforeRender: boolean = true;
     optimizeRedraw: boolean = false;
@@ -119,7 +120,8 @@ export class WebGLRenderer
 
         SetDefaultViewport(this.renderPass, 0, 0, calcWidth, calcHeight);
 
-        this.projectionMatrix = Ortho(calcWidth, calcHeight);
+        //  TODO - -1 to 1?
+        this.projectionMatrix = Ortho(0, calcWidth, calcHeight, 0, -1000, 1000);
     }
 
     onContextLost (event: Event): void

@@ -1,4 +1,5 @@
 import { IBaseCamera } from '../../camera/IBaseCamera';
+import { IMatrix4 } from '../../math/mat4/IMatrix4';
 import { IRenderPass } from './renderpass/IRenderPass';
 import { IRenderer } from '../IRenderer';
 import { SearchEntry } from '../../display/DepthFirstSearchRecursiveNested';
@@ -9,7 +10,7 @@ export interface IWebGLRenderer extends IRenderer
 
     renderPass: IRenderPass;
 
-    projectionMatrix: Float32Array;
+    projectionMatrix: IMatrix4;
     contextLost: boolean;
     currentCamera: IBaseCamera;
 
