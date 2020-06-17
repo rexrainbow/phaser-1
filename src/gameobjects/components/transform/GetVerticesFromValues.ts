@@ -1,4 +1,4 @@
-import { VertexSet } from './VertexSet';
+import { Vertices } from './Vertices';
 
 export function GetVerticesFromValues (
     left: number,
@@ -11,7 +11,7 @@ export function GetVerticesFromValues (
     scaleX: number = 1,
     scaleY: number = 1,
     skewX: number = 0,
-    skewY: number = 0): VertexSet
+    skewY: number = 0): Vertices
 {
     const a = Math.cos(rotation + skewY) * scaleX;
     const b = Math.sin(rotation + skewY) * scaleX;

@@ -1,7 +1,7 @@
 import { ITransformComponent } from './ITransformComponent';
-import { VertexSet } from './VertexSet';
+import { Vertices } from './Vertices';
 
-export function GetVertices (transform: ITransformComponent): VertexSet
+export function GetVertices (transform: ITransformComponent): Vertices
 {
     const { a, b, c, d, tx, ty } = transform.world;
     const { x, y, right, bottom } = transform.extent;
