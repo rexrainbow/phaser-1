@@ -42,7 +42,7 @@ export default {
         typescript({
             exclude: [
                 './dev/wip/**/*',
-                './dev/primitive/**/*',
+                './dev/3d/**/*',
                 './src/stats/**/*'
             ],
             tsconfig: './fastdev.tsconfig.json'
