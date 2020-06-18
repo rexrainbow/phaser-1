@@ -1,4 +1,4 @@
-export const PHONE_TEXTURE_FRAG =
+export const PHONG_TEXTURE_FRAG =
 `#define SHADER_NAME phong_texture_frag
 
 precision highp float;
