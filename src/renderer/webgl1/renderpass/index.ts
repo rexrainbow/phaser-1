@@ -35,6 +35,7 @@ import { SetShader } from './SetShader';
 import { SetTexture } from './SetTexture';
 import { SetVertexBuffer } from './SetVertexBuffer';
 import { SetViewport } from './SetViewport';
+import { Start } from './Start';
 import { UnbindTexture } from './UnbindTexture';
 
 export {
@@ -75,5 +76,6 @@ export {
     SetTexture,
     SetVertexBuffer,
     SetViewport,
+    Start,
     UnbindTexture
 };
