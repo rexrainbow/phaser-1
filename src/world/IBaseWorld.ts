@@ -10,6 +10,7 @@ export interface IBaseWorld extends IGameObject
     camera: IBaseCamera;
     renderData: IWorldRenderData;
     forceRefresh: boolean;
+    is3D: boolean;
     render (sceneRenderData: ISceneRenderData): void;
     shutdown (): void;
 }

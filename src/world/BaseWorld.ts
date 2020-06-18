@@ -24,6 +24,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
     renderData: IWorldRenderData;
     forceRefresh: boolean = false;
     events: Map<string, Set<IEventInstance>>;
+    is3D: boolean = false;
 
     private _updateListener: IEventInstance;
     private _renderListener: IEventInstance;
