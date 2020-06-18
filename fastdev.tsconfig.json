@@ -3,6 +3,7 @@
         "target": "esnext",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "suppressImplicitAnyIndexErrors": true
+        "suppressImplicitAnyIndexErrors": true,
+        "diagnostics": false
     }
 }
