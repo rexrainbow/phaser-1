@@ -6,7 +6,7 @@ import { IVertexBuffer } from '../buffers/IVertexBuffer';
 import { IWebGLRenderer } from '../IWebGLRenderer';
 import { IndexedVertexBuffer } from '../buffers/IndexedVertexBuffer';
 import { QuadShader } from '../shaders/QuadShader';
-import { Rectangle } from '../../../geom/rectangle';
+import { Rectangle } from '../../../geom/rectangle/Rectangle';
 
 export type FramebufferStackEntry = {
     framebuffer: WebGLFramebuffer;
