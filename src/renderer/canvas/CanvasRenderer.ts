@@ -115,9 +115,9 @@ export class CanvasRenderer
         {
             const { camera, renderList, numRendered } = worlds[i];
 
-            const { a, b, c, d, tx, ty } = camera.worldTransform;
+            // const { a, b, c, d, tx, ty } = camera.worldTransform;
 
-            ctx.setTransform(a, b, c, d, tx, ty);
+            // ctx.setTransform(a, b, c, d, tx, ty);
 
             //  Process the render list
             for (let s: number = 0; s < numRendered; s++)
