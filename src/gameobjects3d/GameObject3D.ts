@@ -1,3 +1,4 @@
+import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
 import { DestroyEvent } from '../gameobjects/events';
 import { Emit } from '../events';
 import { GameInstance } from '../GameInstance';
@@ -5,6 +6,7 @@ import { IBaseWorld } from '../world/IBaseWorld';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject3D } from './IGameObject3D';
 import { IRenderPass } from '../renderer/webgl1/renderpass';
+import { Transform3DComponent } from './components/transform3d/Transform3DComponent';
 
 export class GameObject3D
 {
@@ -31,7 +33,7 @@ export class GameObject3D
     dirty: number = 0;
     dirtyFrame: number = 0;
 
-    // transform: ITransformComponent;
+    transform: Transform3DComponent;
     // bounds: IBoundsComponent;
     // input: IInputComponent;
 
@@ -43,11 +45,11 @@ export class GameObject3D
 
         this.events = new Map();
 
-        // this.transform = new TransformComponent(this, x, y);
+        this.transform = new Transform3DComponent(this, x, y, z);
         // this.bounds = new BoundsComponent(this);
         // this.input = new InputComponent(this);
 
-        // this.dirty = DIRTY_CONST.DEFAULT;
+        this.dirty = DIRTY_CONST.DEFAULT;
 
         // this.transform.update();
     }
@@ -56,6 +58,7 @@ export class GameObject3D
     {
         return (this.visible && this.willRender);
     }
+
     isDirty (flag: number): boolean
     {
         return (this.dirty & flag) !== 0;
@@ -144,7 +147,7 @@ export class GameObject3D
 
         Emit(this, DestroyEvent, this);
 
-        // this.transform.destroy();
+        this.transform.destroy();
         // this.bounds.destroy();
         // this.input.destroy();
 
