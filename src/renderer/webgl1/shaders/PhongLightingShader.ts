@@ -1,6 +1,8 @@
 import * as GL_CONST from '../GL_CONST';
 
 import { IShader } from './IShader';
+import { PHONG_TEXTURE_FRAG } from '../glsl/PHONG_TEXTURE_FRAG';
+import { PHONG_TEXTURE_VERT } from '../glsl/PHONG_TEXTURE_VERT';
 import { Shader } from './Shader';
 
 export class PhongLightingShader extends Shader implements IShader
@@ -10,8 +12,8 @@ export class PhongLightingShader extends Shader implements IShader
         super();
 
         const config = {
-            fragmentShader: LIGHTS2_TEXTURE_FRAG,
-            vertexShader: LIGHTS2_TEXTURE_VERT,
+            fragmentShader: PHONG_TEXTURE_FRAG,
+            vertexShader: PHONG_TEXTURE_VERT,
             attributes: {
                 aVertexPosition: { size: 3, type: GL_CONST.FLOAT, normalized: false, offset: 0 },
                 aVertexNormal: { size: 3, type: GL_CONST.FLOAT, normalized: false, offset: 12 },
