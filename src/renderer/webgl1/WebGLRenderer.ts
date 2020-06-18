@@ -1,29 +1,25 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
 
-import { Begin } from './renderpass/Begin';
 import { CreateTempTextures } from './renderpass/CreateTempTextures';
 import { End } from './renderpass/End';
-import { Flush } from './renderpass/Flush';
 import { GL } from './GL';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetRGBArray } from './colors/GetRGBArray';
 import { GetWebGLContext } from '../../config/WebGLContext';
-import { IBaseCamera } from '../../camera/IBaseCamera';
 import { IMatrix4 } from '../../math/mat4/IMatrix4';
 import { IRenderPass } from './renderpass/IRenderPass';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IndexedVertexBuffer } from './buffers/IndexedVertexBuffer';
-import { ExactEquals as Matrix2dEqual } from '../../math/matrix2d-funcs/ExactEquals';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
 import { Ortho } from '../../math/mat4';
 import { ProcessBindingQueue } from './renderpass/ProcessBindingQueue';
 import { RenderPass } from './renderpass/RenderPass';
-import { SearchEntry } from '../../display/DepthFirstSearchRecursiveNested';
 import { SetDefaultBlendMode } from './renderpass/SetDefaultBlendMode';
 import { SetDefaultFramebuffer } from './renderpass/SetDefaultFramebuffer';
 import { SetDefaultShader } from './renderpass/SetDefaultShader';
 import { SetDefaultVertexBuffer } from './renderpass/SetDefaultVertexBuffer';
 import { SetDefaultViewport } from './renderpass/SetDefaultViewport';
+import { Start } from './renderpass';
 import { WebGLRendererInstance } from './WebGLRendererInstance';
 import { batchSize } from '../../config/BatchSize';
 
@@ -47,8 +43,6 @@ export class WebGLRenderer
     autoResize: boolean = true;
 
     contextLost: boolean = false;
-
-    currentCamera: IBaseCamera = null;
 
     constructor ()
     {
@@ -149,7 +143,6 @@ export class WebGLRenderer
     reset (): void
     {
         // this.renderPass.reset();
-        // this.currentCamera = null;
     }
 
     render (renderData: ISceneRenderData): void
@@ -168,8 +161,6 @@ export class WebGLRenderer
 
         ProcessBindingQueue();
 
-        this.currentCamera = null;
-
         //  Cache 1 - Nothing dirty? Display the previous frame
         if (this.optimizeRedraw && renderData.numDirtyFrames === 0 && renderData.numDirtyCameras === 0)
         {
@@ -184,86 +175,25 @@ export class WebGLRenderer
             gl.clear(gl.COLOR_BUFFER_BIT);
         }
 
-        //  Cache 2 - Only one dirty camera and one flush? We can re-use the buffers
-        //  TODO - Per shader
-
-        /*
-        const flushTotal = this.flushTotal;
-        if (dirtyCameras === 1 && dirtyFrame === 0 && flushTotal === 1)
-        {
-            const projectionMatrix = this.projectionMatrix;
-
-            //  Total items rendered in the previous frame
-            const count = shader.prevCount;
-
-            shader.bind(projectionMatrix, sceneList[0].matrix);
-
-            shader.draw(count);
-
-            shader.prevCount = count;
-
-            this.flushTotal = 1;
-
-            return;
-        }
-        */
-
         const worlds = renderData.worldData;
+
+        Start(renderPass, this.projectionMatrix);
 
         for (let i: number = 0; i < worlds.length; i++)
         {
-            const { camera, renderList } = worlds[i];
+            const { world } = worlds[i];
 
-            //  This only needs rebinding if the camera matrix is different to before
-            if (!this.currentCamera || !Matrix2dEqual(camera.worldTransform, this.currentCamera.worldTransform))
-            {
-                if (i > 0)
-                {
-                    Flush(renderPass);
-                }
+            world.renderGL(renderPass);
 
-                this.currentCamera = camera;
+            //  Stats sweep
 
-                Begin(renderPass, this.projectionMatrix, camera.matrix);
-            }
-
-            //  Process the render list
-            renderList.forEach(entry =>
-            {
-                if (entry.children.length > 0)
-                {
-                    this.renderNode(entry, renderPass);
-                }
-                else
-                {
-                    entry.node.renderGL(renderPass);
-                }
-            });
+            world.postRenderGL(renderPass);
         }
 
         End(renderPass);
 
         // eslint-disable-next-line no-debugger
         // debugger;
-    }
-
-    renderNode (entry: SearchEntry, renderPass: IRenderPass): void
-    {
-        entry.node.renderGL(renderPass);
-
-        entry.children.forEach(child =>
-        {
-            if (child.children.length > 0)
-            {
-                this.renderNode(child, renderPass);
-            }
-            else
-            {
-                child.node.renderGL(renderPass);
-            }
-        });
-
-        entry.node.postRenderGL(renderPass);
     }
 
     destroy (): void
