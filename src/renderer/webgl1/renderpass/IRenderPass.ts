@@ -1,5 +1,6 @@
 import { BlendModeStackEntry, FramebufferStackEntry, ShaderStackEntry } from './RenderPass';
 
+import { IBaseCamera } from '../../../camera/IBaseCamera';
 import { IMatrix4 } from '../../../math/mat4/IMatrix4';
 import { IShader } from '../shaders/IShader';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
@@ -51,4 +52,5 @@ export interface IRenderPass
 
     quadShader: IShader;
     quadBuffer: IVertexBuffer;
+    current2DCamera: IBaseCamera;
 }

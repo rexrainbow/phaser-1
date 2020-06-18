@@ -1,3 +1,4 @@
+import { IBaseCamera } from '../../../camera/IBaseCamera';
 import { IMatrix4 } from '../../../math/mat4/IMatrix4';
 import { IRenderPass } from './IRenderPass';
 import { IShader } from '../shaders/IShader';
@@ -70,6 +71,9 @@ export class RenderPass implements IRenderPass
     //  Single Texture Quad Shader
     quadShader: IShader;
     quadBuffer: IVertexBuffer;
+
+    //  Current 2D Camera
+    current2DCamera: IBaseCamera;
 
     constructor (renderer: IWebGLRenderer)
     {
