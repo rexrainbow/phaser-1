@@ -26,6 +26,8 @@ export class Camera3D
     viewMatrix: Matrix4;
     projectionMatrix: Matrix4;
 
+    dirtyRender: boolean = true;
+
     private _lookAtPosition: Vec3;
     private _lookAtView: Matrix4;
     private _axis: Quaternion;
@@ -150,6 +152,23 @@ export class Camera3D
         TranslateFromFloats(lookView, -pos.x, -pos.y, -pos.z, this.viewMatrix);
 
         return this;
+    }
+
+    reset (): void
+    {
+    }
+
+    destroy (): void
+    {
+        this.position.destroy();
+        this.direction.destroy();
+        this.up = null;
+        this.left = null;
+        this.viewMatrix = null;
+        this.projectionMatrix = null;
+        this._lookAtPosition = null;
+        this._lookAtView = null;
+        this._axis = null;
     }
 
     get fov (): number
