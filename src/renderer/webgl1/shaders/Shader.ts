@@ -39,7 +39,15 @@ export class Shader implements IShader
 
     renderToDepthbuffer: boolean = false;
 
-    constructor (config: IShaderConfig = {})
+    constructor (config?: IShaderConfig)
+    {
+        if (config)
+        {
+            this.fromConfig(config);
+        }
+    }
+
+    fromConfig (config: IShaderConfig): void
     {
         const {
             attributes = DefaultQuadAttributes,
@@ -116,6 +124,7 @@ export class Shader implements IShader
         gl.useProgram(currentProgram);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     updateUniforms (renderPass: IRenderPass): void
     {
         //  Use this to set any extra uniform values prior to the bind
@@ -128,6 +137,7 @@ export class Shader implements IShader
         return this.setUniforms(renderPass);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setUniforms (renderPass: IRenderPass): boolean
     {
         if (!this.program)
@@ -150,12 +160,15 @@ export class Shader implements IShader
     //  stride = vertexByteSize
     setAttributes (renderPass: IRenderPass): void
     {
-        const stride = renderPass.currentVertexBuffer.vertexByteSize;
-
-        this.attributes.forEach(attrib =>
+        if (this.program)
         {
-            gl.vertexAttribPointer(attrib.index, attrib.size, attrib.type, attrib.normalized, stride, attrib.offset);
-        });
+            const stride = renderPass.currentVertexBuffer.vertexByteSize;
+
+            this.attributes.forEach(attrib =>
+            {
+                gl.vertexAttribPointer(attrib.index, attrib.size, attrib.type, attrib.normalized, stride, attrib.offset);
+            });
+        }
     }
 
     destroy (): void

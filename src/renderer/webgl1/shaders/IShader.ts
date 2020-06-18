@@ -1,4 +1,5 @@
 import { IRenderPass } from '../renderpass/IRenderPass';
+import { IShaderConfig } from './IShaderConfig';
 import { IVertexAttribPointer } from './IVertexAttribPointer';
 import { Texture } from '../../../textures/Texture';
 
@@ -11,6 +12,7 @@ export interface IShader
     renderToDepthbuffer: boolean;
     texture: Texture;
     uniforms: Map<string, unknown>;
+    fromConfig (config: IShaderConfig): void;
     bind (renderPass: IRenderPass, uTexture?: number): boolean;
     create (fragmentShaderSource: string, vertexShaderSource: string, uniforms: Object, attribs: Object): void;
     destroy (): void;
