@@ -1,6 +1,7 @@
 import * as GameObjectEvents from '../gameobjects/events';
 import * as WorldEvents from './events';
 
+import { Begin, Flush } from '../renderer/webgl1/renderpass';
 import { Emit, Off, On, Once } from '../events';
 
 import { BuildRenderList } from './BuildRenderList';
@@ -9,12 +10,15 @@ import { IBaseCamera } from '../camera/IBaseCamera';
 import { IBaseWorld } from './IBaseWorld';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
+import { IRenderPass } from '../renderer/webgl1/renderPass/IRenderPass';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorldRenderData } from './IWorldRenderData';
+import { ExactEquals as Matrix2dEqual } from '../math/matrix2d-funcs/ExactEquals';
 import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren } from '../display';
 import { ResetWorldRenderData } from './ResetWorldRenderData';
+import { SearchEntry } from '../display/DepthFirstSearchRecursiveNested';
 
 export class BaseWorld extends GameObject implements IBaseWorld
 {
@@ -84,6 +88,58 @@ export class BaseWorld extends GameObject implements IBaseWorld
         {
             this.camera.dirtyRender = false;
         }
+    }
+
+    renderGL <T extends IRenderPass> (renderPass: T): void
+    {
+        const currentCamera = renderPass.current2DCamera;
+        const camera = this.camera;
+
+        if (!currentCamera || !Matrix2dEqual(camera.worldTransform, currentCamera.worldTransform))
+        {
+            Flush(renderPass);
+
+            renderPass.current2DCamera = camera;
+        }
+
+        Begin(renderPass, camera);
+
+        this.renderData.renderList.forEach(entry =>
+        {
+            if (entry.children.length > 0)
+            {
+                this.renderNode(entry, renderPass);
+            }
+            else
+            {
+                entry.node.renderGL(renderPass);
+            }
+        });
+    }
+
+    renderNode (entry: SearchEntry, renderPass: IRenderPass): void
+    {
+        entry.node.renderGL(renderPass);
+
+        entry.children.forEach(child =>
+        {
+            if (child.children.length > 0)
+            {
+                this.renderNode(child, renderPass);
+            }
+            else
+            {
+                child.node.renderGL(renderPass);
+            }
+        });
+
+        entry.node.postRenderGL(renderPass);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    postRenderGL <T extends IRenderPass> (renderPass: T): void
+    {
+        //  Emit event?
     }
 
     shutdown (): void
