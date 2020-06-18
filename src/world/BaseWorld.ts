@@ -10,7 +10,7 @@ import { IBaseCamera } from '../camera/IBaseCamera';
 import { IBaseWorld } from './IBaseWorld';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from '../gameobjects/IGameObject';
-import { IRenderPass } from '../renderer/webgl1/renderPass/IRenderPass';
+import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorldRenderData } from './IWorldRenderData';
@@ -98,8 +98,6 @@ export class BaseWorld extends GameObject implements IBaseWorld
         if (!currentCamera || !Matrix2dEqual(camera.worldTransform, currentCamera.worldTransform))
         {
             Flush(renderPass);
-
-            renderPass.current2DCamera = camera;
         }
 
         Begin(renderPass, camera);
