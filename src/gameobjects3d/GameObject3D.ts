@@ -5,7 +5,7 @@ import { GameInstance } from '../GameInstance';
 import { IBaseWorld3D } from '../world3d/IBaseWorld3D';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject3D } from './IGameObject3D';
-import { IRenderPass } from '../renderer/webgl1/renderpass';
+import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
 import { Transform3DComponent } from './components/transform3d/Transform3DComponent';
 
 export class GameObject3D

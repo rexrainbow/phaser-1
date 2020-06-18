@@ -10,7 +10,7 @@ import { ICanvasRenderer } from '../renderer/canvas/ICanvasRenderer';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject } from './IGameObject';
 import { IInputComponent } from './components/input/IInputComponent';
-import { IRenderPass } from '../renderer/webgl1/renderPass/IRenderPass';
+import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
 import { ITransformComponent } from './components/transform/ITransformComponent';
 import { InputComponent } from './components/input/InputComponent';
 import { ReparentChildren } from '../display/ReparentChildren';

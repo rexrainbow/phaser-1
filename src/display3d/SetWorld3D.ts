@@ -1,10 +1,10 @@
 import { AddedToWorldEvent, RemovedFromWorldEvent } from '../gameobjects/events';
 
 import { Emit } from '../events/Emit';
-import { IBaseWorld } from '../world/IBaseWorld';
+import { IBaseWorld3D } from '../world3d/IBaseWorld3D';
 import { IGameObject3D } from '../gameobjects3d/IGameObject3D';
 
-export function SetWorld3D (world: IBaseWorld, ...children: IGameObject3D[]): IGameObject3D[]
+export function SetWorld3D (world: IBaseWorld3D, ...children: IGameObject3D[]): IGameObject3D[]
 {
     children.forEach(child =>
     {

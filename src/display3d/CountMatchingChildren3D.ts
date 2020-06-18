@@ -1,6 +1,6 @@
 import { IGameObject3D } from '../gameobjects3d/IGameObject3D';
 
-export function CountMatchingChildren (parent: IGameObject3D, property: string | symbol, value?: never): number
+export function CountMatchingChildren3D (parent: IGameObject3D, property: string | symbol, value?: never): number
 {
     const children = parent.children;
 

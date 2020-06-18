@@ -1,6 +1,6 @@
 import { IBaseWorld3D } from '../world3d/IBaseWorld3D';
 import { IEventInstance } from '../events/IEventInstance';
-import { IRenderPass } from '../renderer/webgl1/renderPass/IRenderPass';
+import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
 
 export interface IGameObject3D
 {
