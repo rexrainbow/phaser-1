@@ -24,7 +24,7 @@ export class World extends BaseWorld implements IWorld
 
         this.camera = new Camera();
 
-        this.renderData = CreateWorldRenderData(this.camera);
+        this.renderData = CreateWorldRenderData(this, this.camera);
     }
 
     //  TODO: An out-of-bounds parent with in-bounds children will be cull checked against in postRender, stop this.

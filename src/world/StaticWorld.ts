@@ -22,6 +22,6 @@ export class StaticWorld extends BaseWorld implements IStaticWorld
 
         this.camera = new StaticCamera();
 
-        this.renderData = CreateWorldRenderData(this.camera);
+        this.renderData = CreateWorldRenderData(this, this.camera);
     }
 }
