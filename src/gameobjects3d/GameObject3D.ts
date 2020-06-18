@@ -2,7 +2,7 @@ import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
 import { DestroyEvent } from '../gameobjects/events';
 import { Emit } from '../events';
 import { GameInstance } from '../GameInstance';
-import { IBaseWorld } from '../world/IBaseWorld';
+import { IBaseWorld3D } from '../world3d/IBaseWorld3D';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject3D } from './IGameObject3D';
 import { IRenderPass } from '../renderer/webgl1/renderpass';
@@ -14,7 +14,7 @@ export class GameObject3D
     name: string = '';
 
     //  The World this Game Object belongs to. A Game Object can only belong to one World instance at any one time.
-    world: IBaseWorld;
+    world: IBaseWorld3D;
 
     //  The direct parent of this Game Object in the scene graph (if any)
     parent: IGameObject3D;

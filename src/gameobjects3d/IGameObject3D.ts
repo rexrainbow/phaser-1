@@ -1,4 +1,4 @@
-import { IBaseWorld } from '../world/IBaseWorld';
+import { IBaseWorld3D } from '../world3d/IBaseWorld3D';
 import { IEventInstance } from '../events/IEventInstance';
 import { IRenderPass } from '../renderer/webgl1/renderPass/IRenderPass';
 
@@ -6,7 +6,7 @@ export interface IGameObject3D
 {
     type: string;
     name: string;
-    world: IBaseWorld;
+    world: IBaseWorld3D;
     parent: IGameObject3D;
     children: IGameObject3D[];
 
