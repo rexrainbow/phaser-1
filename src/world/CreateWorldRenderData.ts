@@ -1,9 +1,11 @@
 import { IBaseCamera } from '../camera/IBaseCamera';
+import { IBaseWorld } from './IBaseWorld';
 import { IWorldRenderData } from './IWorldRenderData';
 
-export function CreateWorldRenderData (camera: IBaseCamera): IWorldRenderData
+export function CreateWorldRenderData (world: IBaseWorld, camera: IBaseCamera): IWorldRenderData
 {
     return {
+        world,
         camera,
         gameFrame: 0,
         dirtyFrame: 0,
