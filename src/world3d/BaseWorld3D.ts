@@ -9,12 +9,14 @@ import { IBaseWorld3D } from './IBaseWorld3D';
 import { ICamera3D } from '../camera3d/ICamera3D';
 import { IEventInstance } from '../events/IEventInstance';
 import { IGameObject3D } from '../gameobjects3d/IGameObject3D';
+import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorld3DRenderData } from './IWorld3DRenderData';
 import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren3D } from '../display3d/RemoveChildren3D';
 import { ResetWorld3DRenderData } from './ResetWorld3DRenderData';
+import { SearchEntry3D } from '../display3d/DepthFirstSearchRecursiveNested3D';
 
 export class BaseWorld3D extends GameObject3D implements IBaseWorld3D
 {
@@ -84,6 +86,25 @@ export class BaseWorld3D extends GameObject3D implements IBaseWorld3D
         // {
         //     this.camera.dirtyRender = false;
         // }
+    }
+
+    renderNode (entry: SearchEntry3D, renderPass: IRenderPass): void
+    {
+        entry.node.renderGL(renderPass);
+
+        entry.children.forEach(child =>
+        {
+            if (child.children.length > 0)
+            {
+                this.renderNode(child, renderPass);
+            }
+            else
+            {
+                child.node.renderGL(renderPass);
+            }
+        });
+
+        entry.node.postRenderGL(renderPass);
     }
 
     shutdown (): void
