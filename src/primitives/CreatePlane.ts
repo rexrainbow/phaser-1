@@ -1,7 +1,7 @@
 import { CreateVertexSet } from './CreateVertexSet';
 import { VertexSet } from './VertexSet';
 
-export function Plane (data?: VertexSet, u: number = 0, v: number = 1, w: number = 2, udir: number = 1, vdir: number = -1, width: number = 1, height: number = 1, depth: number = 1, gridX: number = 1, gridY: number = 1): VertexSet
+export function CreatePlane (data?: VertexSet, u: number = 0, v: number = 1, w: number = 2, udir: number = 1, vdir: number = -1, width: number = 1, height: number = 1, depth: number = 1, gridX: number = 1, gridY: number = 1): VertexSet
 {
     if (!data)
     {

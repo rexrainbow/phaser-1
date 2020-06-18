@@ -3,7 +3,7 @@ import { Normalize, Vec3 } from '../math/vec3';
 import { CreateVertexSet } from './CreateVertexSet';
 import { VertexSet } from './VertexSet';
 
-export function Sphere (radius = 1, widthSegments = 3, heightSegments = 3, phiStart = 0, phiLength = Math.PI * 2, thetaStart = 0, thetaLength = Math.PI): VertexSet
+export function CreateSphere (radius = 1, widthSegments = 3, heightSegments = 3, phiStart = 0, phiLength = Math.PI * 2, thetaStart = 0, thetaLength = Math.PI): VertexSet
 {
     widthSegments = Math.max(3, Math.floor(widthSegments) || 8);
     heightSegments = Math.max(2, Math.floor(heightSegments) || 6);
