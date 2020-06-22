@@ -42,13 +42,18 @@ export class StaticCamera implements IStaticCamera
 
     reset (): void
     {
-        const width = this.renderer.width;
-        const height = this.renderer.height;
+        const renderer = this.renderer;
 
-        this.width = width;
-        this.height = height;
+        if (renderer)
+        {
+            const width = renderer.width;
+            const height = renderer.height;
 
-        this.bounds.set(0, 0, width, height);
+            this.width = width;
+            this.height = height;
+        }
+
+        this.bounds.set(0, 0, this.width, this.height);
     }
 
     destroy (): void
