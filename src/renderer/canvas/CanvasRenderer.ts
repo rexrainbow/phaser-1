@@ -109,31 +109,33 @@ export class CanvasRenderer
             ctx.fillRect(0, 0, this.width, this.height);
         }
 
+        /*
         const worlds = renderData.worldData;
 
         for (let i: number = 0; i < worlds.length; i++)
         {
             const { camera, renderList, numRendered } = worlds[i];
 
-            // const { a, b, c, d, tx, ty } = camera.worldTransform;
+            const { a, b, c, d, tx, ty } = camera.worldTransform;
 
-            // ctx.setTransform(a, b, c, d, tx, ty);
+            ctx.setTransform(a, b, c, d, tx, ty);
 
             //  Process the render list
             for (let s: number = 0; s < numRendered; s++)
             {
-                // const gameObject = renderList[s];
+                const gameObject = renderList[s];
 
-                // if (gameObject.isDirty(DIRTY_CONST.PENDING_RENDER))
-                // {
-                //     gameObject.renderCanvas(this);
-                // }
-                // else
-                // {
-                //     gameObject.postRenderCanvas(this);
-                // }
+                if (gameObject.isDirty(DIRTY_CONST.PENDING_RENDER))
+                {
+                    gameObject.renderCanvas(this);
+                }
+                else
+                {
+                    gameObject.postRenderCanvas(this);
+                }
             }
         }
+        */
     }
 
     destroy (): void
