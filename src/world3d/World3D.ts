@@ -39,12 +39,16 @@ export class World3D extends BaseWorld3D implements IWorld3D
 
     renderGL <T extends IRenderPass> (renderPass: T): void
     {
+        Flush(renderPass);
+
         const shader = this.shader;
         const camera = this.camera;
         const gl = renderPass.renderer.gl;
 
         const uniforms = shader.uniforms;
 
+        //  TODO - Only if dirty:
+        uniforms.set('uProjectionMatrix', camera.projectionMatrix.data);
         uniforms.set('uCameraMatrix', camera.viewMatrix.data);
 
         const normalMatrix = this.normalMatrix;
@@ -53,6 +57,8 @@ export class World3D extends BaseWorld3D implements IWorld3D
         Transpose(normalMatrix, normalMatrix);
 
         uniforms.set('uNormalMatrix', normalMatrix.data);
+
+        //  TODO - Use fbo anyway to avoid z-fighting with World2D?
 
         // SetFramebuffer(renderPass, this.framebuffer, true);
         SetVertexBuffer(renderPass, this.buffer);
