@@ -34,7 +34,8 @@
 // import runTest from './cube batch';
 // import runTest from './phong';
 // import runTest from './textured cube';
+// import runTest from './new camera';
 
-import runTest from './new camera';
+import runTest from './cube world';
 
 runTest();
