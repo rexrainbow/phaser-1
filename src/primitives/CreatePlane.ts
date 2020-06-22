@@ -1,7 +1,7 @@
 import { CreateVertexSet } from './CreateVertexSet';
 import { VertexSet } from './VertexSet';
 
-export function CreatePlane (data?: VertexSet, u: number = 0, v: number = 1, w: number = 2, udir: number = 1, vdir: number = -1, width: number = 1, height: number = 1, depth: number = 1, gridX: number = 1, gridY: number = 1): VertexSet
+export function CreatePlane (data?: VertexSet, x: number = 0, y: number = 0, z: number = 0, u: number = 0, v: number = 1, w: number = 2, udir: number = 1, vdir: number = -1, width: number = 1, height: number = 1, depth: number = 1, gridX: number = 1, gridY: number = 1): VertexSet
 {
     if (!data)
     {
@@ -34,20 +34,20 @@ export function CreatePlane (data?: VertexSet, u: number = 0, v: number = 1, w: 
 
     for (let iy = 0; iy < gridY1; iy++)
     {
-        const y = iy * segmentHeight - heightHalf;
+        const by = iy * segmentHeight - heightHalf;
 
         for (let ix = 0; ix < gridX1; ix++)
         {
-            const x = ix * segmentWidth - widthHalf;
+            const bx = ix * segmentWidth - widthHalf;
 
             // set values to correct vector component
 
-            vector[ u ] = x * udir;
-            vector[ v ] = y * vdir;
+            vector[ u ] = bx * udir;
+            vector[ v ] = by * vdir;
             vector[ w ] = depthHalf;
 
             // now apply vector to vertex buffer
-            vertices.push(vector[0], vector[1], vector[2]);
+            vertices.push(x + vector[0], y + vector[1], z + vector[2]);
 
             // set values to correct vector component
 

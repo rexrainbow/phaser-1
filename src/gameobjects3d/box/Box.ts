@@ -12,7 +12,7 @@ export class Box extends GameObject3D
     {
         super(x, y, z);
 
-        this.faces = GetFacesFromVertexSet(CreateBox(width, height, depth, widthSegments, heightSegments, depthSegments));
+        this.faces = GetFacesFromVertexSet(CreateBox(x, y, z, width, height, depth, widthSegments, heightSegments, depthSegments));
     }
 
     renderGL <T extends IRenderPass> (renderPass: T): void
@@ -22,6 +22,7 @@ export class Box extends GameObject3D
         const F32 = buffer.vertexViewF32;
         const U32 = buffer.vertexViewU32;
 
+        //  TODO - If dirty transform, cache face data to local buffer then copy that to vbo
         this.faces.forEach(face =>
         {
             face.addToBuffer(F32, U32, 1, buffer.offset);
