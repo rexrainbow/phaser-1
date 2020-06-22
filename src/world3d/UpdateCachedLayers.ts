@@ -1,6 +1,6 @@
 import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
 import { HasDirtyChildren } from './HasDirtyChildren';
-import { SearchEntry3D } from '../display3d/DepthFirstSearchRecursiveNested3D';
+import { SearchEntry3D } from '../display3d/SearchEntry3DType';
 
 export function UpdateCachedLayers (cachedLayers: SearchEntry3D[], dirtyCamera: boolean): void
 {

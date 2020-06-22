@@ -18,7 +18,7 @@ import { ExactEquals as Matrix2dEqual } from '../math/matrix2d-funcs/ExactEquals
 import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren } from '../display';
 import { ResetWorldRenderData } from './ResetWorldRenderData';
-import { SearchEntry } from '../display/DepthFirstSearchRecursiveNested';
+import { SearchEntry } from '../display/SearchEntryType';
 
 export class BaseWorld extends GameObject implements IBaseWorld
 {
@@ -29,6 +29,8 @@ export class BaseWorld extends GameObject implements IBaseWorld
     forceRefresh: boolean = false;
     events: Map<string, Set<IEventInstance>>;
     is3D: boolean = false;
+
+    renderList: SearchEntry[];
 
     private _updateListener: IEventInstance;
     private _renderListener: IEventInstance;
@@ -43,6 +45,8 @@ export class BaseWorld extends GameObject implements IBaseWorld
         this.world = this;
 
         this.events = new Map();
+
+        this.renderList = [];
 
         this._updateListener = On(scene, 'update', (delta: number, time: number) => this.update(delta, time));
         this._renderListener = On(scene, 'render', (renderData: ISceneRenderData) => this.render(renderData));
@@ -84,10 +88,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
         MergeRenderData(sceneRenderData, renderData);
 
-        if (this.camera)
-        {
-            this.camera.dirtyRender = false;
-        }
+        this.camera.dirtyRender = false;
     }
 
     renderGL <T extends IRenderPass> (renderPass: T): void
@@ -102,7 +103,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
 
         Begin(renderPass, camera);
 
-        this.renderData.renderList.forEach(entry =>
+        this.renderList.forEach(entry =>
         {
             if (entry.children.length > 0)
             {

@@ -16,7 +16,7 @@ import { IWorld3DRenderData } from './IWorld3DRenderData';
 import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren3D } from '../display3d/RemoveChildren3D';
 import { ResetWorld3DRenderData } from './ResetWorld3DRenderData';
-import { SearchEntry3D } from '../display3d/DepthFirstSearchRecursiveNested3D';
+import { SearchEntry3D } from '../display3d/SearchEntry3DType';
 
 export class BaseWorld3D extends GameObject3D implements IBaseWorld3D
 {
@@ -27,6 +27,7 @@ export class BaseWorld3D extends GameObject3D implements IBaseWorld3D
     forceRefresh: boolean = false;
     events: Map<string, Set<IEventInstance>>;
     is3D: boolean = true;
+    renderList: SearchEntry3D[];
 
     private _updateListener: IEventInstance;
     private _renderListener: IEventInstance;
@@ -41,6 +42,8 @@ export class BaseWorld3D extends GameObject3D implements IBaseWorld3D
         this.world = this;
 
         this.events = new Map();
+
+        this.renderList = [];
 
         this._updateListener = On(scene, 'update', (delta: number, time: number) => this.update(delta, time));
         this._renderListener = On(scene, 'render', (renderData: ISceneRenderData) => this.render(renderData));

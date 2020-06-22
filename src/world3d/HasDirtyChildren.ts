@@ -1,5 +1,5 @@
 import { DIRTY_CONST } from '../gameobjects/DIRTY_CONST';
-import { SearchEntry3D } from '../display3d/DepthFirstSearchRecursiveNested3D';
+import { SearchEntry3D } from '../display3d/SearchEntry3DType';
 
 export function HasDirtyChildren (parent: SearchEntry3D): boolean
 {

@@ -1,5 +1,5 @@
 import { IGameObject } from '../gameobjects/IGameObject';
-import { SearchEntry } from '../display/DepthFirstSearchRecursiveNested';
+import { SearchEntry } from '../display/SearchEntryType';
 
 export function WorldDepthFirstSearch (cachedLayers: SearchEntry[], parent: IGameObject, output: SearchEntry[] = []): SearchEntry[]
 {

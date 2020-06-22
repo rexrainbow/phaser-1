@@ -3,6 +3,7 @@ import { IGameObject } from '../gameobjects/IGameObject';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorldRenderData } from './IWorldRenderData';
+import { SearchEntry } from '../display/SearchEntryType';
 
 export interface IBaseWorld extends IGameObject
 {
@@ -11,6 +12,7 @@ export interface IBaseWorld extends IGameObject
     renderData: IWorldRenderData;
     forceRefresh: boolean;
     is3D: boolean;
+    renderList: SearchEntry[];
     render (sceneRenderData: ISceneRenderData): void;
     shutdown (): void;
 }

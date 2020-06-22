@@ -6,5 +6,4 @@ export function ResetWorldRenderData (renderData: IWorldRenderData, gameFrame: n
     renderData.dirtyFrame = 0;
     renderData.numRendered = 0;
     renderData.numRenderable = 0;
-    renderData.renderList.length = 0;
 }

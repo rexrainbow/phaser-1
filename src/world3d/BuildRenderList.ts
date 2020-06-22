@@ -1,6 +1,6 @@
 import { CalculateTotalRenderable } from './CalculateTotalRenderable';
 import { IBaseWorld3D } from './IBaseWorld3D';
-import { SearchEntry3D } from '../display3d/DepthFirstSearchRecursiveNested3D';
+import { SearchEntry3D } from '../display3d/SearchEntry3DType';
 import { UpdateCachedLayers } from './UpdateCachedLayers';
 import { WorldDepthFirstSearch } from './WorldDepthFirstSearch';
 
@@ -41,7 +41,7 @@ export function BuildRenderList (world: IBaseWorld3D): void
         }
     });
 
-    renderData.renderList = entries;
+    world.renderList = entries;
 
     if (world.forceRefresh)
     {

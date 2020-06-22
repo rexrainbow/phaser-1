@@ -1,5 +1,5 @@
 import { IWorldRenderData } from './IWorldRenderData';
-import { SearchEntry } from '../display/DepthFirstSearchRecursiveNested';
+import { SearchEntry } from '../display/SearchEntryType';
 
 export function CalculateTotalRenderable (entry: SearchEntry, renderData: IWorldRenderData): void
 {

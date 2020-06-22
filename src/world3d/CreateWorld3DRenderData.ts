@@ -10,7 +10,6 @@ export function CreateWorld3DRenderData (world: IWorld3D, camera: ICamera3D): IW
         gameFrame: 0,
         dirtyFrame: 0,
         numRendered: 0,
-        numRenderable: 0,
-        renderList: []
+        numRenderable: 0
     };
 }

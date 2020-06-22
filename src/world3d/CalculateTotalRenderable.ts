@@ -1,5 +1,5 @@
 import { IWorld3DRenderData } from './IWorld3DRenderData';
-import { SearchEntry3D } from '../display3d/DepthFirstSearchRecursiveNested3D';
+import { SearchEntry3D } from '../display3d/SearchEntry3DType';
 
 export function CalculateTotalRenderable (entry: SearchEntry3D, renderData: IWorld3DRenderData): void
 {

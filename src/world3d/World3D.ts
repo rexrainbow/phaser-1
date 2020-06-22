@@ -70,7 +70,7 @@ export class World3D extends BaseWorld3D implements IWorld3D
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
 
-        this.renderData.renderList.forEach(entry =>
+        this.renderList.forEach(entry =>
         {
             if (entry.children.length > 0)
             {
