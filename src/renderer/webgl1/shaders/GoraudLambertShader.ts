@@ -41,6 +41,4 @@ export class GoraudLambertShader extends Shader implements IShader
 
         this.fromConfig(config);
     }
-
-
 }
