@@ -30,7 +30,7 @@ export class World3D extends BaseWorld3D implements IWorld3D
 
         this.camera = new Camera3D(0, 0, 4);
 
-        this.buffer = new VertexBuffer({ batchSize: 4096, vertexElementSize: 9, elementsPerEntry: 3 });
+        this.buffer = new VertexBuffer({ batchSize: 4096, vertexElementSize: 10, elementsPerEntry: 3 });
         this.shader = new GoraudLambertShader();
         this.normalMatrix = new Matrix4();
 
@@ -47,7 +47,7 @@ export class World3D extends BaseWorld3D implements IWorld3D
 
         const uniforms = shader.uniforms;
 
-        //  TODO - Only if dirty:
+        //  TODO - Only if camera dirty:
         uniforms.set('uProjectionMatrix', camera.projectionMatrix.data);
         uniforms.set('uCameraMatrix', camera.viewMatrix.data);
 
@@ -58,9 +58,12 @@ export class World3D extends BaseWorld3D implements IWorld3D
 
         uniforms.set('uNormalMatrix', normalMatrix.data);
 
-        //  TODO - Use fbo anyway to avoid z-fighting with World2D?
+        //  TODO - Only reset if 1+ of the GOs is dirty
+        this.buffer.reset();
 
+        //  TODO - Use fbo anyway to avoid z-fighting with World2D?
         // SetFramebuffer(renderPass, this.framebuffer, true);
+
         SetVertexBuffer(renderPass, this.buffer);
         SetShader(renderPass, shader, 0);
 
