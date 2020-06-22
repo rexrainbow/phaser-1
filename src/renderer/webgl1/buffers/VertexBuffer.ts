@@ -171,6 +171,12 @@ export class VertexBuffer implements IVertexBuffer
         this.offset += (this.vertexElementSize * count);
     }
 
+    reset (): void
+    {
+        this.count = 0;
+        this.offset = 0;
+    }
+
     canContain (count: number): boolean
     {
         return ((this.count + count) <= this.batchSize);
