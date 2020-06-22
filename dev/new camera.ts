@@ -42,8 +42,8 @@ class Demo extends Scene
         }
 
         loader.add(ImageFile('bg', 'checker.png'));
-        // loader.add(ImageFile('logo', 'logo.png'));
-        loader.add(ImageFile('f', 'f-texture.png'));
+        loader.add(ImageFile('logo', 'logo.png'));
+        loader.add(ImageFile('f', 'f-texture.png', { flipY: true }));
 
         loader.start().then(() => {
 
@@ -82,9 +82,10 @@ class Demo extends Scene
 
             bg.alpha = 0.2;
 
-            // const logo = new Sprite(400, 300, 'logo');
+            const logo = new Sprite(400, 300, 'logo');
 
             AddChild(world2d, bg);
+            AddChild(world2d, logo);
 
             On(this, 'update', (delta, time) => {
 
