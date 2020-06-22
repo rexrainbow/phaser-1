@@ -1,6 +1,6 @@
-import { DepthFirstSearchRecursiveNested, SearchEntry } from './DepthFirstSearchRecursiveNested';
-
+import { DepthFirstSearchRecursiveNested } from './DepthFirstSearchRecursiveNested';
 import { IGameObject } from '../gameobjects/IGameObject';
+import { SearchEntry } from './SearchEntryType';
 
 function GetInfo (entry: IGameObject): string
 {

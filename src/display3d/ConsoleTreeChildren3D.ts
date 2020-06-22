@@ -1,6 +1,6 @@
-import { DepthFirstSearchRecursiveNested3D, SearchEntry3D } from './DepthFirstSearchRecursiveNested3D';
-
+import { DepthFirstSearchRecursiveNested3D } from './DepthFirstSearchRecursiveNested3D';
 import { IGameObject3D } from '../gameobjects3d/IGameObject3D';
+import { SearchEntry3D } from './SearchEntry3DType';
 
 function GetInfo (entry: IGameObject3D): string
 {
