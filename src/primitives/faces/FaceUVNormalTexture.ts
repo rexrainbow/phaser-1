@@ -13,10 +13,10 @@ export class FaceUVNormalTexture
     normal2: IVec3Like;
     normal3: IVec3Like;
 
-    color: number = 0xff0000;
+    color: number = 0xffffff;
     alpha: number = 1;
 
-    size: number = 27;
+    size: number = 30;
 
     private _packedColor: number;
 
@@ -33,6 +33,8 @@ export class FaceUVNormalTexture
         this.normal1 = n1;
         this.normal2 = n2;
         this.normal3 = n3;
+
+        this._packedColor = PackColor(this.color, this.alpha);
     }
 
     setColor (color: number, alpha: number = 1): void
@@ -53,36 +55,41 @@ export class FaceUVNormalTexture
         const n2 = this.normal2;
         const n3 = this.normal3;
 
-        F32[offset + 0] = v1.x;
-        F32[offset + 1] = v1.y;
-        F32[offset + 2] = v1.z;
-        F32[offset + 3] = n1.x;
-        F32[offset + 4] = n1.y;
-        F32[offset + 5] = n1.z;
-        F32[offset + 6] = v1.u;
-        F32[offset + 7] = v1.v;
-        F32[offset + 8] = textureID;
+        const color = this._packedColor;
 
-        F32[offset + 9] = v2.x;
-        F32[offset + 10] = v2.y;
-        F32[offset + 11] = v2.z;
-        F32[offset + 12] = n2.x;
-        F32[offset + 13] = n2.y;
-        F32[offset + 14] = n2.z;
-        F32[offset + 15] = v2.u;
-        F32[offset + 16] = v2.v;
-        F32[offset + 17] = textureID;
+        F32[offset++] = v1.x;
+        F32[offset++] = v1.y;
+        F32[offset++] = v1.z;
+        F32[offset++] = n1.x;
+        F32[offset++] = n1.y;
+        F32[offset++] = n1.z;
+        F32[offset++] = v1.u;
+        F32[offset++] = v1.v;
+        F32[offset++] = textureID;
+        U32[offset++] = color;
 
-        F32[offset + 18] = v3.x;
-        F32[offset + 19] = v3.y;
-        F32[offset + 20] = v3.z;
-        F32[offset + 21] = n3.x;
-        F32[offset + 22] = n3.y;
-        F32[offset + 23] = n3.z;
-        F32[offset + 24] = v3.u;
-        F32[offset + 25] = v3.v;
-        F32[offset + 26] = textureID;
+        F32[offset++] = v2.x;
+        F32[offset++] = v2.y;
+        F32[offset++] = v2.z;
+        F32[offset++] = n2.x;
+        F32[offset++] = n2.y;
+        F32[offset++] = n2.z;
+        F32[offset++] = v2.u;
+        F32[offset++] = v2.v;
+        F32[offset++] = textureID;
+        U32[offset++] = color;
 
-        return offset + 27;
+        F32[offset++] = v3.x;
+        F32[offset++] = v3.y;
+        F32[offset++] = v3.z;
+        F32[offset++] = n3.x;
+        F32[offset++] = n3.y;
+        F32[offset++] = n3.z;
+        F32[offset++] = v3.u;
+        F32[offset++] = v3.v;
+        F32[offset++] = textureID;
+        U32[offset++] = color;
+
+        return offset;
     }
 }

@@ -9,6 +9,7 @@ attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
 attribute vec2 aTextureCoord;
 attribute float aTextureId;
+attribute vec4 aVertexColor;
 
 uniform mat4 uProjectionMatrix;
 uniform mat4 uCameraMatrix;
@@ -42,7 +43,7 @@ void main(void)
 
     float lambertTerm = clamp(dot(N, -L), 0.0, 1.0);
 
-    vec4 Ia = uLightAmbient;
+    vec4 Ia = uLightAmbient * aVertexColor;
     vec4 Id = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 Is = vec4(0.0, 0.0, 0.0, 1.0);
 

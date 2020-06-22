@@ -18,7 +18,8 @@ export class GoraudLambertShader extends Shader implements IShader
                 aVertexPosition: { size: 3, type: GL_CONST.FLOAT, normalized: false, offset: 0 },
                 aVertexNormal: { size: 3, type: GL_CONST.FLOAT, normalized: false, offset: 12 },
                 aTextureCoord: { size: 2, type: GL_CONST.FLOAT, normalized: false, offset: 24 },
-                aTextureId: { size: 1, type: GL_CONST.FLOAT, normalized: false, offset: 32 }
+                aTextureId: { size: 1, type: GL_CONST.FLOAT, normalized: false, offset: 32 },
+                aVertexColor: { size: 4, type: GL_CONST.UNSIGNED_BYTE, normalized: true, offset: 36 }
             },
             uniforms: {
                 uProjectionMatrix: new Float32Array(),
