@@ -1,20 +1,19 @@
 import { CreateBox } from '../../primitives/CreateBox';
-import { GameObject3D } from '../GameObject3D';
 import { GetFacesFromVertexSet } from '../../primitives/faces/GetFacesFromVertexSet';
 import { IFace } from '../../primitives/faces/IFace';
 import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
+import { Mesh } from '../mesh/Mesh';
 
-export class Box extends GameObject3D
+export class Box extends Mesh
 {
-    faces: IFace[];
-
     constructor (x: number = 0, y: number = 0, z: number = 0, width: number = 1, height: number = 1, depth: number = 1, widthSegments: number = 1, heightSegments: number = 1, depthSegments: number = 1)
     {
-        super(x, y, z);
+        const data = CreateBox(x, y, z, width, height, depth, widthSegments, heightSegments, depthSegments);
 
-        this.faces = GetFacesFromVertexSet(CreateBox(x, y, z, width, height, depth, widthSegments, heightSegments, depthSegments));
+        super(x, y, z, data);
     }
 
+    /*
     renderGL <T extends IRenderPass> (renderPass: T): void
     {
         const buffer = renderPass.currentVertexBuffer;
@@ -32,4 +31,5 @@ export class Box extends GameObject3D
             renderPass.count += 3;
         });
     }
+    */
 }
