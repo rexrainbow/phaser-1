@@ -1,11 +1,12 @@
 import { File } from '../File';
 import { GetURL } from '../GetURL';
 import { IFrameConfig } from '../../textures/IFrameConfig';
+import { IGLTextureBindingConfig } from '../../renderer/webgl1/textures/IGLTextureBindingConfig';
 import { ImageTagLoader } from '../ImageTagLoader';
 import { SpriteSheetParser } from '../../textures/parsers/SpriteSheetParser';
 import { TextureManagerInstance } from '../../textures/TextureManagerInstance';
 
-export function SpriteSheetFile (key: string, url: string, frameConfig: IFrameConfig): File
+export function SpriteSheetFile (key: string, url: string, frameConfig: IFrameConfig, glConfig?: IGLTextureBindingConfig): File
 {
     const file = new File(key, url);
 
@@ -30,7 +31,7 @@ export function SpriteSheetFile (key: string, url: string, frameConfig: IFrameCo
             {
                 ImageTagLoader(file).then(file =>
                 {
-                    const texture = textureManager.add(file.key, file.data as HTMLImageElement);
+                    const texture = textureManager.add(file.key, file.data as HTMLImageElement, glConfig);
 
                     if (texture)
                     {

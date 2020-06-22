@@ -1,4 +1,5 @@
 import { CreateCanvas } from './CreateCanvas';
+import { IGLTextureBindingConfig } from '../renderer/webgl1/textures/IGLTextureBindingConfig';
 import { Texture } from './Texture';
 import { TextureManagerInstance } from './TextureManagerInstance';
 
@@ -49,7 +50,7 @@ export class TextureManager
         return this.textures.has(key);
     }
 
-    add (key: string, source: Texture | HTMLImageElement): Texture
+    add (key: string, source: Texture | HTMLImageElement, glConfig?: IGLTextureBindingConfig): Texture
     {
         let texture: Texture;
         const textures = this.textures;
@@ -62,7 +63,7 @@ export class TextureManager
             }
             else
             {
-                texture = new Texture(source);
+                texture = new Texture(source, 0, 0, glConfig);
             }
 
             texture.key = key;

@@ -1,14 +1,15 @@
 import { BitmapTextParser } from '../../textures/parsers/BitmapTextParser';
 import { File } from '../File';
 import { GetURL } from '../GetURL';
+import { IGLTextureBindingConfig } from '../../renderer/webgl1/textures/IGLTextureBindingConfig';
 import { ImageFile } from './ImageFile';
 import { TextureManagerInstance } from '../../textures/TextureManagerInstance';
 import { XMLFile } from './XMLFile';
 
-export function BitmapTextFile (key: string, textureURL?: string, fontDataURL?: string): File
+export function BitmapTextFile (key: string, textureURL?: string, fontDataURL?: string, glConfig?: IGLTextureBindingConfig): File
 {
     const xml = XMLFile(key, fontDataURL);
-    const image = ImageFile(key, textureURL);
+    const image = ImageFile(key, textureURL, glConfig);
 
     const file = new File(key, '');
 

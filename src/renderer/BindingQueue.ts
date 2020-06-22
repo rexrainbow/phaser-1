@@ -1,15 +1,21 @@
+import { IGLTextureBindingConfig } from './webgl1/textures/IGLTextureBindingConfig';
 import { ITexture } from '../textures/ITexture';
 
-const queue: ITexture[] = [];
+export type BindingQueueEntry = {
+    texture: ITexture,
+    glConfig: IGLTextureBindingConfig
+};
+
+const queue: BindingQueueEntry[] = [];
 
 export const BindingQueue =
 {
-    add: (texture: ITexture): void =>
+    add: (texture: ITexture, glConfig?: IGLTextureBindingConfig): void =>
     {
-        queue.push(texture);
+        queue.push({ texture, glConfig });
     },
 
-    get: (): ITexture[] =>
+    get: (): BindingQueueEntry[] =>
     {
         return queue;
     },

@@ -1,6 +1,7 @@
 import { BindingQueue } from '../renderer/BindingQueue';
 import { Frame } from './Frame';
 import { IGLTextureBinding } from '../renderer/webgl1/textures/IGLTextureBinding';
+import { IGLTextureBindingConfig } from '../renderer/webgl1/textures/IGLTextureBindingConfig';
 import { ITexture } from './ITexture';
 
 export class Texture implements ITexture
@@ -21,7 +22,7 @@ export class Texture implements ITexture
 
     data: unknown;
 
-    constructor (image?: TexImageSource, width?: number, height?: number)
+    constructor (image?: TexImageSource, width?: number, height?: number, glConfig?: IGLTextureBindingConfig)
     {
         if (image)
         {
@@ -40,7 +41,7 @@ export class Texture implements ITexture
 
         this.addFrame('__BASE', 0, 0, width, height);
 
-        BindingQueue.add(this);
+        BindingQueue.add(this, glConfig);
     }
 
     addFrame (key: string | number, x: number, y: number, width: number, height: number): Frame

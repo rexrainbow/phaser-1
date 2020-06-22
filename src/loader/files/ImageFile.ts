@@ -1,9 +1,10 @@
 import { File } from '../File';
 import { GetURL } from '../GetURL';
+import { IGLTextureBindingConfig } from '../../renderer/webgl1/textures/IGLTextureBindingConfig';
 import { ImageTagLoader } from '../ImageTagLoader';
 import { TextureManagerInstance } from '../../textures/TextureManagerInstance';
 
-export function ImageFile (key: string, url?: string): File
+export function ImageFile (key: string, url?: string, glConfig?: IGLTextureBindingConfig): File
 {
     const file = new File(key, url);
 
@@ -28,7 +29,7 @@ export function ImageFile (key: string, url?: string): File
             {
                 ImageTagLoader(file).then(file =>
                 {
-                    textureManager.add(file.key, file.data as HTMLImageElement);
+                    textureManager.add(file.key, file.data as HTMLImageElement, glConfig);
 
                     resolve(file);
 

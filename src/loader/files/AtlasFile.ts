@@ -1,14 +1,15 @@
 import { AtlasParser } from '../../textures/parsers/AtlasParser';
 import { File } from '../File';
 import { GetURL } from '../GetURL';
+import { IGLTextureBindingConfig } from '../../renderer/webgl1/textures/IGLTextureBindingConfig';
 import { ImageFile } from './ImageFile';
 import { JSONFile } from './JSONFile';
 import { TextureManagerInstance } from '../../textures/TextureManagerInstance';
 
-export function AtlasFile (key: string, textureURL?: string, atlasURL?: string): File
+export function AtlasFile (key: string, textureURL?: string, atlasURL?: string, glConfig?: IGLTextureBindingConfig): File
 {
     const json = JSONFile(key, atlasURL);
-    const image = ImageFile(key, textureURL);
+    const image = ImageFile(key, textureURL, glConfig);
 
     const file = new File(key, '');
 
