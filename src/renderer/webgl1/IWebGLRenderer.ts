@@ -1,3 +1,4 @@
+import { IBaseCamera } from '../../camera/IBaseCamera';
 import { IMatrix4 } from '../../math/mat4/IMatrix4';
 import { IRenderPass } from './renderpass/IRenderPass';
 import { IRenderer } from '../IRenderer';
@@ -9,6 +10,8 @@ export interface IWebGLRenderer extends IRenderer
     renderPass: IRenderPass;
 
     projectionMatrix: IMatrix4;
+    defaultCamera: IBaseCamera;
+
     contextLost: boolean;
 
     onContextLost (event: Event): void;

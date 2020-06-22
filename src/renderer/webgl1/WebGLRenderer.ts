@@ -1,4 +1,5 @@
 import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
+import { Identity, Matrix4, Ortho } from '../../math/mat4';
 
 import { CreateTempTextures } from './renderpass/CreateTempTextures';
 import { End } from './renderpass/End';
@@ -6,12 +7,13 @@ import { GL } from './GL';
 import { GetBackgroundColor } from '../../config/BackgroundColor';
 import { GetRGBArray } from './colors/GetRGBArray';
 import { GetWebGLContext } from '../../config/WebGLContext';
+import { IBaseCamera } from '../../camera/IBaseCamera';
 import { IMatrix4 } from '../../math/mat4/IMatrix4';
 import { IRenderPass } from './renderpass/IRenderPass';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { IndexedVertexBuffer } from './buffers/IndexedVertexBuffer';
+import { Matrix } from '../../utils/array';
 import { MultiTextureQuadShader } from './shaders/MultiTextureQuadShader';
-import { Ortho } from '../../math/mat4';
 import { ProcessBindingQueue } from './renderpass/ProcessBindingQueue';
 import { RenderPass } from './renderpass/RenderPass';
 import { SetDefaultBlendMode } from './renderpass/SetDefaultBlendMode';
@@ -20,6 +22,7 @@ import { SetDefaultShader } from './renderpass/SetDefaultShader';
 import { SetDefaultVertexBuffer } from './renderpass/SetDefaultVertexBuffer';
 import { SetDefaultViewport } from './renderpass/SetDefaultViewport';
 import { Start } from './renderpass';
+import { StaticCamera } from '../../camera';
 import { WebGLRendererInstance } from './WebGLRendererInstance';
 import { batchSize } from '../../config/BatchSize';
 
@@ -37,6 +40,7 @@ export class WebGLRenderer
     resolution: number;
 
     projectionMatrix: IMatrix4;
+    defaultCamera: IBaseCamera;
 
     clearBeforeRender: boolean = true;
     optimizeRedraw: boolean = false;
@@ -49,6 +53,8 @@ export class WebGLRenderer
         this.width = GetWidth();
         this.height = GetHeight();
         this.resolution = GetResolution();
+
+        this.projectionMatrix = new Matrix4();
 
         this.setBackgroundColor(GetBackgroundColor());
 
@@ -78,6 +84,11 @@ export class WebGLRenderer
         SetDefaultShader(renderPass, new MultiTextureQuadShader());
 
         this.resize(this.width, this.height, this.resolution);
+
+        this.defaultCamera = new StaticCamera();
+
+        renderPass.default2DCamera = this.defaultCamera;
+        renderPass.current2DCamera = this.defaultCamera;
     }
 
     initContext (): void
@@ -115,7 +126,7 @@ export class WebGLRenderer
         SetDefaultViewport(this.renderPass, 0, 0, calcWidth, calcHeight);
 
         //  TODO - -1 to 1?
-        this.projectionMatrix = Ortho(0, calcWidth, calcHeight, 0, -1000, 1000);
+        Ortho(0, calcWidth, calcHeight, 0, -1000, 1000, this.projectionMatrix);
     }
 
     onContextLost (event: Event): void
