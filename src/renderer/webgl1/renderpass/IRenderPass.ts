@@ -52,7 +52,10 @@ export interface IRenderPass
 
     quadShader: IShader;
     quadBuffer: IVertexBuffer;
+    quadCamera: IBaseCamera;
 
-    default2DCamera: IBaseCamera;
     current2DCamera: IBaseCamera;
+
+    reset (): void;
+    resize (width: number, height: number): void;
 }

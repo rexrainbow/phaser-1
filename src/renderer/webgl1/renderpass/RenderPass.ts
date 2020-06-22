@@ -1,3 +1,4 @@
+import { CreateTempTextures } from './CreateTempTextures';
 import { IBaseCamera } from '../../../camera/IBaseCamera';
 import { IMatrix4 } from '../../../math/mat4/IMatrix4';
 import { IRenderPass } from './IRenderPass';
@@ -5,8 +6,18 @@ import { IShader } from '../shaders/IShader';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
 import { IWebGLRenderer } from '../IWebGLRenderer';
 import { IndexedVertexBuffer } from '../buffers/IndexedVertexBuffer';
+import { Matrix4 } from '../../../math/mat4/Matrix4';
+import { MultiTextureQuadShader } from '../shaders';
+import { Ortho } from '../../../math/mat4/Ortho';
 import { QuadShader } from '../shaders/QuadShader';
 import { Rectangle } from '../../../geom/rectangle/Rectangle';
+import { SetDefaultBlendMode } from './SetDefaultBlendMode';
+import { SetDefaultFramebuffer } from './SetDefaultFramebuffer';
+import { SetDefaultShader } from './SetDefaultShader';
+import { SetDefaultVertexBuffer } from './SetDefaultVertexBuffer';
+import { SetDefaultViewport } from './SetDefaultViewport';
+import { StaticCamera } from '../../../camera';
+import { batchSize } from '../../../config/BatchSize';
 
 export type FramebufferStackEntry = {
     framebuffer: WebGLFramebuffer;
@@ -68,20 +79,55 @@ export class RenderPass implements IRenderPass
     currentBlendMode: BlendModeStackEntry = null;
     defaultBlendMode: BlendModeStackEntry = null;
 
-    //  Single Texture Quad Shader
+    //  Single Texture Quad Shader + Camera
     quadShader: IShader;
     quadBuffer: IVertexBuffer;
+    quadCamera: IBaseCamera;
 
     //  Current 2D Camera
-    default2DCamera: IBaseCamera;
     current2DCamera: IBaseCamera;
 
     constructor (renderer: IWebGLRenderer)
     {
         this.renderer = renderer;
 
-        this.quadShader = new QuadShader();
+        this.projectionMatrix = new Matrix4();
 
-        this.quadBuffer = new IndexedVertexBuffer({ isDynamic: false, indexLayout: [ 0, 1, 2, 2, 3, 0 ] });
+        this.reset();
+    }
+
+    //  TODO - Call when context is lost and restored
+    reset (): void
+    {
+        const gl = this.renderer.gl;
+
+        const indexLayout = [ 0, 1, 2, 2, 3, 0 ];
+
+        //  TODO - If already created, delete shaders / buffers first (i.e. during context loss)
+
+        //  Default QuadShader (for FBO drawing)
+
+        this.quadShader = new QuadShader();
+        this.quadBuffer = new IndexedVertexBuffer({ isDynamic: false, indexLayout });
+        this.quadCamera = new StaticCamera();
+
+        //  Default settings
+
+        CreateTempTextures(this);
+
+        SetDefaultFramebuffer(this);
+        SetDefaultBlendMode(this, true, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+        SetDefaultVertexBuffer(this, new IndexedVertexBuffer({ batchSize, indexLayout }));
+        SetDefaultShader(this, new MultiTextureQuadShader());
+    }
+
+    resize (width: number, height: number): void
+    {
+        //  TODO - -1 to 1?
+        Ortho(0, width, height, 0, -1000, 1000, this.projectionMatrix);
+
+        this.quadCamera.reset();
+
+        SetDefaultViewport(this, 0, 0, width, height);
     }
 }
