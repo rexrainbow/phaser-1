@@ -73,6 +73,7 @@ export class RenderPass implements IRenderPass
     quadBuffer: IVertexBuffer;
 
     //  Current 2D Camera
+    default2DCamera: IBaseCamera;
     current2DCamera: IBaseCamera;
 
     constructor (renderer: IWebGLRenderer)
