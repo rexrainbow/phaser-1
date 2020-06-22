@@ -9,6 +9,7 @@ export function BindVertexBuffer (renderPass: IRenderPass, buffer?: IVertexBuffe
         buffer = renderPass.currentVertexBuffer;
     }
 
+    //  TODO - Only bind if different
     const indexBuffer = (buffer.indexed) ? buffer.indexBuffer : null;
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);

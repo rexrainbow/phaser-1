@@ -9,6 +9,7 @@ export function BindBlendMode (renderPass: IRenderPass, entry?: BlendModeStackEn
         entry = renderPass.currentBlendMode;
     }
 
+    //  TODO - Only set if different
     if (entry.enable)
     {
         gl.enable(gl.BLEND);
