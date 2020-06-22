@@ -8,8 +8,8 @@ import { IRenderPass } from './IRenderPass';
 export function Start (renderPass: IRenderPass, projectionMatrix: IMatrix4): void
 {
     renderPass.projectionMatrix = projectionMatrix;
-    renderPass.current2DCamera = null;
-    renderPass.cameraMatrix = null;
+    renderPass.current2DCamera = renderPass.default2DCamera;
+    renderPass.cameraMatrix = renderPass.default2DCamera.matrix;
 
     renderPass.count = 0;
     renderPass.flushTotal = 0;
