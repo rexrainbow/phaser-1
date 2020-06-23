@@ -24,7 +24,9 @@ export function Draw (renderPass: IRenderPass): void
 
     if (count === currentBuffer.batchSize)
     {
-        gl.bufferData(gl.ARRAY_BUFFER, currentBuffer.data, gl.DYNAMIC_DRAW);
+        const type = (currentBuffer.isDynamic) ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
+
+        gl.bufferData(gl.ARRAY_BUFFER, currentBuffer.data, type);
     }
     else
     {
