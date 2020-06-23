@@ -4,8 +4,6 @@ import { FlushBuffer } from '../../renderer/webgl1/renderpass';
 import { Frame } from '../../textures/Frame';
 import { GameObject3D } from '../GameObject3D';
 import { GetBufferFromVertexSet } from '../../primitives/faces/GetBufferFromVertexSet';
-import { GetFacesFromVertexSet } from '../../primitives/faces/GetFacesFromVertexSet';
-import { IFace } from '../../primitives/faces/IFace';
 import { IGameObject3D } from '../IGameObject3D';
 import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
 import { SetTexture as RequestTexture } from '../../renderer/webgl1/renderpass/SetTexture';
@@ -19,7 +17,6 @@ export class Mesh extends GameObject3D
     texture: Texture;
     frame: Frame;
     hasTexture: boolean = false;
-    faces: IFace[];
     // buffer: IndexedVertexBuffer;
     buffer: VertexBuffer;
 
@@ -63,9 +60,9 @@ export class Mesh extends GameObject3D
     {
         super.destroy(reparentChildren);
 
+        this.buffer.destroy();
         this.texture = null;
         this.frame = null;
         this.hasTexture = false;
-        this.faces = [];
     }
 }
