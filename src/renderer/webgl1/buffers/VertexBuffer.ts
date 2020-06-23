@@ -7,6 +7,7 @@ export class VertexBuffer implements IVertexBuffer
 {
     /**
      * Maximum number of entries per batch before a flush takes place.
+     * For a Mesh, this is the number of triangles / faces in the vertex buffer.
      *
      * @type {number}
      */
@@ -94,6 +95,7 @@ export class VertexBuffer implements IVertexBuffer
 
     /**
      * The total number of entries added to the buffer so far.
+     * This is the total number of indices, not faces.
      *
      * @type {number}
      */
