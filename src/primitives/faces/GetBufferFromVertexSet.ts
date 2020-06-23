@@ -18,7 +18,48 @@ function GetVec2 (data: number[], index: number): number[]
     return [ x, y ];
 }
 
-export function GetBufferFromVertexSet (data: VertexSet): VertexBuffer
+function CreateNonIndexedVertexBuffer (data: VertexSet): VertexBuffer
+{
+    const {
+        vertices,
+        normals,
+        uvs
+    } = data;
+
+    // console.log(vertices);
+    // console.log(normals);
+    // console.log(uvs);
+
+    const count = vertices.length / 3;
+    const batchSize = count / 3;
+
+    const buffer = new VertexBuffer({ batchSize, isDynamic: false, vertexElementSize: 8, elementsPerEntry: 3 });
+
+    const F32 = buffer.vertexViewF32;
+
+    let offset = 0;
+    let uv = 0;
+
+    for (let i = 0; i < count; i += 3)
+    {
+        F32[offset++] = vertices[i + 0];
+        F32[offset++] = vertices[i + 1];
+        F32[offset++] = vertices[i + 2];
+        F32[offset++] = normals[i + 0];
+        F32[offset++] = normals[i + 1];
+        F32[offset++] = normals[i + 2];
+        F32[offset++] = uvs[uv + 0];
+        F32[offset++] = uvs[uv + 1];
+
+        uv += 2;
+    }
+
+    buffer.count = count;
+
+    return buffer;
+}
+
+function CreateVertexBuffer (data: VertexSet): VertexBuffer
 {
     const {
         vertices,
@@ -87,4 +128,16 @@ export function GetBufferFromVertexSet (data: VertexSet): VertexBuffer
     buffer.count = indices.length;
 
     return buffer;
+}
+
+export function GetBufferFromVertexSet (data: VertexSet): VertexBuffer
+{
+    if (data.indices && data.indices.length > 0)
+    {
+        return CreateVertexBuffer(data);
+    }
+    else
+    {
+        return CreateNonIndexedVertexBuffer(data);
+    }
 }
