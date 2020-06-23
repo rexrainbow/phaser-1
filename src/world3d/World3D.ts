@@ -30,7 +30,7 @@ export class World3D extends BaseWorld3D implements IWorld3D
 
         this.camera = new Camera3D(0, 0, 4);
 
-        this.buffer = new VertexBuffer({ batchSize: 4096, vertexElementSize: 10, elementsPerEntry: 3 });
+        this.buffer = new VertexBuffer({ batchSize: 12, vertexElementSize: 8, elementsPerEntry: 3 });
         this.shader = new GoraudLambertShader();
         this.normalMatrix = new Matrix4();
 
