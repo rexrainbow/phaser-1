@@ -137,6 +137,20 @@ export class Shader implements IShader
         return this.setUniforms(renderPass);
     }
 
+    setUniform (key: string, value: unknown): void
+    {
+        const uniforms = this.uniforms;
+
+        if (uniforms.has(key))
+        {
+            uniforms.set(key, value);
+
+            const setter = this.uniformSetters.get(key);
+
+            setter(value);
+        }
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setUniforms (renderPass: IRenderPass): boolean
     {

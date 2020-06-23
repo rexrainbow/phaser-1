@@ -18,5 +18,6 @@ export interface IShader
     destroy (): void;
     updateUniforms (renderPass: IRenderPass): void;
     setAttributes (renderPass: IRenderPass): void;
+    setUniform (key: string, value: unknown): void;
     setUniforms (renderPass: IRenderPass): boolean;
 }
