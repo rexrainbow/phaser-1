@@ -8,6 +8,7 @@ export class VertexBuffer implements IVertexBuffer
     /**
      * Maximum number of entries per batch before a flush takes place.
      * For a Mesh, this is the number of triangles / faces in the vertex buffer.
+     * Typically each face consists of 3 verticies.
      *
      * @type {number}
      */
@@ -94,8 +95,10 @@ export class VertexBuffer implements IVertexBuffer
     isDynamic: boolean = false;
 
     /**
-     * The total number of entries added to the buffer so far.
-     * This is the total number of indices, not faces.
+     * The total number of entries added to the buffer so far, or reserved to be added.
+     *
+     * This is the total number of indices / verticies, not faces.
+     * Typically there are 3 verts per face, so this value is usually batchSize x 3 for a Mesh.
      *
      * @type {number}
      */
