@@ -1,5 +1,5 @@
 export const GORAUD_LAMBERT_VERT = `
-#define SHADER_NAME goraud_lambert_vert
+#define SHADER_NAME GORAUD_LAMBERT_VERT
 
 //  Goraud Shading + Lambert Reflection
 
@@ -8,12 +8,11 @@ precision highp float;
 attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
 attribute vec2 aTextureCoord;
-attribute float aTextureId;
-attribute vec4 aVertexColor;
 
 uniform mat4 uProjectionMatrix;
 uniform mat4 uCameraMatrix;
 uniform mat4 uNormalMatrix;
+uniform mat4 uModelMatrix;
 
 uniform float uShininess;
 uniform vec3 uLightDirection;
@@ -28,14 +27,12 @@ uniform vec4 uMaterialSpecular;
 
 varying vec4 vTintColor;
 varying vec2 vTextureCoord;
-varying float vTextureId;
 
 void main(void)
 {
     vTextureCoord = aTextureCoord;
-    vTextureId = aTextureId;
 
-    vec4 vertex = uCameraMatrix * vec4(aVertexPosition, 1.0);
+    vec4 vertex = uCameraMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
 
     vec3 N = vec3(uNormalMatrix * vec4(aVertexNormal, 1.0));
 
@@ -43,7 +40,7 @@ void main(void)
 
     float lambertTerm = clamp(dot(N, -L), 0.0, 1.0);
 
-    vec4 Ia = uLightAmbient * aVertexColor;
+    vec4 Ia = uLightAmbient;
     vec4 Id = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 Is = vec4(0.0, 0.0, 0.0, 1.0);
 
