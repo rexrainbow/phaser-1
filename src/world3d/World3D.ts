@@ -18,7 +18,6 @@ export class World3D extends BaseWorld3D implements IWorld3D
 
     enableCameraCull: boolean = true;
 
-    buffer: VertexBuffer;
     shader: IShader;
     normalMatrix: Matrix4;
 
@@ -30,7 +29,6 @@ export class World3D extends BaseWorld3D implements IWorld3D
 
         this.camera = new Camera3D(0, 0, 4);
 
-        this.buffer = new VertexBuffer({ batchSize: 12, vertexElementSize: 8, elementsPerEntry: 3 });
         this.shader = new GoraudLambertShader();
         this.normalMatrix = new Matrix4();
 
@@ -58,13 +56,10 @@ export class World3D extends BaseWorld3D implements IWorld3D
 
         uniforms.set('uNormalMatrix', normalMatrix.data);
 
-        //  TODO - Only reset if 1+ of the GOs is dirty
-        this.buffer.reset();
-
         //  TODO - Use fbo anyway to avoid z-fighting with World2D?
         // SetFramebuffer(renderPass, this.framebuffer, true);
 
-        SetVertexBuffer(renderPass, this.buffer);
+        // SetVertexBuffer(renderPass, this.buffer);
         SetShader(renderPass, shader, 0);
 
         // BindTexture(this.cubeTexture);
@@ -90,7 +85,7 @@ export class World3D extends BaseWorld3D implements IWorld3D
     {
         const gl = renderPass.renderer.gl;
 
-        Flush(renderPass);
+        // Flush(renderPass);
 
         gl.disable(gl.DEPTH_TEST);
         gl.disable(gl.CULL_FACE);
@@ -98,7 +93,7 @@ export class World3D extends BaseWorld3D implements IWorld3D
         // UnbindTexture(renderPass);
 
         // PopFramebuffer(renderPass);
-        PopVertexBuffer(renderPass);
+        // PopVertexBuffer(renderPass);
         PopShader(renderPass);
 
         // DrawTexturedQuad(renderPass, this.texture);
