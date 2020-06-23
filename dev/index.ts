@@ -35,7 +35,8 @@
 // import runTest from './phong';
 // import runTest from './textured cube';
 // import runTest from './new camera';
+// import runTest from './cube world';
 
-import runTest from './cube world';
+import runTest from './cube transform';
 
 runTest();
