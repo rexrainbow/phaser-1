@@ -43,7 +43,7 @@ export class GLTextureBinding implements IGLTextureBinding
             framebuffer = null,
             depthbuffer = null,
             unpackPremultiplyAlpha = true,
-            minFilter = gl.LINEAR,
+            minFilter = (this.isPOT) ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR,
             magFilter = gl.LINEAR,
             wrapS = gl.CLAMP_TO_EDGE,
             wrapT = gl.CLAMP_TO_EDGE,
