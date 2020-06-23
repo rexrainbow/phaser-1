@@ -43,9 +43,12 @@ class Demo extends Scene
             loader.setPath('/examples/public/assets/');
         }
 
-        // loader.add(ImageFile('bg', 'checker.png'));
-        // loader.add(ImageFile('logo', 'logo.png'));
+        loader.add(ImageFile('bg', 'checker.png'));
+        loader.add(ImageFile('logo', 'logo.png'));
+        loader.add(ImageFile('128', '128x128.png', { flipY: true }));
         loader.add(ImageFile('f', 'f-texture.png', { flipY: true }));
+        loader.add(ImageFile('512', '512x512.png', { flipY: true, generateMipmap: true }));
+        loader.add(ImageFile('brain', 'brain.png', { flipY: true }));
 
         loader.start().then(() => this.create());
     }
@@ -58,11 +61,9 @@ class Demo extends Scene
         const box2 = new Box(0, 0, 0);
         const box3 = new Box(2, 0, 0);
 
-        // const box1 = new Box(0, 0, 0, 4, 4, 0.2);
-        // const box2 = new Box(0, 0, 0, 3, 3, 0.4);
-        // const box3 = new Box(0, 0, 0, 2, 2, 0.6);
-        // const box2 = new Box(2);
-
+        box1.setTexture('512');
+        box2.setTexture('128');
+        box3.setTexture('brain');
 
         AddChildren3D(this.world, box1, box2, box3);
         // AddChildren3D(this.world, box1);
