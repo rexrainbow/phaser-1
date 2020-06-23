@@ -1,5 +1,9 @@
+import { IndexedVertexBuffer, VertexBuffer } from '../../renderer/webgl1/buffers';
+
+import { FlushBuffer } from '../../renderer/webgl1/renderpass';
 import { Frame } from '../../textures/Frame';
 import { GameObject3D } from '../GameObject3D';
+import { GetBufferFromVertexSet } from '../../primitives/faces/GetBufferFromVertexSet';
 import { GetFacesFromVertexSet } from '../../primitives/faces/GetFacesFromVertexSet';
 import { IFace } from '../../primitives/faces/IFace';
 import { IGameObject3D } from '../IGameObject3D';
@@ -16,6 +20,8 @@ export class Mesh extends GameObject3D
     frame: Frame;
     hasTexture: boolean = false;
     faces: IFace[];
+    // buffer: IndexedVertexBuffer;
+    buffer: VertexBuffer;
 
     constructor (x: number = 0, y: number = 0, z: number = 0, data?: VertexSet)
     {
@@ -23,7 +29,7 @@ export class Mesh extends GameObject3D
 
         if (data)
         {
-            this.faces = GetFacesFromVertexSet(data);
+            this.buffer = GetBufferFromVertexSet(data);
         }
     }
 
@@ -43,22 +49,14 @@ export class Mesh extends GameObject3D
 
     renderGL <T extends IRenderPass> (renderPass: T): void
     {
-        const buffer = renderPass.currentVertexBuffer;
-
-        const F32 = buffer.vertexViewF32;
-        const U32 = buffer.vertexViewU32;
+        const shader = renderPass.currentShader.shader;
 
         const textureIndex = RequestTexture(renderPass, this.texture);
 
-        //  TODO - If dirty transform, cache face data to local buffer then copy that to vbo
-        this.faces.forEach(face =>
-        {
-            face.addToBuffer(F32, U32, textureIndex, buffer.offset);
+        shader.setUniform('uModelMatrix', this.transform.local.data);
+        shader.setUniform('uTexture', textureIndex);
 
-            buffer.add(3);
-
-            renderPass.count += 3;
-        });
+        FlushBuffer(renderPass, this.buffer);
     }
 
     destroy (reparentChildren?: IGameObject3D): void
