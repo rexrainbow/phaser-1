@@ -33,6 +33,7 @@ import { MultiplyByFloats } from './MultiplyByFloats';
 import { Negate } from './Negate';
 import { Normalize } from './Normalize';
 import { One } from './One';
+import { RGBACallback } from './RGBACallback';
 import { Random } from './Random';
 import { Round } from './Round';
 import { RoundToZero } from './RoundToZero';
@@ -43,6 +44,7 @@ import { Subtract } from './Subtract';
 import { SubtractScalar } from './SubtractScalar';
 import { TransformMat4 } from './TransformMat4';
 import { Vec4 } from './Vec4';
+import { Vec4Callback } from './Vec4Callback';
 import { Zero } from './Zero';
 
 export {
@@ -81,6 +83,7 @@ export {
     Negate,
     Normalize,
     One,
+    RGBACallback,
     Random,
     Round,
     RoundToZero,
@@ -91,5 +94,6 @@ export {
     SubtractScalar,
     TransformMat4,
     Vec4,
+    Vec4Callback,
     Zero
 };
