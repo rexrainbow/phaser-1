@@ -37,7 +37,8 @@
 // import runTest from './new camera';
 // import runTest from './cube world';
 // import runTest from './cube transform';
+// import runTest from './load model';
 
-import runTest from './load model';
+import runTest from './geometry test';
 
 runTest();
