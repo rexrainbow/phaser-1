@@ -1,33 +1,36 @@
-import { IndexedVertexBuffer, VertexBuffer } from '../../renderer/webgl1/buffers';
-
 import { FlushBuffer } from '../../renderer/webgl1/renderpass';
 import { Frame } from '../../textures/Frame';
 import { GameObject3D } from '../GameObject3D';
-import { GetBufferFromVertexSet } from '../../primitives/faces/GetBufferFromVertexSet';
+import { Geometry } from '../geometry/Geometry';
 import { IGameObject3D } from '../IGameObject3D';
 import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
+import { RGBACallback } from '../../math/vec4';
 import { SetTexture as RequestTexture } from '../../renderer/webgl1/renderpass/SetTexture';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
 import { Texture } from '../../textures/Texture';
-import { VertexSet } from '../../primitives/VertexSet';
 
 export class Mesh extends GameObject3D
 {
     texture: Texture;
     frame: Frame;
     hasTexture: boolean = false;
-    // buffer: IndexedVertexBuffer;
-    buffer: VertexBuffer;
 
-    constructor (x: number = 0, y: number = 0, z: number = 0, data?: VertexSet)
+    geometry: Geometry;
+
+    cullFaces: boolean = true;
+
+    shineAmount: number = 1;
+
+    materialAmbient: RGBACallback;
+    materialDiffuse: RGBACallback;
+    materialSpecular: RGBACallback;
+
+    constructor (x: number = 0, y: number = 0, z: number = 0, geometry?: Geometry)
     {
         super(x, y, z);
 
-        if (data)
-        {
-            this.buffer = GetBufferFromVertexSet(data);
-        }
+        this.geometry = geometry;
     }
 
     setTexture (key: string | Texture, frame?: string | number): this
@@ -53,14 +56,14 @@ export class Mesh extends GameObject3D
         shader.setUniform('uModelMatrix', this.transform.local.data);
         shader.setUniform('uTexture', textureIndex);
 
-        FlushBuffer(renderPass, this.buffer);
+        FlushBuffer(renderPass, this.geometry.buffer);
     }
 
     destroy (reparentChildren?: IGameObject3D): void
     {
         super.destroy(reparentChildren);
 
-        this.buffer.destroy();
+        this.geometry.destroy();
         this.texture = null;
         this.frame = null;
         this.hasTexture = false;
