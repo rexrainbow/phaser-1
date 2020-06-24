@@ -66,7 +66,7 @@ export class World3D extends BaseWorld3D implements IWorld3D
         // const textureIndex = SetTexture(renderPass, this.cubeTexture);
 
         gl.enable(gl.DEPTH_TEST);
-        gl.enable(gl.CULL_FACE);
+        // gl.enable(gl.CULL_FACE);
 
         this.renderList.forEach(entry =>
         {
