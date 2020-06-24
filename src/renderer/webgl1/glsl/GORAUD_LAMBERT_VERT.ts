@@ -40,7 +40,7 @@ void main(void)
 
     float lambertTerm = clamp(dot(N, -L), 0.0, 1.0);
 
-    vec4 Ia = uLightAmbient;
+    vec4 Ia = uLightAmbient * uMaterialAmbient;
     vec4 Id = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 Is = vec4(0.0, 0.0, 0.0, 1.0);
 
