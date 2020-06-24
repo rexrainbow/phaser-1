@@ -37,10 +37,12 @@ export class Vec3Callback
 
     set x (value: number)
     {
-        if (!this.compareValue || (this.compareValue && value !== this._x))
-        {
-            this._x = value;
+        const prev = this._x;
 
+        this._x = value;
+
+        if (this.compareValue && prev !== value)
+        {
             this.callback(this);
         }
     }
@@ -52,10 +54,12 @@ export class Vec3Callback
 
     set y (value: number)
     {
-        if (!this.compareValue || (this.compareValue && value !== this._y))
-        {
-            this._y = value;
+        const prev = this._y;
 
+        this._y = value;
+
+        if (this.compareValue && prev !== value)
+        {
             this.callback(this);
         }
     }
@@ -67,10 +71,12 @@ export class Vec3Callback
 
     set z (value: number)
     {
-        if (!this.compareValue || (this.compareValue && value !== this._z))
-        {
-            this._z = value;
+        const prev = this._z;
 
+        this._z = value;
+
+        if (this.compareValue && prev !== value)
+        {
             this.callback(this);
         }
     }
