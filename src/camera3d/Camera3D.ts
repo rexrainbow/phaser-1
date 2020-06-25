@@ -44,9 +44,8 @@ export class Camera3D
 
         this.renderer = game.renderer;
 
-        this.position = new Vec3Callback(() => this.update(), x, y, z, true);
-        this.direction = new Vec3Callback(() => this.update(), 0, 1, 0, true);
-        // this.rotation = new Vec3Callback(() => this.updateRotation(), 0, 1, 0, true);
+        this.position = new Vec3Callback(() => this.update(), x, y, z);
+        this.direction = new Vec3Callback(() => this.update(), 0, 1, 0);
 
         this._lookAtPosition = new Vec3();
         this._lookAtView = new Matrix4();
