@@ -2,9 +2,9 @@ import { Vec4Callback } from './Vec4Callback';
 
 export class RGBACallback extends Vec4Callback
 {
-    constructor (callback: (vec4: Vec4Callback) => void, r: number = 0, g: number = 0, b: number = 0, a: number = 1, compareValue: boolean = false)
+    constructor (callback: (vec4: Vec4Callback) => void, r: number = 0, g: number = 0, b: number = 0, a: number = 1)
     {
-        super(callback, r, g, b, a, compareValue);
+        super(callback, r, g, b, a);
     }
 
     set r (value: number)
@@ -49,6 +49,8 @@ export class RGBACallback extends Vec4Callback
 
     toString (): string
     {
-        return `[ r=${this.x}, g=${this.y}, b=${this.z}, a=${this.w} ]`;
+        const { x, y, z, w } = this;
+
+        return `[ r=${x}, g=${y}, b=${z}, a=${w} ]`;
     }
 }
