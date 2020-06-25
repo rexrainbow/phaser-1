@@ -1,6 +1,6 @@
 import { Forward, Right, Up, Vec3, Vec3Callback } from '../../../math/vec3';
 import { FromRotationTranslationScale, Matrix4 } from '../../../math/mat4';
-import { QuaternionCallback, RotateX, RotateY, RotateZ } from '../../../math/quaternion';
+import { Quaternion, RotateX, RotateY, RotateZ } from '../../../math/quaternion';
 
 import { DIRTY_CONST } from '../../../gameobjects/DIRTY_CONST';
 import { IGameObject3D } from '../../IGameObject3D';
@@ -15,7 +15,7 @@ export class Transform3DComponent
     position: Vec3Callback;
     scale: Vec3Callback;
     origin: Vec3Callback;
-    rotation: QuaternionCallback;
+    rotation: Quaternion;
 
     forward: Vec3;
     up: Vec3;
@@ -30,10 +30,12 @@ export class Transform3DComponent
         this.local = new Matrix4();
         this.world = new Matrix4();
 
-        this.position = new Vec3Callback(() => this.update(), x, y, z, true);
-        this.scale = new Vec3Callback(() => this.update(), 1, 1, 1, true);
-        this.origin = new Vec3Callback(() => this.update(), 0, 0, 0, true);
-        this.rotation = new QuaternionCallback(() => this.update(), 0, 0, 0, 1, true);
+        this.position = new Vec3Callback(() => this.update(), x, y, z);
+        this.scale = new Vec3Callback(() => this.update(), 1, 1, 1);
+        this.origin = new Vec3Callback(() => this.update());
+        this.rotation = new Quaternion();
+
+        this.rotation.onChange = () => this.update();
 
         this.forward = Forward();
         this.up = Up();
