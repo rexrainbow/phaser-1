@@ -1,4 +1,5 @@
 import { IMatrix4 } from './IMatrix4';
+import { NOOP } from '../../utils';
 
 //  4x4 Matrix in column-major format
 
@@ -25,11 +26,14 @@ export class Matrix4 implements IMatrix4
 {
     data: Float32Array;
 
+    onChange: (mat4: Matrix4) => void;
+
     constructor (src?: Matrix4)
     {
         const data = new Float32Array(16);
 
         this.data = data;
+        this.onChange = NOOP;
 
         if (src)
         {
@@ -86,6 +90,8 @@ export class Matrix4 implements IMatrix4
         data[ 14 ] = m32;
         data[ 15 ] = m33;
 
+        this.onChange(this);
+
         return this;
     }
 
@@ -110,6 +116,8 @@ export class Matrix4 implements IMatrix4
             data[i] = src[ index + i ];
         }
 
+        this.onChange(this);
+
         return this;
     }
 
@@ -118,4 +126,9 @@ export class Matrix4 implements IMatrix4
         return '[ mat4=' + this.data.join(', ') + ' ]';
     }
 
+    destroy (): void
+    {
+        this.onChange = NOOP;
+        this.data = null;
+    }
 }
