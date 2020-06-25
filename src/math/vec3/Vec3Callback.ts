@@ -6,17 +6,15 @@ export class Vec3Callback
     private _y: number;
     private _z: number;
 
-    callback: (vec3: Vec3Callback) => void;
+    onChange: (vec3: Vec3Callback) => void;
 
-    compareValue: boolean = false;
-
-    constructor (callback: (vec3: Vec3Callback) => void, x: number = 0, y: number = 0, z: number = 0, compareValue: boolean = false)
+    constructor (onChange: (vec3: Vec3Callback) => void = NOOP, x: number = 0, y: number = 0, z: number = 0)
     {
         this._x = x;
         this._y = y;
         this._z = z;
-        this.callback = callback;
-        this.compareValue = compareValue;
+
+        this.onChange = onChange;
     }
 
     set (x: number = 0, y: number = 0, z: number = 0): this
@@ -25,14 +23,9 @@ export class Vec3Callback
         this._y = y;
         this._z = z;
 
-        this.callback(this);
+        this.onChange(this);
 
         return this;
-    }
-
-    destroy (): void
-    {
-        this.callback = NOOP;
     }
 
     set x (value: number)
@@ -41,9 +34,9 @@ export class Vec3Callback
 
         this._x = value;
 
-        if (this.compareValue && prev !== value)
+        if (prev !== value)
         {
-            this.callback(this);
+            this.onChange(this);
         }
     }
 
@@ -58,9 +51,9 @@ export class Vec3Callback
 
         this._y = value;
 
-        if (this.compareValue && prev !== value)
+        if (prev !== value)
         {
-            this.callback(this);
+            this.onChange(this);
         }
     }
 
@@ -75,9 +68,9 @@ export class Vec3Callback
 
         this._z = value;
 
-        if (this.compareValue && prev !== value)
+        if (prev !== value)
         {
-            this.callback(this);
+            this.onChange(this);
         }
     }
 
@@ -86,24 +79,17 @@ export class Vec3Callback
         return this._z;
     }
 
-    /**
-     * Sets the Vector3 coordinates into the given array, or a new array, at
-     * the given index.
-     */
     toArray (dst: Float32List = [], index: number = 0): Float32List
     {
-        dst[ index ] = this._x;
-        dst[ index + 1 ] = this._y;
-        dst[ index + 2 ] = this._z;
+        const { x, y, z } = this;
+
+        dst[ index ] = x;
+        dst[ index + 1 ] = y;
+        dst[ index + 2 ] = z;
 
         return dst;
     }
 
-    /**
-     * Sets the values of this Vector3 based on the given array, or array-like object, such as a Float32.
-     *
-     * The source must have 3 elements, starting from index 0 through to index 2.
-     */
     fromArray (src: Float32List, index: number = 0): this
     {
         return this.set(
@@ -115,6 +101,13 @@ export class Vec3Callback
 
     toString (): string
     {
-        return `[ x=${this.x}, y=${this.y}, z=${this.z} ]`;
+        const { x, y, z } = this;
+
+        return `[ x=${x}, y=${y}, z=${z} ]`;
+    }
+
+    destroy (): void
+    {
+        this.onChange = NOOP;
     }
 }

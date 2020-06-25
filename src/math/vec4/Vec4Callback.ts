@@ -7,18 +7,16 @@ export class Vec4Callback
     private _z: number;
     private _w: number;
 
-    callback: (vec4: Vec4Callback) => void;
+    onChange: (vec4: Vec4Callback) => void;
 
-    compareValue: boolean = false;
-
-    constructor (callback: (vec4: Vec4Callback) => void, x: number = 0, y: number = 0, z: number = 0, w: number = 1, compareValue: boolean = false)
+    constructor (onChange: (vec4: Vec4Callback) => void = NOOP, x: number = 0, y: number = 0, z: number = 0, w: number = 1)
     {
         this._x = x;
         this._y = y;
         this._z = z;
         this._w = w;
-        this.callback = callback;
-        this.compareValue = compareValue;
+
+        this.onChange = onChange;
     }
 
     set (x: number = 0, y: number = 0, z: number = 0, w: number = 1): this
@@ -28,14 +26,9 @@ export class Vec4Callback
         this._z = z;
         this._w = w;
 
-        this.callback(this);
+        this.onChange(this);
 
         return this;
-    }
-
-    destroy (): void
-    {
-        this.callback = NOOP;
     }
 
     set x (value: number)
@@ -44,9 +37,9 @@ export class Vec4Callback
 
         this._x = value;
 
-        if (this.compareValue && prev !== value)
+        if (prev !== value)
         {
-            this.callback(this);
+            this.onChange(this);
         }
     }
 
@@ -61,9 +54,9 @@ export class Vec4Callback
 
         this._y = value;
 
-        if (this.compareValue && prev !== value)
+        if (prev !== value)
         {
-            this.callback(this);
+            this.onChange(this);
         }
     }
 
@@ -78,9 +71,9 @@ export class Vec4Callback
 
         this._z = value;
 
-        if (this.compareValue && prev !== value)
+        if (prev !== value)
         {
-            this.callback(this);
+            this.onChange(this);
         }
     }
 
@@ -95,9 +88,9 @@ export class Vec4Callback
 
         this._w = value;
 
-        if (this.compareValue && prev !== value)
+        if (prev !== value)
         {
-            this.callback(this);
+            this.onChange(this);
         }
     }
 
@@ -106,25 +99,18 @@ export class Vec4Callback
         return this._w;
     }
 
-    /**
-     * Sets the Vector4 coordinates into the given array, or a new array, at
-     * the given index.
-     */
     toArray (dst: Float32List = [], index: number = 0): Float32List
     {
-        dst[ index ] = this._x;
-        dst[ index + 1 ] = this._y;
-        dst[ index + 2 ] = this._z;
-        dst[ index + 3 ] = this._w;
+        const { x, y, z, w } = this;
+
+        dst[ index ] = x;
+        dst[ index + 1 ] = y;
+        dst[ index + 2 ] = z;
+        dst[ index + 3 ] = w;
 
         return dst;
     }
 
-    /**
-     * Sets the values of this Vector4 based on the given array, or array-like object, such as a Float32.
-     *
-     * The source must have 4 elements, starting from index 0 through to index 3.
-     */
     fromArray (src: Float32List, index: number = 0): this
     {
         return this.set(
@@ -137,6 +123,13 @@ export class Vec4Callback
 
     toString (): string
     {
-        return `[ x=${this.x}, y=${this.y}, z=${this.z}, w=${this.w} ]`;
+        const { x, y, z, w } = this;
+
+        return `[ x=${x}, y=${y}, z=${z}, w=${w} ]`;
+    }
+
+    destroy (): void
+    {
+        this.onChange = NOOP;
     }
 }
