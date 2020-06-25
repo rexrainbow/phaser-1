@@ -8,5 +8,7 @@ export function SetTranslationFromFloats (matrix: IMatrix4, x: number, y: number
     data[13] = y;
     data[14] = z;
 
+    matrix.onChange(matrix);
+
     return matrix;
 }

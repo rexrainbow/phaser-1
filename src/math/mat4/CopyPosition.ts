@@ -9,5 +9,7 @@ export function CopyPosition (src: IMatrix4, dest: IMatrix4): IMatrix4
     destData[13] = srcData[13];
     destData[14] = srcData[14];
 
+    dest.onChange(dest);
+
     return dest;
 }

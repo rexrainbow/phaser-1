@@ -10,5 +10,7 @@ export function SetTranslation (matrix: IMatrix4, vec3: IVec3): IMatrix4
     data[13] = y;
     data[14] = z;
 
+    matrix.onChange(matrix);
+
     return matrix;
 }
