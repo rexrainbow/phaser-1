@@ -128,10 +128,10 @@ export class BaseWorld3D extends GameObject3D implements IBaseWorld3D
 
         ResetWorld3DRenderData(this.renderData, 0);
 
-        if (this.camera)
-        {
-            this.camera.reset();
-        }
+        // if (this.camera)
+        // {
+        //     this.camera.reset();
+        // }
     }
 
     destroy (reparentChildren?: IGameObject3D): void
@@ -142,10 +142,10 @@ export class BaseWorld3D extends GameObject3D implements IBaseWorld3D
 
         ResetWorld3DRenderData(this.renderData, 0);
 
-        if (this.camera)
-        {
-            this.camera.destroy();
-        }
+        // if (this.camera)
+        // {
+        //     this.camera.destroy();
+        // }
 
         this.events.clear();
 

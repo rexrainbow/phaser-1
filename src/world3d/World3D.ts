@@ -10,6 +10,7 @@ import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
 import { IScene } from '../scenes/IScene';
 import { IShader } from '../renderer/webgl1/shaders/IShader';
 import { IWorld3D } from './IWorld3D';
+import { NewCamera3D } from '../camera3d/NewCamera3D';
 import { VertexBuffer } from '../renderer/webgl1/buffers/VertexBuffer';
 
 export class World3D extends BaseWorld3D implements IWorld3D
@@ -27,7 +28,8 @@ export class World3D extends BaseWorld3D implements IWorld3D
 
         this.type = 'World3D';
 
-        this.camera = new Camera3D(0, 0, 4);
+        // this.camera = new Camera3D(0, 0, 4);
+        this.camera = new NewCamera3D();
 
         this.shader = new GoraudLambertShader();
         this.normalMatrix = new Matrix4();
