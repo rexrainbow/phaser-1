@@ -1,70 +1,117 @@
-export class Quaternion
+import { IQuaternion } from './IQuaternion';
+import { NOOP } from '../../utils';
+
+export class Quaternion implements IQuaternion
 {
-    /**
-     * X component
-     */
-    x: number;
+    private _x: number;
+    private _y: number;
+    private _z: number;
+    private _w: number;
 
-    /**
-     * Y component
-     */
-    y: number;
+    onChange: (quat: Quaternion) => void;
 
-    /**
-     * Z component
-     */
-    z: number;
-
-    /**
-     * W component
-     */
-    w: number;
-
-    /**
-     * Creates an instance of a Vector2.
-     *
-     * @param {number} [x=0] - X component
-     * @param {number} [y=0] - Y component
-     * @param {number} [z=0] - Z component
-     * @param {number} [w=1] - W component
-     */
     constructor (x: number = 0, y: number = 0, z: number = 0, w: number = 1)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = w;
+        this._x = x;
+        this._y = y;
+        this._z = z;
+        this._w = w;
+
+        this.onChange = NOOP;
     }
 
     set (x: number = 0, y: number = 0, z: number = 0, w: number = 1): this
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = w;
+        this._x = x;
+        this._y = y;
+        this._z = z;
+        this._w = w;
+
+        this.onChange(this);
 
         return this;
     }
 
-    /**
-     * Sets the Vector2 coordinates into the given array, or a new array, at
-     * the given index.
-     */
+    set x (value: number)
+    {
+        const prev = this._x;
+
+        this._x = value;
+
+        if (value !== prev)
+        {
+            this.onChange(this);
+        }
+    }
+
+    get x (): number
+    {
+        return this._x;
+    }
+
+    set y (value: number)
+    {
+        const prev = this._y;
+
+        this._y = value;
+
+        if (value !== prev)
+        {
+            this.onChange(this);
+        }
+    }
+
+    get y (): number
+    {
+        return this._y;
+    }
+
+    set z (value: number)
+    {
+        const prev = this._z;
+
+        this._z = value;
+
+        if (value !== prev)
+        {
+            this.onChange(this);
+        }
+    }
+
+    get z (): number
+    {
+        return this._z;
+    }
+
+    set w (value: number)
+    {
+        const prev = this._w;
+
+        this._w = value;
+
+        if (value !== prev)
+        {
+            this.onChange(this);
+        }
+    }
+
+    get w (): number
+    {
+        return this._w;
+    }
+
     toArray (dst: Float32List = [], index: number = 0): Float32List
     {
-        dst[ index ] = this.x;
-        dst[ index + 1 ] = this.y;
-        dst[ index + 2 ] = this.z;
-        dst[ index + 3 ] = this.w;
+        const { x, y, z, w } = this;
+
+        dst[ index ] = x;
+        dst[ index + 1 ] = y;
+        dst[ index + 2 ] = z;
+        dst[ index + 3 ] = w;
 
         return dst;
     }
 
-    /**
-     * Sets the values of this Vector2 based on the given array, or array-like object, such as a Float32.
-     *
-     * The source must have 2 elements, starting from index 0 through to index 1.
-     */
     fromArray (src: Float32List, index: number = 0): this
     {
         return this.set(
@@ -75,8 +122,15 @@ export class Quaternion
         );
     }
 
+    destroy (): void
+    {
+        this.onChange = NOOP;
+    }
+
     toString (): string
     {
-        return `[ x=${this.x}, y=${this.y}, z=${this.z}, w=${this.w} ]`;
+        const { x, y, z, w } = this;
+
+        return `[ x=${x}, y=${y}, z=${z}, w=${w} ]`;
     }
 }
