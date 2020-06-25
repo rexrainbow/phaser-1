@@ -66,23 +66,23 @@ export class Vec2 implements IVec2
         return `[ x=${this.x}, y=${this.y} ]`;
     }
 
-    get width (): number
-    {
-        return this.x;
-    }
+    // get width (): number
+    // {
+    //     return this.x;
+    // }
 
-    set width (value: number)
-    {
-        this.x = value;
-    }
+    // set width (value: number)
+    // {
+    //     this.x = value;
+    // }
 
-    get height (): number
-    {
-        return this.y;
-    }
+    // get height (): number
+    // {
+    //     return this.y;
+    // }
 
-    set height (value: number)
-    {
-        this.y = value;
-    }
+    // set height (value: number)
+    // {
+    //     this.y = value;
+    // }
 }
