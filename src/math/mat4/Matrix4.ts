@@ -26,7 +26,7 @@ export class Matrix4 implements IMatrix4
 {
     data: Float32Array;
 
-    onChange: (mat4: Matrix4) => void;
+    onChange: (mat4: IMatrix4) => void;
 
     constructor (src?: Matrix4)
     {
