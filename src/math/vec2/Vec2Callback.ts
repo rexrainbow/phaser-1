@@ -1,14 +1,16 @@
 import { NOOP } from '../../utils/NOOP';
 import { Vec2 } from './Vec2';
 
+export type Vec2CallbackType = (vec2: Vec2Callback) => void;
+
 export class Vec2Callback extends Vec2
 {
     private _x: number;
     private _y: number;
 
-    onChange: (vec2: Vec2Callback) => void = NOOP;
+    onChange: Vec2CallbackType = NOOP;
 
-    constructor (onChange: (vec2: Vec2Callback) => void = NOOP, x: number = 0, y: number = 0)
+    constructor (onChange: Vec2CallbackType = NOOP, x: number = 0, y: number = 0)
     {
         super(x, y);
 
