@@ -1,5 +1,7 @@
 import { Add, Clone, Cross, Divide, Dot, Length, LengthSquared, Multiply, MultiplyByFloats, Negate, Normalize, Scale, Subtract } from './';
 
+import { IVec2Like } from './IVec2Like';
+
 export class Vec2
 {
     x: number;
@@ -18,12 +20,12 @@ export class Vec2
         return this;
     }
 
-    copy (v: Vec2): this
+    copy (v: IVec2Like): this
     {
         return this.set(v.x, v.y);
     }
 
-    add (va: Vec2, vb?: Vec2): this
+    add (va: IVec2Like, vb?: IVec2Like): this
     {
         if (vb)
         {
@@ -37,7 +39,7 @@ export class Vec2
         return this;
     }
 
-    subtract (va: Vec2, vb?: Vec2): this
+    subtract (va: IVec2Like, vb?: IVec2Like): this
     {
         if (vb)
         {
@@ -51,7 +53,7 @@ export class Vec2
         return this;
     }
 
-    multiply (v: Vec2): this
+    multiply (v: IVec2Like): this
     {
         return Multiply(this, v, this) as this;
     }
@@ -61,7 +63,7 @@ export class Vec2
         return MultiplyByFloats(this, x, y, this) as this;
     }
 
-    divide (v: Vec2): this
+    divide (v: IVec2Like): this
     {
         return Divide(this, v, this) as this;
     }
@@ -86,12 +88,12 @@ export class Vec2
         return Clone(this);
     }
 
-    cross (v: Vec2): number
+    cross (v: IVec2Like): number
     {
         return Cross(this, v);
     }
 
-    dot (v: Vec2): number
+    dot (v: IVec2Like): number
     {
         return Dot(this, v);
     }
