@@ -1,6 +1,7 @@
-import { IVec4 } from './IVec4';
+import { IVec4Like } from './IVec4Like';
+import { Vec4 } from './Vec4';
 
-export function CopyFrom (source: IVec4, dest: IVec4): IVec4
+export function CopyFrom (source: IVec4Like, dest: Vec4): Vec4
 {
     const { x, y, z, w } = source;
 

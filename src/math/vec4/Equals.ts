@@ -1,6 +1,6 @@
-import { IVec4 } from './IVec4';
+import { IVec4Like } from './IVec4Like';
 
-export function Equals (a: IVec4, b: IVec4): boolean
+export function Equals (a: IVec4Like, b: IVec4Like): boolean
 {
     return a.x === b.x && a.y === b.y && a.z === b.z && a.w === b.w;
 }

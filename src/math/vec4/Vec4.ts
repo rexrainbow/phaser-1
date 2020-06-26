@@ -1,41 +1,17 @@
-import { IVec4 } from './IVec4';
+import { Add, Clone, Cross, Distance, Divide, Dot, Length, LengthSquared, Multiply, Negate, Normalize, Scale, Subtract } from './';
 
-export class Vec4 implements IVec4
+import { IVec4Like } from './IVec4Like';
+
+export class Vec4
 {
-    /**
-     * X component
-     */
     x: number;
-
-    /**
-     * Y component
-     */
     y: number;
-
-    /**
-     * Z component
-     */
     z: number;
-
-    /**
-     * W component
-     */
     w: number;
 
-    /**
-     * Creates an instance of a Vector2.
-     *
-     * @param {number} [x=0] - X component
-     * @param {number} [y=0] - Y component
-     * @param {number} [z=0] - Z component
-     * @param {number} [w=1] - W component
-     */
     constructor (x: number = 0, y: number = 0, z: number = 0, w: number = 1)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = w;
+        this.set(x, y, z, w);
     }
 
     set (x: number = 0, y: number = 0, z: number = 0, w: number = 1): this
@@ -48,25 +24,115 @@ export class Vec4 implements IVec4
         return this;
     }
 
-    /**
-     * Sets the Vector2 coordinates into the given array, or a new array, at
-     * the given index.
-     */
+    copy (v: IVec4Like): this
+    {
+        return this.set(v.x, v.y, v.z, v.w);
+    }
+
+    add (va: IVec4Like, vb?: IVec4Like): this
+    {
+        if (vb)
+        {
+            Add(va, vb, this);
+        }
+        else
+        {
+            Add(this, va, this);
+        }
+
+        return this;
+    }
+
+    subtract (va: IVec4Like, vb?: IVec4Like): this
+    {
+        if (vb)
+        {
+            Subtract(va, vb, this);
+        }
+        else
+        {
+            Subtract(this, va, this);
+        }
+
+        return this;
+    }
+
+    multiply (v: IVec4Like): this
+    {
+        return Multiply(this, v, this) as this;
+    }
+
+    divide (v: IVec4Like): this
+    {
+        return Divide(this, v, this) as this;
+    }
+
+    distance (v: IVec4Like): number
+    {
+        return Distance(this, v);
+    }
+
+    negate (): this
+    {
+        return Negate(this, this) as this;
+    }
+
+    cross (va: IVec4Like, vb?: IVec4Like): this
+    {
+        if (vb)
+        {
+            Cross(va, vb, this);
+        }
+        else
+        {
+            Cross(this, va, this);
+        }
+
+        return this;
+    }
+
+    scale (scalar: number): this
+    {
+        return Scale(this, scalar, this) as this;
+    }
+
+    normalize (): this
+    {
+        return Normalize(this, this) as this;
+    }
+
+    dot (v: IVec4Like): number
+    {
+        return Dot(this, v);
+    }
+
+    clone (): Vec4
+    {
+        return Clone(this);
+    }
+
+    get length (): number
+    {
+        return Length(this);
+    }
+
+    get lengthSquared (): number
+    {
+        return LengthSquared(this);
+    }
+
     toArray (dst: Float32List = [], index: number = 0): Float32List
     {
-        dst[ index ] = this.x;
-        dst[ index + 1 ] = this.y;
-        dst[ index + 2 ] = this.z;
-        dst[ index + 3 ] = this.w;
+        const { x, y, z,w } = this;
+
+        dst[ index ] = x;
+        dst[ index + 1 ] = y;
+        dst[ index + 2 ] = z;
+        dst[ index + 3 ] = w;
 
         return dst;
     }
 
-    /**
-     * Sets the values of this Vector2 based on the given array, or array-like object, such as a Float32.
-     *
-     * The source must have 2 elements, starting from index 0 through to index 1.
-     */
     fromArray (src: Float32List, index: number = 0): this
     {
         return this.set(
@@ -79,26 +145,8 @@ export class Vec4 implements IVec4
 
     toString (): string
     {
-        return `[ x=${this.x}, y=${this.y}, z=${this.z}, w=${this.w} ]`;
-    }
+        const { x, y, z, w } = this;
 
-    get width (): number
-    {
-        return this.z;
-    }
-
-    set width (value: number)
-    {
-        this.z = value;
-    }
-
-    get height (): number
-    {
-        return this.w;
-    }
-
-    set height (value: number)
-    {
-        this.w = value;
+        return `{ x=${x}, y=${y}, z=${z}, w=${w} }`;
     }
 }

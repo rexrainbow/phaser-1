@@ -1,6 +1,6 @@
-import { IVec4 } from './IVec4';
+import { IVec4Like } from './IVec4Like';
 
-export function ManhattanLength (a: IVec4): number
+export function ManhattanLength (a: IVec4Like): number
 {
     const { x, y, z, w } = a;
 

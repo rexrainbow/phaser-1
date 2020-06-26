@@ -1,25 +1,30 @@
 import { NOOP } from '../../utils/NOOP';
+import { Vec4 } from './Vec4';
 
-export class Vec4Callback
+export type Vec4CallbackType = (vec3: Vec4Callback) => void;
+
+export class Vec4Callback extends Vec4
 {
     private _x: number;
     private _y: number;
     private _z: number;
     private _w: number;
 
-    onChange: (vec4: Vec4Callback) => void;
+    onChange: Vec4CallbackType = NOOP;
 
-    constructor (onChange: (vec4: Vec4Callback) => void = NOOP, x: number = 0, y: number = 0, z: number = 0, w: number = 1)
+    constructor (onChange: Vec4CallbackType = NOOP, x: number = 0, y: number = 0, z: number = 0, w: number = 0)
     {
-        this._x = x;
-        this._y = y;
-        this._z = z;
-        this._w = w;
+        super(x, y, z, w);
 
         this.onChange = onChange;
     }
 
-    set (x: number = 0, y: number = 0, z: number = 0, w: number = 1): this
+    destroy (): void
+    {
+        this.onChange = NOOP;
+    }
+
+    set (x: number = 0, y: number = 0, z: number = 0, w: number = 0): this
     {
         this._x = x;
         this._y = y;
@@ -29,6 +34,11 @@ export class Vec4Callback
         this.onChange(this);
 
         return this;
+    }
+
+    get x (): number
+    {
+        return this._x;
     }
 
     set x (value: number)
@@ -43,9 +53,9 @@ export class Vec4Callback
         }
     }
 
-    get x (): number
+    get y (): number
     {
-        return this._x;
+        return this._y;
     }
 
     set y (value: number)
@@ -60,9 +70,9 @@ export class Vec4Callback
         }
     }
 
-    get y (): number
+    get z (): number
     {
-        return this._y;
+        return this._z;
     }
 
     set z (value: number)
@@ -77,9 +87,9 @@ export class Vec4Callback
         }
     }
 
-    get z (): number
+    get w (): number
     {
-        return this._z;
+        return this._w;
     }
 
     set w (value: number)
@@ -92,44 +102,5 @@ export class Vec4Callback
         {
             this.onChange(this);
         }
-    }
-
-    get w (): number
-    {
-        return this._w;
-    }
-
-    toArray (dst: Float32List = [], index: number = 0): Float32List
-    {
-        const { x, y, z, w } = this;
-
-        dst[ index ] = x;
-        dst[ index + 1 ] = y;
-        dst[ index + 2 ] = z;
-        dst[ index + 3 ] = w;
-
-        return dst;
-    }
-
-    fromArray (src: Float32List, index: number = 0): this
-    {
-        return this.set(
-            src[ index ],
-            src[ index + 1 ],
-            src[ index + 2 ],
-            src[ index + 3 ]
-        );
-    }
-
-    toString (): string
-    {
-        const { x, y, z, w } = this;
-
-        return `[ x=${x}, y=${y}, z=${z}, w=${w} ]`;
-    }
-
-    destroy (): void
-    {
-        this.onChange = NOOP;
     }
 }

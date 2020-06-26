@@ -1,8 +1,8 @@
-import { IVec4 } from './IVec4';
+import { IVec4Like } from './IVec4Like';
 
 // Calculates the squared euclidian distance between two vec3s
 
-export function DistanceSquared (a: IVec4, b: IVec4): number
+export function DistanceSquared (a: IVec4Like, b: IVec4Like): number
 {
     const x = a.x - b.x;
     const y = a.y - b.y;
