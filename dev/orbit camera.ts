@@ -80,7 +80,7 @@ class Demo extends Scene
 
         this.world.camera = camera;
 
-        camera.setAutoRotate(1);
+        // camera.setAutoRotate(1);
 
         // this.world.camera.position.set(0, -1, -6);
 
