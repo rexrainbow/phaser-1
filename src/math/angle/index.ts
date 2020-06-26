@@ -5,8 +5,6 @@
  */
 
 import { AngleBetween } from './AngleBetween';
-import { AngleBetweenPoints } from './AngleBetweenPoints';
-import { AngleBetweenPointsY } from './AngleBetweenPointsY';
 import { AngleBetweenY } from './AngleBetweenY';
 import { CounterClockwise } from './CounterClockwise';
 import { NormalizeAngle } from './NormalizeAngle';
@@ -22,8 +20,6 @@ import { WrapAngleDegrees } from './WrapAngleDegrees';
 
 export {
     AngleBetween,
-    AngleBetweenPoints,
-    AngleBetweenPointsY,
     AngleBetweenY,
     CounterClockwise,
     NormalizeAngle,

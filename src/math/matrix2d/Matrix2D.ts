@@ -10,12 +10,12 @@
 
 export class Matrix2D
 {
-    a: number;
-    b: number;
-    c: number;
-    d: number;
-    tx: number;
-    ty: number;
+    a: number; // element 0
+    b: number; // element 1
+    c: number; // element 2
+    d: number; // element 3
+    tx: number; // element 4
+    ty: number; // element 5
 
     /**
      * Creates an instance of Matrix2D.
@@ -52,18 +52,13 @@ export class Matrix2D
 
     toArray (): number[]
     {
-        return [ this.a, this.b, this.c, this.d, this.tx, this.ty ];
+        const  { a, b, c, d, tx, ty } = this;
+
+        return [ a, b, c, d, tx, ty ];
     }
 
     fromArray (src: number[]): Matrix2D
     {
         return this.set(src[0], src[1], src[2], src[3], src[4], src[5]);
     }
-
-    // [Symbol.iterator] ()
-    // {
-    //     const data = this.toArray();
-
-    //     return data[Symbol.iterator]();
-    // }
 }

@@ -1,6 +1,7 @@
-import { IVec2 } from './IVec2';
+import { IVec2Like } from './IVec2Like';
+import { Vec2 } from './Vec2';
 
-export function CopyFrom (source: IVec2, dest: IVec2): IVec2
+export function CopyFrom (source: IVec2Like, dest: Vec2): Vec2
 {
     return dest.set(source.x, source.y);
 }

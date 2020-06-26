@@ -5,8 +5,8 @@
  */
 
 import { ILine } from '../line/ILine';
-import { IVec2 } from '../../math/vec2/IVec2';
 import { PointToLine } from './PointToLine';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Checks if a Point is located on the given line segment.
@@ -19,7 +19,7 @@ import { PointToLine } from './PointToLine';
  *
  * @return {boolean} `true` if the Point is on the given line segment, otherwise `false`.
  */
-export function PointToLineSegment (point: IVec2, line: ILine): boolean
+export function PointToLineSegment (point: Vec2, line: ILine): boolean
 {
     if (!PointToLine(point, line))
     {

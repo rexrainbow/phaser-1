@@ -5,8 +5,8 @@
  */
 
 import { ITriangle } from './ITriangle';
-import { IVec2 } from '../../math/vec2/IVec2';
 import { RotateAroundXY } from './RotateAroundXY';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Rotates a Triangle at a certain angle about a given Point or object with public `x` and `y` properties.
@@ -22,7 +22,7 @@ import { RotateAroundXY } from './RotateAroundXY';
  *
  * @return {Phaser.Geom.Triangle} The rotated Triangle.
  */
-export function RotateAroundPoint (triangle: ITriangle, point: IVec2, angle: number): ITriangle
+export function RotateAroundPoint (triangle: ITriangle, point: Vec2, angle: number): ITriangle
 {
     return RotateAroundXY(triangle, point.x, point.y, angle);
 }

@@ -7,7 +7,6 @@
 import { Contains } from '../circle/Contains';
 import { ICircle } from '../circle/ICircle';
 import { ILine } from '../line/ILine';
-import { IVec2 } from '../../math/vec2/IVec2';
 import { Vec2 } from '../../math/vec2/Vec2';
 
 const tmp: Vec2 = new Vec2();
@@ -26,7 +25,7 @@ const tmp: Vec2 = new Vec2();
  *
  * @return {boolean} `true` if the two objects intersect, otherwise `false`.
  */
-export function LineToCircle (line: ILine, circle: ICircle, nearest?: IVec2): boolean
+export function LineToCircle (line: ILine, circle: ICircle, nearest?: Vec2): boolean
 {
     if (!nearest)
     {

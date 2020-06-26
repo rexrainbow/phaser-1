@@ -1,7 +1,7 @@
 import { DistanceSquared } from './DistanceSquared';
-import { IVec2 } from './IVec2';
+import { IVec2Like } from './IVec2Like';
 
-export function Distance (a: IVec2, b: IVec2): number
+export function Distance (a: IVec2Like, b: IVec2Like): number
 {
     return Math.sqrt(DistanceSquared(a, b));
 }

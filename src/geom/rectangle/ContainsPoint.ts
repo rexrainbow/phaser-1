@@ -6,7 +6,7 @@
 
 import { Contains } from './Contains';
 import { IRectangle } from './IRectangle';
-import { IVec2 } from '../../math/vec2/IVec2';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Determines whether the specified point is contained within the rectangular region defined by this Rectangle object.
@@ -19,7 +19,7 @@ import { IVec2 } from '../../math/vec2/IVec2';
  *
  * @return {boolean} A value of true if the Rectangle object contains the specified point, otherwise false.
  */
-export function ContainsPoint (rect: IRectangle, point: IVec2): boolean
+export function ContainsPoint (rect: IRectangle, point: Vec2): boolean
 {
     return Contains(rect, point.x, point.y);
 }

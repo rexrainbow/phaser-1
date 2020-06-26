@@ -1,9 +1,9 @@
-import { IVec2 } from './IVec2';
+import { IVec2Like } from './IVec2Like';
 import { Vec2 } from './Vec2';
 
 // t - interpolation amount, in the range [0-1], between the two inputs
 
-export function Lerp (a: IVec2, b: IVec2, t: number, out: Vec2 = new Vec2()): IVec2
+export function Lerp (a: IVec2Like, b: IVec2Like, t: number, out: Vec2 = new Vec2()): Vec2
 {
     const x = a.x;
     const y = a.y;

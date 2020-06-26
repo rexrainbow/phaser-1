@@ -36,8 +36,8 @@ export class TransformComponent implements ITransformComponent
         this.world = new Matrix2D();
 
         this.position = new Vec2Callback(() => this.update(), x, y);
-        this.scale = new Vec2Callback(() => this.update(), 1, 1, true);
-        this.skew = new Vec2Callback(() => this.update(), 0, 0, true);
+        this.scale = new Vec2Callback(() => this.update(), 1, 1);
+        this.skew = new Vec2Callback(() => this.update());
         this.origin = new Vec2Callback(() => this.updateExtent(), originX, originY);
 
         this.extent = new Rectangle();

@@ -1,7 +1,7 @@
-import { IVec2 } from './IVec2';
+import { IVec2Like } from './IVec2Like';
 import { Vec2 } from './Vec2';
 
-export function Random (a: IVec2, scale: number = 1, out: Vec2 = new Vec2()): IVec2
+export function Random (a: IVec2Like, scale: number = 1, out: Vec2 = new Vec2()): Vec2
 {
     const r = Math.random() * 2 * Math.PI;
 

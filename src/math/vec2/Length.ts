@@ -1,6 +1,6 @@
-import { IVec2 } from './IVec2';
+import { IVec2Like } from './IVec2Like';
 
-export function Length (a: IVec2): number
+export function Length (a: IVec2Like): number
 {
     return Math.sqrt(a.x * a.x + a.y * a.y);
 }

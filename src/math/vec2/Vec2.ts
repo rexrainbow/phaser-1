@@ -1,34 +1,13 @@
-import { IVec2 } from './IVec2';
+import { Add, Clone, Cross, Divide, Dot, Length, LengthSquared, Multiply, MultiplyByFloats, Negate, Normalize, Scale, Subtract } from './';
 
-export class Vec2 implements IVec2
+export class Vec2
 {
-    /**
-     * X component
-     *
-     * @type {number}
-     * @memberof Vec2
-     */
     x: number;
-
-    /**
-     * Y component
-     *
-     * @type {number}
-     * @memberof Vec2
-     */
     y: number;
 
-    /**
-     * Creates an instance of a Vector2.
-     *
-     * @param {number} [x=0] - X component
-     * @param {number} [y=0] - Y component
-     * @memberof Vec2
-     */
     constructor (x: number = 0, y: number = 0)
     {
-        this.x = x;
-        this.y = y;
+        this.set(x, y);
     }
 
     set (x: number = 0, y: number = 0): this
@@ -39,50 +18,116 @@ export class Vec2 implements IVec2
         return this;
     }
 
-    /**
-     * Sets the Vector2 coordinates into the given array, or a new array, at
-     * the given index.
-     */
+    copy (v: Vec2): this
+    {
+        return this.set(v.x, v.y);
+    }
+
+    add (va: Vec2, vb?: Vec2): this
+    {
+        if (vb)
+        {
+            Add(va, vb, this);
+        }
+        else
+        {
+            Add(this, va, this);
+        }
+
+        return this;
+    }
+
+    subtract (va: Vec2, vb?: Vec2): this
+    {
+        if (vb)
+        {
+            Subtract(va, vb, this);
+        }
+        else
+        {
+            Subtract(this, va, this);
+        }
+
+        return this;
+    }
+
+    multiply (v: Vec2): this
+    {
+        return Multiply(this, v, this) as this;
+    }
+
+    multiplyByFloats (x: number, y: number): this
+    {
+        return MultiplyByFloats(this, x, y, this) as this;
+    }
+
+    divide (v: Vec2): this
+    {
+        return Divide(this, v, this) as this;
+    }
+
+    negate (): this
+    {
+        return Negate(this, this) as this;
+    }
+
+    scale (scalar: number): this
+    {
+        return Scale(this, scalar, this) as this;
+    }
+
+    normalize (): this
+    {
+        return Normalize(this, this) as this;
+    }
+
+    clone (): Vec2
+    {
+        return Clone(this);
+    }
+
+    cross (v: Vec2): number
+    {
+        return Cross(this, v);
+    }
+
+    dot (v: Vec2): number
+    {
+        return Dot(this, v);
+    }
+
+    get length (): number
+    {
+        return Length(this);
+    }
+
+    get lengthSquared (): number
+    {
+        return LengthSquared(this);
+    }
+
     toArray (dst: Float32List = [], index: number = 0): Float32List
     {
-        dst[ index ] = this.x;
-        dst[ index + 1 ] = this.y;
+        const { x, y } = this;
+
+        dst[ index ] = x;
+        dst[ index + 1 ] = y;
 
         return dst;
     }
 
-    /**
-     * Sets the values of this Vector2 based on the given array, or array-like object, such as a Float32.
-     *
-     * The source must have 2 elements, starting from index 0 through to index 1.
-     */
     fromArray (src: Float32List, index: number = 0): this
     {
-        return this.set(src[ index ], src[ index + 1 ]);
+        return this.set(
+            src[ index ],
+            src[ index + 1 ]
+        );
     }
 
     toString (): string
     {
-        return `[ x=${this.x}, y=${this.y} ]`;
+        const { x, y } = this;
+
+        return `{ x=${x}, y=${y} }`;
     }
-
-    // get width (): number
-    // {
-    //     return this.x;
-    // }
-
-    // set width (value: number)
-    // {
-    //     this.x = value;
-    // }
-
-    // get height (): number
-    // {
-    //     return this.y;
-    // }
-
-    // set height (value: number)
-    // {
-    //     this.y = value;
-    // }
 }

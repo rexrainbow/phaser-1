@@ -1,9 +1,9 @@
-import { IVec2 } from './IVec2';
+import { IVec2Like } from './IVec2Like';
 import { Normalize } from './Normalize';
 import { Scale } from './Scale';
 import { Vec2 } from './Vec2';
 
-export function SetLength (a: IVec2, length: number, out: Vec2 = new Vec2()): IVec2
+export function SetLength (a: IVec2Like, length: number, out: Vec2 = new Vec2()): Vec2
 {
     Normalize(a, out);
 

@@ -6,7 +6,7 @@
  */
 
 import { ILine } from './ILine';
-import { IVec2 } from '../../math/vec2/IVec2';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Get the shortest distance from a Line to the given Point.
@@ -21,7 +21,7 @@ import { IVec2 } from '../../math/vec2/IVec2';
  *
  * @return {number} The shortest distance from the line to the point.
  */
-export function GetShortestDistance (line: ILine, point: IVec2): number
+export function GetShortestDistance (line: ILine, point: Vec2): number
 {
     const { x1, y1, x2, y2 } = line;
 

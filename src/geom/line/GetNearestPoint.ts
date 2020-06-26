@@ -6,7 +6,6 @@
  */
 
 import { ILine } from './ILine';
-import { IVec2 } from '../../math/vec2/IVec2';
 import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
@@ -23,7 +22,7 @@ import { Vec2 } from '../../math/vec2/Vec2';
  *
  * @return {(Phaser.Geom.Point|object)} The nearest point on the line.
  */
-export function GetNearestPoint (line: ILine, point: IVec2, out: Vec2 = new Vec2()): Vec2
+export function GetNearestPoint (line: ILine, point: Vec2, out: Vec2 = new Vec2()): Vec2
 {
     const { x1, y1, x2, y2 } = line;
 

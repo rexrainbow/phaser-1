@@ -6,7 +6,7 @@
 
 import { Contains } from './Contains';
 import { ITriangle } from './ITriangle';
-import { IVec2 } from '../../math/vec2/IVec2';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Tests if a triangle contains a point.
@@ -19,7 +19,7 @@ import { IVec2 } from '../../math/vec2/IVec2';
  *
  * @return {boolean} `true` if the point is within the triangle, otherwise `false`.
  */
-export function ContainsPoint (triangle: ITriangle, point: IVec2): boolean
+export function ContainsPoint (triangle: ITriangle, point: Vec2): boolean
 {
     return Contains(triangle, point.x, point.y);
 }

@@ -5,8 +5,8 @@
  */
 
 import { ILine } from './ILine';
-import { IVec2 } from '../../math/vec2/IVec2';
 import { RotateAroundXY } from './RotateAroundXY';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Rotate a line around a point by the given angle in radians.
@@ -22,7 +22,7 @@ import { RotateAroundXY } from './RotateAroundXY';
  *
  * @return {Phaser.Geom.Line} The rotated line.
  */
-export function RotateAroundPoint (line: ILine, point: IVec2, angle: number): ILine
+export function RotateAroundPoint (line: ILine, point: Vec2, angle: number): ILine
 {
     return RotateAroundXY(line, point.x, point.y, angle);
 }

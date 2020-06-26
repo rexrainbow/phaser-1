@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { DistanceBetween } from '../../math/distance/DistanceBetween';
+import { Distance } from '../../math/vec2/Distance';
 import { ICircle } from '../circle/ICircle';
 
 /**
@@ -20,5 +20,5 @@ import { ICircle } from '../circle/ICircle';
  */
 export function CircleToCircle (circleA: ICircle, circleB: ICircle): boolean
 {
-    return (DistanceBetween(circleA.x, circleA.y, circleB.x, circleB.y) <= (circleA.radius + circleB.radius));
+    return (Distance(circleA, circleB) <= (circleA.radius + circleB.radius));
 }

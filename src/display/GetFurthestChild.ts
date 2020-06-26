@@ -1,8 +1,8 @@
-import { DistanceBetweenPoints } from '../math/distance/DistanceBetweenPoints';
+import { Distance } from '../math/vec2/Distance';
 import { IGameObject } from '../gameobjects/IGameObject';
-import { IVec2 } from '../math/vec2/IVec2';
+import { Vec2 } from '../math/vec2/Vec2';
 
-export function GetFurthestChild (parent: IGameObject, point: IVec2): IGameObject
+export function GetFurthestChild (parent: IGameObject, point: Vec2): IGameObject
 {
     const children = parent.children;
 
@@ -11,7 +11,7 @@ export function GetFurthestChild (parent: IGameObject, point: IVec2): IGameObjec
 
     children.forEach(child =>
     {
-        const childDistance = DistanceBetweenPoints(point, child.transform.position);
+        const childDistance = Distance(point, child.transform.position);
 
         if (!furthest || childDistance > distance)
         {

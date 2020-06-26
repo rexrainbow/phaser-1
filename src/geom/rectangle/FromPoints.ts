@@ -4,9 +4,9 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { IVec2 } from '../../math/vec2/IVec2';
 import { MATH_CONST } from '../../math/const';
 import { Rectangle } from './Rectangle';
+import { Vec2 } from '../../math/vec2/Vec2';
 
 /**
  * Constructs new Rectangle or repositions and resizes an existing Rectangle so that all of the given points are on or within its bounds.
@@ -21,7 +21,7 @@ import { Rectangle } from './Rectangle';
  *
  * @return {Phaser.Geom.Rectangle} The adjusted `out` Rectangle, or a new Rectangle if none was provided.
  */
-export function FromPoints (points: IVec2[], out: Rectangle = new Rectangle()): Rectangle
+export function FromPoints (points: Vec2[], out: Rectangle = new Rectangle()): Rectangle
 {
     if (points.length === 0)
     {

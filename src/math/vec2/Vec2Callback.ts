@@ -1,20 +1,23 @@
 import { NOOP } from '../../utils/NOOP';
+import { Vec2 } from './Vec2';
 
-export class Vec2Callback
+export class Vec2Callback extends Vec2
 {
     private _x: number;
     private _y: number;
 
-    callback: (vec2: Vec2Callback) => void;
+    onChange: (vec2: Vec2Callback) => void = NOOP;
 
-    compareValue: boolean = false;
-
-    constructor (callback: (vec2: Vec2Callback) => void, x: number = 0, y: number = 0, compareValue: boolean = false)
+    constructor (onChange: (vec2: Vec2Callback) => void = NOOP, x: number = 0, y: number = 0)
     {
-        this._x = x;
-        this._y = y;
-        this.callback = callback;
-        this.compareValue = compareValue;
+        super(x, y);
+
+        this.onChange = onChange;
+    }
+
+    destroy (): void
+    {
+        this.onChange = NOOP;
     }
 
     set (x: number = 0, y: number = 0): this
@@ -22,14 +25,14 @@ export class Vec2Callback
         this._x = x;
         this._y = y;
 
-        this.callback(this);
+        this.onChange(this);
 
         return this;
     }
 
-    destroy (): void
+    get x (): number
     {
-        this.callback = NOOP;
+        return this._x;
     }
 
     set x (value: number)
@@ -38,26 +41,9 @@ export class Vec2Callback
 
         this._x = value;
 
-        if (this.compareValue && prev !== value)
+        if (prev !== value)
         {
-            this.callback(this);
-        }
-    }
-
-    get x (): number
-    {
-        return this._x;
-    }
-
-    set y (value: number)
-    {
-        const prev = this._y;
-
-        this._y = value;
-
-        if (this.compareValue && prev !== value)
-        {
-            this.callback(this);
+            this.onChange(this);
         }
     }
 
@@ -66,33 +52,15 @@ export class Vec2Callback
         return this._y;
     }
 
-    /**
-     * Sets the Vector2 coordinates into the given array, or a new array, at
-     * the given index.
-     */
-    toArray (dst: Float32List = [], index: number = 0): Float32List
+    set y (value: number)
     {
-        dst[ index ] = this._x;
-        dst[ index + 1 ] = this._y;
+        const prev = this._y;
 
-        return dst;
-    }
+        this._y = value;
 
-    /**
-     * Sets the values of this Vector2 based on the given array, or array-like object, such as a Float32.
-     *
-     * The source must have 2 elements, starting from index 0 through to index 1.
-     */
-    fromArray (src: Float32List, index: number = 0): this
-    {
-        return this.set(
-            src[ index ],
-            src[ index + 1 ]
-        );
-    }
-
-    toString (): string
-    {
-        return `[ x=${this.x}, y=${this.y} ]`;
+        if (prev !== value)
+        {
+            this.onChange(this);
+        }
     }
 }
