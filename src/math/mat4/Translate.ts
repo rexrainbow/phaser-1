@@ -1,8 +1,7 @@
-import { IMatrix4 } from './IMatrix4';
 import { IVec3Like } from '../vec3/IVec3Like';
 import { Matrix4 } from './Matrix4';
 
-export function Translate (matrix: IMatrix4, vec3: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
+export function Translate (matrix: Matrix4, vec3: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
 {
     const { x, y, z } = vec3;
 

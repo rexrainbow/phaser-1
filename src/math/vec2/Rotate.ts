@@ -1,7 +1,7 @@
 import { IVec2Like } from './IVec2Like';
 import { Vec2 } from './Vec2';
 
-export function Rotate (a: IVec2Like, origin: IVec2Like, angle: number, out: Vec2 = new Vec2()): Vec2
+export function Rotate (a: Vec2, origin: IVec2Like, angle: number, out: Vec2 = new Vec2()): Vec2
 {
     const s = Math.sin(angle);
     const c = Math.cos(angle);

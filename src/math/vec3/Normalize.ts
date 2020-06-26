@@ -1,7 +1,6 @@
-import { IVec3Like } from './IVec3Like';
 import { Vec3 } from './Vec3';
 
-export function Normalize (a: IVec3Like, out: Vec3 = new Vec3()): Vec3
+export function Normalize (a: Vec3, out: Vec3 = new Vec3()): Vec3
 {
     const { x, y, z } = a;
 

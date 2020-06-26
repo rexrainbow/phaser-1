@@ -1,9 +1,8 @@
 import { Add } from './Add';
-import { IVec2Like } from './IVec2Like';
 import { Scale } from './Scale';
 import { Vec2 } from './Vec2';
 
-export function Center (a: IVec2Like, b: IVec2Like, out: Vec2 = new Vec2()): Vec2
+export function Center (a: Vec2, b: Vec2, out: Vec2 = new Vec2()): Vec2
 {
     Add(a, b, out);
 

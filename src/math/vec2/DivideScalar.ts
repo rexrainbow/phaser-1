@@ -1,7 +1,6 @@
-import { IVec2Like } from './IVec2Like';
 import { Vec2 } from './Vec2';
 
-export function DivideScalar (a: IVec2Like, scalar: number, out: Vec2 = new Vec2()): Vec2
+export function DivideScalar (a: Vec2, scalar: number, out: Vec2 = new Vec2()): Vec2
 {
     return out.set(
         a.x / scalar,

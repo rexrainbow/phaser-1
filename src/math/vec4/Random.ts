@@ -1,7 +1,6 @@
-import { IVec4Like } from './IVec4Like';
 import { Vec4 } from './Vec4';
 
-export function Random (a: IVec4Like, scale: number = 1, out: Vec4 = new Vec4()): Vec4
+export function Random (a: Vec4, scale: number = 1, out: Vec4 = new Vec4()): Vec4
 {
     // Marsaglia, George. Choosing a Point from the Surface of a
     // Sphere. Ann. Math. Statist. 43 (1972), no. 2, 645--646.

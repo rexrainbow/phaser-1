@@ -1,9 +1,8 @@
-import { IVec4Like } from './IVec4Like';
 import { Vec4 } from './Vec4';
 
 // Returns the minimum of two vec4's
 
-export function Min (a: IVec4Like, b: IVec4Like, out: Vec4 = new Vec4()): Vec4
+export function Min (a: Vec4, b: Vec4, out: Vec4 = new Vec4()): Vec4
 {
     const { x: ax, y: ay, z: az, w: aw } = a;
     const { x: bx, y: by, z: bz, w: bw } = b;

@@ -1,6 +1,6 @@
 import { Add, Clone, Length, Scale, Subtract, Vec3 } from '../math/vec3';
 
-import { IVec3 } from '../math/vec3/IVec3';
+import { IVec3Like } from '../math/vec3/IVec3Like';
 import { NewCamera3D } from './NewCamera3D';
 import { Vec2 } from '../math/vec2';
 import { Scale as Vec2Scale } from '../math/vec2';
@@ -16,8 +16,8 @@ const STATE = { NONE: -1, ROTATE: 0, DOLLY: 1, PAN: 2, DOLLY_PAN: 3 };
 
 export class OrbitCamera extends NewCamera3D
 {
-    target: IVec3;
-    offset: IVec3;
+    target: IVec3Like;
+    offset: IVec3Like;
 
     enableRotate: boolean = true;
     enableZoom: boolean = true;

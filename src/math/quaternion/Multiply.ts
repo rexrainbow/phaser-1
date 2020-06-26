@@ -1,9 +1,8 @@
-import { IQuaternionLike } from './IQuaternionLike';
 import { Quaternion } from './Quaternion';
 
 //  To premultiply just swap the order of a and b
 
-export function Multiply (a: IQuaternionLike, b: IQuaternionLike, out: Quaternion = new Quaternion()): Quaternion
+export function Multiply (a: Quaternion, b: Quaternion, out: Quaternion = new Quaternion()): Quaternion
 {
     const { x: ax, y: ay, z: az, w: aw } = a;
     const { x: bx, y: by, z: bz, w: bw } = b;

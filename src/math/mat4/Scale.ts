@@ -1,10 +1,9 @@
-import { IMatrix4 } from './IMatrix4';
 import { IVec3Like } from '../vec3/IVec3Like';
 import { Matrix4 } from './Matrix4';
 
 // Scales the mat4 by the dimensions in the given vec3 not using vectorization
 
-export function Scale (matrix: IMatrix4, v: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
+export function Scale (matrix: Matrix4, v: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
 {
     const [ m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33 ] = matrix.data;
     const { x, y, z } = v;

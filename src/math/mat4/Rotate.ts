@@ -1,8 +1,7 @@
-import { IMatrix4 } from './IMatrix4';
 import { IVec3Like } from '../vec3/IVec3Like';
 import { Matrix4 } from './Matrix4';
 
-export function Rotate (matrix: IMatrix4, angle: number, axis: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
+export function Rotate (matrix: Matrix4, angle: number, axis: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
 {
     let { x, y, z } = axis;
 

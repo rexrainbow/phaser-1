@@ -1,7 +1,6 @@
-import { IVec4Like } from './IVec4Like';
 import { Vec4 } from './Vec4';
 
-export function Subtract (a: IVec4Like, b: IVec4Like, out: Vec4 = new Vec4()): Vec4
+export function Subtract (a: Vec4, b: Vec4, out: Vec4 = new Vec4()): Vec4
 {
     return out.set(
         a.x - b.x,

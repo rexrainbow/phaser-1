@@ -1,11 +1,10 @@
 import { Dot } from '../vec3';
-import { IQuaternionLike } from './IQuaternionLike';
 import { IVec3Like } from '../vec3/IVec3Like';
 import { Quaternion } from './Quaternion';
 
 // assumes direction vectors are normalized
 
-export function SetFromUnitVectors (a: IQuaternionLike, from: IVec3Like, to: IVec3Like, out: Quaternion = new Quaternion()): Quaternion
+export function SetFromUnitVectors (a: Quaternion, from: IVec3Like, to: IVec3Like, out: Quaternion = new Quaternion()): Quaternion
 {
     const { x: fx, y: fy, z: fz } = from;
     const { x: tx, y: ty, z: tz } = to;

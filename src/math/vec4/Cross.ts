@@ -1,9 +1,8 @@
-import { IVec4Like } from './IVec4Like';
 import { Vec4 } from './Vec4';
 
 // Returns the cross-product of three vectors in a 4-dimensional space
 
-export function Cross (u: IVec4Like, v: IVec4Like, w: IVec4Like, out: Vec4 = new Vec4()): Vec4
+export function Cross (u: Vec4, v: Vec4, w: Vec4, out: Vec4 = new Vec4()): Vec4
 {
     const { x: ux, y: uy, z: uz, w: uw } = u;
     const { x: vx, y: vy, z: vz, w: vw } = v;

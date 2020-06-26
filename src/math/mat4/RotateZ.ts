@@ -1,9 +1,8 @@
-import { IMatrix4 } from './IMatrix4';
 import { Matrix4 } from './Matrix4';
 
 // Rotates a matrix by the given angle around the Z axis
 
-export function RotateZ (matrix: IMatrix4, angle: number, out: Matrix4 = new Matrix4()): Matrix4
+export function RotateZ (matrix: Matrix4, angle: number, out: Matrix4 = new Matrix4()): Matrix4
 {
     const s = Math.sin(angle);
     const c = Math.cos(angle);

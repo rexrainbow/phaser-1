@@ -1,8 +1,7 @@
 import { IMatrix4 } from '../mat4/IMatrix4';
-import { IVec4Like } from './IVec4Like';
 import { Vec4 } from './Vec4';
 
-export function TransformMat4 (a: IVec4Like, m: IMatrix4, out: Vec4 = new Vec4()): Vec4
+export function TransformMat4 (a: Vec4, m: IMatrix4, out: Vec4 = new Vec4()): Vec4
 {
     const [ m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33 ] = m.data;
     const { x, y, z, w } = a;

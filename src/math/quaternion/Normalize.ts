@@ -1,9 +1,8 @@
-import { IQuaternionLike } from './IQuaternionLike';
 import { Length } from './Length';
 import { Quaternion } from './Quaternion';
 import { Scale } from './Scale';
 
-export function Normalize (a: IQuaternionLike, out: Quaternion = new Quaternion()): Quaternion
+export function Normalize (a: Quaternion, out: Quaternion = new Quaternion()): Quaternion
 {
     const length = Length(a);
 

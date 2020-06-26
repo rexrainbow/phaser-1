@@ -1,7 +1,6 @@
-import { IQuaternionLike } from './IQuaternionLike';
 import { Quaternion } from './Quaternion';
 
-export function ScaleAndAdd (a: IQuaternionLike, b: IQuaternionLike, scalar: number, out: Quaternion = new Quaternion()): Quaternion
+export function ScaleAndAdd (a: Quaternion, b: Quaternion, scalar: number, out: Quaternion = new Quaternion()): Quaternion
 {
     return out.set(
         a.x + b.x * scalar,

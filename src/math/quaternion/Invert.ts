@@ -1,7 +1,6 @@
-import { IQuaternionLike } from './IQuaternionLike';
 import { Quaternion } from './Quaternion';
 
-export function Invert (a: IQuaternionLike, out: Quaternion = new Quaternion()): Quaternion
+export function Invert (a: Quaternion, out: Quaternion = new Quaternion()): Quaternion
 {
     const { x, y, z, w } = a;
 

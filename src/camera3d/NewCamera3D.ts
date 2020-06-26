@@ -4,7 +4,7 @@ import { Up, Vec3, Vec3Callback } from '../math/vec3';
 
 import { DegToRad } from '../math';
 import { GameInstance } from '../GameInstance';
-import { IVec3 } from '../math/vec3/IVec3';
+import { IVec3Like } from '../math/vec3/IVec3Like';
 
 export class NewCamera3D
 {
