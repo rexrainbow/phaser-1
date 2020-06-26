@@ -1,7 +1,7 @@
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 import { Quaternion } from './Quaternion';
 
-export function Subtract (a: IQuaternion, b: IQuaternion, out: Quaternion = new Quaternion()): IQuaternion
+export function Subtract (a: IQuaternionLike, b: IQuaternionLike, out: Quaternion = new Quaternion()): Quaternion
 {
     return out.set(
         a.x - b.x,

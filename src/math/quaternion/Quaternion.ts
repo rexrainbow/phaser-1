@@ -1,7 +1,6 @@
-import { IQuaternion } from './IQuaternion';
 import { NOOP } from '../../utils';
 
-export class Quaternion implements IQuaternion
+export class Quaternion
 {
     private _x: number;
     private _y: number;
@@ -131,6 +130,6 @@ export class Quaternion implements IQuaternion
     {
         const { x, y, z, w } = this;
 
-        return `[ x=${x}, y=${y}, z=${z}, w=${w} ]`;
+        return `{ x=${x}, y=${y}, z=${z}, w=${w} }`;
     }
 }

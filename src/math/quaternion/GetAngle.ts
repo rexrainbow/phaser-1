@@ -1,9 +1,9 @@
 import { Dot } from './Dot';
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 
 // Gets the angular distance between two unit quaternions
 
-export function GetAngle (a: IQuaternion, b: IQuaternion): number
+export function GetAngle (a: IQuaternionLike, b: IQuaternionLike): number
 {
     const dot = Dot(a, b);
 

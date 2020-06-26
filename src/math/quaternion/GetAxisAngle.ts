@@ -1,4 +1,4 @@
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 import { Quaternion } from './Quaternion';
 
 /**
@@ -12,7 +12,7 @@ import { Quaternion } from './Quaternion';
  *  [0, 0, 1] and 270. This method favors the latter.
  */
 
-export function GetAxisAngle (a: IQuaternion, out: Quaternion = new Quaternion()): number
+export function GetAxisAngle (a: IQuaternionLike, out: Quaternion = new Quaternion()): number
 {
     const rad = Math.acos(a.w) * 2;
     const s = Math.sin(rad / 2);

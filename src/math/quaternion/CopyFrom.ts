@@ -1,6 +1,7 @@
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
+import { Quaternion } from './Quaternion';
 
-export function CopyFrom (source: IQuaternion, dest: IQuaternion): IQuaternion
+export function CopyFrom (source: IQuaternionLike, dest: Quaternion): Quaternion
 {
     const { x, y, z, w } = source;
 

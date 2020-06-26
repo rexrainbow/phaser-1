@@ -1,6 +1,6 @@
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 
-export function Length (a: IQuaternion): number
+export function Length (a: IQuaternionLike): number
 {
     const { x, y, z, w } = a;
 

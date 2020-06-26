@@ -1,7 +1,7 @@
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 import { Quaternion } from './Quaternion';
 
-export function AddScalar (a: IQuaternion, scalar: number, out: Quaternion = new Quaternion()): IQuaternion
+export function AddScalar (a: IQuaternionLike, scalar: number, out: Quaternion = new Quaternion()): Quaternion
 {
     return out.set(
         a.x + scalar,

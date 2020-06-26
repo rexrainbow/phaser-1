@@ -1,7 +1,7 @@
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 import { Quaternion } from './Quaternion';
 
-export function Scale (a: IQuaternion, scalar: number, out: Quaternion = new Quaternion()): IQuaternion
+export function Scale (a: IQuaternionLike, scalar: number, out: Quaternion = new Quaternion()): Quaternion
 {
     const { x, y, z, w } = a;
 

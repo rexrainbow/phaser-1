@@ -1,9 +1,9 @@
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 import { Quaternion } from './Quaternion';
 
 // Rotates a quaternion by the given angle about the Y axis
 
-export function RotateY (a: IQuaternion, angle: number, out: IQuaternion = new Quaternion()): IQuaternion
+export function RotateY (a: IQuaternionLike, angle: number, out: Quaternion = new Quaternion()): Quaternion
 {
     angle *= 0.5;
 

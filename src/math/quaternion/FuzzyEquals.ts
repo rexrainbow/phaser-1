@@ -1,7 +1,7 @@
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 import { FuzzyEqual as MathFuzzyEqual } from '../fuzzy/FuzzyEqual';
 
-export function FuzzyEquals (a: IQuaternion, b: IQuaternion, epsilon: number = 0.0001): boolean
+export function FuzzyEquals (a: IQuaternionLike, b: IQuaternionLike, epsilon: number = 0.0001): boolean
 {
     return (
         MathFuzzyEqual(a.x, b.x, epsilon) &&

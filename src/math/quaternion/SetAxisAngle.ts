@@ -1,12 +1,11 @@
-import { IQuaternion } from './IQuaternion';
-import { IVec3 } from '../vec3/IVec3';
+import { IVec3Like } from '../vec3/IVec3Like';
 import { Quaternion } from './Quaternion';
 
 // http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
 
 // assumes axis is normalized
 
-export function SetAxisAngle (axis: IVec3, angle: number, out: Quaternion = new Quaternion()): IQuaternion
+export function SetAxisAngle (axis: IVec3Like, angle: number, out: Quaternion = new Quaternion()): Quaternion
 {
     const { x, y, z } = axis;
 

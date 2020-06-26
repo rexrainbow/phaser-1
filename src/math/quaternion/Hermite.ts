@@ -1,8 +1,8 @@
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 import { Hermite as MathHermite } from '../Hermite';
 import { Quaternion } from './Quaternion';
 
-export function Hermite (a: IQuaternion, b: IQuaternion, c: IQuaternion, d: IQuaternion, t: number, out: Quaternion = new Quaternion()): IQuaternion
+export function Hermite (a: IQuaternionLike, b: IQuaternionLike, c: IQuaternionLike, d: IQuaternionLike, t: number, out: Quaternion = new Quaternion()): Quaternion
 {
     return out.set(
         MathHermite(t, a.x, b.x, c.x, d.x),

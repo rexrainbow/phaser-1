@@ -1,11 +1,11 @@
 import { CopyFrom } from './CopyFrom';
-import { IQuaternion } from './IQuaternion';
+import { IQuaternionLike } from './IQuaternionLike';
 import { Normalize } from './Normalize';
 import { Quaternion } from './Quaternion';
 
 // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
 
-export function Slerp (a: IQuaternion, b: IQuaternion, t: number, out: Quaternion = new Quaternion()): IQuaternion
+export function Slerp (a: IQuaternionLike, b: IQuaternionLike, t: number, out: Quaternion = new Quaternion()): Quaternion
 {
     if (t === 0)
     {
