@@ -10,9 +10,9 @@ export class Vec4Callback extends Vec4
     private _z: number;
     private _w: number;
 
-    onChange: Vec4CallbackType = NOOP;
+    onChange: Vec4CallbackType;
 
-    constructor (onChange: Vec4CallbackType = NOOP, x: number = 0, y: number = 0, z: number = 0, w: number = 0)
+    constructor (onChange: Vec4CallbackType, x: number = 0, y: number = 0, z: number = 0, w: number = 0)
     {
         super(x, y, z, w);
 
@@ -31,7 +31,10 @@ export class Vec4Callback extends Vec4
         this._z = z;
         this._w = w;
 
-        this.onChange(this);
+        if (this.onChange)
+        {
+            this.onChange(this);
+        }
 
         return this;
     }

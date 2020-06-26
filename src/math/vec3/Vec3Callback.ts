@@ -9,9 +9,9 @@ export class Vec3Callback extends Vec3
     private _y: number;
     private _z: number;
 
-    onChange: Vec3CallbackType = NOOP;
+    onChange: Vec3CallbackType;
 
-    constructor (onChange: Vec3CallbackType = NOOP, x: number = 0, y: number = 0, z: number = 0)
+    constructor (onChange: Vec3CallbackType, x: number = 0, y: number = 0, z: number = 0)
     {
         super(x, y, z);
 
@@ -29,7 +29,10 @@ export class Vec3Callback extends Vec3
         this._y = y;
         this._z = z;
 
-        this.onChange(this);
+        if (this.onChange)
+        {
+            this.onChange(this);
+        }
 
         return this;
     }
