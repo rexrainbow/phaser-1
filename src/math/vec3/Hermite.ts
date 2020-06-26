@@ -1,8 +1,8 @@
-import { IVec3 } from './IVec3';
+import { IVec3Like } from './IVec3Like';
 import { Hermite as MathHermite } from '../Hermite';
 import { Vec3 } from './Vec3';
 
-export function Hermite (a: IVec3, b: IVec3, c: IVec3, d: IVec3, t: number, out: Vec3 = new Vec3()): IVec3
+export function Hermite (a: IVec3Like, b: IVec3Like, c: IVec3Like, d: IVec3Like, t: number, out: Vec3 = new Vec3()): Vec3
 {
     return out.set(
         MathHermite(t, a.x, b.x, c.x, d.x),

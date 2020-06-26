@@ -1,6 +1,6 @@
-import { IVec3 } from './IVec3';
+import { IVec3Like } from './IVec3Like';
 
-export function ManhattanDistance (a: IVec3, b: IVec3): number
+export function ManhattanDistance (a: IVec3Like, b: IVec3Like): number
 {
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
 }

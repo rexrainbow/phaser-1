@@ -1,7 +1,7 @@
-import { IVec3 } from './IVec3';
+import { IVec3Like } from './IVec3Like';
 import { Vec3 } from './Vec3';
 
-export function Scale (a: IVec3, scalar: number, out: Vec3 = new Vec3()): IVec3
+export function Scale (a: IVec3Like, scalar: number, out: Vec3 = new Vec3()): Vec3
 {
     return out.set(
         a.x * scalar,

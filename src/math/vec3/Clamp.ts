@@ -1,8 +1,8 @@
-import { IVec3 } from './IVec3';
+import { IVec3Like } from './IVec3Like';
 import { Clamp as MathClamp } from '../Clamp';
 import { Vec3 } from './Vec3';
 
-export function Clamp (a: IVec3, min: IVec3, max: IVec3, out: Vec3 = new Vec3()): IVec3
+export function Clamp (a: IVec3Like, min: IVec3Like, max: IVec3Like, out: Vec3 = new Vec3()): Vec3
 {
     // assumes min < max, componentwise
 

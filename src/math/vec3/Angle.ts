@@ -1,9 +1,9 @@
 import { Dot } from './Dot';
-import { IVec3 } from './IVec3';
+import { IVec3Like } from './IVec3Like';
 
 // Get the angle between two 3D vectors
 
-export function Angle (a: IVec3, b: IVec3): number
+export function Angle (a: IVec3Like, b: IVec3Like): number
 {
     const { x: ax, y: ay, z: az } = a;
     const { x: bx, y: by, z: bz } = b;

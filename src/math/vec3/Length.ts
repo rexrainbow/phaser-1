@@ -1,6 +1,6 @@
-import { IVec3 } from './IVec3';
+import { IVec3Like } from './IVec3Like';
 
-export function Length (a: IVec3): number
+export function Length (a: IVec3Like): number
 {
     const { x, y, z } = a;
 

@@ -1,34 +1,12 @@
-import { IVec3 } from './IVec3';
-
-export class Vec3 implements IVec3
+export class Vec3
 {
-    /**
-     * X component
-     */
     x: number;
-
-    /**
-     * Y component
-     */
     y: number;
-
-    /**
-     * Z component
-     */
     z: number;
 
-    /**
-     * Creates an instance of a Vector2.
-     *
-     * @param {number} [x=0] - X component
-     * @param {number} [y=0] - Y component
-     * @param {number} [z=0] - Z component
-     */
     constructor (x: number = 0, y: number = 0, z: number = 0)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.set(x, y, z);
     }
 
     set (x: number = 0, y: number = 0, z: number = 0): this
@@ -40,24 +18,17 @@ export class Vec3 implements IVec3
         return this;
     }
 
-    /**
-     * Sets the Vector3 coordinates into the given array, or a new array, at
-     * the given index.
-     */
     toArray (dst: Float32List = [], index: number = 0): Float32List
     {
-        dst[ index ] = this.x;
-        dst[ index + 1 ] = this.y;
-        dst[ index + 2 ] = this.z;
+        const { x, y, z } = this;
+
+        dst[ index ] = x;
+        dst[ index + 1 ] = y;
+        dst[ index + 2 ] = z;
 
         return dst;
     }
 
-    /**
-     * Sets the values of this Vector2 based on the given array, or array-like object, such as a Float32.
-     *
-     * The source must have 2 elements, starting from index 0 through to index 1.
-     */
     fromArray (src: Float32List, index: number = 0): this
     {
         return this.set(
@@ -69,6 +40,8 @@ export class Vec3 implements IVec3
 
     toString (): string
     {
-        return `[ x=${this.x}, y=${this.y}, z=${this.z} ]`;
+        const { x, y, z } = this;
+
+        return `{ x=${x}, y=${y}, z=${z} }`;
     }
 }

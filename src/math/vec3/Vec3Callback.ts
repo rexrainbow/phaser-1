@@ -1,20 +1,26 @@
 import { NOOP } from '../../utils/NOOP';
+import { Vec3 } from './Vec3';
 
-export class Vec3Callback
+export type Vec3CallbackType = (vec3: Vec3Callback) => void;
+
+export class Vec3Callback extends Vec3
 {
     private _x: number;
     private _y: number;
     private _z: number;
 
-    onChange: (vec3: Vec3Callback) => void;
+    onChange: Vec3CallbackType = NOOP;
 
-    constructor (onChange: (vec3: Vec3Callback) => void = NOOP, x: number = 0, y: number = 0, z: number = 0)
+    constructor (onChange: Vec3CallbackType = NOOP, x: number = 0, y: number = 0, z: number = 0)
     {
-        this._x = x;
-        this._y = y;
-        this._z = z;
+        super(x, y, z);
 
         this.onChange = onChange;
+    }
+
+    destroy (): void
+    {
+        this.onChange = NOOP;
     }
 
     set (x: number = 0, y: number = 0, z: number = 0): this
@@ -26,6 +32,11 @@ export class Vec3Callback
         this.onChange(this);
 
         return this;
+    }
+
+    get x (): number
+    {
+        return this._x;
     }
 
     set x (value: number)
@@ -40,9 +51,9 @@ export class Vec3Callback
         }
     }
 
-    get x (): number
+    get y (): number
     {
-        return this._x;
+        return this._y;
     }
 
     set y (value: number)
@@ -57,9 +68,9 @@ export class Vec3Callback
         }
     }
 
-    get y (): number
+    get z (): number
     {
-        return this._y;
+        return this._z;
     }
 
     set z (value: number)
@@ -72,42 +83,5 @@ export class Vec3Callback
         {
             this.onChange(this);
         }
-    }
-
-    get z (): number
-    {
-        return this._z;
-    }
-
-    toArray (dst: Float32List = [], index: number = 0): Float32List
-    {
-        const { x, y, z } = this;
-
-        dst[ index ] = x;
-        dst[ index + 1 ] = y;
-        dst[ index + 2 ] = z;
-
-        return dst;
-    }
-
-    fromArray (src: Float32List, index: number = 0): this
-    {
-        return this.set(
-            src[ index ],
-            src[ index + 1 ],
-            src[ index + 2 ]
-        );
-    }
-
-    toString (): string
-    {
-        const { x, y, z } = this;
-
-        return `[ x=${x}, y=${y}, z=${z} ]`;
-    }
-
-    destroy (): void
-    {
-        this.onChange = NOOP;
     }
 }

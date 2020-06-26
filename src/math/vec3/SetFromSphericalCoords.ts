@@ -1,7 +1,6 @@
-import { IVec3 } from './IVec3';
 import { Vec3 } from './Vec3';
 
-export function SetFromSphericalCoords (radius: number, phi: number, theta: number, out: IVec3 = new Vec3()): IVec3
+export function SetFromSphericalCoords (radius: number, phi: number, theta: number, out: Vec3 = new Vec3()): Vec3
 {
     const sinPhiRadius = Math.sin(phi) * radius;
 

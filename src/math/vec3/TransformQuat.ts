@@ -1,8 +1,8 @@
 import { IQuaternion } from '../quaternion/IQuaternion';
-import { IVec3 } from './IVec3';
+import { IVec3Like } from './IVec3Like';
 import { Vec3 } from './Vec3';
 
-export function TransformQuat (a: IVec3, q: IQuaternion, out: Vec3 = new Vec3()): IVec3
+export function TransformQuat (a: IVec3Like, q: IQuaternion, out: Vec3 = new Vec3()): Vec3
 {
     const { x: qx, y: qy, z: qz, w: qw } = q;
     const { x, y, z } = a;

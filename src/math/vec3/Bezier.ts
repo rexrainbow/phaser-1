@@ -1,8 +1,8 @@
-import { IVec3 } from './IVec3';
+import { IVec3Like } from './IVec3Like';
 import { Bezier as MathBezier } from '../Bezier';
 import { Vec3 } from './Vec3';
 
-export function Bezier (a: IVec3, b: IVec3, c: IVec3, d: IVec3, t: number, out: Vec3 = new Vec3()): IVec3
+export function Bezier (a: IVec3Like, b: IVec3Like, c: IVec3Like, d: IVec3Like, t: number, out: Vec3 = new Vec3()): Vec3
 {
     return out.set(
         MathBezier(t, a.x, b.x, c.x, d.x),
