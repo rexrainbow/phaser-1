@@ -43,13 +43,13 @@ import { MultiplyByFloats } from './MultiplyByFloats';
 import { Negate } from './Negate';
 import { Normalize } from './Normalize';
 import { One } from './One';
+import { Project } from './Project';
 import { Random } from './Random';
 import { Reflect } from './Reflect';
 import { Right } from './Right';
 import { RotateX } from './RotateX';
 import { RotateY } from './RotateY';
 import { RotateZ } from './RotateZ';
-import { RotationFromAxis } from './RotationFromAxis';
 import { Round } from './Round';
 import { RoundToZero } from './RoundToZero';
 import { Scale } from './Scale';
@@ -61,6 +61,7 @@ import { Subtract } from './Subtract';
 import { SubtractScalar } from './SubtractScalar';
 import { TransformMat4 } from './TransformMat4';
 import { TransformQuat } from './TransformQuat';
+import { Unproject } from './Unproject';
 import { Up } from './Up';
 import { Vec3 } from './Vec3';
 import { Vec3Callback } from './Vec3Callback';
@@ -110,13 +111,13 @@ export {
     Negate,
     Normalize,
     One,
+    Project,
     Random,
     Reflect,
     Right,
     RotateX,
     RotateY,
     RotateZ,
-    RotationFromAxis,
     Round,
     RoundToZero,
     Scale,
@@ -128,6 +129,7 @@ export {
     SubtractScalar,
     TransformMat4,
     TransformQuat,
+    Unproject,
     Up,
     Vec3,
     Vec3Callback,
