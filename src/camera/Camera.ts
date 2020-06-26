@@ -1,10 +1,10 @@
 import { GameInstance } from '../GameInstance';
 import { ICamera } from './ICamera';
-import { IMatrix4 } from '../math/mat4/IMatrix4';
 import { IRenderer } from '../renderer/IRenderer';
 import { IWorld } from '../world/IWorld';
 import { Identity } from '../math/mat4';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
+import { Matrix4 } from '../math/mat4/Matrix4';
 import { Rectangle } from '../geom/rectangle/Rectangle';
 import { Vec2Callback } from '../math/vec2/Vec2Callback';
 import { WrapAngle } from '../math/angle';
@@ -12,7 +12,7 @@ import { WrapAngle } from '../math/angle';
 export class Camera implements ICamera
 {
     world: IWorld;
-    matrix: IMatrix4;
+    matrix: Matrix4;
     renderer: IRenderer;
     type: string;
 

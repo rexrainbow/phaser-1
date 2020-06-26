@@ -1,6 +1,5 @@
 import { CreateTempTextures } from './CreateTempTextures';
 import { IBaseCamera } from '../../../camera/IBaseCamera';
-import { IMatrix4 } from '../../../math/mat4/IMatrix4';
 import { IRenderPass } from './IRenderPass';
 import { IShader } from '../shaders/IShader';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
@@ -39,8 +38,8 @@ export class RenderPass implements IRenderPass
 {
     renderer: IWebGLRenderer;
 
-    projectionMatrix: IMatrix4;
-    cameraMatrix: IMatrix4;
+    projectionMatrix: Matrix4;
+    cameraMatrix: Matrix4;
 
     count: number = 0;
     prevCount: number = 0;

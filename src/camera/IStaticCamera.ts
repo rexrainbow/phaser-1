@@ -1,13 +1,13 @@
 import { IMatrix2D } from '../math/matrix2d/IMatrix2D';
-import { IMatrix4 } from '../math/mat4/IMatrix4';
 import { IRectangle } from '../geom/rectangle/IRectangle';
 import { IRenderer } from '../renderer/IRenderer';
 import { IStaticWorld } from '../world/IStaticWorld';
+import { Matrix4 } from '../math/mat4/Matrix4';
 
 export interface IStaticCamera
 {
     world: IStaticWorld;
-    matrix: IMatrix4;
+    matrix: Matrix4;
     renderer: IRenderer;
     type: string;
     width: number;

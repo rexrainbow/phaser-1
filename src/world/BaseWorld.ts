@@ -5,6 +5,7 @@ import { Begin, Flush } from '../renderer/webgl1/renderpass';
 import { Emit, Off, On, Once } from '../events';
 
 import { BuildRenderList } from './BuildRenderList';
+import { ExactEquals } from '../math/matrix2d/ExactEquals';
 import { GameObject } from '../gameobjects';
 import { IBaseCamera } from '../camera/IBaseCamera';
 import { IBaseWorld } from './IBaseWorld';
@@ -14,7 +15,6 @@ import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
 import { IScene } from '../scenes/IScene';
 import { ISceneRenderData } from '../scenes/ISceneRenderData';
 import { IWorldRenderData } from './IWorldRenderData';
-import { ExactEquals as Matrix2dEqual } from '../math/matrix2d-funcs/ExactEquals';
 import { MergeRenderData } from './MergeRenderData';
 import { RemoveChildren } from '../display';
 import { ResetWorldRenderData } from './ResetWorldRenderData';
@@ -96,7 +96,7 @@ export class BaseWorld extends GameObject implements IBaseWorld
         const currentCamera = renderPass.current2DCamera;
         const camera = this.camera;
 
-        if (!currentCamera || !Matrix2dEqual(camera.worldTransform, currentCamera.worldTransform))
+        if (!currentCamera || !ExactEquals(camera.worldTransform, currentCamera.worldTransform))
         {
             Flush(renderPass);
         }

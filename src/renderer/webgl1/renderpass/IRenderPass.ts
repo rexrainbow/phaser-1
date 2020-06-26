@@ -1,17 +1,17 @@
 import { BlendModeStackEntry, FramebufferStackEntry, ShaderStackEntry } from './RenderPass';
 
 import { IBaseCamera } from '../../../camera/IBaseCamera';
-import { IMatrix4 } from '../../../math/mat4/IMatrix4';
 import { IShader } from '../shaders/IShader';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
 import { IWebGLRenderer } from '../IWebGLRenderer';
+import { Matrix4 } from '../../../math/mat4/Matrix4';
 import { Rectangle } from '../../../geom/rectangle/Rectangle';
 
 export interface IRenderPass
 {
     renderer: IWebGLRenderer;
-    projectionMatrix: IMatrix4;
-    cameraMatrix: IMatrix4;
+    projectionMatrix: Matrix4;
+    cameraMatrix: Matrix4;
 
     count: number;
     prevCount: number;

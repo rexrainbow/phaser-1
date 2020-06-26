@@ -1,16 +1,16 @@
 import { GameInstance } from '../GameInstance';
-import { IMatrix4 } from '../math/mat4/IMatrix4';
 import { IRenderer } from '../renderer/IRenderer';
 import { IStaticCamera } from './IStaticCamera';
 import { IStaticWorld } from '../world/IStaticWorld';
 import { Identity } from '../math/mat4';
 import { Matrix2D } from '../math/matrix2d/Matrix2D';
+import { Matrix4 } from '../math/mat4/Matrix4';
 import { Rectangle } from '../geom/rectangle/Rectangle';
 
 export class StaticCamera implements IStaticCamera
 {
     world: IStaticWorld;
-    matrix: IMatrix4;
+    matrix: Matrix4;
     renderer: IRenderer;
     type: string;
 

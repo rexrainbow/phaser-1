@@ -1,6 +1,5 @@
 import { Matrix4, Multiply } from '../mat4';
 
-import { IMatrix4 } from '../mat4/IMatrix4';
 import { IRectangle } from '../../geom/rectangle/IRectangle';
 import { TransformMat4 } from '.';
 import { Vec3 } from './Vec3';
@@ -8,7 +7,7 @@ import { Vec3 } from './Vec3';
 const tempMatrix1 = new Matrix4();
 const tempMatrix2 = new Matrix4();
 
-export function Project (v: Vec3, world: IMatrix4, transform: IMatrix4, viewport: IRectangle, out: Vec3 = new Vec3()): Vec3
+export function Project (v: Vec3, world: Matrix4, transform: Matrix4, viewport: IRectangle, out: Vec3 = new Vec3()): Vec3
 {
     const { x, y, width, height } = viewport;
 
