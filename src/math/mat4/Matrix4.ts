@@ -1,3 +1,5 @@
+import { Add, Clone, Multiply, Subtract } from '.';
+
 import { IMatrix4 } from './IMatrix4';
 import { NOOP } from '../../utils';
 
@@ -93,6 +95,26 @@ export class Matrix4 implements IMatrix4
         this.onChange(this);
 
         return this;
+    }
+
+    add (m: IMatrix4): this
+    {
+        return Add(this, m, this) as this;
+    }
+
+    clone (): Matrix4
+    {
+        return Clone(this);
+    }
+
+    multiply (m: IMatrix4): this
+    {
+        return Multiply(this, m, this) as this;
+    }
+
+    subtract (m: IMatrix4): this
+    {
+        return Subtract(this, m, this) as this;
     }
 
     toArray (dst: Float32List = [], index: number = 0): Float32List
