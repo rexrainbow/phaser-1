@@ -1,6 +1,17 @@
-import { Add, Clone, Cross, Distance, Divide, Dot, Length, LengthSquared, Multiply, Negate, Normalize, Scale, Subtract } from './';
-
+import { Add } from './Add';
+import { Clone } from './Clone';
+import { Cross } from './Cross';
+import { Distance } from './Distance';
+import { Divide } from './Divide';
+import { Dot } from './Dot';
 import { IVec4Like } from './IVec4Like';
+import { Length } from './Length';
+import { LengthSquared } from './LengthSquared';
+import { Multiply } from './Multiply';
+import { Negate } from './Negate';
+import { Normalize } from './Normalize';
+import { Scale } from './Scale';
+import { Subtract } from './Subtract';
 
 export class Vec4
 {

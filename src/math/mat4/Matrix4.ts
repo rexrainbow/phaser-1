@@ -1,7 +1,9 @@
-import { Add, Clone, Multiply, Subtract } from '.';
-
+import { Add } from './Add';
+import { Clone } from './Clone';
 import { IMatrix4 } from './IMatrix4';
+import { Multiply } from './Multiply';
 import { NOOP } from '../../utils';
+import { Subtract } from './Subtract';
 
 //  4x4 Matrix in column-major format
 

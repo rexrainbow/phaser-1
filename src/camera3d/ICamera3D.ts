@@ -1,8 +1,8 @@
 import { Vec3, Vec3Callback } from '../math/vec3';
 
-import { IMatrix4 } from '../math/mat4/IMatrix4';
 import { IRenderer } from '../renderer/IRenderer';
 import { IVec3Like } from '../math/vec3/IVec3Like';
+import { Matrix4 } from '../math/mat4/Matrix4';
 import { Quaternion } from '../math/quaternion';
 
 /*
@@ -36,9 +36,9 @@ export interface ICamera3D
 {
     type: string;
 
-    viewMatrix: IMatrix4;
-    projectionMatrix: IMatrix4;
-    projectionViewMatrix: IMatrix4;
+    viewMatrix: Matrix4;
+    projectionMatrix: Matrix4;
+    projectionViewMatrix: Matrix4;
 
     position: Vec3Callback;
     scale: Vec3Callback;
