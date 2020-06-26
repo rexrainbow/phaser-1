@@ -1,9 +1,11 @@
 import * as Angle from './angle';
+import * as Easing from './easing';
 import * as Fuzzy from './fuzzy';
 import * as Interpolation from './interpolation';
-import * as Matrix2d from './matrix2d';
-import * as Matrix2dFuncs from './matrix2d-funcs';
+import * as Matrix2D from './matrix2d';
+import * as Matrix4 from './mat4';
 import * as Pow2 from './pow2';
+import * as Quaternion from './quaternion';
 import * as Snap from './snap';
 import * as Vec2 from './vec2';
 import * as Vec3 from './vec3';
@@ -40,6 +42,7 @@ import { Wrap } from './Wrap';
 
 export {
     Angle,
+    Easing,
     Average,
     Bernstein,
     Between,
@@ -59,12 +62,13 @@ export {
     Interpolation,
     Linear,
     MATH_CONST,
-    Matrix2d,
-    Matrix2dFuncs,
+    Matrix2D,
+    Matrix4,
     MaxAdd,
     MinSub,
     Percent,
     Pow2,
+    Quaternion,
     RadToDeg,
     RoundAwayFromZero,
     RoundTo,
