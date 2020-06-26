@@ -5,7 +5,7 @@ import { Quaternion, SetAxisAngle } from '../math/quaternion';
 import { DegToRad } from '../math';
 import { GameInstance } from '../GameInstance';
 import { IRenderer } from '../renderer/IRenderer';
-import { IVec3 } from '../math/vec3/IVec3';
+import { IVec3Like } from '../math/vec3/IVec3Like';
 
 export class Camera3D
 {
@@ -72,7 +72,7 @@ export class Camera3D
         return this;
     }
 
-    lookAt (point: IVec3): this
+    lookAt (point: IVec3Like): this
     {
         const pos = this.position;
         const dir = this.direction;

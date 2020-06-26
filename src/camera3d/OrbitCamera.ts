@@ -54,7 +54,7 @@ export class OrbitCamera extends NewCamera3D
     private tempVec2a: Vec2 = new Vec2();
     private tempVec2b: Vec2 = new Vec2();
 
-    constructor (target: IVec3, x: number = 0, y: number = 0, z: number = 0, fov: number = 45, near: number = 0.1, far: number = 1000)
+    constructor (target: IVec3Like, x: number = 0, y: number = 0, z: number = 0, fov: number = 45, near: number = 0.1, far: number = 1000)
     {
         super(fov, near, far);
 

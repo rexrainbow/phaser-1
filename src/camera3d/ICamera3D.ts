@@ -2,7 +2,7 @@ import { Vec3, Vec3Callback } from '../math/vec3';
 
 import { IMatrix4 } from '../math/mat4/IMatrix4';
 import { IRenderer } from '../renderer/IRenderer';
-import { IVec3 } from '../math/vec3/IVec3';
+import { IVec3Like } from '../math/vec3/IVec3Like';
 import { Quaternion } from '../math/quaternion';
 
 /*
@@ -54,7 +54,7 @@ export interface ICamera3D
     dirtyRender: boolean;
 
     update (): this;
-    lookAt (target: IVec3, invert: boolean): this;
+    lookAt (target: IVec3Like, invert: boolean): this;
     setAspectRatio (value?: number): this;
     updateProjectionMatrix (): this;
 }

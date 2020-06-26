@@ -62,7 +62,7 @@ export class NewCamera3D
         return this;
     }
 
-    lookAt (target: IVec3, invert: boolean = false): this
+    lookAt (target: IVec3Like, invert: boolean = false): this
     {
         if (invert)
         {
