@@ -1,9 +1,8 @@
-import { IMatrix4 } from './IMatrix4';
 import { Matrix4 } from './Matrix4';
 
 // Generates a frustum matrix with the given bounds
 
-export function Frustum (left: number, right: number, bottom: number, top: number, near: number, far: number, out: IMatrix4 = new Matrix4()): IMatrix4
+export function Frustum (left: number, right: number, bottom: number, top: number, near: number, far: number, out: Matrix4 = new Matrix4()): Matrix4
 {
     const rl = 1 / (right - left);
     const tb = 1 / (top - bottom);

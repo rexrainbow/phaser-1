@@ -1,10 +1,9 @@
-import { IMatrix4 } from './IMatrix4';
-import { IVec3 } from '../vec3/IVec3';
+import { IVec3Like } from '../vec3/IVec3Like';
 import { Matrix4 } from './Matrix4';
 
 // Generates a matrix that makes something look at something else.
 
-export function TargetTo (eye: IVec3, target: IVec3, up: IVec3, out: IMatrix4 = new Matrix4()): IMatrix4
+export function TargetTo (eye: IVec3Like, target: IVec3Like, up: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
 {
     const { x: eyex, y: eyey, z: eyez } = eye;
     const { x: upx, y: upy, z: upz } = up;

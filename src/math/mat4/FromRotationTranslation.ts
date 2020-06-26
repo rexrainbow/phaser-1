@@ -1,9 +1,8 @@
-import { IMatrix4 } from './IMatrix4';
-import { IQuaternion } from '../quaternion/IQuaternion';
-import { IVec3 } from '../vec3/IVec3';
+import { IQuaternionLike } from '../quaternion/IQuaternionLike';
+import { IVec3Like } from '../vec3/IVec3Like';
 import { Matrix4 } from './Matrix4';
 
-export function FromRotationTranslation (q: IQuaternion, v: IVec3, out: IMatrix4 = new Matrix4()): IMatrix4
+export function FromRotationTranslation (q: IQuaternionLike, v: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
 {
     // Quaternion math
     const { x, y, z, w } = q;

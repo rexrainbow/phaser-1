@@ -1,6 +1,7 @@
 import { IMatrix4 } from './IMatrix4';
+import { Matrix4 } from './Matrix4';
 
-export function CopyPosition (src: IMatrix4, dest: IMatrix4): IMatrix4
+export function CopyPosition (src: IMatrix4, dest: Matrix4): Matrix4
 {
     const srcData = src.data;
     const destData = dest.data;

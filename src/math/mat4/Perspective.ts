@@ -1,10 +1,9 @@
-import { IMatrix4 } from './IMatrix4';
 import { Matrix4 } from './Matrix4';
 
 //  Generates a perspective projection matrix with the given bounds.
 //  Passing null/undefined/no value for far will generate infinite projection matrix.
 
-export function Perspective (fovY: number, aspect: number, near: number, far: number, out: IMatrix4 = new Matrix4()): IMatrix4
+export function Perspective (fovY: number, aspect: number, near: number, far: number, out: Matrix4 = new Matrix4()): Matrix4
 {
     const f = 1 / Math.tan(fovY / 2);
 

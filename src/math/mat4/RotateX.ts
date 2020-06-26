@@ -3,7 +3,7 @@ import { Matrix4 } from './Matrix4';
 
 // Rotates a matrix by the given angle around the X axis
 
-export function RotateX (matrix: IMatrix4, angle: number, out: Matrix4 = new Matrix4()): IMatrix4
+export function RotateX (matrix: IMatrix4, angle: number, out: Matrix4 = new Matrix4()): Matrix4
 {
     const s = Math.sin(angle);
     const c = Math.cos(angle);

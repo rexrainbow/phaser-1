@@ -1,12 +1,11 @@
-import { IMatrix4 } from './IMatrix4';
-import { IVec3 } from '../vec3/IVec3';
+import { IVec3Like } from '../vec3/IVec3Like';
 import { Identity } from './Identity';
 import { Matrix4 } from './Matrix4';
 
 // Generates a look-at matrix with the given eye position, focal point, and up axis.
 // If you want a matrix that actually makes an object look at another object, you should use targetTo instead.
 
-export function LookAt (eye: IVec3, center: IVec3, up: IVec3, out: IMatrix4 = new Matrix4()): IMatrix4
+export function LookAt (eye: IVec3Like, center: IVec3Like, up: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
 {
     const { x: eyex, y: eyey, z: eyez } = eye;
     const { x: upx, y: upy, z: upz } = up;

@@ -1,8 +1,7 @@
 import { IMatrix4 } from './IMatrix4';
-import { IVec3 } from '../vec3/IVec3';
 import { Vec3 } from '../vec3';
 
-export function GetTranslation (matrix: IMatrix4, out: IVec3 = new Vec3()): IVec3
+export function GetTranslation (matrix: IMatrix4, out: Vec3 = new Vec3()): Vec3
 {
     const data = matrix.data;
 

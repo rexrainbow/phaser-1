@@ -1,10 +1,9 @@
-import { IMatrix4 } from './IMatrix4';
-import { IQuaternion } from '../quaternion/IQuaternion';
+import { IQuaternionLike } from '../quaternion/IQuaternionLike';
 import { Matrix4 } from './Matrix4';
 
 // Calculates a 4x4 matrix from the given quaternion
 
-export function FromQuat (q: IQuaternion, out: IMatrix4 = new Matrix4()): IMatrix4
+export function FromQuat (q: IQuaternionLike, out: Matrix4 = new Matrix4()): Matrix4
 {
     const { x, y, z, w } = q;
 

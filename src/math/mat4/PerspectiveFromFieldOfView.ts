@@ -1,4 +1,3 @@
-import { IMatrix4 } from './IMatrix4';
 import { Matrix4 } from './Matrix4';
 
 //  Generates a perspective projection matrix with the given bounds.
@@ -11,7 +10,7 @@ export type FOV = {
     rightDegrees: number
 };
 
-export function PerspectiveFromFieldOfView (fov: FOV, near: number, far: number, out: IMatrix4 = new Matrix4()): IMatrix4
+export function PerspectiveFromFieldOfView (fov: FOV, near: number, far: number, out: Matrix4 = new Matrix4()): Matrix4
 {
     const upTan = Math.tan((fov.upDegrees * Math.PI) / 180);
     const downTan = Math.tan((fov.downDegrees * Math.PI) / 180);

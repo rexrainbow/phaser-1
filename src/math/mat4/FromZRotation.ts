@@ -1,7 +1,6 @@
-import { IMatrix4 } from './IMatrix4';
 import { Matrix4 } from './Matrix4';
 
-export function FromZRotation (angle: number, out: IMatrix4 = new Matrix4()): IMatrix4
+export function FromZRotation (angle: number, out: Matrix4 = new Matrix4()): Matrix4
 {
     const c = Math.cos(angle);
     const s = Math.sin(angle);

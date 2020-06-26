@@ -1,7 +1,7 @@
 import { IMatrix4 } from './IMatrix4';
 import { Matrix4 } from './Matrix4';
 
-export function TranslateFromFloats (matrix: IMatrix4, x: number, y: number, z: number, out: Matrix4 = new Matrix4()): IMatrix4
+export function TranslateFromFloats (matrix: IMatrix4, x: number, y: number, z: number, out: Matrix4 = new Matrix4()): Matrix4
 {
     const data = matrix.data;
     const [ a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30, a31, a32, a33 ] = data;

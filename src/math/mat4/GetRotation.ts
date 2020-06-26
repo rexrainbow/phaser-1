@@ -1,9 +1,8 @@
 import { GetScaling } from './GetScaling';
 import { IMatrix4 } from './IMatrix4';
-import { IQuaternion } from '../quaternion/IQuaternion';
 import { Quaternion } from '../quaternion';
 
-export function GetRotation (matrix: IMatrix4, out: IQuaternion = new Quaternion()): IQuaternion
+export function GetRotation (matrix: IMatrix4, out: Quaternion = new Quaternion()): Quaternion
 {
     const scaling = GetScaling(matrix);
 
@@ -11,6 +10,7 @@ export function GetRotation (matrix: IMatrix4, out: IQuaternion = new Quaternion
     const is2 = 1 / scaling.y;
     const is3 = 1 / scaling.z;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [ m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22 ] = matrix.data;
 
     const sm11 = m00 * is1;

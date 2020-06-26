@@ -1,6 +1,6 @@
-import { IMatrix4 } from './IMatrix4';
+import { Matrix4 } from './Matrix4';
 
-export function AddTranslationFromFloats (matrix: IMatrix4, x: number, y: number, z: number): IMatrix4
+export function AddTranslationFromFloats (matrix: Matrix4, x: number, y: number, z: number): Matrix4
 {
     const data = matrix.data;
 

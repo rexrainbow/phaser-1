@@ -1,11 +1,10 @@
-import { IMatrix4 } from './IMatrix4';
-import { IQuaternion } from '../quaternion/IQuaternion';
-import { IVec3 } from '../vec3/IVec3';
+import { IQuaternionLike } from '../quaternion/IQuaternionLike';
+import { IVec3Like } from '../vec3/IVec3Like';
 import { Matrix4 } from './Matrix4';
 
 // Creates a matrix from a quaternion rotation, vector translation and vector scale
 
-export function FromRotationTranslationScale (q: IQuaternion, v: IVec3, s: IVec3, out: IMatrix4 = new Matrix4()): IMatrix4
+export function FromRotationTranslationScale (q: IQuaternionLike, v: IVec3Like, s: IVec3Like, out: Matrix4 = new Matrix4()): Matrix4
 {
     // Quaternion math
     const { x, y, z, w } = q;
