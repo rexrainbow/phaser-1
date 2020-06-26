@@ -1,11 +1,12 @@
+import { Normalize, Vec3 } from '../vec3/';
+
 import { Quaternion } from './Quaternion';
-import { Vec3 } from '../vec3/Vec3';
 
 export function FromRotationAxis (axis: Vec3, angle: number, out: Quaternion = new Quaternion()): Quaternion
 {
     const sin = Math.sin(angle / 2);
 
-    axis.normalize();
+    Normalize(axis, axis);
 
     const { x, y, z } = axis;
 

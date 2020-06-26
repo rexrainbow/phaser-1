@@ -1,7 +1,8 @@
-import { Invert, Matrix4, Multiply } from '../mat4';
-
+import { Invert } from '../mat4/Invert';
+import { Matrix4 } from '../mat4/Matrix4';
+import { Multiply } from '../mat4/Multiply';
 import { Scale } from './Scale';
-import { TransformMat4 } from '.';
+import { TransformMat4 } from './TransformMat4';
 import { Vec3 } from './Vec3';
 
 const matrix = new Matrix4();

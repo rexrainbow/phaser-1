@@ -1,7 +1,7 @@
-import { Matrix4, Multiply } from '../mat4';
-
 import { IRectangle } from '../../geom/rectangle/IRectangle';
-import { TransformMat4 } from '.';
+import { Matrix4 } from '../mat4/Matrix4';
+import { Multiply } from '../mat4/Multiply';
+import { TransformMat4 } from './TransformMat4';
 import { Vec3 } from './Vec3';
 
 const tempMatrix1 = new Matrix4();

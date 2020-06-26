@@ -1,9 +1,4 @@
-import { Add } from './Add';
-import { Clone } from './Clone';
-import { IMatrix4 } from './IMatrix4';
-import { Multiply } from './Multiply';
 import { NOOP } from '../../utils';
-import { Subtract } from './Subtract';
 
 //  4x4 Matrix in column-major format
 
@@ -26,13 +21,13 @@ import { Subtract } from './Subtract';
  * data[15] = m33
  */
 
-export class Matrix4 implements IMatrix4
+export class Matrix4
 {
     data: Float32Array;
 
-    onChange: (mat4: IMatrix4) => void;
+    onChange: (mat4: Matrix4) => void;
 
-    constructor (src?: Matrix4)
+    constructor (src?: Matrix4 | Float32List)
     {
         const data = new Float32Array(16);
 
@@ -41,7 +36,14 @@ export class Matrix4 implements IMatrix4
 
         if (src)
         {
-            this.fromArray(src.data);
+            if (Array.isArray(src))
+            {
+                this.fromArray(src);
+            }
+            else
+            {
+                this.fromArray((src as Matrix4).data);
+            }
         }
         else
         {
@@ -97,26 +99,6 @@ export class Matrix4 implements IMatrix4
         this.onChange(this);
 
         return this;
-    }
-
-    add (m: Matrix4): this
-    {
-        return Add(this, m, this) as this;
-    }
-
-    clone (): Matrix4
-    {
-        return Clone(this);
-    }
-
-    multiply (m: Matrix4): this
-    {
-        return Multiply(this, m, this) as this;
-    }
-
-    subtract (m: Matrix4): this
-    {
-        return Subtract(this, m, this) as this;
     }
 
     toArray (dst: Float32List = [], index: number = 0): Float32List

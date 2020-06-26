@@ -1,6 +1,6 @@
 import { GetScaling } from './GetScaling';
 import { IMatrix4 } from './IMatrix4';
-import { Quaternion } from '../quaternion';
+import { Quaternion } from '../quaternion/Quaternion';
 
 export function GetRotation (matrix: IMatrix4, out: Quaternion = new Quaternion()): Quaternion
 {
