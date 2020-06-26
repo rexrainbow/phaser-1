@@ -28,6 +28,9 @@ export class OrbitCamera extends NewCamera3D
 
     state: number = STATE.NONE;
 
+    ease: number = 0.2;
+    inertia: number = 0.8;
+
     minDistance: number = 0;
     maxDistance: number = Infinity;
 
@@ -117,7 +120,7 @@ export class OrbitCamera extends NewCamera3D
         sphericalTarget.radius = Math.max(this.minDistance, Math.min(this.maxDistance, sphericalTarget.radius));
 
         // ease values
-        const ease = 0.25;
+        const ease = this.ease;
 
         spherical.phi += (sphericalTarget.phi - spherical.phi) * ease;
         spherical.theta += (sphericalTarget.theta - spherical.theta) * ease;
@@ -149,7 +152,7 @@ export class OrbitCamera extends NewCamera3D
 
         // Apply inertia to values
 
-        const inertia = 0.85;
+        const inertia = this.inertia;
 
         sphericalDelta.theta *= inertia;
         sphericalDelta.phi *= inertia;
