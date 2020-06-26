@@ -1,6 +1,6 @@
 import { Emit, EventEmitter } from '../../events';
 
-import { Append as AppendMatrix2d } from '../../math/matrix2d-funcs/Append';
+import { Append } from '../../math/matrix2d/Append';
 import { GameInstance } from '../../GameInstance';
 import { GlobalToLocal } from '../../math/matrix2d/GlobalToLocal';
 import { IGameObject } from '../../gameobjects/IGameObject';
@@ -146,7 +146,7 @@ export class Mouse extends EventEmitter
                 continue;
             }
 
-            const mat = AppendMatrix2d(entity.world.camera.worldTransform, entity.transform.world);
+            const mat = Append(entity.world.camera.worldTransform, entity.transform.world);
 
             GlobalToLocal(mat, localX, localY, point);
 

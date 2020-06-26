@@ -97,7 +97,7 @@ export class Matrix4 implements IMatrix4
         return this;
     }
 
-    add (m: IMatrix4): this
+    add (m: Matrix4): this
     {
         return Add(this, m, this) as this;
     }
@@ -107,12 +107,12 @@ export class Matrix4 implements IMatrix4
         return Clone(this);
     }
 
-    multiply (m: IMatrix4): this
+    multiply (m: Matrix4): this
     {
         return Multiply(this, m, this) as this;
     }
 
-    subtract (m: IMatrix4): this
+    subtract (m: Matrix4): this
     {
         return Subtract(this, m, this) as this;
     }

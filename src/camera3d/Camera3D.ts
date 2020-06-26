@@ -72,7 +72,7 @@ export class Camera3D
         return this;
     }
 
-    lookAt (point: IVec3Like): this
+    lookAt (point: Vec3): this
     {
         const pos = this.position;
         const dir = this.direction;

@@ -25,7 +25,7 @@ export class Vec2
         return this.set(v.x, v.y);
     }
 
-    add (va: IVec2Like, vb?: IVec2Like): this
+    add (va: Vec2, vb?: Vec2): this
     {
         if (vb)
         {
@@ -39,7 +39,7 @@ export class Vec2
         return this;
     }
 
-    subtract (va: IVec2Like, vb?: IVec2Like): this
+    subtract (va: Vec2, vb?: Vec2): this
     {
         if (vb)
         {
@@ -53,7 +53,7 @@ export class Vec2
         return this;
     }
 
-    multiply (v: IVec2Like): this
+    multiply (v: Vec2): this
     {
         return Multiply(this, v, this) as this;
     }
@@ -63,7 +63,7 @@ export class Vec2
         return MultiplyByFloats(this, x, y, this) as this;
     }
 
-    divide (v: IVec2Like): this
+    divide (v: Vec2): this
     {
         return Divide(this, v, this) as this;
     }

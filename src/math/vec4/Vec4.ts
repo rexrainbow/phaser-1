@@ -29,7 +29,7 @@ export class Vec4
         return this.set(v.x, v.y, v.z, v.w);
     }
 
-    add (va: IVec4Like, vb?: IVec4Like): this
+    add (va: Vec4, vb?: Vec4): this
     {
         if (vb)
         {
@@ -43,7 +43,7 @@ export class Vec4
         return this;
     }
 
-    subtract (va: IVec4Like, vb?: IVec4Like): this
+    subtract (va: Vec4, vb?: Vec4): this
     {
         if (vb)
         {
@@ -57,12 +57,12 @@ export class Vec4
         return this;
     }
 
-    multiply (v: IVec4Like): this
+    multiply (v: Vec4): this
     {
         return Multiply(this, v, this) as this;
     }
 
-    divide (v: IVec4Like): this
+    divide (v: Vec4): this
     {
         return Divide(this, v, this) as this;
     }
@@ -77,7 +77,7 @@ export class Vec4
         return Negate(this, this) as this;
     }
 
-    cross (va: IVec4Like, vb?: IVec4Like): this
+    cross (va: Vec4, vb?: Vec4): this
     {
         if (vb)
         {
