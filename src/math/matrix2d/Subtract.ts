@@ -1,17 +1,16 @@
 import { IMatrix2D } from './IMatrix2D';
+import { Matrix2D } from './Matrix2D';
 
 //  Subtracts the src Matrix from the target Matrix and returns the target.
 
-export function Subtract (target: IMatrix2D, src: IMatrix2D): IMatrix2D
+export function Subtract (a: IMatrix2D, b: IMatrix2D, out: Matrix2D = new Matrix2D()): Matrix2D
 {
-    const { a, b, c, d, tx, ty } = src;
-
-    target.a -= a;
-    target.b -= b;
-    target.c -= c;
-    target.d -= d;
-    target.tx -= tx;
-    target.ty -= ty;
-
-    return target;
+    return out.set(
+        a.a - b.a,
+        a.b - b.b,
+        a.c - b.c,
+        a.d - b.d,
+        a.tx - b.tx,
+        a.ty - b.ty
+    );
 }

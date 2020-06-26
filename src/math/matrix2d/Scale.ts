@@ -1,13 +1,18 @@
 import { IMatrix2D } from './IMatrix2D';
+import { Matrix2D } from './Matrix2D';
 
 //  Scales the target Matrix by the given amounts, then returns the target Matrix.
 
-export function Scale (target: IMatrix2D, scaleX: number, scaleY: number): IMatrix2D
+export function Scale (target: IMatrix2D, scaleX: number, scaleY: number, out: Matrix2D = new Matrix2D()): Matrix2D
 {
-    target.a *= scaleX;
-    target.b *= scaleX;
-    target.c *= scaleY;
-    target.d *= scaleY;
+    const { a, b, c, d, tx, ty } = target;
 
-    return target;
+    return out.set(
+        a * scaleX,
+        b * scaleX,
+        c * scaleY,
+        d * scaleY,
+        tx,
+        ty
+    );
 }

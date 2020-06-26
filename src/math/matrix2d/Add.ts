@@ -1,15 +1,14 @@
 import { IMatrix2D } from './IMatrix2D';
+import { Matrix2D } from './Matrix2D';
 
-//  Adds the src Matrix to the target Matrix and returns the target.
-
-export function Add (target: IMatrix2D, src: IMatrix2D): IMatrix2D
+export function Add (a: IMatrix2D, b: IMatrix2D, out: Matrix2D = new Matrix2D()): Matrix2D
 {
-    target.a += src.a;
-    target.b += src.b;
-    target.c += src.c;
-    target.d += src.d;
-    target.tx += src.tx;
-    target.ty += src.ty;
-
-    return target;
+    return out.set(
+        a.a + b.a,
+        a.b + b.b,
+        a.c + b.c,
+        a.d + b.d,
+        a.tx + b.tx,
+        a.ty + b.ty
+    );
 }

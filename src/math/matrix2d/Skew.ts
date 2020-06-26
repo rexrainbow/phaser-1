@@ -1,11 +1,18 @@
 import { IMatrix2D } from './IMatrix2D';
+import { Matrix2D } from './Matrix2D';
 
 //  Skews the target Matrix by the given angles (in radians), then returns the target Matrix
 
-export function Skew (target: IMatrix2D, angleX: number, angleY: number): IMatrix2D
+export function Skew (target: IMatrix2D, angleX: number, angleY: number, out: Matrix2D = new Matrix2D()): Matrix2D
 {
-    target.b += Math.tan(angleX);
-    target.c += Math.tan(angleY);
+    const { a, b, c, d, tx, ty } = target;
 
-    return target;
+    return out.set(
+        a,
+        b + Math.tan(angleX),
+        c + Math.tan(angleY),
+        d,
+        tx,
+        ty
+    );
 }

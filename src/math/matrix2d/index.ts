@@ -1,11 +1,19 @@
 import { Add } from './Add';
-import { Copy } from './Copy';
+import { Append } from './Append';
+import { Clone } from './Clone';
+import { CopyFrom } from './CopyFrom';
 import { CopyToContext } from './CopyToContext';
 import { Determinant } from './Determinant';
+import { Equals } from './Equals';
+import { ExactEquals } from './ExactEquals';
 import { Frobenius } from './Frobenius';
+import { FromRotation } from './FromRotation';
+import { FromScaling } from './FromScaling';
+import { FromTranslation } from './FromTranslation';
 import { GlobalToLocal } from './GlobalToLocal';
 import { ITRS } from './ITRS';
 import { ITRSS } from './ITRSS';
+import { Identity } from './Identity';
 import { Invert } from './Invert';
 import { LocalToGlobal } from './LocalToGlobal';
 import { Matrix2D } from './Matrix2D';
@@ -22,11 +30,19 @@ import { Zero } from './Zero';
 
 export {
     Add,
-    Copy,
+    Append,
+    Clone,
+    CopyFrom,
     CopyToContext,
     Determinant,
+    Equals,
+    ExactEquals,
     Frobenius,
+    FromRotation,
+    FromScaling,
+    FromTranslation,
     GlobalToLocal,
+    Identity,
     Invert,
     ITRS,
     ITRSS,

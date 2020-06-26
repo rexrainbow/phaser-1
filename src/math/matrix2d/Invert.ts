@@ -1,8 +1,9 @@
 import { IMatrix2D } from './IMatrix2D';
+import { Matrix2D } from './Matrix2D';
 
 //  Inverts the target Matrix and then returns it
 
-export function Invert (target: IMatrix2D): IMatrix2D
+export function Invert (target: IMatrix2D, out: Matrix2D = new Matrix2D()): Matrix2D
 {
     const { a, b, c, d, tx, ty } = target;
 
@@ -11,8 +12,8 @@ export function Invert (target: IMatrix2D): IMatrix2D
     if (determinant)
     {
         determinant = 1 / determinant;
-  
-        target.set(
+
+        out.set(
             d * determinant,
             -b * determinant,
             -c * determinant,
@@ -22,5 +23,5 @@ export function Invert (target: IMatrix2D): IMatrix2D
         );
     }
 
-    return target;
+    return out;
 }

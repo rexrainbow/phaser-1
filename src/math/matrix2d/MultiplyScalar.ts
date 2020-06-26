@@ -1,15 +1,18 @@
 import { IMatrix2D } from './IMatrix2D';
+import { Matrix2D } from './Matrix2D';
 
 //  Multiplies the target Matrix by the given amount, then returns the target Matrix.
 
-export function MultiplyScalar (target: IMatrix2D, scale: number): IMatrix2D
+export function MultiplyScalar (target: IMatrix2D, scalar: number, out: Matrix2D = new Matrix2D()): IMatrix2D
 {
-    target.a *= scale;
-    target.b *= scale;
-    target.c *= scale;
-    target.d *= scale;
-    target.tx *= scale;
-    target.ty *= scale;
+    const { a, b, c, d, tx, ty } = target;
 
-    return target;
+    return out.set(
+        a * scalar,
+        b * scalar,
+        c * scalar,
+        d * scalar,
+        tx * scalar,
+        ty * scalar
+    );
 }

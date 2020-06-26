@@ -3,5 +3,7 @@ import { Scale } from './Scale';
 
 export function FromScaling (scaleX: number, scaleY: number = scaleX): Matrix2D
 {
-    return Scale(new Matrix2D(), scaleX, scaleY);
+    const target = new Matrix2D();
+
+    return Scale(target, scaleX, scaleY, target);
 }

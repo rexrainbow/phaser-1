@@ -3,5 +3,7 @@ import { Rotate } from './Rotate';
 
 export function FromRotation (angle: number): Matrix2D
 {
-    return Rotate(new Matrix2D(), angle);
+    const target = new Matrix2D();
+
+    return Rotate(target, angle, target);
 }
