@@ -28,6 +28,7 @@ import { Forward } from './Forward';
 import { Fract } from './Fract';
 import { FuzzyEquals } from './FuzzyEquals';
 import { Hermite } from './Hermite';
+import { Inverse } from './Inverse';
 import { IsNonUniform } from './IsNonUniform';
 import { Left } from './Left';
 import { Length } from './Length';
@@ -94,6 +95,7 @@ export {
     Fract,
     FuzzyEquals,
     Hermite,
+    Inverse,
     IsNonUniform,
     Left,
     Length,
