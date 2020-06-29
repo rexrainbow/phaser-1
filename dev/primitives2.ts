@@ -3,10 +3,13 @@ import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
 
 import { AddChild3D } from '../src/display3d/AddChild3D';
 import { AddChildren3D } from '../src/display3d/AddChildren3D';
+import { Box } from '../src/gameobjects3d/box/Box';
 import { BoxGeometry } from '../src/geom3d/BoxGeometry';
 import { Cache } from '../src/cache/Cache';
 import { Camera3D } from '../src/camera3d/Camera3D';
 import { Clone } from '../src/math/vec3/Clone';
+import { Cone } from '../src/gameobjects3d/cone/Cone';
+import { ConeGeometry } from '../src/geom3d/ConeGeometry';
 import { CylinderGeometry } from '../src/geom3d/CylinderGeometry';
 import { Game } from '../src/Game';
 import { Geometry } from '../src/gameobjects3d/geometry/Geometry';
@@ -19,18 +22,21 @@ import { Mesh } from '../src/gameobjects3d/mesh/Mesh';
 import { On } from '../src/events';
 import { OrbitCamera } from '../src/camera3d/OrbitCamera';
 import { Plane } from '../src/gameobjects3d/plane/Plane';
+import { PlaneGeometry } from '../src/geom3d/PlaneGeometry';
 import { Scene } from '../src/scenes/Scene';
+import { Sphere } from '../src/gameobjects3d/sphere/Sphere';
 import { SphereGeometry } from '../src/geom3d/SphereGeometry';
 import { TorusGeometry } from '../src/geom3d/TorusGeometry';
+import { Vec3 } from '../src/math/vec3';
 import { VertexBuffer } from '../src/renderer/webgl1/buffers/VertexBuffer';
 import { World3D } from '../src/world3d/World3D';
 
 class Demo extends Scene
 {
-    // leftKey: LeftKey;
-    // rightKey: RightKey;
-    // upKey: UpKey;
-    // downKey: DownKey;
+    leftKey: LeftKey;
+    rightKey: RightKey;
+    upKey: UpKey;
+    downKey: DownKey;
 
     world: IWorld3D;
     camMode: number = 0;
@@ -55,6 +61,12 @@ class Demo extends Scene
         loader.add(ImageFile('field', 'field.png', { flipY: true }));
         loader.add(ImageFile('water', 'water.png', { flipY: true }));
         loader.add(ImageFile('bricks', 'bricks.png', { flipY: true }));
+        loader.add(ImageFile('dirt', 'dirt.png', { flipY: true }));
+        loader.add(ImageFile('icerock', 'icerock.png', { flipY: true }));
+        loader.add(ImageFile('keops', 'keops.png', { flipY: true }));
+        loader.add(ImageFile('metal', 'metal.png', { flipY: true }));
+        loader.add(ImageFile('stone', 'stone.png', { flipY: true }));
+        loader.add(ImageFile('stonegrass', 'stonegrass.png', { flipY: true }));
 
         loader.start().then(() => this.create());
     }
@@ -63,40 +75,30 @@ class Demo extends Scene
     {
         this.world = new World3D(this);
 
-        // const geom = new Geometry(BoxGeometry());
-        // const geom = new Geometry(CylinderGeometry(0, 0.5, 2, 16, 4, false));
-        // const geom = new Geometry(TorusGeometry(0.8, 0.4, 16, 24));
-        const geom = new Geometry(SphereGeometry(1, 12, 12));
+        const ball = new Sphere(-2.5, 0, 0, 1, 24, 24).setTexture('field');
+        const box = new Box(0, 0, 0, 1.5, 1.5).setTexture('wood');
+        const cone = new Cone(2.5, 0, 0, 0.8, 1.8, 24, 6).setTexture('stonegrass');
 
-        // console.log(geom);
+        AddChildren3D(this.world, ball, box, cone);
 
-        //  Floor plane
-        // const floor = new Plane(0, 0, -5, 10, 10).setTexture('water');
+        const camera = new OrbitCamera(new Vec3(0, -2, 4), 0, 1, -7);
 
-        //  These meshes all use the same underlying geometry buffer
-        const box1 = new Mesh(0, 0, 0, geom).setTexture('wood');
-        const box2 = new Mesh(-2, 0, 0, geom).setTexture('field');
-        const box3 = new Mesh(2, 0, 0, geom).setTexture('bricks');
+        box.transform.rotateX(0.1);
 
-        AddChildren3D(this.world, box1, box2, box3);
+        // camera.panUp(0.1);
 
-        // const camera = new OrbitCamera(Clone(box1.transform.position), 0, 0, -8);
-
-        // this.world.camera = camera;
+        this.world.camera = camera;
 
         // camera.setAutoRotate(1);
 
         // this.world.camera.position.set(0, -1, -6);
 
-        this.model = box1;
+        // this.model = box1;
 
-        const camera = this.world.camera;
-
-        window['camera'] = camera;
+        window['camera'] = this.world.camera;
 
         //  Keyboard input ...
 
-        /*
         const keyboard = new Keyboard();
 
         this.leftKey = new LeftKey();
@@ -109,6 +111,7 @@ class Demo extends Scene
 
         keyboard.addKeys(this.leftKey, this.rightKey, this.upKey, this.downKey, aKey, mKey);
 
+        /*
         On(aKey, 'keydown', () => {
 
             this.camMode++;
@@ -121,17 +124,21 @@ class Demo extends Scene
             console.log('cam mode: ' + this.camMode);
 
         });
+        */
 
+        /*
         let m = 1;
 
         On(mKey, 'keydown', () => {
 
             m++;
 
-            if (m === 4)
+            if (m === 7)
             {
                 m = 1;
             }
+
+            this.model = this['mesh' + m];
 
             switch (m)
             {
@@ -153,9 +160,13 @@ class Demo extends Scene
         });
         */
 
-        // On(this, 'update', () => camera.updateOrbit());
+        /*
+        On(this, 'update', () => camera.updateOrbit());
 
         // On(this, 'update', (delta, time) => this.update(delta, time));
+        */
+
+        On(this, 'update', () => camera.updateOrbit());
     }
 
     /*

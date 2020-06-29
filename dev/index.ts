@@ -39,7 +39,9 @@
 // import runTest from './cube transform';
 // import runTest from './load model';
 // import runTest from './geometry test';
+// import runTest from './orbit camera';
+// import runTest from './primitives';
 
-import runTest from './orbit camera';
+import runTest from './primitives2';
 
 runTest();
