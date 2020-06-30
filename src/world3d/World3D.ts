@@ -57,6 +57,7 @@ export class World3D extends BaseWorld3D
         // Invert(camera.viewMatrix, normalMatrix);
         // Transpose(normalMatrix, normalMatrix);
 
+        // uniforms.set('uNormalMatrix', normalMatrix.data);
         uniforms.set('uNormalMatrix', camera.viewNormal.data);
 
         //  TODO - Use fbo anyway to avoid z-fighting with World2D?
