@@ -72,12 +72,12 @@ class Demo extends Scene
         loader.add(ImageFile('field', 'field.png', { flipY: true }));
         loader.add(ImageFile('water', 'water.png', { flipY: true }));
         loader.add(ImageFile('bricks', 'bricks.png', { flipY: true }));
-        loader.add(ImageFile('dirt', 'dirt.png', { flipY: true }));
-        loader.add(ImageFile('icerock', 'icerock.png', { flipY: true }));
-        loader.add(ImageFile('keops', 'keops.png', { flipY: true }));
-        loader.add(ImageFile('metal', 'metal.png', { flipY: true }));
-        loader.add(ImageFile('stone', 'stone.png', { flipY: true }));
-        loader.add(ImageFile('stonegrass', 'stonegrass.png', { flipY: true }));
+        // loader.add(ImageFile('dirt', 'dirt.png', { flipY: true }));
+        // loader.add(ImageFile('icerock', 'icerock.png', { flipY: true }));
+        // loader.add(ImageFile('keops', 'keops.png', { flipY: true }));
+        // loader.add(ImageFile('metal', 'metal.png', { flipY: true }));
+        // loader.add(ImageFile('stone', 'stone.png', { flipY: true }));
+        // loader.add(ImageFile('stonegrass', 'stonegrass.png', { flipY: true }));
 
         loader.start().then(() => this.create());
     }
@@ -88,7 +88,7 @@ class Demo extends Scene
 
         const ball = new Sphere(-2.5, 0, 0, 1, 24, 24).setTexture('field');
         const box = new Box(0, 0, 0, 1.5, 1.5, 1.5).setTexture('wood');
-        const cone = new Cone(2.5, 0, 0, 0.8, 1.8, 24, 6).setTexture('stonegrass');
+        const cone = new Cone(2.5, 0, 0, 0.8, 1.8, 24, 6).setTexture('bricks');
 
         AddChildren3D(this.world, ball, box, cone);
 
