@@ -12,8 +12,8 @@ export class NewCamera3D
 {
     type: string;
 
-    position: Vec3;
-    scale: Vec3;
+    position: Vec3Callback;
+    // scale: Vec3;
     rotation: Quaternion;
 
     matrix: Matrix4;
@@ -58,8 +58,8 @@ export class NewCamera3D
         this.viewNormal = new Matrix4();
         this.projectionMatrix = new Matrix4();
 
-        this.position = new Vec3();
-        this.scale = new Vec3(1, 1, 1);
+        this.position = new Vec3Callback(() => this.update());
+        // this.scale = new Vec3(1, 1, 1);
         this.rotation = new Quaternion();
 
         this.yaw = 0;
@@ -75,6 +75,22 @@ export class NewCamera3D
         this.setAspectRatio();
     }
 
+    transformVec4 (out: Vec3, v: number[], d: Matrix4): void
+    {
+        const m = d.data;
+
+        // out[0] = m[0] * v[0] + m[4] * v[1] + m[8]	* v[2] + m[12] * v[3];
+        // out[1] = m[1] * v[0] + m[5] * v[1] + m[9]	* v[2] + m[13] * v[3];
+        // out[2] = m[2] * v[0] + m[6] * v[1] + m[10]	* v[2] + m[14] * v[3];
+        // out[3] = m[3] * v[0] + m[7] * v[1] + m[11]	* v[2] + m[15] * v[3];
+
+        out.x = m[0] * v[0] + m[4] * v[1] + m[8]	* v[2] + m[12] * v[3];
+        out.y = m[1] * v[0] + m[5] * v[1] + m[9]	* v[2] + m[13] * v[3];
+        out.z = m[2] * v[0] + m[6] * v[1] + m[10]	* v[2] + m[14] * v[3];
+
+        // return out;
+    }
+
     update (): this
     {
         //  Move to setters:
@@ -83,6 +99,10 @@ export class NewCamera3D
         // Identity(this.matrix);
 
         FromRotationXYTranslation(this.rotation, this.position, !this.isOrbit, this.matrix);
+
+        this.transformVec4(this.forward, [ 0,0,1,0 ], this.matrix);
+        this.transformVec4(this.up, [ 0,1,0,0 ], this.matrix);
+        this.transformVec4(this.right, [ 1,0,0,0 ], this.matrix);
 
         // TransformMat4(Forward(), this.matrix, this.forward);
         // TransformMat4(Up(), this.matrix, this.up);
@@ -158,6 +178,8 @@ export class NewCamera3D
         this.rotation.y += dx * (this.rotateRate / 800);
 
         this.start.set(x, y);
+
+        this.update();
     }
 
     zoom (delta: number): void
