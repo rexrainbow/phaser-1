@@ -26,15 +26,15 @@ export class GoraudLambertShader extends Shader implements IShader
                 uModelMatrix: new Float32Array(16).fill(0),
 
                 uTexture: 0,
-                uShininess: 1.0,
-                uLightDirection: [ 0, 0, 0 ],
+                uShininess: 10.0,
+                uLightDirection: [ 0, -2, -2 ],
 
-                uLightAmbient: [ 1, 1, 1, 1 ],
-                uLightDiffuse: [ 1, 1, 1, 1 ],
-                uLightSpecular: [ 1, 1, 1, 1 ],
+                uLightAmbient: [ 0.7, 0.7, 0.7, 1 ],
+                uLightDiffuse: [ 0.2, 0.2, 0.2, 1 ],
+                uLightSpecular: [ 0.8, 0.8, 0.8, 1 ],
 
                 uMaterialAmbient: [ 1, 1, 1, 1 ],
-                uMaterialDiffuse: [ 1, 1, 1, 1 ],
+                uMaterialDiffuse: [ 0.5, 0.5, 0.5, 1 ],
                 uMaterialSpecular: [ 0, 0, 0, 1 ]
             }
         };
