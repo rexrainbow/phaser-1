@@ -19,8 +19,8 @@ import { JSONFile } from '../src/loader/files/JSONFile';
 import { Keyboard } from '../src/input/keyboard';
 import { Loader } from '../src/loader/Loader';
 import { Mesh } from '../src/gameobjects3d/mesh/Mesh';
+import { Mouse } from '../src/input/mouse/Mouse';
 import { On } from '../src/events';
-import { OrbitCamera } from '../src/camera3d/OrbitCamera';
 import { Plane } from '../src/gameobjects3d/plane/Plane';
 import { PlaneGeometry } from '../src/geom3d/PlaneGeometry';
 import { Scene } from '../src/scenes/Scene';
@@ -30,6 +30,17 @@ import { TorusGeometry } from '../src/geom3d/TorusGeometry';
 import { Vec3 } from '../src/math/vec3';
 import { VertexBuffer } from '../src/renderer/webgl1/buffers/VertexBuffer';
 import { World3D } from '../src/world3d/World3D';
+
+// import { OrbitCamera } from '../src/camera3d/OrbitCamera';
+
+
+
+
+
+
+
+
+
 
 class Demo extends Scene
 {
@@ -76,169 +87,75 @@ class Demo extends Scene
         this.world = new World3D(this);
 
         const ball = new Sphere(-2.5, 0, 0, 1, 24, 24).setTexture('field');
-        const box = new Box(0, 0, 0, 1.5, 1.5).setTexture('wood');
+        const box = new Box(0, 0, 0, 1.5, 1.5, 1.5).setTexture('wood');
         const cone = new Cone(2.5, 0, 0, 0.8, 1.8, 24, 6).setTexture('stonegrass');
 
         AddChildren3D(this.world, ball, box, cone);
 
-        const camera = new OrbitCamera(new Vec3(0, -2, 4), 0, 1, -7);
-
-        box.transform.rotateX(0.1);
-
-        // camera.panUp(0.1);
-
-        this.world.camera = camera;
-
-        // camera.setAutoRotate(1);
-
-        // this.world.camera.position.set(0, -1, -6);
-
-        // this.model = box1;
-
-        window['camera'] = this.world.camera;
-
-        //  Keyboard input ...
-
-        const keyboard = new Keyboard();
-
-        this.leftKey = new LeftKey();
-        this.rightKey = new RightKey();
-        this.upKey = new UpKey();
-        this.downKey = new DownKey();
-
-        const aKey = new AKey();
-        const mKey = new MKey();
-
-        keyboard.addKeys(this.leftKey, this.rightKey, this.upKey, this.downKey, aKey, mKey);
-
-        /*
-        On(aKey, 'keydown', () => {
-
-            this.camMode++;
-
-            if (this.camMode === 3)
-            {
-                this.camMode = 0;
-            }
-
-            console.log('cam mode: ' + this.camMode);
-
-        });
-        */
-
-        /*
-        let m = 1;
-
-        On(mKey, 'keydown', () => {
-
-            m++;
-
-            if (m === 7)
-            {
-                m = 1;
-            }
-
-            this.model = this['mesh' + m];
-
-            switch (m)
-            {
-                case 1:
-                    this.model = box1;
-                    break;
-
-                case 2:
-                    this.model = box2;
-                    break;
-
-                case 3:
-                    this.model = box3;
-                    break;
-            }
-
-            console.log('model: ' + m);
-
-        });
-        */
-
-        /*
-        On(this, 'update', () => camera.updateOrbit());
-
-        // On(this, 'update', (delta, time) => this.update(delta, time));
-        */
-
-        On(this, 'update', () => camera.updateOrbit());
-    }
-
-    /*
-    update (delta: number, time: number)
-    {
         const camera = this.world.camera;
-        const camMode = this.camMode;
-        const box = this.model;
 
-        if (this.leftKey.isDown)
-        {
-            if (camMode === 0)
-            {
-                box.transform.position.x -= 0.05;
-            }
-            else if (camMode === 1)
-            {
-                box.transform.rotateX(-0.05);
-            }
-            else
-            {
-                camera.pitch(0.05);
-            }
-        }
-        else if (this.rightKey.isDown)
-        {
-            if (camMode === 0)
-            {
-                box.transform.position.x += 0.05;
-            }
-            else if (camMode === 1)
-            {
-                box.transform.rotateX(0.05);
-            }
-            else
-            {
-                camera.pitch(-0.05);
-            }
-        }
+        camera.position.set(0, 0, 8);
+        camera.isOrbit = true;
 
-        if (this.upKey.isDown)
-        {
-            if (camMode === 0)
+        window['camera'] = camera;
+
+        // const camera = new OrbitCamera(new Vec3(0, 0.7, 0), -2, 1, 2);
+
+        const mouse = new Mouse();
+
+        let tracking = false;
+
+        On(this, 'update', () => {
+            camera.update();
+        });
+
+        On(mouse, 'pointerdown', (x: number, y: number, button: number) => {
+
+            if (button === 1)
             {
-                box.transform.position.y += 0.05;
-            }
-            else if (camMode === 1)
-            {
-                box.transform.rotateY(-0.05);
-            }
-            else
-            {
-                camera.forward(0.05);
-            }
-        }
-        else if (this.downKey.isDown)
-        {
-            if (camMode === 0)
-            {
-                box.transform.position.y -= 0.05;
-            }
-            else if (camMode === 1)
-            {
-                box.transform.rotateY(0.05);
+                camera.isOrbit = !camera.isOrbit;
+
+                console.log('orbit', camera.isOrbit);
             }
             else
             {
-                camera.forward(-0.05);
+                camera.begin(x, y);
+                tracking = true;
             }
-        }
+
+        });
+
+        On(mouse, 'pointermove', (x: number, y: number) => {
+
+            if (!tracking)
+            {
+                return;
+            }
+
+            if (mouse.primaryDown)
+            {
+                camera.rotate(x, y);
+            }
+            else if (mouse.secondaryDown)
+            {
+                camera.pan(x, y);
+            }
+
+        });
+
+        On(mouse, 'wheel', (deltaX: number, deltaY: number, deltaZ: number) => {
+
+            camera.zoom(deltaY);
+
+        });
+
+        On(mouse, 'pointerup', () => {
+
+            tracking = false;
+
+        });
+
     }
-    */
 }
 
 export default function (): void
