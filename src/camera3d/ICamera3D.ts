@@ -10,8 +10,8 @@ export interface ICamera3D
 {
     type: string;
 
-    position: Vec3;
-    scale: Vec3;
+    position: Vec3Callback;
+    // scale: Vec3;
     rotation: Quaternion;
 
     yaw: number;
