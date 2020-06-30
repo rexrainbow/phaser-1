@@ -12,6 +12,8 @@ export class Mouse extends EventEmitter
     auxDown: boolean = false;
     secondaryDown: boolean = false;
 
+    blockContextMenu: boolean = true;
+
     localPoint: Vec2;
     hitPoint: Vec2;
 
@@ -21,6 +23,8 @@ export class Mouse extends EventEmitter
     private mousedownHandler: { (event: MouseEvent): void; (this: Window, ev: MouseEvent): void };
     private mouseupHandler: { (event: MouseEvent): void; (this: Window, ev: MouseEvent): void };
     private mousemoveHandler: { (event: MouseEvent): void; (this: Window, ev: MouseEvent): void };
+    private mousewheelHandler: { (event: MouseWheelEvent): void; (this: Window, ev: MouseWheelEvent): void };
+    private contextmenuHandler: { (event: MouseEvent): void; (this: Window, ev: MouseEvent): void };
     private blurHandler: { (): void; (this: Window, ev: FocusEvent): void };
 
     private transPoint: Vec2;
@@ -32,6 +36,8 @@ export class Mouse extends EventEmitter
         this.mousedownHandler = (event: MouseEvent): void => this.onMouseDown(event);
         this.mouseupHandler = (event: MouseEvent): void => this.onMouseUp(event);
         this.mousemoveHandler = (event: MouseEvent): void => this.onMouseMove(event);
+        this.mousewheelHandler = (event: MouseWheelEvent): void => this.onMouseWheel(event);
+        this.contextmenuHandler = (event: MouseEvent): void => this.onContextMenuEvent(event);
         this.blurHandler = (): void => this.onBlur();
 
         this.localPoint = new Vec2();
@@ -45,6 +51,8 @@ export class Mouse extends EventEmitter
 
         target.addEventListener('mousedown', this.mousedownHandler);
         target.addEventListener('mouseup', this.mouseupHandler);
+        target.addEventListener('wheel', this.mousewheelHandler, { passive: false });
+        target.addEventListener('contextmenu', this.contextmenuHandler);
 
         window.addEventListener('mouseup', this.mouseupHandler);
         window.addEventListener('mousemove', this.mousemoveHandler);
@@ -84,6 +92,21 @@ export class Mouse extends EventEmitter
         this.positionToPoint(event);
 
         Emit(this, 'pointermove', this.localPoint.x, this.localPoint.y, event);
+    }
+
+    private onMouseWheel (event: MouseWheelEvent): void
+    {
+        Emit(this, 'wheel', event.deltaX, event.deltaY, event.deltaZ, event);
+    }
+
+    private onContextMenuEvent (event: MouseEvent): void
+    {
+        if (this.blockContextMenu)
+        {
+            event.preventDefault();
+        }
+
+        Emit(this, 'contextmenu', event);
     }
 
     positionToPoint (event: MouseEvent): Vec2
@@ -204,11 +227,15 @@ export class Mouse extends EventEmitter
 
     shutdown (): void
     {
-        this.target.addEventListener('mousedown', this.mousedownHandler);
-        this.target.addEventListener('mouseup', this.mouseupHandler);
+        const target = this.target;
 
-        window.addEventListener('mouseup', this.mouseupHandler);
-        window.addEventListener('mousemove', this.mousemoveHandler);
-        window.addEventListener('blur', this.blurHandler);
+        target.removeEventListener('mousedown', this.mousedownHandler);
+        target.removeEventListener('mouseup', this.mouseupHandler);
+        target.removeEventListener('wheel', this.mousewheelHandler);
+        target.removeEventListener('contextmenu', this.contextmenuHandler);
+
+        window.removeEventListener('mouseup', this.mouseupHandler);
+        window.removeEventListener('mousemove', this.mousemoveHandler);
+        window.removeEventListener('blur', this.blurHandler);
     }
 }
