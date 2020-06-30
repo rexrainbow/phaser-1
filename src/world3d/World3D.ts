@@ -13,9 +13,10 @@ import { IWorld3D } from './IWorld3D';
 import { NewCamera3D } from '../camera3d/NewCamera3D';
 import { VertexBuffer } from '../renderer/webgl1/buffers/VertexBuffer';
 
-export class World3D extends BaseWorld3D implements IWorld3D
+// export class World3D extends BaseWorld3D implements IWorld3D
+export class World3D extends BaseWorld3D
 {
-    camera: ICamera3D;
+    camera: NewCamera3D;
 
     enableCameraCull: boolean = true;
 
@@ -51,12 +52,12 @@ export class World3D extends BaseWorld3D implements IWorld3D
         uniforms.set('uProjectionMatrix', camera.projectionMatrix.data);
         uniforms.set('uCameraMatrix', camera.viewMatrix.data);
 
-        const normalMatrix = this.normalMatrix;
+        // const normalMatrix = this.normalMatrix;
 
-        Invert(camera.viewMatrix, normalMatrix);
-        Transpose(normalMatrix, normalMatrix);
+        // Invert(camera.viewMatrix, normalMatrix);
+        // Transpose(normalMatrix, normalMatrix);
 
-        uniforms.set('uNormalMatrix', normalMatrix.data);
+        uniforms.set('uNormalMatrix', camera.viewNormal.data);
 
         //  TODO - Use fbo anyway to avoid z-fighting with World2D?
         // SetFramebuffer(renderPass, this.framebuffer, true);
