@@ -99,15 +99,9 @@ class Demo extends Scene
 
         window['camera'] = camera;
 
-        // const camera = new OrbitCamera(new Vec3(0, 0.7, 0), -2, 1, 2);
-
         const mouse = new Mouse();
 
         let tracking = false;
-
-        On(this, 'update', () => {
-            camera.update();
-        });
 
         On(mouse, 'pointerdown', (x: number, y: number, button: number) => {
 
