@@ -1,8 +1,10 @@
-import { FromRotationTranslationScale, GetRotation, LookAt, Matrix4, Multiply, Perspective } from '../math/mat4';
-import { Quaternion, RotateX, RotateY, RotateZ } from '../math/quaternion';
-import { Up, Vec3, Vec3Callback } from '../math/vec3';
+import { Clamp, DegToRad } from '../math';
+import { Forward, Right, ScaleAndAdd, TransformMat4, Up, Vec3, Vec3Callback } from '../math/vec3';
+import { FromEulerVector, Quaternion, RotationYawPitchRoll } from '../math/quaternion';
+import { FromRotationTranslationScale, FromRotationXYTranslation, GetRotation, Identity, Invert, LookAt, Matrix4, Multiply, Perspective, RotateX, RotateY, RotateZ, TargetTo, Translate, Transpose } from '../math/mat4';
 
-import { DegToRad } from '../math';
+import { Euler } from '../math/euler/Euler';
+import { FromQuaternion } from '../math/euler';
 import { GameInstance } from '../GameInstance';
 import { IVec3Like } from '../math/vec3/IVec3Like';
 
@@ -10,18 +12,34 @@ export class NewCamera3D
 {
     type: string;
 
-    viewMatrix: Matrix4;
-    projectionMatrix: Matrix4;
-    projectionViewMatrix: Matrix4;
-
-    position: Vec3Callback;
-    scale: Vec3Callback;
+    position: Vec3;
+    scale: Vec3;
     rotation: Quaternion;
 
+    matrix: Matrix4;
+    viewMatrix: Matrix4; // the inverse of the transform matrix
+    viewNormal: Matrix4; // normals generated from the viewMatrix
+    projectionMatrix: Matrix4; // perspective projection matrix
+
+    forward: Vec3;
     up: Vec3;
+    right: Vec3;
+
+    start: Vec3;
+
+    yaw: number;
+    pitch: number;
+    roll: number;
+
     aspect: number;
 
+    isOrbit: boolean = false;
+
     dirtyRender: boolean = true;
+
+    panRate: number = 5;
+    zoomRate: number = 200;
+    rotateRate: number = -3;
 
     private _fov: number;
     private _near: number;
@@ -35,65 +53,142 @@ export class NewCamera3D
         this._near = near;
         this._far = far;
 
+        this.matrix = new Matrix4();
         this.viewMatrix = new Matrix4();
+        this.viewNormal = new Matrix4();
         this.projectionMatrix = new Matrix4();
-        this.projectionViewMatrix = new Matrix4();
 
-        this.position = new Vec3Callback(() => this.update());
-        this.scale = new Vec3Callback(() => this.update(), 1, 1, 1);
+        this.position = new Vec3();
+        this.scale = new Vec3(1, 1, 1);
         this.rotation = new Quaternion();
 
-        this.rotation.onChange = () => this.update();
+        this.yaw = 0;
+        this.pitch = 0;
+        this.roll = 0;
+
+        this.forward = Forward();
+        this.up = Up();
+        this.right = Right();
+
+        this.start = new Vec3();
 
         this.setAspectRatio();
-
-        this.up = Up();
     }
 
     update (): this
     {
-        FromRotationTranslationScale(this.rotation, this.position, this.scale, this.viewMatrix);
+        //  Move to setters:
+        // RotationYawPitchRoll(this.yaw, this.pitch, this.roll, this.rotation);
 
-        //  TODO - store inverse of viewMatrix in worldMatrix?
-        //  TODO - store translation of worldMatrix in worldPosition?
+        // Identity(this.matrix);
 
-        Multiply(this.projectionMatrix, this.viewMatrix, this.projectionViewMatrix);
+        FromRotationXYTranslation(this.rotation, this.position, !this.isOrbit, this.matrix);
+
+        // TransformMat4(Forward(), this.matrix, this.forward);
+        // TransformMat4(Up(), this.matrix, this.up);
+        // TransformMat4(Right(), this.matrix, this.right);
+
+        Invert(this.matrix, this.viewMatrix);
+
+        Transpose(this.viewMatrix, this.viewNormal);
 
         return this;
+    }
+
+    panX (amount: number): this
+    {
+        if (!this.isOrbit)
+        {
+            ScaleAndAdd(this.position, this.right, amount, this.position);
+        }
+
+        return this;
+    }
+
+    panY (amount: number): this
+    {
+        if (this.isOrbit)
+        {
+            this.position.y += this.up.y * amount;
+        }
+        else
+        {
+            ScaleAndAdd(this.position, this.up, amount, this.position);
+        }
+
+        return this;
+    }
+
+    panZ (amount: number): this
+    {
+        if (this.isOrbit)
+        {
+            this.position.z += amount;
+        }
+        else
+        {
+            ScaleAndAdd(this.position, this.forward, amount, this.position);
+        }
+
+        return this;
+    }
+
+    begin (x: number, y: number): void
+    {
+        this.start.set(x, y);
+    }
+
+    pan (x: number, y: number): void
+    {
+        const dx = x - this.start.x;
+        const dy = y - this.start.y;
+
+        this.panX(-dx * (this.panRate / 800));
+        this.panY(dy * (this.panRate / 600));
+
+        this.start.set(x, y);
+    }
+
+    rotate (x: number, y: number): void
+    {
+        const dx = x - this.start.x;
+        const dy = y - this.start.y;
+
+        this.rotation.x += dy * (this.rotateRate / 600);
+        this.rotation.y += dx * (this.rotateRate / 800);
+
+        this.start.set(x, y);
+    }
+
+    zoom (delta: number): void
+    {
+        this.panZ(Clamp(delta, -1, 1) * (this.zoomRate / 600));
     }
 
     lookAt (target: IVec3Like, invert: boolean = false): this
     {
         if (invert)
         {
-            LookAt(this.position, target, this.up, this.viewMatrix);
+            LookAt(this.position, target, this.up, this.matrix);
         }
         else
         {
-            LookAt(target, this.position, this.up, this.viewMatrix);
+            LookAt(target, this.position, this.up, this.matrix);
         }
 
-        GetRotation(this.viewMatrix, this.rotation);
+        GetRotation(this.matrix, this.rotation);
 
         return this;
     }
 
-    /*
-    rotateX (angle: number): void
+    targetTo (target: IVec3Like): this
     {
-        RotateX(this.rotation, angle, this.rotation);
-    }
+        // TargetTo(this.direction, target, this.up, this.matrix);
 
-    rotateY (angle: number): void
-    {
-        RotateY(this.rotation, angle, this.rotation);
-    }
+        GetRotation(this.matrix, this.rotation);
 
-    rotateZ (angle: number): void
-    {
-        RotateZ(this.rotation, angle, this.rotation);
+        return this;
     }
-    */
 
     setAspectRatio (value?: number): this
     {
@@ -117,8 +212,6 @@ export class NewCamera3D
 
         return this;
     }
-
-    //  project + unproject + frustum
 
     get fov (): number
     {
@@ -164,6 +257,4 @@ export class NewCamera3D
             this.updateProjectionMatrix();
         }
     }
-
-
 }
