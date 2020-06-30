@@ -12,6 +12,7 @@ import { FromRotation } from './FromRotation';
 import { FromRotationTranslation } from './FromRotationTranslation';
 import { FromRotationTranslationScale } from './FromRotationTranslationScale';
 import { FromRotationTranslationScaleOrigin } from './FromRotationTranslationScaleOrigin';
+import { FromRotationXYTranslation } from './FromRotationXYTranslation';
 import { FromScaling } from './FromScaling';
 import { FromTranslation } from './FromTranslation';
 import { FromXRotation } from './FromXRotation';
@@ -60,6 +61,7 @@ export {
     FromRotationTranslation,
     FromRotationTranslationScale,
     FromRotationTranslationScaleOrigin,
+    FromRotationXYTranslation,
     FromScaling,
     FromTranslation,
     FromXRotation,
