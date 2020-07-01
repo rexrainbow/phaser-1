@@ -1,35 +1,31 @@
 import { Clamp, DegToRad } from '../math';
-import { Forward, Right, ScaleAndAdd, TransformMat4, Up, Vec3, Vec3Callback } from '../math/vec3';
-import { FromEulerVector, Quaternion, RotationYawPitchRoll } from '../math/quaternion';
-import { FromRotationTranslationScale, FromRotationXYTranslation, GetRotation, Identity, Invert, LookAt, Matrix4, Multiply, Perspective, RotateX, RotateY, RotateZ, TargetTo, Translate, Transpose } from '../math/mat4';
+import { FORWARD, Forward, RIGHT, Right, ScaleAndAdd, TransformMat4Zero, UP, Up, Vec3, Vec3Callback } from '../math/vec3';
+import { FromRotationXYTranslation, Invert, LookAt, Matrix4, Multiply, Perspective, TargetTo } from '../math/mat4';
+import { Quaternion, RotationYawPitchRoll } from '../math/quaternion';
 
-import { Euler } from '../math/euler/Euler';
-import { FromQuaternion } from '../math/euler';
 import { GameInstance } from '../GameInstance';
-import { IVec3Like } from '../math/vec3/IVec3Like';
+import { IRectangle } from '../geom/rectangle/IRectangle';
+import { IRenderer } from '../renderer/IRenderer';
+import { Rectangle } from '../geom/rectangle';
 
 export class NewCamera3D
 {
     type: string;
+    renderer: IRenderer;
 
     position: Vec3Callback;
-    // scale: Vec3;
     rotation: Quaternion;
 
-    matrix: Matrix4;
+    matrix: Matrix4; // the transform matrix
     viewMatrix: Matrix4; // the inverse of the transform matrix
-    viewNormal: Matrix4; // normals generated from the viewMatrix
     projectionMatrix: Matrix4; // perspective projection matrix
+    viewProjectionMatrix: Matrix4; // perspective projection matrix multiplied by the view matrix
 
     forward: Vec3;
     up: Vec3;
     right: Vec3;
 
     start: Vec3;
-
-    yaw: number;
-    pitch: number;
-    roll: number;
 
     aspect: number;
 
@@ -41,9 +37,15 @@ export class NewCamera3D
     zoomRate: number = 200;
     rotateRate: number = -3;
 
+    viewport: IRectangle;
+
     private _fov: number;
     private _near: number;
     private _far: number;
+
+    private _yaw: number = 0;
+    private _pitch: number = 0;
+    private _roll: number = 0;
 
     constructor (fov: number = 45, near: number = 0.1, far: number = 1000)
     {
@@ -55,16 +57,19 @@ export class NewCamera3D
 
         this.matrix = new Matrix4();
         this.viewMatrix = new Matrix4();
-        this.viewNormal = new Matrix4();
         this.projectionMatrix = new Matrix4();
+        this.viewProjectionMatrix = new Matrix4();
 
         this.position = new Vec3Callback(() => this.update());
-        // this.scale = new Vec3(1, 1, 1);
         this.rotation = new Quaternion();
 
-        this.yaw = 0;
-        this.pitch = 0;
-        this.roll = 0;
+        const game = GameInstance.get();
+
+        const renderer = game.renderer;
+
+        this.viewport = new Rectangle(0, 0, renderer.width, renderer.height);
+
+        this.renderer = renderer;
 
         this.forward = Forward();
         this.up = Up();
@@ -75,42 +80,20 @@ export class NewCamera3D
         this.setAspectRatio();
     }
 
-    transformVec4 (out: Vec3, v: number[], d: Matrix4): void
-    {
-        const m = d.data;
-
-        // out[0] = m[0] * v[0] + m[4] * v[1] + m[8]	* v[2] + m[12] * v[3];
-        // out[1] = m[1] * v[0] + m[5] * v[1] + m[9]	* v[2] + m[13] * v[3];
-        // out[2] = m[2] * v[0] + m[6] * v[1] + m[10]	* v[2] + m[14] * v[3];
-        // out[3] = m[3] * v[0] + m[7] * v[1] + m[11]	* v[2] + m[15] * v[3];
-
-        out.x = m[0] * v[0] + m[4] * v[1] + m[8]	* v[2] + m[12] * v[3];
-        out.y = m[1] * v[0] + m[5] * v[1] + m[9]	* v[2] + m[13] * v[3];
-        out.z = m[2] * v[0] + m[6] * v[1] + m[10]	* v[2] + m[14] * v[3];
-
-        // return out;
-    }
-
     update (): this
     {
-        //  Move to setters:
-        // RotationYawPitchRoll(this.yaw, this.pitch, this.roll, this.rotation);
+        const matrix = this.matrix;
+        const view = this.viewMatrix;
 
-        // Identity(this.matrix);
+        FromRotationXYTranslation(this.rotation, this.position, !this.isOrbit, matrix);
 
-        FromRotationXYTranslation(this.rotation, this.position, !this.isOrbit, this.matrix);
+        TransformMat4Zero(FORWARD, matrix, this.forward);
+        TransformMat4Zero(UP, matrix, this.up);
+        TransformMat4Zero(RIGHT, matrix, this.right);
 
-        this.transformVec4(this.forward, [ 0,0,1,0 ], this.matrix);
-        this.transformVec4(this.up, [ 0,1,0,0 ], this.matrix);
-        this.transformVec4(this.right, [ 1,0,0,0 ], this.matrix);
+        Invert(matrix, view);
 
-        // TransformMat4(Forward(), this.matrix, this.forward);
-        // TransformMat4(Up(), this.matrix, this.up);
-        // TransformMat4(Right(), this.matrix, this.right);
-
-        Invert(this.matrix, this.viewMatrix);
-
-        Transpose(this.viewMatrix, this.viewNormal);
+        Multiply(this.projectionMatrix, view, this.viewProjectionMatrix);
 
         return this;
     }
@@ -162,9 +145,10 @@ export class NewCamera3D
     {
         const dx = x - this.start.x;
         const dy = y - this.start.y;
+        const viewport = this.viewport;
 
-        this.panX(-dx * (this.panRate / 800));
-        this.panY(dy * (this.panRate / 600));
+        this.panX(-dx * (this.panRate / viewport.width));
+        this.panY(dy * (this.panRate / viewport.height));
 
         this.start.set(x, y);
     }
@@ -173,9 +157,10 @@ export class NewCamera3D
     {
         const dx = x - this.start.x;
         const dy = y - this.start.y;
+        const viewport = this.viewport;
 
-        this.rotation.x += dy * (this.rotateRate / 600);
-        this.rotation.y += dx * (this.rotateRate / 800);
+        this.rotation.x += dy * (this.rotateRate / viewport.height);
+        this.rotation.y += dx * (this.rotateRate / viewport.width);
 
         this.start.set(x, y);
 
@@ -184,9 +169,10 @@ export class NewCamera3D
 
     zoom (delta: number): void
     {
-        this.panZ(Clamp(delta, -1, 1) * (this.zoomRate / 600));
+        this.panZ(Clamp(delta, -1, 1) * (this.zoomRate / this.viewport.height));
     }
 
+    /*
     lookAt (target: IVec3Like, invert: boolean = false): this
     {
         if (invert)
@@ -211,14 +197,13 @@ export class NewCamera3D
 
         return this;
     }
+    */
 
     setAspectRatio (value?: number): this
     {
         if (!value)
         {
-            const game = GameInstance.get();
-
-            const renderer = game.renderer;
+            const renderer = this.renderer;
 
             value = renderer.width / renderer.height;
         }
@@ -278,5 +263,41 @@ export class NewCamera3D
 
             this.updateProjectionMatrix();
         }
+    }
+
+    get yaw (): number
+    {
+        return this._yaw;
+    }
+
+    set yaw (value: number)
+    {
+        this._yaw = value;
+
+        RotationYawPitchRoll(this._yaw, this._pitch, this._roll, this.rotation);
+    }
+
+    get pitch (): number
+    {
+        return this._pitch;
+    }
+
+    set pitch (value: number)
+    {
+        this._pitch = value;
+
+        RotationYawPitchRoll(this._yaw, this._pitch, this._roll, this.rotation);
+    }
+
+    get roll (): number
+    {
+        return this._roll;
+    }
+
+    set roll (value: number)
+    {
+        this._roll = value;
+
+        RotationYawPitchRoll(this._yaw, this._pitch, this._roll, this.rotation);
     }
 }
