@@ -44,6 +44,7 @@ import { Negate } from './Negate';
 import { Normalize } from './Normalize';
 import { One } from './One';
 import { Project } from './Project';
+import { RGBCallback } from './RGBCallback';
 import { Random } from './Random';
 import { Reflect } from './Reflect';
 import { Right } from './Right';
@@ -115,6 +116,7 @@ export {
     Project,
     Random,
     Reflect,
+    RGBCallback,
     Right,
     RotateX,
     RotateY,
