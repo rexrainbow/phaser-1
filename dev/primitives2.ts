@@ -165,11 +165,11 @@ class Demo extends Scene
     {
         this.ball.transform.rotateX(0.01);
         this.box.transform.rotateX(0.01);
-        this.cone.transform.rotateX(0.01);
+        // this.cone.transform.rotateX(0.01);
 
         this.ball.transform.rotateY(0.01);
         this.box.transform.rotateY(0.01);
-        this.cone.transform.rotateY(0.01);
+        // this.cone.transform.rotateY(0.01);
     }
 }
 
