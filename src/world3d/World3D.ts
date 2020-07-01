@@ -41,9 +41,9 @@ export class World3D extends BaseWorld3D
 
         this.shader = new AmbientLightShader();
 
-        this.lightDirection = new Vec3Callback(v => this.updateLightDirection(v));
-        this.lightColor = new RGBCallback(v => this.updateLightColor(v));
-        this.ambientColor = new RGBCallback(v => this.updateAmbientColor(v));
+        this.lightDirection = new Vec3Callback(v => this.updateLightDirection(v), 0.5, 3, 4);
+        this.lightColor = new RGBCallback(v => this.updateLightColor(v), 1, 1, 1);
+        this.ambientColor = new RGBCallback(v => this.updateAmbientColor(v), 0.2, 0.2, 0.2);
 
         this.renderData = CreateWorld3DRenderData(this, this.camera);
     }
