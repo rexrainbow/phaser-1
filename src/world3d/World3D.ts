@@ -49,8 +49,10 @@ export class World3D extends BaseWorld3D
         const uniforms = shader.uniforms;
 
         //  TODO - Only if camera dirty:
-        uniforms.set('uProjectionMatrix', camera.projectionMatrix.data);
-        uniforms.set('uCameraMatrix', camera.viewMatrix.data);
+        uniforms.set('uViewProjectionMatrix', camera.viewProjectionMatrix.data);
+        // uniforms.set('uProjectionMatrix', camera.projectionMatrix.data);
+        // uniforms.set('uCameraMatrix', camera.viewMatrix.data);
+        // uniforms.set('uCameraMatrix', camera.matrix.data);
 
         // const normalMatrix = this.normalMatrix;
 
@@ -58,7 +60,7 @@ export class World3D extends BaseWorld3D
         // Transpose(normalMatrix, normalMatrix);
 
         // uniforms.set('uNormalMatrix', normalMatrix.data);
-        uniforms.set('uNormalMatrix', camera.viewNormal.data);
+        // uniforms.set('uNormalMatrix', camera.viewNormal.data);
 
         //  TODO - Use fbo anyway to avoid z-fighting with World2D?
         // SetFramebuffer(renderPass, this.framebuffer, true);
