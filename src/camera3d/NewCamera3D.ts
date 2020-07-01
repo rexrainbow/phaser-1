@@ -100,9 +100,11 @@ export class NewCamera3D
 
     panX (amount: number): this
     {
+        const pos = this.position;
+
         if (!this.isOrbit)
         {
-            ScaleAndAdd(this.position, this.right, amount, this.position);
+            ScaleAndAdd(pos, this.right, amount, pos);
         }
 
         return this;
@@ -110,13 +112,16 @@ export class NewCamera3D
 
     panY (amount: number): this
     {
+        const pos = this.position;
+        const up = this.up;
+
         if (this.isOrbit)
         {
-            this.position.y += this.up.y * amount;
+            pos.y += up.y * amount;
         }
         else
         {
-            ScaleAndAdd(this.position, this.up, amount, this.position);
+            ScaleAndAdd(pos, up, amount, pos);
         }
 
         return this;
@@ -124,13 +129,15 @@ export class NewCamera3D
 
     panZ (amount: number): this
     {
+        const pos = this.position;
+
         if (this.isOrbit)
         {
-            this.position.z += amount;
+            pos.z += amount;
         }
         else
         {
-            ScaleAndAdd(this.position, this.forward, amount, this.position);
+            ScaleAndAdd(pos, this.forward, amount, pos);
         }
 
         return this;
@@ -227,12 +234,9 @@ export class NewCamera3D
 
     set fov (value: number)
     {
-        if (value > 0 && value < 180)
-        {
-            this._fov = value;
+        this._fov = Clamp(value, 0, 180);
 
-            this.updateProjectionMatrix();
-        }
+        this.updateProjectionMatrix();
     }
 
     get near (): number
@@ -274,7 +278,7 @@ export class NewCamera3D
     {
         this._yaw = value;
 
-        RotationYawPitchRoll(this._yaw, this._pitch, this._roll, this.rotation);
+        RotationYawPitchRoll(value, this._pitch, this._roll, this.rotation);
     }
 
     get pitch (): number
@@ -286,7 +290,7 @@ export class NewCamera3D
     {
         this._pitch = value;
 
-        RotationYawPitchRoll(this._yaw, this._pitch, this._roll, this.rotation);
+        RotationYawPitchRoll(this._yaw, value, this._roll, this.rotation);
     }
 
     get roll (): number
@@ -298,6 +302,6 @@ export class NewCamera3D
     {
         this._roll = value;
 
-        RotationYawPitchRoll(this._yaw, this._pitch, this._roll, this.rotation);
+        RotationYawPitchRoll(this._yaw, this._pitch, value, this.rotation);
     }
 }
