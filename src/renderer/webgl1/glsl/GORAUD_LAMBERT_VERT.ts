@@ -3,8 +3,6 @@ export const GORAUD_LAMBERT_VERT = `
 
 //  Goraud Shading + Lambert Reflection
 
-precision highp float;
-
 attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
 attribute vec2 aTextureCoord;
