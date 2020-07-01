@@ -4,7 +4,6 @@ import { GameObject3D } from '../GameObject3D';
 import { Geometry } from '../geometry/Geometry';
 import { IGameObject3D } from '../IGameObject3D';
 import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
-import { RGBACallback } from '../../math/vec4';
 import { SetTexture as RequestTexture } from '../../renderer/webgl1/renderpass/SetTexture';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
@@ -19,12 +18,6 @@ export class Mesh extends GameObject3D
     geometry: Geometry;
 
     cullFaces: boolean = true;
-
-    shineAmount: number = 1;
-
-    materialAmbient: RGBACallback;
-    materialDiffuse: RGBACallback;
-    materialSpecular: RGBACallback;
 
     constructor (x: number = 0, y: number = 0, z: number = 0, geometry?: Geometry)
     {
@@ -54,6 +47,7 @@ export class Mesh extends GameObject3D
         const textureIndex = RequestTexture(renderPass, this.texture);
 
         shader.setUniform('uModelMatrix', this.transform.local.data);
+        shader.setUniform('uNormalMatrix', this.transform.normal.data);
         shader.setUniform('uTexture', textureIndex);
 
         FlushBuffer(renderPass, this.geometry.buffer);
