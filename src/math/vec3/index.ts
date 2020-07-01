@@ -60,6 +60,7 @@ import { SetLength } from './SetLength';
 import { Subtract } from './Subtract';
 import { SubtractScalar } from './SubtractScalar';
 import { TransformMat4 } from './TransformMat4';
+import { TransformMat4Zero } from './TransformMat4Zero';
 import { TransformQuat } from './TransformQuat';
 import { Unproject } from './Unproject';
 import { Up } from './Up';
@@ -128,6 +129,7 @@ export {
     Subtract,
     SubtractScalar,
     TransformMat4,
+    TransformMat4Zero,
     TransformQuat,
     Unproject,
     Up,
