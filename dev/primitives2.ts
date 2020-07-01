@@ -53,6 +53,10 @@ class Demo extends Scene
     camMode: number = 0;
     model: Mesh;
 
+    ball: Mesh;
+    box: Mesh;
+    cone: Mesh;
+
     constructor ()
     {
         super();
@@ -91,6 +95,10 @@ class Demo extends Scene
         const cone = new Cone(2.5, 0, 0, 0.8, 1.8, 24, 6).setTexture('bricks');
 
         AddChildren3D(this.world, ball, box, cone);
+
+        this.ball = ball;
+        this.box = box;
+        this.cone = cone;
 
         const camera = this.world.camera;
 
@@ -149,6 +157,18 @@ class Demo extends Scene
 
         });
 
+        On(this, 'update', () => this.update());
+    }
+
+    update ()
+    {
+        this.ball.transform.rotateX(0.01);
+        this.box.transform.rotateX(0.01);
+        this.cone.transform.rotateX(0.01);
+
+        this.ball.transform.rotateY(0.01);
+        this.box.transform.rotateY(0.01);
+        this.cone.transform.rotateY(0.01);
     }
 }
 
@@ -158,7 +178,7 @@ export default function (): void
         SetWebGL(),
         Size(800, 600),
         Parent('gameParent'),
-        BackgroundColor(0x2d2d2d),
+        BackgroundColor(0x1d1d1d),
         Scenes(Demo)
     );
 }
