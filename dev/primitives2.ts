@@ -105,6 +105,7 @@ class Demo extends Scene
         camera.position.set(0, 0, 8);
         camera.isOrbit = true;
 
+        window['world'] = this.world;
         window['camera'] = camera;
 
         const mouse = new Mouse();
