@@ -10,6 +10,14 @@ export const Cache = {
         }
 
         return caches.get(type);
+    },
+
+    getEntry: (cache: string, entry: string): unknown =>
+    {
+        if (caches.has(cache))
+        {
+            return caches.get(cache).get(entry);
+        }
     }
 
 };
