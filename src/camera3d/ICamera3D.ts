@@ -34,6 +34,15 @@ export interface ICamera3D
 
     isOrbit: boolean;
 
+    minDistance: number;
+    maxDistance: number;
+
+    minPolarAngle: number;
+    maxPolarAngle: number;
+
+    minAzimuthAngle: number;
+    maxAzimuthAngle: number;
+
     dirtyRender: boolean;
 
     panRate: number;

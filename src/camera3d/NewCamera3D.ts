@@ -31,6 +31,15 @@ export class NewCamera3D
 
     isOrbit: boolean = false;
 
+    minDistance: number = 0;
+    maxDistance: number = Infinity;
+
+    minPolarAngle: number = 0;
+    maxPolarAngle: number = Math.PI;
+
+    minAzimuthAngle: number = -Infinity;
+    maxAzimuthAngle: number = Infinity;
+
     dirtyRender: boolean = true;
 
     panRate: number = 5;
