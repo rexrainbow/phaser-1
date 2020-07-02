@@ -3,6 +3,7 @@ import { BitmapTextFile } from './BitmapTextFile';
 import { CSVFile } from './CSVFile';
 import { ImageFile } from './ImageFile';
 import { JSONFile } from './JSONFile';
+import { JSONGeometryFile } from './JSONGeometryFile';
 import { SpriteSheetFile } from './SpriteSheetFile';
 import { XMLFile } from './XMLFile';
 
@@ -12,6 +13,7 @@ export {
     CSVFile,
     ImageFile,
     JSONFile,
+    JSONGeometryFile,
     SpriteSheetFile,
     XMLFile
 };
