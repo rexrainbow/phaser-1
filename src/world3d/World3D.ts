@@ -1,4 +1,5 @@
 import { Flush, PopShader, PopVertexBuffer, SetShader, SetVertexBuffer } from '../renderer/webgl1/renderpass';
+import { Light, LightConfig } from '../gameobjects3d/light/Light';
 
 import { AmbientLightShader } from '../renderer/webgl1/shaders/AmbientLightShader';
 import { BaseWorld3D } from './BaseWorld3D';
@@ -7,7 +8,6 @@ import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
 import { IScene } from '../scenes/IScene';
 import { IShader } from '../renderer/webgl1/shaders/IShader';
 import { IWorld3D } from './IWorld3D';
-import { Light } from '../gameobjects3d/light/Light';
 import { NewCamera3D } from '../camera3d/NewCamera3D';
 import { VertexBuffer } from '../renderer/webgl1/buffers/VertexBuffer';
 
@@ -22,7 +22,7 @@ export class World3D extends BaseWorld3D
 
     enableCameraCull: boolean = true;
 
-    constructor (scene: IScene, x: number = 0, y: number = 0, z: number = 0)
+    constructor (scene: IScene, x: number = 0, y: number = 0, z: number = 0, lightConfig?: LightConfig)
     {
         super(scene);
 
@@ -32,7 +32,7 @@ export class World3D extends BaseWorld3D
 
         this.camera.position.set(x, y, z);
 
-        this.light = new Light(0.5, 3, 4);
+        this.light = new Light(lightConfig);
 
         this.shader = new AmbientLightShader();
 
