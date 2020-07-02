@@ -1,6 +1,13 @@
 import { IShader } from '../../renderer/webgl1/shaders/IShader';
 import { RGBCallback } from '../../math/vec3';
 
+export type MaterialConfig = {
+    ambient?: number[];
+    diffuse?: number[];
+    specular?: number[];
+    shine?: number;
+};
+
 export class Material
 {
     ambient: RGBCallback;
@@ -9,13 +16,24 @@ export class Material
 
     isDirty: boolean = false;
 
-    private _shine: number = 64;
+    private _shine: number;
 
-    constructor ()
+    constructor (config: MaterialConfig = {})
     {
-        this.ambient = new RGBCallback(() => this.update(), 1, 1, 1);
-        this.diffuse = new RGBCallback(() => this.update(), 1, 1, 1);
-        this.specular = new RGBCallback(() => this.update(), 1, 1, 1);
+        const {
+            ambient = [ 1, 1, 1 ],
+            diffuse = [ 1, 1, 1 ],
+            specular = [ 1, 1, 1 ],
+            shine = 32
+        } = config;
+
+        const onChange = () => this.update();
+
+        this.ambient = new RGBCallback(onChange).fromArray(ambient);
+        this.diffuse = new RGBCallback(onChange).fromArray(diffuse);
+        this.specular = new RGBCallback(onChange).fromArray(specular);
+
+        this._shine = shine;
     }
 
     get shine (): number
@@ -41,6 +59,7 @@ export class Material
 
         const uniforms = shader.uniforms;
 
+        //  TODO - Don't use `toArray` !
         uniforms.set('uMaterialAmbient', this.ambient.toArray());
         uniforms.set('uMaterialDiffuse', this.diffuse.toArray());
         uniforms.set('uMaterialSpecular', this.specular.toArray());
