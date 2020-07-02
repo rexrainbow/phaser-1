@@ -1,15 +1,13 @@
 import { Flush, PopShader, PopVertexBuffer, SetShader, SetVertexBuffer } from '../renderer/webgl1/renderpass';
-import { RGBCallback, Vec3Callback } from '../math/vec3';
 
 import { AmbientLightShader } from '../renderer/webgl1/shaders/AmbientLightShader';
 import { BaseWorld3D } from './BaseWorld3D';
-import { Camera3D } from '../camera3d/Camera3D';
 import { CreateWorld3DRenderData } from './CreateWorld3DRenderData';
-import { ICamera3D } from '../camera3d/ICamera3D';
 import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
 import { IScene } from '../scenes/IScene';
 import { IShader } from '../renderer/webgl1/shaders/IShader';
 import { IWorld3D } from './IWorld3D';
+import { Light } from '../gameobjects3d/light/Light';
 import { NewCamera3D } from '../camera3d/NewCamera3D';
 import { VertexBuffer } from '../renderer/webgl1/buffers/VertexBuffer';
 
@@ -18,49 +16,27 @@ export class World3D extends BaseWorld3D
 {
     camera: NewCamera3D;
 
-    enableCameraCull: boolean = true;
+    light: Light;
 
     shader: IShader;
 
-    lightDirection: Vec3Callback;
-    lightColor: RGBCallback;
-    ambientColor: RGBCallback;
+    enableCameraCull: boolean = true;
 
-    private _lightDirection = [ 0.5, 3, 4 ];
-    private _lightColor = [ 1, 1, 1 ];
-    private _ambientColor = [ 0.2, 0.2, 0.2 ];
-
-    constructor (scene: IScene)
+    constructor (scene: IScene, x: number = 0, y: number = 0, z: number = 0)
     {
         super(scene);
 
         this.type = 'World3D';
 
-        // this.camera = new Camera3D(0, 0, 4);
         this.camera = new NewCamera3D();
+
+        this.camera.position.set(x, y, z);
+
+        this.light = new Light(0.5, 3, 4);
 
         this.shader = new AmbientLightShader();
 
-        this.lightDirection = new Vec3Callback(v => this.updateLightDirection(v), 0.5, 3, 4);
-        this.lightColor = new RGBCallback(v => this.updateLightColor(v), 1, 1, 1);
-        this.ambientColor = new RGBCallback(v => this.updateAmbientColor(v), 0.2, 0.2, 0.2);
-
         this.renderData = CreateWorld3DRenderData(this, this.camera);
-    }
-
-    private updateLightDirection (v: Vec3Callback): void
-    {
-        this._lightDirection = [ v.x, v.y, v.z ];
-    }
-
-    private updateLightColor (v: Vec3Callback): void
-    {
-        this._lightColor = [ v.x, v.y, v.z ];
-    }
-
-    private updateAmbientColor (v: Vec3Callback): void
-    {
-        this._ambientColor = [ v.x, v.y, v.z ];
     }
 
     renderGL <T extends IRenderPass> (renderPass: T): void
@@ -74,9 +50,12 @@ export class World3D extends BaseWorld3D
         const uniforms = shader.uniforms;
 
         uniforms.set('uViewProjectionMatrix', camera.viewProjectionMatrix.data);
-        uniforms.set('uLightDirection', this._lightDirection);
-        uniforms.set('uLightColor', this._lightColor);
-        uniforms.set('uLightAmbient', this._ambientColor);
+        uniforms.set('uCameraPosition', camera.position.toArray());
+
+        this.light.setUniforms(shader);
+
+
+
 
         //  TODO - Use fbo anyway to avoid z-fighting with World2D?
         // SetFramebuffer(renderPass, this.framebuffer, true);
