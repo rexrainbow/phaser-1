@@ -4,6 +4,7 @@ import { GameObject3D } from '../GameObject3D';
 import { Geometry } from '../geometry/Geometry';
 import { IGameObject3D } from '../IGameObject3D';
 import { IRenderPass } from '../../renderer/webgl1/renderpass/IRenderPass';
+import { Material } from '../material/Material';
 import { SetTexture as RequestTexture } from '../../renderer/webgl1/renderpass/SetTexture';
 import { SetFrame } from './SetFrame';
 import { SetTexture } from './SetTexture';
@@ -16,14 +17,16 @@ export class Mesh extends GameObject3D
     hasTexture: boolean = false;
 
     geometry: Geometry;
+    material: Material;
 
     cullFaces: boolean = true;
 
-    constructor (x: number = 0, y: number = 0, z: number = 0, geometry?: Geometry)
+    constructor (x: number = 0, y: number = 0, z: number = 0, geometry?: Geometry, material: Material = new Material())
     {
         super(x, y, z);
 
         this.geometry = geometry;
+        this.material = material;
     }
 
     setTexture (key: string | Texture, frame?: string | number): this
@@ -40,6 +43,13 @@ export class Mesh extends GameObject3D
         return this;
     }
 
+    setMaterial (material: Material): this
+    {
+        this.material = material;
+
+        return this;
+    }
+
     renderGL <T extends IRenderPass> (renderPass: T): void
     {
         const shader = renderPass.currentShader.shader;
@@ -48,7 +58,10 @@ export class Mesh extends GameObject3D
 
         shader.setUniform('uModelMatrix', this.transform.local.data);
         shader.setUniform('uNormalMatrix', this.transform.normal.data);
+
         shader.setUniform('uTexture', textureIndex);
+
+        this.material.setUniforms(shader);
 
         FlushBuffer(renderPass, this.geometry.buffer);
     }
@@ -57,7 +70,8 @@ export class Mesh extends GameObject3D
     {
         super.destroy(reparentChildren);
 
-        this.geometry.destroy();
+        this.geometry = null;
+        this.material = null;
         this.texture = null;
         this.frame = null;
         this.hasTexture = false;
