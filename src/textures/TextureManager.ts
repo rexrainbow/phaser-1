@@ -29,6 +29,13 @@ export class TextureManager
         missing.strokeRect(0.5, 0.5, 31, 31);
 
         this.add('__MISSING', new Texture(missing.canvas));
+
+        const white = CreateCanvas(32, 32);
+
+        white.fillStyle = '#fff';
+        white.fillRect(0, 0, 32, 32);
+
+        this.add('__WHITE', new Texture(white.canvas));
     }
 
     get (key: string): Texture
