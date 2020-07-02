@@ -88,7 +88,7 @@ class Demo extends Scene
 
     create ()
     {
-        this.world = new World3D(this);
+        this.world = new World3D(this, 0, 0, 8);
 
         const ball = new Sphere(-2.5, 0, 0, 1, 24, 24).setTexture('field');
         const box = new Box(0, 0, 0, 1.5, 1.5, 1.5).setTexture('wood');
@@ -102,7 +102,6 @@ class Demo extends Scene
 
         const camera = this.world.camera;
 
-        camera.position.set(0, 0, 8);
         camera.isOrbit = true;
 
         window['world'] = this.world;
