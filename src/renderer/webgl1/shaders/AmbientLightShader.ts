@@ -11,6 +11,9 @@ export class AmbientLightShader extends Shader implements IShader
     {
         super();
 
+        const tempMat4 = new Float32Array(16).fill(0);
+        const tempVec3 = [ 0, 0, 0 ];
+
         const config = {
             fragmentShader: AMBIENT_LIGHT_FRAG,
             vertexShader: AMBIENT_LIGHT_VERT,
@@ -20,14 +23,22 @@ export class AmbientLightShader extends Shader implements IShader
                 aTextureCoord: { size: 2, type: GL_CONST.FLOAT, normalized: false, offset: 24 }
             },
             uniforms: {
-                uViewProjectionMatrix: new Float32Array(16),
-                uNormalMatrix: new Float32Array(16),
-                uModelMatrix: new Float32Array(16).fill(0),
+                uViewProjectionMatrix: tempMat4,
+                uNormalMatrix: tempMat4,
+                uModelMatrix: tempMat4,
+                uCameraPosition: tempVec3,
 
                 uTexture: 0,
-                uLightColor: [ 0, 0, 0 ],
-                uLightDirection: [ 0, 0, 0 ],
-                uLightAmbient: [ 0, 0, 0 ]
+
+                uLightPosition: tempVec3,
+                uLightAmbient: tempVec3,
+                uLightDiffuse: tempVec3,
+                uLightSpecular: tempVec3,
+
+                uMaterialAmbient: tempVec3,
+                uMaterialDiffuse: tempVec3,
+                uMaterialSpecular: tempVec3,
+                uMaterialShine: 0
             }
         };
 
