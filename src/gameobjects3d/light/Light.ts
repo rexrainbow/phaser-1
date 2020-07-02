@@ -13,6 +13,15 @@ import { IShader } from '../../renderer/webgl1/shaders/IShader';
     the scattering/radius of the specular highlight.
 */
 
+export type LightConfig = {
+    x?: number;
+    y?: number;
+    z?: number;
+    ambient?: number[];
+    diffuse?: number[];
+    specular?: number[];
+};
+
 export class Light
 {
     position: Vec3Callback;
@@ -23,13 +32,24 @@ export class Light
 
     isDirty: boolean = false;
 
-    constructor (x: number, y: number, z: number)
+    constructor (config: LightConfig = {})
     {
-        this.position = new Vec3Callback(() => this.update(), x, y, z);
+        const {
+            x = 0,
+            y = 0,
+            z = 0.1,
+            ambient = [ 0.1, 0.1, 0.1 ],
+            diffuse = [ 0.5, 0.5, 0.5 ],
+            specular = [ 1, 1, 1 ]
+        } = config;
 
-        this.ambient = new RGBCallback(() => this.update(), 0.2, 0.2, 0.2);
-        this.diffuse = new RGBCallback(() => this.update(), 0.5, 0.5, 0.5);
-        this.specular = new RGBCallback(() => this.update(), 1, 1, 1);
+        const onChange = () => this.update();
+
+        this.position = new Vec3Callback(onChange, x, y, z);
+
+        this.ambient = new RGBCallback(onChange).fromArray(ambient);
+        this.diffuse = new RGBCallback(onChange).fromArray(diffuse);
+        this.specular = new RGBCallback(onChange).fromArray(specular);
     }
 
     setUniforms (shader: IShader): void
