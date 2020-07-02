@@ -1,3 +1,4 @@
+import { Clamp } from '../../math';
 import { IShader } from '../../renderer/webgl1/shaders/IShader';
 import { RGBCallback } from '../../math/vec3';
 
@@ -24,7 +25,7 @@ export class Material
             ambient = [ 1, 1, 1 ],
             diffuse = [ 1, 1, 1 ],
             specular = [ 1, 1, 1 ],
-            shine = 32
+            shine = 0.25
         } = config;
 
         const onChange = () => this.update();
@@ -43,7 +44,7 @@ export class Material
 
     set shine (value: number)
     {
-        this._shine = value;
+        this._shine = Clamp(value, 0, 1);
 
         this.isDirty = true;
     }
@@ -63,7 +64,7 @@ export class Material
         uniforms.set('uMaterialAmbient', this.ambient.toArray());
         uniforms.set('uMaterialDiffuse', this.diffuse.toArray());
         uniforms.set('uMaterialSpecular', this.specular.toArray());
-        uniforms.set('uMaterialShine', this._shine);
+        uniforms.set('uMaterialShine', this._shine * 128); // pow of 32
     }
 
     destroy (): void
