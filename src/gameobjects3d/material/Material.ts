@@ -58,13 +58,11 @@ export class Material
     {
         //  TODO - Only set if dirty (different to bound material?)
 
-        const uniforms = shader.uniforms;
-
         //  TODO - Don't use `toArray` !
-        uniforms.set('uMaterialAmbient', this.ambient.toArray());
-        uniforms.set('uMaterialDiffuse', this.diffuse.toArray());
-        uniforms.set('uMaterialSpecular', this.specular.toArray());
-        uniforms.set('uMaterialShine', this._shine * 128); // pow of 32
+        shader.setUniform('uMaterialAmbient', this.ambient.toArray());
+        shader.setUniform('uMaterialDiffuse', this.diffuse.toArray());
+        shader.setUniform('uMaterialSpecular', this.specular.toArray());
+        shader.setUniform('uMaterialShine', this._shine * 256); // pow of 32
     }
 
     destroy (): void

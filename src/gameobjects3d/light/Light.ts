@@ -56,12 +56,10 @@ export class Light
     {
         //  TODO - Only set if dirty (different to bound light?)
 
-        const uniforms = shader.uniforms;
-
-        uniforms.set('uLightPosition', this.position.toArray());
-        uniforms.set('uLightAmbient', this.ambient.toArray());
-        uniforms.set('uLightDiffuse', this.diffuse.toArray());
-        uniforms.set('uLightSpecular', this.specular.toArray());
+        shader.setUniform('uLightPosition', this.position.toArray());
+        shader.setUniform('uLightAmbient', this.ambient.toArray());
+        shader.setUniform('uLightDiffuse', this.diffuse.toArray());
+        shader.setUniform('uLightSpecular', this.specular.toArray());
     }
 
     private update (): void

@@ -47,21 +47,16 @@ export class World3D extends BaseWorld3D
         const camera = this.camera;
         const gl = renderPass.renderer.gl;
 
-        const uniforms = shader.uniforms;
-
-        uniforms.set('uViewProjectionMatrix', camera.viewProjectionMatrix.data);
-        uniforms.set('uCameraPosition', camera.position.toArray());
-
-        this.light.setUniforms(shader);
-
-
-
-
         //  TODO - Use fbo anyway to avoid z-fighting with World2D?
         // SetFramebuffer(renderPass, this.framebuffer, true);
 
         // SetVertexBuffer(renderPass, this.buffer);
         SetShader(renderPass, shader, 0);
+
+        shader.setUniform('uViewProjectionMatrix', camera.viewProjectionMatrix.data);
+        shader.setUniform('uCameraPosition', camera.position.toArray());
+
+        this.light.setUniforms(shader);
 
         // BindTexture(this.cubeTexture);
         // const textureIndex = SetTexture(renderPass, this.cubeTexture);
