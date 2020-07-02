@@ -42,7 +42,8 @@
 // import runTest from './orbit camera';
 // import runTest from './primitives';
 // import runTest from './primitives2';
+// import runTest from './materials';
 
-import runTest from './materials';
+import runTest from './json model';
 
 runTest();

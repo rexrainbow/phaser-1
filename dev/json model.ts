@@ -1,16 +1,18 @@
 import { AKey, DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
-import { Brass, Bronze, Chrome, Emerald, Jade, Obsidian, Pearl, Ruby, Turquoise } from '../src/materials3d';
 
 import { AddChildren3D } from '../src/display3d/AddChildren3D';
-import { Box } from '../src/gameobjects3d/box/Box';
-import { Cone } from '../src/gameobjects3d/cone/Cone';
+import { Cache } from '../src/cache/Cache';
 import { Game } from '../src/Game';
+import { Geometry } from '../src/gameobjects3d/geometry/Geometry';
+import { ImageFile } from '../src/loader/files/ImageFile';
+import { JSONGeometryFile } from '../src/loader/files/JSONGeometryFile';
 import { Keyboard } from '../src/input/keyboard';
+import { Loader } from '../src/loader/Loader';
+import { Mesh } from '../src/gameobjects3d/mesh/Mesh';
 import { Mouse } from '../src/input/mouse/Mouse';
 import { On } from '../src/events';
 import { Scene } from '../src/scenes/Scene';
-import { Sphere } from '../src/gameobjects3d/sphere/Sphere';
 import { World3D } from '../src/world3d/World3D';
 
 class Demo extends Scene
@@ -23,9 +25,8 @@ class Demo extends Scene
         const rightKey = new RightKey();
         const upKey = new UpKey();
         const downKey = new DownKey();
-        const aKey = new AKey();
 
-        keyboard.addKeys(leftKey, rightKey, upKey, downKey, aKey);
+        keyboard.addKeys(leftKey, rightKey, upKey, downKey);
 
         On(this, 'update', () => {
 
@@ -97,31 +98,55 @@ class Demo extends Scene
             tracking = false;
 
         });
+
+        return keyboard;
     }
 
     constructor ()
     {
         super();
 
-        const world = new World3D(this, 0, 0, 8, { x: 0.5, y: 3, z: 4 });
+        const loader = new Loader();
 
-        const ball1 = new Sphere(-2.5, -1.25, 0, 1, 24, 24);
-        const box1 = new Box(0, -1.25, 0, 1.5, 1.5, 1.5);
-        const cone1 = new Cone(2.5, -1.25, 0, 0.8, 1.8, 24, 6);
+        if (window.location.href.includes('192.168.0.100/phaser-genesis/'))
+        {
+            loader.setPath('/phaser4-examples/public/assets/3d/');
+        }
+        else
+        {
+            loader.setPath('/examples/public/assets/3d/');
+        }
 
-        const ball2 = new Sphere(2.5, 1.25, 0, 1, 24, 24);
-        const box2 = new Box(0, 1.25, 0, 1.5, 1.5, 1.5);
-        const cone2 = new Cone(-2.5, 1.25, 0, 0.8, 1.8, 24, 6);
+        // http://www.kurilo.su/workingprocess/webgl/c/
 
-        ball1.setMaterial(Brass);
-        box1.setMaterial(Emerald);
-        cone1.setMaterial(Ruby);
+        loader.add(ImageFile('alienTexture1', 'AL01-2.jpg'));
+        loader.add(ImageFile('alienTexture2', 'AL02-2.jpg'));
+        loader.add(ImageFile('alienTexture3', 'AL03-2.jpg'));
+        loader.add(ImageFile('alienTexture4', 'AL04-2.jpg'));
+        loader.add(ImageFile('alienTexture5', 'AL05-2.jpg'));
+        loader.add(JSONGeometryFile('alien', 'alien2.json', { uvs: 'texcoords' }));
 
-        ball2.setMaterial(Jade);
-        box2.setMaterial(Bronze);
-        cone2.setMaterial(Turquoise);
+        loader.start().then(() => this.create());
+    }
 
-        AddChildren3D(world, ball1, box1, cone1, ball2, box2, cone2);
+    create ()
+    {
+        const world = new World3D(this, 0, 0, 4, { x: 0.5, y: 3, z: 4 });
+
+        const geom = Cache.getEntry('Geometry', 'alien') as Geometry;
+
+        const model = new Mesh(0, 0, 0, geom);
+
+        model.transform.scale.set(0.25, 0.25, 0.25);
+        model.transform.rotateX(-Math.PI / 2);
+
+        model.setTexture('alienTexture1');
+
+        model.material.shine = 0.1;
+
+        window['alien'] = model;
+
+        AddChildren3D(world, model);
 
         const camera = world.camera;
 
@@ -130,13 +155,35 @@ class Demo extends Scene
         window['world'] = world;
         window['camera'] = camera;
 
-        this.setupCameraControls(camera);
+        const keyboard = this.setupCameraControls(camera);
+
+        const aKey = new AKey();
+
+        keyboard.addKeys(aKey);
+
+        let skin = 1;
+
+        On(aKey, 'keydown', () => {
+
+            skin++;
+
+            if (skin === 6)
+            {
+                skin = 1;
+            }
+
+            model.setTexture('alienTexture' + skin);
+
+        });
 
         const light = world.light;
 
         On(this, 'update', (delta, time) => {
 
             time /= 1000;
+
+            // model.transform.rotateY(-0.01 + (Math.sin(time) * 0.005));
+            model.transform.rotateZ(0.01);
 
             light.position.x = Math.sin(time * 2);
             light.position.y = Math.sin(time * 0.7);
@@ -152,7 +199,7 @@ export default function (): void
         SetWebGL(),
         Size(800, 600),
         Parent('gameParent'),
-        BackgroundColor(0x1d1d1d),
+        BackgroundColor(0x000000),
         Scenes(Demo)
     );
 }
