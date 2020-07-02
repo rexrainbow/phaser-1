@@ -49,7 +49,7 @@ class Demo extends Scene
     upKey: UpKey;
     downKey: DownKey;
 
-    world: IWorld3D;
+    world: World3D;
     camMode: number = 0;
     model: Mesh;
 
@@ -88,7 +88,7 @@ class Demo extends Scene
 
     create ()
     {
-        this.world = new World3D(this, 0, 0, 8);
+        this.world = new World3D(this, 0, 0, 8, { x: 0.5, y: 3, z: 4 });
 
         const ball = new Sphere(-2.5, 0, 0, 1, 24, 24).setTexture('field');
         const box = new Box(0, 0, 0, 1.5, 1.5, 1.5).setTexture('wood');
@@ -157,7 +157,19 @@ class Demo extends Scene
 
         });
 
-        On(this, 'update', () => this.update());
+        const light = this.world.light;
+
+        On(this, 'update', (delta, time) => {
+
+            time /= 1000;
+
+            light.position.x = Math.sin(time * 2);
+            light.position.y = Math.sin(time * 0.7);
+            light.position.z = Math.sin(time * 1.3);
+
+        });
+
+        // On(this, 'update', () => this.update());
     }
 
     update ()
