@@ -27,6 +27,8 @@ export class Mesh extends GameObject3D
 
         this.geometry = geometry;
         this.material = material;
+
+        this.setTexture('__WHITE');
     }
 
     setTexture (key: string | Texture, frame?: string | number): this
@@ -54,12 +56,15 @@ export class Mesh extends GameObject3D
     {
         const shader = renderPass.currentShader.shader;
 
-        const textureIndex = RequestTexture(renderPass, this.texture);
-
         shader.setUniform('uModelMatrix', this.transform.local.data);
         shader.setUniform('uNormalMatrix', this.transform.normal.data);
 
-        shader.setUniform('uTexture', textureIndex);
+        if (this.hasTexture)
+        {
+            const textureIndex = RequestTexture(renderPass, this.texture);
+
+            shader.setUniform('uTexture', textureIndex);
+        }
 
         this.material.setUniforms(shader);
 
