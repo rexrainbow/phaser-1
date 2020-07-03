@@ -7,11 +7,18 @@ export class Geometry
 {
     buffer: IVertexBuffer | IIndexedVertexBuffer;
 
-    constructor (data?: VertexSet)
+    constructor (data?: VertexSet | IVertexBuffer)
     {
         if (data)
         {
-            this.buffer = GetBufferFromVertexSet(data);
+            if (data.hasOwnProperty('vertices'))
+            {
+                this.buffer = GetBufferFromVertexSet(data as VertexSet);
+            }
+            else
+            {
+                this.buffer = data as IVertexBuffer;
+            }
         }
     }
 
