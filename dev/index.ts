@@ -43,7 +43,8 @@
 // import runTest from './primitives';
 // import runTest from './primitives2';
 // import runTest from './materials';
+// import runTest from './json model';
 
-import runTest from './json model';
+import runTest from './obj model';
 
 runTest();
