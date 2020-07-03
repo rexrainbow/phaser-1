@@ -4,6 +4,8 @@ import { CSVFile } from './CSVFile';
 import { ImageFile } from './ImageFile';
 import { JSONFile } from './JSONFile';
 import { JSONGeometryFile } from './JSONGeometryFile';
+import { OBJFile } from './OBJFile';
+import { OBJGeometryFile } from './OBJGeometryFile';
 import { SpriteSheetFile } from './SpriteSheetFile';
 import { XMLFile } from './XMLFile';
 
@@ -14,6 +16,8 @@ export {
     ImageFile,
     JSONFile,
     JSONGeometryFile,
+    OBJFile,
+    OBJGeometryFile,
     SpriteSheetFile,
     XMLFile
 };
