@@ -117,14 +117,18 @@ class Demo extends Scene
             loader.setPath('/examples/public/assets/3d/');
         }
 
-        loader.add(ImageFile('alienTexture1', 'AL01-2.jpg'));
-        loader.add(ImageFile('alienTexture2', 'AL02-2.jpg'));
-        loader.add(ImageFile('alienTexture3', 'AL03-2.jpg'));
-        loader.add(ImageFile('alienTexture4', 'AL04-2.jpg'));
-        loader.add(ImageFile('alienTexture5', 'AL05-2.jpg'));
+        // loader.add(ImageFile('alienTexture1', 'AL01-2.jpg'));
+        // loader.add(ImageFile('alienTexture2', 'AL02-2.jpg'));
+        // loader.add(ImageFile('alienTexture3', 'AL03-2.jpg'));
+        // loader.add(ImageFile('alienTexture4', 'AL04-2.jpg'));
+        // loader.add(ImageFile('alienTexture5', 'AL05-2.jpg'));
+        // loader.add(ImageFile('forestTexture', 'forest-extras-A.png'));
+        loader.add(ImageFile('buggyTexture', 'buggy.png'));
         // loader.add(OBJFile('alien', 'alien3.obj'));
-        loader.add(OBJGeometryFile('alien', 'alien4.obj'));
+        // loader.add(OBJGeometryFile('alien', 'alien4.obj'));
         // loader.add(OBJGeometryFile('alien', 'alien3.obj'));
+        // loader.add(OBJGeometryFile('mushroom', 'mushroom.obj'));
+        loader.add(OBJGeometryFile('buggy', 'buggy.obj'));
 
         loader.start().then(() => this.create());
     }
@@ -133,14 +137,15 @@ class Demo extends Scene
     {
         const world = new World3D(this, 0, 0, 4, { x: 0.5, y: 3, z: 4 });
 
-        const obj = Cache.getEntry('Geometry', 'alien') as Geometry;
+        const obj = Cache.getEntry('Geometry', 'buggy') as Geometry;
 
         const model = new Mesh(0, 0, 0, obj);
 
-        model.transform.scale.set(0.25, 0.25, 0.25);
-        model.transform.rotateX(-Math.PI / 2);
+        // model.transform.scale.set(0.25, 0.25, 0.25);
+        // model.transform.rotateX(-Math.PI / 2);
+        // model.setTexture('alienTexture1');
 
-        model.setTexture('alienTexture1');
+        model.setTexture('buggyTexture');
 
         model.material.shine = 0.1;
 
@@ -183,7 +188,7 @@ class Demo extends Scene
             time /= 1000;
 
             // model.transform.rotateY(-0.01 + (Math.sin(time) * 0.005));
-            model.transform.rotateZ(0.01);
+            // model.transform.rotateZ(0.01);
 
             light.position.x = Math.sin(time * 2);
             light.position.y = Math.sin(time * 0.7);
