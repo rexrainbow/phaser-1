@@ -106,6 +106,8 @@ class Demo extends Scene
     {
         super();
 
+        console.log('Demo');
+
         const loader = new Loader();
 
         if (window.location.href.includes('192.168.0.100/phaser-genesis/'))
@@ -122,22 +124,25 @@ class Demo extends Scene
         // loader.add(ImageFile('alienTexture3', 'AL03-2.jpg'));
         // loader.add(ImageFile('alienTexture4', 'AL04-2.jpg'));
         // loader.add(ImageFile('alienTexture5', 'AL05-2.jpg'));
-        // loader.add(ImageFile('forestTexture', 'forest-extras-A.png'));
-        loader.add(ImageFile('buggyTexture', 'buggy.png'));
+        loader.add(ImageFile('forestTexture', 'forest-extras-A.png'));
+        // loader.add(ImageFile('buggyTexture', 'buggy.png'));
         // loader.add(OBJFile('alien', 'alien3.obj'));
         // loader.add(OBJGeometryFile('alien', 'alien4.obj'));
         // loader.add(OBJGeometryFile('alien', 'alien3.obj'));
+        loader.add(OBJGeometryFile('phaser4', 'phaser4.obj'));
         // loader.add(OBJGeometryFile('mushroom', 'mushroom.obj'));
-        loader.add(OBJGeometryFile('buggy', 'buggy.obj'));
+        // loader.add(OBJGeometryFile('buggy', 'buggy.obj'));
 
         loader.start().then(() => this.create());
     }
 
     create ()
     {
+        console.log('Create');
+
         const world = new World3D(this, 0, 0, 4, { x: 0.5, y: 3, z: 4 });
 
-        const obj = Cache.getEntry('Geometry', 'buggy') as Geometry;
+        const obj = Cache.getEntry('Geometry', 'phaser4') as Geometry;
 
         const model = new Mesh(0, 0, 0, obj);
 
@@ -145,7 +150,8 @@ class Demo extends Scene
         // model.transform.rotateX(-Math.PI / 2);
         // model.setTexture('alienTexture1');
 
-        model.setTexture('buggyTexture');
+        // model.setTexture('forestTexture');
+        // model.setTexture('buggyTexture');
 
         model.material.shine = 0.1;
 
