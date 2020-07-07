@@ -8,9 +8,9 @@ export class Vec2Callback extends Vec2
     private _x: number;
     private _y: number;
 
-    onChange: Vec2CallbackType = NOOP;
+    onChange: Vec2CallbackType;
 
-    constructor (onChange: Vec2CallbackType = NOOP, x: number = 0, y: number = 0)
+    constructor (onChange: Vec2CallbackType, x: number = 0, y: number = 0)
     {
         super(x, y);
 
@@ -27,7 +27,10 @@ export class Vec2Callback extends Vec2
         this._x = x;
         this._y = y;
 
-        this.onChange(this);
+        if (this.onChange)
+        {
+            this.onChange(this);
+        }
 
         return this;
     }
