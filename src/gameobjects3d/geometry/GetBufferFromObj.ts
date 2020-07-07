@@ -24,7 +24,14 @@ export function GetBufferFromObj (data: string, flipUVs: boolean = true): Vertex
             vertices
         } = model;
 
-        const buffer = new VertexBuffer({ batchSize: faces.length, isDynamic: false, vertexElementSize: 8, elementsPerEntry: 3 });
+        let totalFaces = 0;
+
+        for (let i = 0; i < faces.length; i++)
+        {
+            totalFaces += (faces[i].vertices.length === 4) ? 6 : 3;
+        }
+
+        const buffer = new VertexBuffer({ batchSize: totalFaces, isDynamic: false, vertexElementSize: 8, elementsPerEntry: 3 });
 
         const F32 = buffer.vertexViewF32;
 
@@ -76,9 +83,46 @@ export function GetBufferFromObj (data: string, flipUVs: boolean = true): Vertex
             F32[offset++] = n3.z;
             F32[offset++] = uv3.u;
             F32[offset++] = uv3.v;
-        }
 
-        buffer.count = faces.length * 3;
+            buffer.count += 3;
+
+            if (face.vertices.length === 4)
+            {
+                const i4 = face.vertices[3];
+                const v4 = vertices[i4.vertexIndex];
+                const n4 = vertexNormals[i4.vertexNormalIndex];
+                const uv4 = textureCoords[i4.textureCoordsIndex];
+
+                F32[offset++] = v1.x;
+                F32[offset++] = v1.y;
+                F32[offset++] = v1.z;
+                F32[offset++] = n1.x;
+                F32[offset++] = n1.y;
+                F32[offset++] = n1.z;
+                F32[offset++] = uv1.u;
+                F32[offset++] = uv1.v;
+
+                F32[offset++] = v3.x;
+                F32[offset++] = v3.y;
+                F32[offset++] = v3.z;
+                F32[offset++] = n3.x;
+                F32[offset++] = n3.y;
+                F32[offset++] = n3.z;
+                F32[offset++] = uv3.u;
+                F32[offset++] = uv3.v;
+
+                F32[offset++] = v4.x;
+                F32[offset++] = v4.y;
+                F32[offset++] = v4.z;
+                F32[offset++] = n4.x;
+                F32[offset++] = n4.y;
+                F32[offset++] = n4.z;
+                F32[offset++] = uv4.u;
+                F32[offset++] = uv4.v;
+
+                buffer.count += 3;
+            }
+        }
 
         output.push({ name: model.name, buffer });
 
