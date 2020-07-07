@@ -2,9 +2,8 @@ import { NOOP } from '../../utils/NOOP.js';
 import { Vec2 } from './Vec2.js';
 
 class Vec2Callback extends Vec2 {
-    constructor(onChange = NOOP, x = 0, y = 0) {
+    constructor(onChange, x = 0, y = 0) {
         super(x, y);
-        this.onChange = NOOP;
         this.onChange = onChange;
     }
     destroy() {
@@ -13,7 +12,9 @@ class Vec2Callback extends Vec2 {
     set(x = 0, y = 0) {
         this._x = x;
         this._y = y;
-        this.onChange(this);
+        if (this.onChange) {
+            this.onChange(this);
+        }
         return this;
     }
     get x() {

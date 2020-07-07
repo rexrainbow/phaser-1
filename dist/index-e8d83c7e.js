@@ -2,7 +2,7 @@ import { GameObject } from './gameobjects/GameObject.js';
 import { Container } from './gameobjects/container/Container.js';
 import { Sprite } from './gameobjects/sprite/Sprite.js';
 import { AnimatedSprite } from './gameobjects/animatedsprite/AnimatedSprite.js';
-import { i as index$1 } from './index-bf25c48e.js';
+import { i as index$1 } from './index-3d61c8e7.js';
 import { Layer } from './gameobjects/layer/Layer.js';
 import { RenderLayer } from './gameobjects/renderlayer/RenderLayer.js';
 import { EffectLayer } from './gameobjects/effectlayer/EffectLayer.js';

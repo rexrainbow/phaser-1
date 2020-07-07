@@ -17,10 +17,12 @@ class TransformComponent {
         this.entity = entity;
         this.local = new Matrix2D();
         this.world = new Matrix2D();
-        this.position = new Vec2Callback(() => this.update(), x, y);
-        this.scale = new Vec2Callback(() => this.update(), 1, 1);
-        this.skew = new Vec2Callback(() => this.update());
-        this.origin = new Vec2Callback(() => this.updateExtent(), originX, originY);
+        const update = () => this.update();
+        const updateExtent = () => this.updateExtent();
+        this.position = new Vec2Callback(update, x, y);
+        this.scale = new Vec2Callback(update, 1, 1);
+        this.skew = new Vec2Callback(update);
+        this.origin = new Vec2Callback(updateExtent, originX, originY);
         this.extent = new Rectangle();
     }
     update() {

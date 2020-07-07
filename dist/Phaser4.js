@@ -932,9 +932,8 @@
     }
 
     class Vec2Callback extends Vec2 {
-        constructor(onChange = NOOP, x = 0, y = 0) {
+        constructor(onChange, x = 0, y = 0) {
             super(x, y);
-            this.onChange = NOOP;
             this.onChange = onChange;
         }
         destroy() {
@@ -943,7 +942,9 @@
         set(x = 0, y = 0) {
             this._x = x;
             this._y = y;
-            this.onChange(this);
+            if (this.onChange) {
+                this.onChange(this);
+            }
             return this;
         }
         get x() {
@@ -6327,10 +6328,12 @@
             this.entity = entity;
             this.local = new Matrix2D();
             this.world = new Matrix2D();
-            this.position = new Vec2Callback(() => this.update(), x, y);
-            this.scale = new Vec2Callback(() => this.update(), 1, 1);
-            this.skew = new Vec2Callback(() => this.update());
-            this.origin = new Vec2Callback(() => this.updateExtent(), originX, originY);
+            const update = () => this.update();
+            const updateExtent = () => this.updateExtent();
+            this.position = new Vec2Callback(update, x, y);
+            this.scale = new Vec2Callback(update, 1, 1);
+            this.skew = new Vec2Callback(update);
+            this.origin = new Vec2Callback(updateExtent, originX, originY);
             this.extent = new Rectangle();
         }
         update() {

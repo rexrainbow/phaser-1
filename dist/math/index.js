@@ -334,7 +334,7 @@ import './vec2/Transform.js';
 import './vec2/TransformMat2d.js';
 import './vec2/TransformMat4.js';
 import './vec2/Zero.js';
-export { i as Vec2 } from '../index-074d04b8.js';
+export { i as Vec2 } from '../index-7fd08172.js';
 import './vec4/Vec4.js';
 import './vec4/Abs.js';
 import './vec4/Add.js';

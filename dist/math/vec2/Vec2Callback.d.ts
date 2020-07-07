@@ -4,7 +4,7 @@ export declare class Vec2Callback extends Vec2 {
     private _x;
     private _y;
     onChange: Vec2CallbackType;
-    constructor(onChange?: Vec2CallbackType, x?: number, y?: number);
+    constructor(onChange: Vec2CallbackType, x?: number, y?: number);
     destroy(): void;
     set(x?: number, y?: number): this;
     get x(): number;

@@ -17,4 +17,4 @@ import '../../renderer/webgl1/colors/PackColor.js';
 export { Vertex } from './Vertex.js';
 export { i as Bounds } from '../../index-fefb7f56.js';
 export { i as Input } from '../../index-90d2e37b.js';
-export { i as Transform } from '../../index-5a3b2421.js';
+export { i as Transform } from '../../index-76576751.js';
