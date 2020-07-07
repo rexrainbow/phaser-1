@@ -1,1 +1,0 @@
-{"version":3,"file":"Subtract.d.ts","sourceRoot":"","sources":["../../src/math/matrix2d-funcs/Subtract.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAClD,OAAO,EAAE,QAAQ,EAAE,MAAM,sBAAsB,CAAC;AAEhD,wBAAgB,QAAQ,CAAE,CAAC,EAAE,SAAS,EAAE,CAAC,EAAE,SAAS,GAAG,QAAQ,CAU9D"}

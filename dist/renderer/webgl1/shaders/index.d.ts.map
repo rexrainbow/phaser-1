@@ -1,1 +1,0 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/renderer/webgl1/shaders/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,0BAA0B,EAAE,MAAM,8BAA8B,CAAC;AAC1E,OAAO,EAAE,sBAAsB,EAAE,MAAM,0BAA0B,CAAC;AAClE,OAAO,EAAE,MAAM,EAAE,MAAM,UAAU,CAAC;AAClC,OAAO,EAAE,uBAAuB,EAAE,MAAM,2BAA2B,CAAC;AAEpE,OAAO,EACH,0BAA0B,EAC1B,sBAAsB,EACtB,MAAM,EACN,uBAAuB,EAC1B,CAAC"}

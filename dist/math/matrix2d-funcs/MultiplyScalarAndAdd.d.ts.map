@@ -1,1 +1,0 @@
-{"version":3,"file":"MultiplyScalarAndAdd.d.ts","sourceRoot":"","sources":["../../src/math/matrix2d-funcs/MultiplyScalarAndAdd.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,uBAAuB,CAAC;AAClD,OAAO,EAAE,QAAQ,EAAE,MAAM,sBAAsB,CAAC;AAEhD,wBAAgB,oBAAoB,CAAE,CAAC,EAAE,SAAS,EAAE,CAAC,EAAE,SAAS,EAAE,KAAK,EAAE,MAAM,GAAG,QAAQ,CAUzF"}

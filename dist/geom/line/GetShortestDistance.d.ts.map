@@ -1,1 +1,0 @@
-{"version":3,"file":"GetShortestDistance.d.ts","sourceRoot":"","sources":["../../src/geom/line/GetShortestDistance.ts"],"names":[],"mappings":"AAOA,OAAO,EAAE,KAAK,EAAE,MAAM,SAAS,CAAC;AAChC,OAAO,EAAE,KAAK,EAAE,MAAM,uBAAuB,CAAC;AAe9C,wBAAgB,mBAAmB,CAAE,IAAI,EAAE,KAAK,EAAE,KAAK,EAAE,KAAK,GAAG,MAAM,CActE"}

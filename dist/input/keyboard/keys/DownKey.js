@@ -1,9 +1,0 @@
-import { Key } from '../Key.js';
-
-class DownKey extends Key {
-    constructor() {
-        super('ArrowDown');
-    }
-}
-
-export { DownKey };

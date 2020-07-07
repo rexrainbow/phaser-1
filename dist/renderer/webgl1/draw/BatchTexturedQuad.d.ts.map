@@ -1,1 +1,0 @@
-{"version":3,"file":"BatchTexturedQuad.d.ts","sourceRoot":"","sources":["../../../src/renderer/webgl1/draw/BatchTexturedQuad.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,qCAAqC,CAAC;AAC9D,OAAO,EAAE,cAAc,EAAE,MAAM,mBAAmB,CAAC;AAEnD,wBAAgB,iBAAiB,CAAE,CAAC,SAAS,OAAO,EAAG,MAAM,EAAE,CAAC,EAAE,QAAQ,EAAE,cAAc,GAAG,IAAI,CAuChG"}

@@ -1,1 +1,0 @@
-{"version":3,"file":"CreateGLTexture.d.ts","sourceRoot":"","sources":["../../../src/renderer/webgl1/textures/CreateGLTexture.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,qBAAqB,CAAC;AAExD,wBAAgB,eAAe,CAAE,CAAC,SAAS,iBAAiB,EAAG,OAAO,EAAE,CAAC,GAAG,YAAY,CAkDvF"}
