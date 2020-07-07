@@ -1,0 +1,41 @@
+import { IBaseWorld } from '../world/IBaseWorld';
+import { IBoundsComponent } from './components/bounds/IBoundsComponent';
+import { ICanvasRenderer } from '../renderer/canvas/ICanvasRenderer';
+import { IEventInstance } from '../events/IEventInstance';
+import { IGameObject } from './IGameObject';
+import { IInputComponent } from './components/input/IInputComponent';
+import { IRenderPass } from '../renderer/webgl1/renderpass/IRenderPass';
+import { ITransformComponent } from './components/transform/ITransformComponent';
+export declare class GameObject {
+    type: string;
+    name: string;
+    world: IBaseWorld;
+    parent: IGameObject;
+    children: IGameObject[];
+    events: Map<string, Set<IEventInstance>>;
+    willUpdate: boolean;
+    willUpdateChildren: boolean;
+    willRender: boolean;
+    willRenderChildren: boolean;
+    willCacheChildren: boolean;
+    dirty: number;
+    dirtyFrame: number;
+    transform: ITransformComponent;
+    bounds: IBoundsComponent;
+    input: IInputComponent;
+    visible: boolean;
+    constructor(x?: number, y?: number);
+    isRenderable(): boolean;
+    isDirty(flag: number): boolean;
+    clearDirty(flag: number): this;
+    setDirty(flag: number, flag2?: number): this;
+    update(delta: number, time: number): void;
+    postUpdate(delta: number, time: number): void;
+    renderGL<T extends IRenderPass>(renderPass: T): void;
+    renderCanvas<T extends ICanvasRenderer>(renderer: T): void;
+    postRenderGL<T extends IRenderPass>(renderPass: T): void;
+    postRenderCanvas<T extends ICanvasRenderer>(renderer: T): void;
+    get numChildren(): number;
+    destroy(reparentChildren?: IGameObject): void;
+}
+//# sourceMappingURL=GameObject.d.ts.map
