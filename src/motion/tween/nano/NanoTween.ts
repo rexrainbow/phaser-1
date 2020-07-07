@@ -273,7 +273,7 @@ export class NanoTween
         }
 
         //  If we got this far, the tween is complete
-        console.log('Tween Complete');
+        // console.log('Tween Complete');
 
         this.destroy();
 
