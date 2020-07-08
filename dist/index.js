@@ -21,6 +21,7 @@
     __export(exports, {
       Camera: () => camera_exports,
       Camera3D: () => camera3d_exports,
+      Config: () => config_exports,
       DOM: () => dom_exports,
       Device: () => device_exports,
       Display: () => display_exports,
@@ -4708,6 +4709,112 @@
     Camera3D: () => Camera3D
   });
 
+  // src/config/BackgroundColor.ts
+  let bgColor = 0;
+  function BackgroundColor(color2 = 0) {
+    return () => {
+      bgColor = color2;
+    };
+  }
+  function GetBackgroundColor() {
+    return bgColor;
+  }
+
+  // src/config/Banner.ts
+  let title = "Phaser";
+  let url = "https://phaser4.io";
+  let color = "#fff";
+  let background = "linear-gradient(#3e0081 40%, #00bcc3)";
+  function Banner(gameTitle = "", gameURL = "", textColor, textBackground) {
+    return () => {
+      title = gameTitle;
+      url = gameURL;
+      if (textColor) {
+        color = textColor;
+      }
+      if (textBackground) {
+        background = textBackground;
+      }
+    };
+  }
+  function GetBanner() {
+    if (title !== "") {
+      const game = GameInstance2.get();
+      const version = title === "Phaser" ? " v" + game.VERSION : "";
+      console.log(`%c${title}${version}%c ${url}`, `padding: 4px 16px; color: ${color}; background: ${background}`, "");
+    }
+  }
+
+  // src/config/BatchSize.ts
+  let batchSize = 4096;
+  function BatchSize(size) {
+    return () => {
+      batchSize = size;
+    };
+  }
+
+  // src/config/CanvasContext.ts
+  let _contextAttributes = {
+    alpha: false,
+    desynchronized: false
+  };
+  function CanvasContext(contextAttributes) {
+    return () => {
+      _contextAttributes = contextAttributes;
+    };
+  }
+  function GetCanvasContext() {
+    return _contextAttributes;
+  }
+
+  // src/config/DefaultOrigin.ts
+  let originX = 0.5;
+  let originY = 0.5;
+  function DefaultOrigin(x = 0.5, y = x) {
+    return () => {
+      originX = x;
+      originY = y;
+    };
+  }
+
+  // src/config/Size.ts
+  let _width = 800;
+  let _height = 600;
+  let _resolution = 1;
+  function Size(width = 800, height = 600, resolution = 1) {
+    if (resolution === 0) {
+      resolution = window.devicePixelRatio;
+    }
+    return () => {
+      _width = width;
+      _height = height;
+      _resolution = resolution;
+    };
+  }
+  function GetWidth() {
+    return _width;
+  }
+  function GetHeight() {
+    return _height;
+  }
+  function GetResolution() {
+    return _resolution;
+  }
+
+  // src/config/MaxTextures.ts
+  let maxTextures = 0;
+  function MaxTextures(max = 0) {
+    return () => {
+      maxTextures = max;
+    };
+  }
+  function SetMaxTextures(max) {
+    maxTextures = max;
+  }
+  function GetMaxTextures() {
+    return maxTextures;
+  }
+
   // src/dom/GetElement.ts
   /**
    * @author       Richard Davey <rich@photonstorm.com>
@@ -4728,6 +4835,1647 @@
     }
     return element;
   }
+
+  // src/config/Parent.ts
+  let parent;
+  function Parent(parentElement) {
+    return () => {
+      if (parentElement) {
+        parent = GetElement2(parentElement);
+      }
+    };
+  }
+  function GetParent() {
+    return parent;
+  }
+
+  // src/config/SetRenderer.ts
+  let instance2;
+  function SetRenderer2(renderer) {
+    instance2 = renderer;
+  }
+  function GetRenderer() {
+    return instance2;
+  }
+
+  // src/config/Scenes.ts
+  let _scenes = [];
+  function Scenes(scenes) {
+    return () => {
+      _scenes = [].concat(scenes);
+    };
+  }
+  function GetScenes() {
+    return _scenes;
+  }
+
+  // src/config/WebGLContext.ts
+  let _contextAttributes2 = {
+    alpha: false,
+    antialias: false,
+    depth: true,
+    premultipliedAlpha: false
+  };
+  function WebGLContext(contextAttributes) {
+    return () => {
+      _contextAttributes2 = contextAttributes;
+    };
+  }
+  function GetWebGLContext() {
+    return _contextAttributes2;
+  }
+
+  // src/renderer/BindingQueue.ts
+  const queue = [];
+  const BindingQueue = {
+    add: (texture, glConfig) => {
+      queue.push({texture, glConfig});
+    },
+    get: () => {
+      return queue;
+    },
+    clear: () => {
+      queue.length = 0;
+    }
+  };
+
+  // src/renderer/canvas/CanvasRenderer.ts
+  class CanvasRenderer2 {
+    constructor() {
+      this.clearBeforeRender = true;
+      this.optimizeRedraw = true;
+      this.autoResize = true;
+      this.width = GetWidth();
+      this.height = GetHeight();
+      this.resolution = GetResolution();
+      this.setBackgroundColor(GetBackgroundColor());
+      const canvas = document.createElement("canvas");
+      this.canvas = canvas;
+      this.initContext();
+    }
+    initContext() {
+      const ctx = this.canvas.getContext("2d", GetCanvasContext());
+      this.ctx = ctx;
+      this.resize(this.width, this.height, this.resolution);
+    }
+    resize(width, height, resolution = 1) {
+      this.width = width * resolution;
+      this.height = height * resolution;
+      this.resolution = resolution;
+      const canvas = this.canvas;
+      canvas.width = this.width;
+      canvas.height = this.height;
+      if (this.autoResize) {
+        canvas.style.width = (this.width / resolution).toString() + "px";
+        canvas.style.height = (this.height / resolution).toString() + "px";
+      }
+    }
+    setBackgroundColor(color2) {
+      const r = color2 >> 16 & 255;
+      const g = color2 >> 8 & 255;
+      const b = color2 & 255;
+      const a = color2 > 16777215 ? color2 >>> 24 : 255;
+      this.clearColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+      return this;
+    }
+    reset() {
+      const ctx = this.ctx;
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+    }
+    render(renderData) {
+      BindingQueue.clear();
+      const ctx = this.ctx;
+      if (this.optimizeRedraw && renderData.numDirtyFrames === 0 && renderData.numDirtyCameras === 0) {
+        return;
+      }
+      this.reset();
+      if (this.clearBeforeRender) {
+        ctx.clearRect(0, 0, this.width, this.height);
+        ctx.fillStyle = this.clearColor;
+        ctx.fillRect(0, 0, this.width, this.height);
+      }
+    }
+    destroy() {
+    }
+  }
+
+  // src/config/SetCanvas.ts
+  function SetCanvas() {
+    return () => {
+      SetRenderer2(CanvasRenderer2);
+    };
+  }
+
+  // src/renderer/webgl1/renderpass/AddViewport.ts
+  function AddViewport(renderPass, x = 0, y = 0, width = 0, height = 0) {
+    const viewport = new Rectangle(x, y, width, height);
+    renderPass.viewportStack.push(viewport);
+    return viewport;
+  }
+
+  // src/renderer/webgl1/GL.ts
+  let gl;
+  const GL2 = {
+    get: () => {
+      return gl;
+    },
+    set: (context) => {
+      gl = context;
+    }
+  };
+
+  // src/renderer/webgl1/renderpass/BindViewport.ts
+  function BindViewport(renderPass, viewport) {
+    if (!viewport) {
+      viewport = renderPass.currentViewport;
+      if (!viewport) {
+        return;
+      }
+    }
+    const glv = gl.getParameter(gl.VIEWPORT);
+    if (glv[0] !== viewport.x || glv[1] !== viewport.y || glv[2] !== viewport.width || glv[3] !== viewport.height) {
+      gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
+    }
+  }
+
+  // src/renderer/webgl1/renderpass/SetViewport.ts
+  function SetViewport2(renderPass, x = 0, y = 0, width = 0, height = 0) {
+    const entry = AddViewport(renderPass, x, y, width, height);
+    BindViewport(renderPass, entry);
+    renderPass.currentViewport = entry;
+  }
+
+  // src/renderer/webgl1/renderpass/BindFramebuffer.ts
+  function BindFramebuffer(renderPass, clear = true, entry) {
+    if (!entry) {
+      entry = renderPass.currentFramebuffer;
+    }
+    const {framebuffer, viewport} = entry;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    if (clear) {
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    }
+    if (viewport) {
+      SetViewport2(renderPass, viewport.x, viewport.y, viewport.width, viewport.height);
+    }
+  }
+
+  // src/renderer/webgl1/renderpass/PopViewport.ts
+  function PopViewport2(renderPass) {
+    const stack = renderPass.viewportStack;
+    if (stack.length > 1) {
+      stack.pop();
+    }
+    renderPass.currentViewport = stack[stack.length - 1];
+    BindViewport(renderPass);
+  }
+
+  // src/renderer/webgl1/renderpass/PopFramebuffer.ts
+  function PopFramebuffer(renderPass) {
+    const stack = renderPass.framebufferStack;
+    if (stack.length > 1) {
+      if (renderPass.currentFramebuffer.viewport) {
+        PopViewport2(renderPass);
+      }
+      stack.pop();
+    }
+    renderPass.currentFramebuffer = stack[stack.length - 1];
+    BindFramebuffer(renderPass, false);
+  }
+
+  // src/renderer/webgl1/renderpass/AddFramebuffer.ts
+  function AddFramebuffer(renderPass, framebuffer, viewport) {
+    const entry = {framebuffer, viewport};
+    renderPass.framebufferStack.push(entry);
+    return entry;
+  }
+
+  // src/renderer/webgl1/renderpass/SetFramebuffer.ts
+  function SetFramebuffer(renderPass, framebuffer, clear = true, viewport) {
+    const entry = AddFramebuffer(renderPass, framebuffer, viewport);
+    BindFramebuffer(renderPass, clear, entry);
+    renderPass.currentFramebuffer = entry;
+  }
+
+  // src/renderer/webgl1/renderpass/Draw.ts
+  function Draw(renderPass) {
+    const count = renderPass.count;
+    if (count === 0) {
+      return;
+    }
+    const currentBuffer = renderPass.currentVertexBuffer;
+    const currentShader = renderPass.currentShader;
+    const renderToFramebuffer = currentShader.shader.renderToFramebuffer;
+    if (renderToFramebuffer) {
+      SetFramebuffer(renderPass, currentShader.shader.framebuffer, true);
+    }
+    if (count === currentBuffer.batchSize) {
+      const type = currentBuffer.isDynamic ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
+      gl.bufferData(gl.ARRAY_BUFFER, currentBuffer.data, type);
+    } else {
+      const subsize = currentBuffer.indexed ? count * currentBuffer.entryElementSize : count * currentBuffer.vertexElementSize;
+      const view = currentBuffer.vertexViewF32.subarray(0, subsize);
+      gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
+    }
+    if (currentBuffer.indexed) {
+      gl.drawElements(gl.TRIANGLES, count * currentBuffer.entryIndexSize, gl.UNSIGNED_SHORT, 0);
+    } else {
+      gl.drawArrays(gl.TRIANGLES, 0, count);
+    }
+    if (renderToFramebuffer) {
+      PopFramebuffer(renderPass);
+    }
+  }
+
+  // src/renderer/webgl1/renderpass/Flush.ts
+  function Flush(renderPass, forceCount) {
+    if (forceCount) {
+      renderPass.count = forceCount;
+    }
+    const count = renderPass.count;
+    if (count === 0) {
+      return false;
+    }
+    Draw(renderPass);
+    renderPass.prevCount = count;
+    renderPass.count = 0;
+    renderPass.flushTotal++;
+    return true;
+  }
+
+  // src/renderer/webgl1/renderpass/End.ts
+  function End2(renderPass) {
+    Flush(renderPass);
+  }
+
+  // src/renderer/webgl1/colors/GetRGBArray.ts
+  function GetRGBArray2(color2, output = []) {
+    const r = color2 >> 16 & 255;
+    const g = color2 >> 8 & 255;
+    const b = color2 & 255;
+    const a = color2 > 16777215 ? color2 >>> 24 : 255;
+    output[0] = r / 255;
+    output[1] = g / 255;
+    output[2] = b / 255;
+    output[3] = a / 255;
+    return output;
+  }
+
+  // src/renderer/webgl1/textures/CreateGLTexture.ts
+  function CreateGLTexture2(binding) {
+    const {parent: parent2, flipY, unpackPremultiplyAlpha, minFilter, magFilter, wrapS, wrapT, generateMipmap, isPOT} = binding;
+    const source = parent2.image;
+    let width = parent2.width;
+    let height = parent2.height;
+    const glTexture = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, glTexture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, flipY);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, unpackPremultiplyAlpha);
+    if (source) {
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+      width = source.width;
+      height = source.height;
+    } else {
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    }
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, minFilter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, magFilter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrapS);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrapT);
+    if (generateMipmap && isPOT) {
+      gl.generateMipmap(gl.TEXTURE_2D);
+    }
+    binding.texture = glTexture;
+    return glTexture;
+  }
+
+  // src/renderer/webgl1/fbo/DeleteFramebuffer.ts
+  function DeleteFramebuffer2(framebuffer) {
+    if (gl && gl.isFramebuffer(framebuffer)) {
+      gl.deleteFramebuffer(framebuffer);
+    }
+  }
+
+  // src/renderer/webgl1/textures/DeleteGLTexture.ts
+  function DeleteGLTexture2(texture) {
+    if (gl.isTexture(texture)) {
+      gl.deleteTexture(texture);
+    }
+  }
+
+  // src/renderer/webgl1/textures/SetGLTextureFilterMode.ts
+  function SetGLTextureFilterMode2(texture, linear = true) {
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    const mode = linear ? gl.LINEAR : gl.NEAREST;
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mode);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, mode);
+  }
+
+  // src/renderer/webgl1/textures/UpdateGLTexture.ts
+  function UpdateGLTexture2(binding) {
+    const source = binding.parent.image;
+    const width = source.width;
+    const height = source.height;
+    if (width > 0 && height > 0) {
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, binding.texture);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, binding.flipY);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+    }
+    return binding.texture;
+  }
+
+  // src/renderer/webgl1/textures/GLTextureBinding.ts
+  class GLTextureBinding2 {
+    constructor(parent2, config5 = {}) {
+      this.index = 0;
+      this.indexCounter = -1;
+      this.dirtyIndex = true;
+      this.unpackPremultiplyAlpha = true;
+      this.flipY = false;
+      this.isPOT = false;
+      this.generateMipmap = false;
+      this.parent = parent2;
+      this.isPOT = IsSizePowerOfTwo(parent2.width, parent2.height);
+      const {
+        texture = null,
+        framebuffer = null,
+        depthbuffer = null,
+        unpackPremultiplyAlpha = true,
+        minFilter = this.isPOT ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR,
+        magFilter = gl.LINEAR,
+        wrapS = gl.CLAMP_TO_EDGE,
+        wrapT = gl.CLAMP_TO_EDGE,
+        generateMipmap = this.isPOT,
+        flipY = false
+      } = config5;
+      this.minFilter = minFilter;
+      this.magFilter = magFilter;
+      this.wrapS = wrapS;
+      this.wrapT = wrapT;
+      this.generateMipmap = generateMipmap;
+      this.flipY = flipY;
+      this.unpackPremultiplyAlpha = unpackPremultiplyAlpha;
+      if (framebuffer) {
+        this.framebuffer = framebuffer;
+      }
+      if (depthbuffer) {
+        this.depthbuffer = depthbuffer;
+      }
+      if (texture) {
+        this.texture = texture;
+      } else {
+        CreateGLTexture2(this);
+      }
+    }
+    setFilter(linear) {
+      if (this.texture) {
+        SetGLTextureFilterMode2(this.texture, linear);
+      }
+    }
+    create() {
+      const texture = this.texture;
+      if (texture) {
+        DeleteGLTexture2(texture);
+      }
+      return CreateGLTexture2(this);
+    }
+    update() {
+      const texture = this.texture;
+      if (!texture) {
+        return CreateGLTexture2(this);
+      } else {
+        return UpdateGLTexture2(this);
+      }
+    }
+    setIndex(index) {
+      this.dirtyIndex = index !== this.index;
+      this.index = index;
+    }
+    destroy() {
+      DeleteGLTexture2(this.texture);
+      DeleteFramebuffer2(this.framebuffer);
+      this.parent = null;
+      this.texture = null;
+      this.framebuffer = null;
+    }
+  }
+
+  // src/renderer/webgl1/renderpass/ProcessBindingQueue.ts
+  function ProcessBindingQueue2() {
+    const queue2 = BindingQueue.get();
+    queue2.forEach((entry) => {
+      const {texture, glConfig} = entry;
+      if (!texture.binding) {
+        texture.binding = new GLTextureBinding2(texture, glConfig);
+      }
+    });
+    BindingQueue.clear();
+  }
+
+  // src/renderer/webgl1/shaders/CheckShaderMaxIfStatements.ts
+  const fragTemplate = [
+    "precision mediump float;",
+    "void main(void){",
+    "float test = 0.1;",
+    "%forloop%",
+    "gl_FragColor = vec4(0.0);",
+    "}"
+  ].join("\n");
+  function GenerateSrc(maxIfs) {
+    let src = "";
+    for (let i = 0; i < maxIfs; ++i) {
+      if (i > 0) {
+        src += "\nelse ";
+      }
+      if (i < maxIfs - 1) {
+        src += `if(test == ${i}.0){}`;
+      }
+    }
+    return src;
+  }
+  function CheckShaderMaxIfStatements2(maxIfs) {
+    const shader = gl.createShader(gl.FRAGMENT_SHADER);
+    while (true) {
+      const fragmentSrc = fragTemplate.replace(/%forloop%/gi, GenerateSrc(maxIfs));
+      gl.shaderSource(shader, fragmentSrc);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        maxIfs = maxIfs / 2 | 0;
+      } else {
+        break;
+      }
+    }
+    return maxIfs;
+  }
+
+  // src/renderer/webgl1/renderpass/CreateTempTextures.ts
+  function CreateTempTextures(renderPass) {
+    let maxGPUTextures = CheckShaderMaxIfStatements2(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS));
+    const maxConfigTextures = GetMaxTextures();
+    if (maxConfigTextures === 0 || maxConfigTextures > 0 && maxConfigTextures > maxGPUTextures) {
+      SetMaxTextures(maxGPUTextures);
+    } else if (maxConfigTextures > 0 && maxConfigTextures < maxGPUTextures) {
+      maxGPUTextures = Math.max(8, maxConfigTextures);
+    }
+    const tempTextures = renderPass.tempTextures;
+    if (tempTextures.length) {
+      tempTextures.forEach((texture) => {
+        gl.deleteTexture(texture);
+      });
+    }
+    const index = [];
+    for (let texturesIndex = 0; texturesIndex < maxGPUTextures; texturesIndex++) {
+      const tempTexture = gl.createTexture();
+      gl.activeTexture(gl.TEXTURE0 + texturesIndex);
+      gl.bindTexture(gl.TEXTURE_2D, tempTexture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
+      tempTextures[texturesIndex] = tempTexture;
+      index.push(texturesIndex);
+    }
+    renderPass.maxTextures = maxGPUTextures;
+    renderPass.textureIndex = index;
+    renderPass.currentActiveTexture = 1;
+  }
+
+  // src/renderer/webgl1/buffers/DeleteGLBuffer.ts
+  function DeleteGLBuffer(buffer) {
+    if (gl.isBuffer(buffer)) {
+      gl.deleteBuffer(buffer);
+    }
+  }
+
+  // src/renderer/webgl1/buffers/VertexBuffer.ts
+  class VertexBuffer2 {
+    constructor(config5 = {}) {
+      this.indexed = false;
+      this.isDynamic = false;
+      this.count = 0;
+      this.offset = 0;
+      const {
+        batchSize: batchSize2 = 1,
+        dataSize = 4,
+        isDynamic = true,
+        elementsPerEntry = 4,
+        vertexElementSize = 6
+      } = config5;
+      this.batchSize = batchSize2;
+      this.dataSize = dataSize;
+      this.vertexElementSize = vertexElementSize;
+      this.isDynamic = isDynamic;
+      this.elementsPerEntry = elementsPerEntry;
+      this.vertexByteSize = vertexElementSize * dataSize;
+      this.entryByteSize = this.vertexByteSize * elementsPerEntry;
+      this.bufferByteSize = batchSize2 * this.entryByteSize;
+      this.create();
+    }
+    resize(batchSize2) {
+      this.batchSize = batchSize2;
+      this.bufferByteSize = batchSize2 * this.entryByteSize;
+      if (this.vertexBuffer) {
+        DeleteGLBuffer(this.vertexBuffer);
+      }
+      this.create();
+    }
+    create() {
+      const data = new ArrayBuffer(this.bufferByteSize);
+      this.data = data;
+      this.vertexViewF32 = new Float32Array(data);
+      this.vertexViewU32 = new Uint32Array(data);
+      this.vertexBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+      const type = this.isDynamic ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
+      gl.bufferData(gl.ARRAY_BUFFER, data, type);
+      gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    }
+    add(count) {
+      this.count += count;
+      this.offset += this.vertexElementSize * count;
+    }
+    reset() {
+      this.count = 0;
+      this.offset = 0;
+    }
+    canContain(count) {
+      return this.count + count <= this.batchSize;
+    }
+    free() {
+      return Math.max(0, 1 - this.count / this.batchSize);
+    }
+    bind() {
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+    }
+    destroy() {
+      DeleteGLBuffer(this.vertexBuffer);
+      this.data = null;
+      this.vertexViewF32 = null;
+      this.vertexViewU32 = null;
+      this.vertexBuffer = null;
+    }
+  }
+
+  // src/renderer/webgl1/buffers/IndexedVertexBuffer.ts
+  class IndexedVertexBuffer extends VertexBuffer2 {
+    constructor(config5 = {}) {
+      super(config5);
+      const {
+        indexSize = 4,
+        entryIndexSize = 6,
+        indexLayout = null
+      } = config5;
+      this.indexed = true;
+      this.indexSize = indexSize;
+      this.entryIndexSize = entryIndexSize;
+      this.entryElementSize = this.vertexElementSize * this.elementsPerEntry;
+      const seededIndexBuffer = [];
+      if (indexLayout) {
+        this.indexLayout = indexLayout;
+        for (let i = 0; i < this.batchSize * indexSize; i += indexSize) {
+          for (let c = 0; c < indexLayout.length; c++) {
+            seededIndexBuffer.push(i + indexLayout[c]);
+          }
+        }
+      }
+      this.create();
+      this.createIndexBuffer(seededIndexBuffer);
+    }
+    createIndexBuffer(seededIndex) {
+      this.index = new Uint16Array(seededIndex);
+      this.indexBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.index, gl.STATIC_DRAW);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      seededIndex = [];
+    }
+    bind() {
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+    }
+    destroy() {
+      super.destroy();
+      DeleteGLBuffer(this.indexBuffer);
+      this.index = null;
+      this.indexLayout = null;
+      this.indexBuffer = null;
+    }
+  }
+
+  // src/renderer/webgl1/shaders/CreateAttributes.ts
+  function CreateAttributes(program, config5) {
+    const attributes = new Map();
+    const defaultSettings = {
+      size: 1,
+      type: gl.FLOAT,
+      normalized: false,
+      stride: 0,
+      offset: 0
+    };
+    const total = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
+    for (let i = 0; i < total; i++) {
+      const attrib = gl.getActiveAttrib(program, i);
+      if (!attrib) {
+        break;
+      }
+      const name = attrib.name;
+      const index = gl.getAttribLocation(program, name);
+      gl.enableVertexAttribArray(index);
+      const setting = config5.hasOwnProperty(name) ? config5[name] : {};
+      const {
+        size = defaultSettings.size,
+        type = defaultSettings.type,
+        normalized = defaultSettings.normalized,
+        stride = defaultSettings.stride,
+        offset = defaultSettings.offset
+      } = setting;
+      attributes.set(name, {index, size, type, normalized, stride, offset});
+    }
+    return attributes;
+  }
+
+  // src/renderer/webgl1/shaders/DeleteShaders.ts
+  function DeleteShaders2(...shaders2) {
+    shaders2.forEach((shader) => {
+      gl.deleteShader(shader);
+    });
+  }
+
+  // src/renderer/webgl1/shaders/CreateProgram.ts
+  function CreateProgram(...shaders2) {
+    const program = gl.createProgram();
+    shaders2.forEach((shader) => {
+      gl.attachShader(program, shader);
+    });
+    gl.linkProgram(program);
+    const status = gl.getProgramParameter(program, gl.LINK_STATUS);
+    if (!status) {
+      const info = gl.getProgramInfoLog(program);
+      console.error(`Error linking program: ${info}`);
+      gl.deleteProgram(program);
+      DeleteShaders2(...shaders2);
+      return null;
+    }
+    return program;
+  }
+
+  // src/renderer/webgl1/shaders/CreateShader.ts
+  function CreateShader(source, type) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    const status = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+    if (!status) {
+      const info = gl.getShaderInfoLog(shader);
+      const sourceLines = source.split("\n").map((line, index) => {
+        return `${index}: ${line}`;
+      });
+      console.error(`Error compiling shader: ${info}`, sourceLines.join("\n"));
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  // src/renderer/webgl1/shaders/CreateUniformSetter.ts
+  function CreateUniformSetter(uniform, location, isArray = false) {
+    switch (uniform.type) {
+      case gl.INT:
+      case gl.BOOL: {
+        if (isArray) {
+          return (v) => {
+            gl.uniform1iv(location, v);
+          };
+        } else {
+          return (v) => {
+            gl.uniform1i(location, v);
+          };
+        }
+      }
+      case gl.INT_VEC2:
+      case gl.BOOL_VEC2: {
+        return (v) => {
+          gl.uniform2iv(location, v);
+        };
+      }
+      case gl.INT_VEC3:
+      case gl.BOOL_VEC3: {
+        return (v) => {
+          gl.uniform3iv(location, v);
+        };
+      }
+      case gl.INT_VEC4:
+      case gl.BOOL_VEC4: {
+        return (v) => {
+          gl.uniform4iv(location, v);
+        };
+      }
+      case gl.FLOAT: {
+        if (isArray) {
+          return (v) => {
+            gl.uniform1fv(location, v);
+          };
+        } else {
+          return (v) => {
+            gl.uniform1f(location, v);
+          };
+        }
+      }
+      case gl.FLOAT_VEC2: {
+        return (v) => {
+          gl.uniform2fv(location, v);
+        };
+      }
+      case gl.FLOAT_VEC3: {
+        return (v) => {
+          gl.uniform3fv(location, v);
+        };
+      }
+      case gl.FLOAT_VEC4: {
+        return (v) => {
+          gl.uniform4fv(location, v);
+        };
+      }
+      case gl.FLOAT_MAT2: {
+        return (v) => {
+          gl.uniformMatrix2fv(location, false, v);
+        };
+      }
+      case gl.FLOAT_MAT3: {
+        return (v) => {
+          gl.uniformMatrix3fv(location, false, v);
+        };
+      }
+      case gl.FLOAT_MAT4: {
+        return (v) => {
+          gl.uniformMatrix4fv(location, false, v);
+        };
+      }
+      case gl.SAMPLER_2D:
+      case gl.SAMPLER_CUBE: {
+        if (uniform.size > 1) {
+          return (v) => {
+            gl.uniform1iv(location, v);
+          };
+        } else {
+          return (v) => {
+            gl.uniform1i(location, v);
+          };
+        }
+      }
+    }
+  }
+
+  // src/renderer/webgl1/shaders/CreateUniforms.ts
+  function CreateUniforms(program) {
+    const uniforms = new Map();
+    const total = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+    for (let i = 0; i < total; i++) {
+      const uniform = gl.getActiveUniform(program, i);
+      let name = uniform.name;
+      if (name.startsWith("gl_") || name.startsWith("webgl_")) {
+        continue;
+      }
+      const location = gl.getUniformLocation(program, uniform.name);
+      if (location) {
+        let isArray = false;
+        if (name.substr(-3) === "[0]") {
+          name = name.substr(0, name.length - 3);
+          isArray = uniform.size > 1;
+        }
+        uniforms.set(name, CreateUniformSetter(uniform, location, isArray));
+      }
+    }
+    return uniforms;
+  }
+
+  // src/renderer/webgl1/GL_CONST.ts
+  const UNSIGNED_BYTE = 5121;
+  const FLOAT = 5126;
+
+  // src/renderer/webgl1/shaders/DefaultQuadAttributes.ts
+  const DefaultQuadAttributes = {
+    aVertexPosition: {size: 2, type: FLOAT, normalized: false, offset: 0},
+    aTextureCoord: {size: 2, type: FLOAT, normalized: false, offset: 8},
+    aTextureId: {size: 1, type: FLOAT, normalized: false, offset: 16},
+    aTintColor: {size: 4, type: UNSIGNED_BYTE, normalized: true, offset: 20}
+  };
+
+  // src/renderer/webgl1/shaders/DefaultQuadUniforms.ts
+  const DefaultQuadUniforms = {
+    uProjectionMatrix: new Float32Array(),
+    uCameraMatrix: new Float32Array(),
+    uTexture: 0
+  };
+
+  // src/renderer/webgl1/fbo/CreateDepthBuffer.ts
+  function CreateDepthBuffer2(framebuffer, textureWidth, textureHeight) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    const depthBuffer = gl.createRenderbuffer();
+    gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer);
+    gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, textureWidth, textureHeight);
+    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depthBuffer);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    return depthBuffer;
+  }
+
+  // src/renderer/webgl1/fbo/CreateFramebuffer.ts
+  function CreateFramebuffer2(texture, attachment) {
+    if (!attachment) {
+      attachment = gl.COLOR_ATTACHMENT0;
+    }
+    const framebuffer = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, attachment, gl.TEXTURE_2D, texture, 0);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    return framebuffer;
+  }
+
+  // src/renderer/webgl1/glsl/SINGLE_QUAD_FRAG.ts
+  const SINGLE_QUAD_FRAG = `#define SHADER_NAME SINGLE_QUAD_FRAG\r
+\r
+precision highp float;\r
+\r
+varying vec2 vTextureCoord;\r
+varying float vTextureId;\r
+varying vec4 vTintColor;\r
+\r
+uniform sampler2D uTexture;\r
+\r
+void main (void)\r
+{\r
+    vec4 color = texture2D(uTexture, vTextureCoord);\r
+\r
+    gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);\r
+}`;
+
+  // src/renderer/webgl1/glsl/SINGLE_QUAD_VERT.ts
+  const SINGLE_QUAD_VERT = `#define SHADER_NAME SINGLE_QUAD_VERT\r
+\r
+precision highp float;\r
+\r
+attribute vec2 aVertexPosition;\r
+attribute vec2 aTextureCoord;\r
+attribute float aTextureId;\r
+attribute vec4 aTintColor;\r
+\r
+uniform mat4 uProjectionMatrix;\r
+uniform mat4 uCameraMatrix;\r
+\r
+varying vec2 vTextureCoord;\r
+varying float vTextureId;\r
+varying vec4 vTintColor;\r
+\r
+void main (void)\r
+{\r
+    vTextureCoord = aTextureCoord;\r
+    vTextureId = aTextureId;\r
+    vTintColor = aTintColor;\r
+\r
+    gl_Position = uProjectionMatrix * uCameraMatrix * vec4(aVertexPosition, 0.0, 1.0);\r
+}`;
+
+  // src/textures/Frame.ts
+  class Frame16 {
+    constructor(texture, key, x, y, width, height) {
+      this.trimmed = false;
+      this.texture = texture;
+      this.key = key;
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.sourceSizeWidth = width;
+      this.sourceSizeHeight = height;
+      this.updateUVs();
+    }
+    setPivot(x, y) {
+      this.pivot = {x, y};
+    }
+    setSize(width, height) {
+      this.width = width;
+      this.height = height;
+      this.sourceSizeWidth = width;
+      this.sourceSizeHeight = height;
+      this.updateUVs();
+    }
+    setSourceSize(width, height) {
+      this.sourceSizeWidth = width;
+      this.sourceSizeHeight = height;
+    }
+    setTrim(width, height, x, y, w, h) {
+      this.trimmed = true;
+      this.sourceSizeWidth = width;
+      this.sourceSizeHeight = height;
+      this.spriteSourceSizeX = x;
+      this.spriteSourceSizeY = y;
+      this.spriteSourceSizeWidth = w;
+      this.spriteSourceSizeHeight = h;
+    }
+    getExtent(originX2, originY2) {
+      const sourceSizeWidth = this.sourceSizeWidth;
+      const sourceSizeHeight = this.sourceSizeHeight;
+      let left;
+      let right;
+      let top;
+      let bottom;
+      if (this.trimmed) {
+        left = this.spriteSourceSizeX - originX2 * sourceSizeWidth;
+        right = left + this.spriteSourceSizeWidth;
+        top = this.spriteSourceSizeY - originY2 * sourceSizeHeight;
+        bottom = top + this.spriteSourceSizeHeight;
+      } else {
+        left = -originX2 * sourceSizeWidth;
+        right = left + sourceSizeWidth;
+        top = -originY2 * sourceSizeHeight;
+        bottom = top + sourceSizeHeight;
+      }
+      return {left, right, top, bottom};
+    }
+    setExtent(child) {
+      const transform = child.transform;
+      const originX2 = transform.origin.x;
+      const originY2 = transform.origin.y;
+      const sourceSizeWidth = this.sourceSizeWidth;
+      const sourceSizeHeight = this.sourceSizeHeight;
+      let x;
+      let y;
+      let width;
+      let height;
+      if (this.trimmed) {
+        x = this.spriteSourceSizeX - originX2 * sourceSizeWidth;
+        y = this.spriteSourceSizeY - originY2 * sourceSizeHeight;
+        width = this.spriteSourceSizeWidth;
+        height = this.spriteSourceSizeHeight;
+      } else {
+        x = -originX2 * sourceSizeWidth;
+        y = -originY2 * sourceSizeHeight;
+        width = sourceSizeWidth;
+        height = sourceSizeHeight;
+      }
+      transform.setExtent(x, y, width, height);
+    }
+    updateUVs() {
+      const {x, y, width, height} = this;
+      const baseTextureWidth = this.texture.width;
+      const baseTextureHeight = this.texture.height;
+      this.u0 = x / baseTextureWidth;
+      this.v0 = y / baseTextureHeight;
+      this.u1 = (x + width) / baseTextureWidth;
+      this.v1 = (y + height) / baseTextureHeight;
+    }
+  }
+
+  // src/textures/Texture.ts
+  class Texture5 {
+    constructor(image, width, height, glConfig) {
+      this.key = "";
+      if (image) {
+        width = image.width;
+        height = image.height;
+      }
+      this.image = image;
+      this.width = width;
+      this.height = height;
+      this.frames = new Map();
+      this.data = {};
+      this.addFrame("__BASE", 0, 0, width, height);
+      BindingQueue.add(this, glConfig);
+    }
+    addFrame(key, x, y, width, height) {
+      if (this.frames.has(key)) {
+        return null;
+      }
+      const frame2 = new Frame16(this, key, x, y, width, height);
+      this.frames.set(key, frame2);
+      if (!this.firstFrame || this.firstFrame.key === "__BASE") {
+        this.firstFrame = frame2;
+      }
+      return frame2;
+    }
+    getFrame(key) {
+      if (!key) {
+        return this.firstFrame;
+      }
+      if (key instanceof Frame16) {
+        key = key.key;
+      }
+      let frame2 = this.frames.get(key);
+      if (!frame2) {
+        console.warn(`Frame missing: ${key}`);
+        frame2 = this.firstFrame;
+      }
+      return frame2;
+    }
+    setSize(width, height) {
+      this.width = width;
+      this.height = height;
+      const frame2 = this.frames.get("__BASE");
+      frame2.setSize(width, height);
+    }
+    destroy() {
+      if (this.binding) {
+        this.binding.destroy();
+      }
+      this.frames.clear();
+      this.data = null;
+      this.image = null;
+      this.firstFrame = null;
+    }
+  }
+
+  // src/renderer/webgl1/shaders/Shader.ts
+  class Shader2 {
+    constructor(config5) {
+      this.renderToFramebuffer = false;
+      this.renderToDepthbuffer = false;
+      if (config5) {
+        this.fromConfig(config5);
+      }
+    }
+    fromConfig(config5) {
+      const {
+        attributes = DefaultQuadAttributes,
+        fragmentShader = SINGLE_QUAD_FRAG,
+        height = GetHeight(),
+        renderToFramebuffer = false,
+        renderToDepthbuffer = false,
+        resolution = GetResolution(),
+        vertexShader = SINGLE_QUAD_VERT,
+        width = GetWidth(),
+        uniforms = DefaultQuadUniforms
+      } = config5;
+      this.create(fragmentShader, vertexShader, uniforms, attributes);
+      if (renderToFramebuffer) {
+        this.renderToFramebuffer = true;
+        const texture = new Texture5(null, width * resolution, height * resolution);
+        const binding = new GLTextureBinding2(texture);
+        texture.binding = binding;
+        binding.framebuffer = CreateFramebuffer2(binding.texture);
+        if (renderToDepthbuffer) {
+          this.renderToDepthbuffer = true;
+          binding.depthbuffer = CreateDepthBuffer2(binding.framebuffer, texture.width, texture.height);
+        }
+        this.texture = texture;
+        this.framebuffer = binding.framebuffer;
+      }
+    }
+    create(fragmentShaderSource, vertexShaderSource, uniforms, attribs) {
+      const fragmentShader = CreateShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
+      const vertexShader = CreateShader(vertexShaderSource, gl.VERTEX_SHADER);
+      if (!fragmentShader || !vertexShader) {
+        return;
+      }
+      const program = CreateProgram(fragmentShader, vertexShader);
+      if (!program) {
+        return;
+      }
+      const currentProgram = gl.getParameter(gl.CURRENT_PROGRAM);
+      gl.useProgram(program);
+      this.program = program;
+      this.uniformSetters = CreateUniforms(program);
+      this.uniforms = new Map();
+      for (const [key, value] of Object.entries(uniforms)) {
+        this.uniforms.set(key, value);
+      }
+      this.attributes = CreateAttributes(program, attribs);
+      gl.useProgram(currentProgram);
+    }
+    updateUniforms(renderPass) {
+    }
+    bind(renderPass) {
+      this.updateUniforms(renderPass);
+      return this.setUniforms(renderPass);
+    }
+    setUniform(key, value) {
+      const uniforms = this.uniforms;
+      if (uniforms.has(key)) {
+        uniforms.set(key, value);
+        const setter = this.uniformSetters.get(key);
+        setter(value);
+      }
+    }
+    setUniforms(renderPass) {
+      if (!this.program) {
+        return false;
+      }
+      gl.useProgram(this.program);
+      const uniforms = this.uniforms;
+      for (const [name, setter] of this.uniformSetters.entries()) {
+        setter(uniforms.get(name));
+      }
+      return true;
+    }
+    setAttributes(renderPass) {
+      if (this.program) {
+        const stride = renderPass.currentVertexBuffer.vertexByteSize;
+        this.attributes.forEach((attrib) => {
+          gl.vertexAttribPointer(attrib.index, attrib.size, attrib.type, attrib.normalized, stride, attrib.offset);
+        });
+      }
+    }
+    destroy() {
+      DeleteShaders2(this.program);
+      DeleteGLTexture2(this.texture);
+      DeleteFramebuffer2(this.framebuffer);
+      this.uniforms.clear();
+      this.uniformSetters.clear();
+      this.attributes.clear();
+      this.program = null;
+      this.texture = null;
+      this.framebuffer = null;
+    }
+  }
+
+  // src/renderer/webgl1/shaders/QuadShader.ts
+  class QuadShader2 extends Shader2 {
+    constructor(config5 = {}) {
+      const shaderConfig = config5;
+      shaderConfig.attributes = !shaderConfig.attributes ? DefaultQuadAttributes : shaderConfig.attributes;
+      super(shaderConfig);
+    }
+    bind(renderPass) {
+      const uniforms = this.uniforms;
+      uniforms.set("uProjectionMatrix", renderPass.projectionMatrix.data);
+      uniforms.set("uCameraMatrix", renderPass.cameraMatrix.data);
+      return super.bind(renderPass);
+    }
+  }
+
+  // src/renderer/webgl1/shaders/FXShader.ts
+  class FXShader extends QuadShader2 {
+    constructor(config5 = {}) {
+      const shaderConfig = config5;
+      shaderConfig.attributes = !shaderConfig.attributes ? DefaultQuadAttributes : shaderConfig.attributes;
+      shaderConfig.renderToFramebuffer = true;
+      super(shaderConfig);
+    }
+    bind(renderPass) {
+      const renderer = renderPass.renderer;
+      this.uniforms.set("uTime", performance.now());
+      this.uniforms.set("uResolution", [renderer.width, renderer.height]);
+      return super.bind(renderPass);
+    }
+  }
+
+  // src/renderer/webgl1/glsl/MULTI_QUAD_FRAG.ts
+  const MULTI_QUAD_FRAG = `#define SHADER_NAME MULTI_QUAD_FRAG\r
+\r
+precision highp float;\r
+\r
+varying vec2 vTextureCoord;\r
+varying float vTextureId;\r
+varying vec4 vTintColor;\r
+\r
+uniform sampler2D uTexture[%count%];\r
+\r
+void main (void)\r
+{\r
+    vec4 color;\r
+\r
+    %forloop%\r
+\r
+    gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);\r
+}`;
+
+  // src/renderer/webgl1/shaders/MultiTextureQuadShader.ts
+  class MultiTextureQuadShader extends QuadShader2 {
+    constructor(config5 = {}) {
+      if (!config5.fragmentShader) {
+        config5.fragmentShader = MULTI_QUAD_FRAG;
+      }
+      super(config5);
+    }
+    create(fragmentShaderSource, vertexShaderSource, uniforms, attribs) {
+      const maxTextures2 = GetMaxTextures();
+      let src = "";
+      for (let i = 1; i < maxTextures2; i++) {
+        if (i > 1) {
+          src += "\n	else ";
+        }
+        if (i < maxTextures2 - 1) {
+          src += `if (vTextureId < ${i}.5)`;
+        }
+        src += "\n	{";
+        src += `
+		color = texture2D(uTexture[${i}], vTextureCoord);`;
+        src += "\n	}";
+      }
+      fragmentShaderSource = fragmentShaderSource.replace(/%count%/gi, `${maxTextures2}`);
+      fragmentShaderSource = fragmentShaderSource.replace(/%forloop%/gi, src);
+      super.create(fragmentShaderSource, vertexShaderSource, uniforms, attribs);
+    }
+    bind(renderPass) {
+      this.uniforms.set("uTexture", renderPass.textureIndex);
+      return super.bind(renderPass);
+    }
+  }
+
+  // src/renderer/webgl1/shaders/index.ts
+
+  // src/renderer/webgl1/renderpass/SetDefaultBlendMode.ts
+  function SetDefaultBlendMode2(renderPass, enable, sfactor, dfactor) {
+    const entry = {enable, sfactor, dfactor};
+    renderPass.blendModeStack[0] = entry;
+    renderPass.currentBlendMode = entry;
+    renderPass.defaultBlendMode = entry;
+  }
+
+  // src/renderer/webgl1/renderpass/SetDefaultFramebuffer.ts
+  function SetDefaultFramebuffer2(renderPass, framebuffer = null, viewport) {
+    const entry = {framebuffer, viewport};
+    renderPass.framebufferStack[0] = entry;
+    renderPass.currentFramebuffer = entry;
+    renderPass.defaultFramebuffer = entry;
+  }
+
+  // src/renderer/webgl1/renderpass/SetDefaultShader.ts
+  function SetDefaultShader2(renderPass, shader, textureID) {
+    const entry = {shader, textureID};
+    renderPass.shaderStack[0] = entry;
+    renderPass.currentShader = entry;
+    renderPass.defaultShader = entry;
+  }
+
+  // src/renderer/webgl1/renderpass/SetDefaultVertexBuffer.ts
+  function SetDefaultVertexBuffer2(renderPass, buffer) {
+    renderPass.vertexBufferStack[0] = buffer;
+    renderPass.currentVertexBuffer = buffer;
+    renderPass.defaultVertexBuffer = buffer;
+  }
+
+  // src/renderer/webgl1/renderpass/SetDefaultViewport.ts
+  function SetDefaultViewport2(renderPass, x = 0, y = 0, width = 0, height = 0) {
+    const entry = new Rectangle(x, y, width, height);
+    renderPass.viewportStack[0] = entry;
+    renderPass.currentViewport = entry;
+    renderPass.defaultViewport = entry;
+  }
+
+  // src/renderer/webgl1/renderpass/RenderPass.ts
+  class RenderPass2 {
+    constructor(renderer) {
+      this.count = 0;
+      this.prevCount = 0;
+      this.flushTotal = 0;
+      this.maxTextures = 0;
+      this.currentActiveTexture = 0;
+      this.startActiveTexture = 0;
+      this.tempTextures = [];
+      this.textureIndex = [];
+      this.framebufferStack = [];
+      this.currentFramebuffer = null;
+      this.defaultFramebuffer = null;
+      this.vertexBufferStack = [];
+      this.currentVertexBuffer = null;
+      this.defaultVertexBuffer = null;
+      this.shaderStack = [];
+      this.currentShader = null;
+      this.defaultShader = null;
+      this.viewportStack = [];
+      this.currentViewport = null;
+      this.defaultViewport = null;
+      this.blendModeStack = [];
+      this.currentBlendMode = null;
+      this.defaultBlendMode = null;
+      this.renderer = renderer;
+      this.projectionMatrix = new Matrix4();
+      this.reset();
+    }
+    reset() {
+      const gl3 = this.renderer.gl;
+      const indexLayout = [0, 1, 2, 2, 3, 0];
+      this.quadShader = new QuadShader2();
+      this.quadBuffer = new IndexedVertexBuffer({isDynamic: false, indexLayout});
+      this.quadCamera = new StaticCamera();
+      CreateTempTextures(this);
+      SetDefaultFramebuffer2(this);
+      SetDefaultBlendMode2(this, true, gl3.ONE, gl3.ONE_MINUS_SRC_ALPHA);
+      SetDefaultVertexBuffer2(this, new IndexedVertexBuffer({batchSize, indexLayout}));
+      SetDefaultShader2(this, new MultiTextureQuadShader());
+    }
+    resize(width, height) {
+      Ortho(0, width, height, 0, -1e3, 1e3, this.projectionMatrix);
+      this.quadCamera.reset();
+      SetDefaultViewport2(this, 0, 0, width, height);
+    }
+  }
+
+  // src/renderer/webgl1/renderpass/AddBlendMode.ts
+
+  // src/renderer/webgl1/renderpass/AddShader.ts
+  function AddShader(renderPass, shader, textureID) {
+    const stackEntry = {shader, textureID};
+    renderPass.shaderStack.push(stackEntry);
+    return stackEntry;
+  }
+
+  // src/renderer/webgl1/renderpass/AddVertexBuffer.ts
+  function AddVertexBuffer(renderPass, buffer) {
+    renderPass.vertexBufferStack.push(buffer);
+    return buffer;
+  }
+
+  // src/renderer/webgl1/renderpass/BindShader.ts
+  function BindShader2(renderPass, entry) {
+    if (!entry) {
+      entry = renderPass.currentShader;
+    }
+    const success = entry.shader.bind(renderPass, entry.textureID);
+    if (success) {
+      entry.shader.setAttributes(renderPass);
+    }
+  }
+
+  // src/renderer/webgl1/renderpass/Begin.ts
+  function Begin(renderPass, camera2D) {
+    renderPass.current2DCamera = camera2D;
+    renderPass.cameraMatrix = camera2D.matrix;
+    BindShader2(renderPass);
+  }
+
+  // src/renderer/webgl1/renderpass/BindBlendMode.ts
+  function BindBlendMode(renderPass, entry) {
+    if (!entry) {
+      entry = renderPass.currentBlendMode;
+    }
+    if (entry.enable) {
+      gl.enable(gl.BLEND);
+      gl.blendFunc(entry.sfactor, entry.dfactor);
+    } else {
+      gl.disable(gl.BLEND);
+    }
+  }
+
+  // src/renderer/webgl1/renderpass/BindTexture.ts
+  function BindTexture(texture, index = 0) {
+    const binding = texture.binding;
+    binding.setIndex(index);
+    gl.activeTexture(gl.TEXTURE0 + index);
+    gl.bindTexture(gl.TEXTURE_2D, binding.texture);
+  }
+
+  // src/renderer/webgl1/renderpass/BindVertexBuffer.ts
+  function BindVertexBuffer(renderPass, buffer) {
+    if (!buffer) {
+      buffer = renderPass.currentVertexBuffer;
+    }
+    const indexBuffer = buffer.indexed ? buffer.indexBuffer : null;
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer.vertexBuffer);
+  }
+
+  // src/renderer/webgl1/renderpass/PopVertexBuffer.ts
+  function PopVertexBuffer(renderPass) {
+    const stack = renderPass.vertexBufferStack;
+    if (stack.length > 1) {
+      stack.pop();
+    }
+    renderPass.currentVertexBuffer = stack[stack.length - 1];
+    BindVertexBuffer(renderPass);
+  }
+
+  // src/renderer/webgl1/renderpass/SetVertexBuffer.ts
+  function SetVertexBuffer(renderPass, buffer) {
+    const entry = AddVertexBuffer(renderPass, buffer);
+    BindVertexBuffer(renderPass, entry);
+    renderPass.currentVertexBuffer = entry;
+  }
+
+  // src/renderer/webgl1/renderpass/FlushBuffer.ts
+  function FlushBuffer(renderPass, buffer) {
+    SetVertexBuffer(renderPass, buffer);
+    renderPass.currentShader.shader.setAttributes(renderPass);
+    const result = Flush(renderPass, buffer.count);
+    PopVertexBuffer(renderPass);
+    return result;
+  }
+
+  // src/renderer/webgl1/renderpass/GetVertexBufferEntry.ts
+  function GetVertexBufferEntry2(renderPass, addToCount = 0) {
+    const buffer = renderPass.currentVertexBuffer;
+    if (renderPass.count + addToCount >= buffer.batchSize) {
+      Flush(renderPass);
+    }
+    const offset = buffer.indexed ? renderPass.count * buffer.entryElementSize : renderPass.count * buffer.vertexElementSize;
+    renderPass.count += addToCount;
+    return {
+      buffer,
+      F32: buffer.vertexViewF32,
+      U32: buffer.vertexViewU32,
+      offset
+    };
+  }
+
+  // src/renderer/webgl1/renderpass/IRenderPass.ts
+
+  // src/renderer/webgl1/renderpass/PopBlendMode.ts
+
+  // src/renderer/webgl1/renderpass/PopShader.ts
+  function PopShader(renderPass) {
+    const stack = renderPass.shaderStack;
+    if (stack.length > 1) {
+      stack.pop();
+    }
+    renderPass.currentShader = stack[stack.length - 1];
+    BindShader2(renderPass);
+  }
+
+  // src/renderer/webgl1/renderpass/ResetTextures.ts
+
+  // src/renderer/webgl1/renderpass/SetBlendMode.ts
+
+  // src/renderer/webgl1/renderpass/SetShader.ts
+  function SetShader(renderPass, shader, textureID) {
+    const entry = AddShader(renderPass, shader, textureID);
+    BindShader2(renderPass, entry);
+    renderPass.currentShader = entry;
+  }
+
+  // src/renderer/webgl1/renderpass/SetTexture.ts
+  function SetTexture2(renderPass, texture) {
+    const binding = texture.binding;
+    const currentActiveTexture = renderPass.currentActiveTexture;
+    if (binding.indexCounter < renderPass.startActiveTexture) {
+      binding.indexCounter = renderPass.startActiveTexture;
+      if (currentActiveTexture < renderPass.maxTextures) {
+        binding.setIndex(currentActiveTexture);
+        gl.activeTexture(gl.TEXTURE0 + currentActiveTexture);
+        gl.bindTexture(gl.TEXTURE_2D, binding.texture);
+        renderPass.currentActiveTexture++;
+      } else {
+        Flush(renderPass);
+        renderPass.startActiveTexture++;
+        binding.indexCounter = renderPass.startActiveTexture;
+        binding.setIndex(1);
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, binding.texture);
+        renderPass.currentActiveTexture = 2;
+      }
+    }
+    return binding.index;
+  }
+
+  // src/renderer/webgl1/renderpass/Start.ts
+  function Start(renderPass) {
+    renderPass.current2DCamera = renderPass.quadCamera;
+    renderPass.cameraMatrix = renderPass.quadCamera.matrix;
+    renderPass.count = 0;
+    renderPass.flushTotal = 0;
+    BindFramebuffer(renderPass, false, renderPass.defaultFramebuffer);
+    BindBlendMode(renderPass, renderPass.defaultBlendMode);
+    BindViewport(renderPass, renderPass.defaultViewport);
+    BindVertexBuffer(renderPass, renderPass.defaultVertexBuffer);
+  }
+
+  // src/renderer/webgl1/renderpass/UnbindTexture.ts
+  function UnbindTexture(renderPass, index = 0) {
+    gl.activeTexture(gl.TEXTURE0 + index);
+    gl.bindTexture(gl.TEXTURE_2D, renderPass.tempTextures[index]);
+    if (index > 0) {
+      renderPass.startActiveTexture++;
+    }
+  }
+
+  // src/renderer/webgl1/renderpass/index.ts
+
+  // src/renderer/webgl1/WebGLRendererInstance.ts
+  let instance3;
+  const WebGLRendererInstance2 = {
+    get: () => {
+      return instance3;
+    },
+    set: (renderer) => {
+      instance3 = renderer;
+    }
+  };
+
+  // src/renderer/webgl1/WebGLRenderer.ts
+  class WebGLRenderer2 {
+    constructor() {
+      this.clearColor = [0, 0, 0, 1];
+      this.clearBeforeRender = true;
+      this.optimizeRedraw = false;
+      this.autoResize = true;
+      this.contextLost = false;
+      this.width = GetWidth();
+      this.height = GetHeight();
+      this.resolution = GetResolution();
+      this.setBackgroundColor(GetBackgroundColor());
+      const canvas = document.createElement("canvas");
+      canvas.addEventListener("webglcontextlost", (event) => this.onContextLost(event), false);
+      canvas.addEventListener("webglcontextrestored", () => this.onContextRestored(), false);
+      this.canvas = canvas;
+      this.initContext();
+      WebGLRendererInstance2.set(this);
+      this.renderPass = new RenderPass2(this);
+      this.resize(this.width, this.height, this.resolution);
+    }
+    initContext() {
+      const gl3 = this.canvas.getContext("webgl", GetWebGLContext());
+      GL2.set(gl3);
+      this.gl = gl3;
+      gl3.disable(gl3.DEPTH_TEST);
+      gl3.disable(gl3.CULL_FACE);
+    }
+    resize(width, height, resolution = 1) {
+      const calcWidth = width * resolution;
+      const calcHeight = height * resolution;
+      this.width = calcWidth;
+      this.height = calcHeight;
+      this.resolution = resolution;
+      const canvas = this.canvas;
+      canvas.width = calcWidth;
+      canvas.height = calcHeight;
+      if (this.autoResize) {
+        canvas.style.width = width.toString() + "px";
+        canvas.style.height = height.toString() + "px";
+      }
+      this.renderPass.resize(calcWidth, calcHeight);
+    }
+    onContextLost(event) {
+      event.preventDefault();
+      this.contextLost = true;
+    }
+    onContextRestored() {
+      this.contextLost = false;
+      this.initContext();
+    }
+    setBackgroundColor(color2) {
+      GetRGBArray2(color2, this.clearColor);
+      return this;
+    }
+    reset() {
+    }
+    render(renderData) {
+      if (this.contextLost) {
+        return;
+      }
+      const gl3 = this.gl;
+      const renderPass = this.renderPass;
+      ProcessBindingQueue2();
+      if (this.optimizeRedraw && renderData.numDirtyFrames === 0 && renderData.numDirtyCameras === 0) {
+        return;
+      }
+      if (this.clearBeforeRender) {
+        const cls = this.clearColor;
+        gl3.clearColor(cls[0], cls[1], cls[2], cls[3]);
+        gl3.clear(gl3.COLOR_BUFFER_BIT);
+      }
+      const worlds = renderData.worldData;
+      Start(renderPass);
+      for (let i = 0; i < worlds.length; i++) {
+        const {world} = worlds[i];
+        world.renderGL(renderPass);
+        world.postRenderGL(renderPass);
+      }
+      End2(renderPass);
+    }
+    destroy() {
+      WebGLRendererInstance2.set(void 0);
+    }
+  }
+
+  // src/config/SetWebGL.ts
+  function SetWebGL() {
+    return () => {
+      SetRenderer2(WebGLRenderer2);
+    };
+  }
+
+  // src/config/index.ts
+  const config_exports = {};
+  __export(config_exports, {
+    BackgroundColor: () => BackgroundColor,
+    Banner: () => Banner,
+    BatchSize: () => BatchSize,
+    CanvasContext: () => CanvasContext,
+    DefaultOrigin: () => DefaultOrigin,
+    GetBackgroundColor: () => GetBackgroundColor,
+    GetBanner: () => GetBanner,
+    GetCanvasContext: () => GetCanvasContext,
+    GetHeight: () => GetHeight,
+    GetMaxTextures: () => GetMaxTextures,
+    GetParent: () => GetParent,
+    GetRenderer: () => GetRenderer,
+    GetResolution: () => GetResolution,
+    GetScenes: () => GetScenes,
+    GetWebGLContext: () => GetWebGLContext,
+    GetWidth: () => GetWidth,
+    MaxTextures: () => MaxTextures,
+    Parent: () => Parent,
+    Scenes: () => Scenes,
+    SetCanvas: () => SetCanvas,
+    SetMaxTextures: () => SetMaxTextures,
+    SetRenderer: () => SetRenderer2,
+    SetWebGL: () => SetWebGL,
+    Size: () => Size,
+    WebGLContext: () => WebGLContext
+  });
 
   // src/dom/AddToDOM.ts
   function AddToDOM(element, parent2) {
@@ -6716,10 +8464,6 @@
     InputComponent: () => InputComponent2
   });
 
-  // src/config/DefaultOrigin.ts
-  let originX = 0.5;
-  let originY = 0.5;
-
   // src/geom/rectangle/Area.ts
   /**
    * @author       Richard Davey <rich@photonstorm.com>
@@ -7598,184 +9342,6 @@
     Vertex: () => Vertex
   });
 
-  // src/renderer/webgl1/renderpass/AddViewport.ts
-  function AddViewport(renderPass, x = 0, y = 0, width = 0, height = 0) {
-    const viewport = new Rectangle(x, y, width, height);
-    renderPass.viewportStack.push(viewport);
-    return viewport;
-  }
-
-  // src/renderer/webgl1/GL.ts
-  let gl;
-  const GL2 = {
-    get: () => {
-      return gl;
-    },
-    set: (context) => {
-      gl = context;
-    }
-  };
-
-  // src/renderer/webgl1/renderpass/BindViewport.ts
-  function BindViewport(renderPass, viewport) {
-    if (!viewport) {
-      viewport = renderPass.currentViewport;
-      if (!viewport) {
-        return;
-      }
-    }
-    const glv = gl.getParameter(gl.VIEWPORT);
-    if (glv[0] !== viewport.x || glv[1] !== viewport.y || glv[2] !== viewport.width || glv[3] !== viewport.height) {
-      gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-    }
-  }
-
-  // src/renderer/webgl1/renderpass/SetViewport.ts
-  function SetViewport2(renderPass, x = 0, y = 0, width = 0, height = 0) {
-    const entry = AddViewport(renderPass, x, y, width, height);
-    BindViewport(renderPass, entry);
-    renderPass.currentViewport = entry;
-  }
-
-  // src/renderer/webgl1/renderpass/BindFramebuffer.ts
-  function BindFramebuffer(renderPass, clear = true, entry) {
-    if (!entry) {
-      entry = renderPass.currentFramebuffer;
-    }
-    const {framebuffer, viewport} = entry;
-    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-    if (clear) {
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    }
-    if (viewport) {
-      SetViewport2(renderPass, viewport.x, viewport.y, viewport.width, viewport.height);
-    }
-  }
-
-  // src/renderer/webgl1/renderpass/PopViewport.ts
-  function PopViewport2(renderPass) {
-    const stack = renderPass.viewportStack;
-    if (stack.length > 1) {
-      stack.pop();
-    }
-    renderPass.currentViewport = stack[stack.length - 1];
-    BindViewport(renderPass);
-  }
-
-  // src/renderer/webgl1/renderpass/PopFramebuffer.ts
-  function PopFramebuffer(renderPass) {
-    const stack = renderPass.framebufferStack;
-    if (stack.length > 1) {
-      if (renderPass.currentFramebuffer.viewport) {
-        PopViewport2(renderPass);
-      }
-      stack.pop();
-    }
-    renderPass.currentFramebuffer = stack[stack.length - 1];
-    BindFramebuffer(renderPass, false);
-  }
-
-  // src/renderer/webgl1/renderpass/AddFramebuffer.ts
-  function AddFramebuffer(renderPass, framebuffer, viewport) {
-    const entry = {framebuffer, viewport};
-    renderPass.framebufferStack.push(entry);
-    return entry;
-  }
-
-  // src/renderer/webgl1/renderpass/SetFramebuffer.ts
-  function SetFramebuffer(renderPass, framebuffer, clear = true, viewport) {
-    const entry = AddFramebuffer(renderPass, framebuffer, viewport);
-    BindFramebuffer(renderPass, clear, entry);
-    renderPass.currentFramebuffer = entry;
-  }
-
-  // src/renderer/webgl1/renderpass/Draw.ts
-  function Draw(renderPass) {
-    const count = renderPass.count;
-    if (count === 0) {
-      return;
-    }
-    const currentBuffer = renderPass.currentVertexBuffer;
-    const currentShader = renderPass.currentShader;
-    const renderToFramebuffer = currentShader.shader.renderToFramebuffer;
-    if (renderToFramebuffer) {
-      SetFramebuffer(renderPass, currentShader.shader.framebuffer, true);
-    }
-    if (count === currentBuffer.batchSize) {
-      const type = currentBuffer.isDynamic ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
-      gl.bufferData(gl.ARRAY_BUFFER, currentBuffer.data, type);
-    } else {
-      const subsize = currentBuffer.indexed ? count * currentBuffer.entryElementSize : count * currentBuffer.vertexElementSize;
-      const view = currentBuffer.vertexViewF32.subarray(0, subsize);
-      gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
-    }
-    if (currentBuffer.indexed) {
-      gl.drawElements(gl.TRIANGLES, count * currentBuffer.entryIndexSize, gl.UNSIGNED_SHORT, 0);
-    } else {
-      gl.drawArrays(gl.TRIANGLES, 0, count);
-    }
-    if (renderToFramebuffer) {
-      PopFramebuffer(renderPass);
-    }
-  }
-
-  // src/renderer/webgl1/renderpass/Flush.ts
-  function Flush(renderPass, forceCount) {
-    if (forceCount) {
-      renderPass.count = forceCount;
-    }
-    const count = renderPass.count;
-    if (count === 0) {
-      return false;
-    }
-    Draw(renderPass);
-    renderPass.prevCount = count;
-    renderPass.count = 0;
-    renderPass.flushTotal++;
-    return true;
-  }
-
-  // src/renderer/webgl1/renderpass/GetVertexBufferEntry.ts
-  function GetVertexBufferEntry2(renderPass, addToCount = 0) {
-    const buffer = renderPass.currentVertexBuffer;
-    if (renderPass.count + addToCount >= buffer.batchSize) {
-      Flush(renderPass);
-    }
-    const offset = buffer.indexed ? renderPass.count * buffer.entryElementSize : renderPass.count * buffer.vertexElementSize;
-    renderPass.count += addToCount;
-    return {
-      buffer,
-      F32: buffer.vertexViewF32,
-      U32: buffer.vertexViewU32,
-      offset
-    };
-  }
-
-  // src/renderer/webgl1/renderpass/SetTexture.ts
-  function SetTexture2(renderPass, texture) {
-    const binding = texture.binding;
-    const currentActiveTexture = renderPass.currentActiveTexture;
-    if (binding.indexCounter < renderPass.startActiveTexture) {
-      binding.indexCounter = renderPass.startActiveTexture;
-      if (currentActiveTexture < renderPass.maxTextures) {
-        binding.setIndex(currentActiveTexture);
-        gl.activeTexture(gl.TEXTURE0 + currentActiveTexture);
-        gl.bindTexture(gl.TEXTURE_2D, binding.texture);
-        renderPass.currentActiveTexture++;
-      } else {
-        Flush(renderPass);
-        renderPass.startActiveTexture++;
-        binding.indexCounter = renderPass.startActiveTexture;
-        binding.setIndex(1);
-        gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_2D, binding.texture);
-        renderPass.currentActiveTexture = 2;
-      }
-    }
-    return binding.index;
-  }
-
   // src/renderer/webgl1/draw/BatchTexturedQuad.ts
   function BatchTexturedQuad2(sprite, renderPass) {
     const {F32, U32, offset} = GetVertexBufferEntry2(renderPass, 1);
@@ -8033,169 +9599,6 @@
     return children;
   }
 
-  // src/renderer/BindingQueue.ts
-  const queue = [];
-  const BindingQueue = {
-    add: (texture, glConfig) => {
-      queue.push({texture, glConfig});
-    },
-    get: () => {
-      return queue;
-    },
-    clear: () => {
-      queue.length = 0;
-    }
-  };
-
-  // src/textures/Frame.ts
-  class Frame16 {
-    constructor(texture, key, x, y, width, height) {
-      this.trimmed = false;
-      this.texture = texture;
-      this.key = key;
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-      this.sourceSizeWidth = width;
-      this.sourceSizeHeight = height;
-      this.updateUVs();
-    }
-    setPivot(x, y) {
-      this.pivot = {x, y};
-    }
-    setSize(width, height) {
-      this.width = width;
-      this.height = height;
-      this.sourceSizeWidth = width;
-      this.sourceSizeHeight = height;
-      this.updateUVs();
-    }
-    setSourceSize(width, height) {
-      this.sourceSizeWidth = width;
-      this.sourceSizeHeight = height;
-    }
-    setTrim(width, height, x, y, w, h) {
-      this.trimmed = true;
-      this.sourceSizeWidth = width;
-      this.sourceSizeHeight = height;
-      this.spriteSourceSizeX = x;
-      this.spriteSourceSizeY = y;
-      this.spriteSourceSizeWidth = w;
-      this.spriteSourceSizeHeight = h;
-    }
-    getExtent(originX2, originY2) {
-      const sourceSizeWidth = this.sourceSizeWidth;
-      const sourceSizeHeight = this.sourceSizeHeight;
-      let left;
-      let right;
-      let top;
-      let bottom;
-      if (this.trimmed) {
-        left = this.spriteSourceSizeX - originX2 * sourceSizeWidth;
-        right = left + this.spriteSourceSizeWidth;
-        top = this.spriteSourceSizeY - originY2 * sourceSizeHeight;
-        bottom = top + this.spriteSourceSizeHeight;
-      } else {
-        left = -originX2 * sourceSizeWidth;
-        right = left + sourceSizeWidth;
-        top = -originY2 * sourceSizeHeight;
-        bottom = top + sourceSizeHeight;
-      }
-      return {left, right, top, bottom};
-    }
-    setExtent(child) {
-      const transform = child.transform;
-      const originX2 = transform.origin.x;
-      const originY2 = transform.origin.y;
-      const sourceSizeWidth = this.sourceSizeWidth;
-      const sourceSizeHeight = this.sourceSizeHeight;
-      let x;
-      let y;
-      let width;
-      let height;
-      if (this.trimmed) {
-        x = this.spriteSourceSizeX - originX2 * sourceSizeWidth;
-        y = this.spriteSourceSizeY - originY2 * sourceSizeHeight;
-        width = this.spriteSourceSizeWidth;
-        height = this.spriteSourceSizeHeight;
-      } else {
-        x = -originX2 * sourceSizeWidth;
-        y = -originY2 * sourceSizeHeight;
-        width = sourceSizeWidth;
-        height = sourceSizeHeight;
-      }
-      transform.setExtent(x, y, width, height);
-    }
-    updateUVs() {
-      const {x, y, width, height} = this;
-      const baseTextureWidth = this.texture.width;
-      const baseTextureHeight = this.texture.height;
-      this.u0 = x / baseTextureWidth;
-      this.v0 = y / baseTextureHeight;
-      this.u1 = (x + width) / baseTextureWidth;
-      this.v1 = (y + height) / baseTextureHeight;
-    }
-  }
-
-  // src/textures/Texture.ts
-  class Texture5 {
-    constructor(image, width, height, glConfig) {
-      this.key = "";
-      if (image) {
-        width = image.width;
-        height = image.height;
-      }
-      this.image = image;
-      this.width = width;
-      this.height = height;
-      this.frames = new Map();
-      this.data = {};
-      this.addFrame("__BASE", 0, 0, width, height);
-      BindingQueue.add(this, glConfig);
-    }
-    addFrame(key, x, y, width, height) {
-      if (this.frames.has(key)) {
-        return null;
-      }
-      const frame2 = new Frame16(this, key, x, y, width, height);
-      this.frames.set(key, frame2);
-      if (!this.firstFrame || this.firstFrame.key === "__BASE") {
-        this.firstFrame = frame2;
-      }
-      return frame2;
-    }
-    getFrame(key) {
-      if (!key) {
-        return this.firstFrame;
-      }
-      if (key instanceof Frame16) {
-        key = key.key;
-      }
-      let frame2 = this.frames.get(key);
-      if (!frame2) {
-        console.warn(`Frame missing: ${key}`);
-        frame2 = this.firstFrame;
-      }
-      return frame2;
-    }
-    setSize(width, height) {
-      this.width = width;
-      this.height = height;
-      const frame2 = this.frames.get("__BASE");
-      frame2.setSize(width, height);
-    }
-    destroy() {
-      if (this.binding) {
-        this.binding.destroy();
-      }
-      this.frames.clear();
-      this.data = null;
-      this.image = null;
-      this.firstFrame = null;
-    }
-  }
-
   // src/textures/TextureManagerInstance.ts
   let instance5;
   const TextureManagerInstance2 = {
@@ -8433,1067 +9836,6 @@
     }
   }
 
-  // src/renderer/webgl1/renderpass/AddBlendMode.ts
-
-  // src/renderer/webgl1/renderpass/AddShader.ts
-  function AddShader(renderPass, shader, textureID) {
-    const stackEntry = {shader, textureID};
-    renderPass.shaderStack.push(stackEntry);
-    return stackEntry;
-  }
-
-  // src/renderer/webgl1/renderpass/AddVertexBuffer.ts
-  function AddVertexBuffer(renderPass, buffer) {
-    renderPass.vertexBufferStack.push(buffer);
-    return buffer;
-  }
-
-  // src/renderer/webgl1/renderpass/BindShader.ts
-  function BindShader2(renderPass, entry) {
-    if (!entry) {
-      entry = renderPass.currentShader;
-    }
-    const success = entry.shader.bind(renderPass, entry.textureID);
-    if (success) {
-      entry.shader.setAttributes(renderPass);
-    }
-  }
-
-  // src/renderer/webgl1/renderpass/Begin.ts
-  function Begin(renderPass, camera2D) {
-    renderPass.current2DCamera = camera2D;
-    renderPass.cameraMatrix = camera2D.matrix;
-    BindShader2(renderPass);
-  }
-
-  // src/renderer/webgl1/renderpass/BindBlendMode.ts
-  function BindBlendMode(renderPass, entry) {
-    if (!entry) {
-      entry = renderPass.currentBlendMode;
-    }
-    if (entry.enable) {
-      gl.enable(gl.BLEND);
-      gl.blendFunc(entry.sfactor, entry.dfactor);
-    } else {
-      gl.disable(gl.BLEND);
-    }
-  }
-
-  // src/renderer/webgl1/renderpass/BindTexture.ts
-  function BindTexture(texture, index = 0) {
-    const binding = texture.binding;
-    binding.setIndex(index);
-    gl.activeTexture(gl.TEXTURE0 + index);
-    gl.bindTexture(gl.TEXTURE_2D, binding.texture);
-  }
-
-  // src/renderer/webgl1/renderpass/BindVertexBuffer.ts
-  function BindVertexBuffer(renderPass, buffer) {
-    if (!buffer) {
-      buffer = renderPass.currentVertexBuffer;
-    }
-    const indexBuffer = buffer.indexed ? buffer.indexBuffer : null;
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer.vertexBuffer);
-  }
-
-  // src/config/MaxTextures.ts
-  let maxTextures = 0;
-  function SetMaxTextures(max) {
-    maxTextures = max;
-  }
-  function GetMaxTextures() {
-    return maxTextures;
-  }
-
-  // src/renderer/webgl1/shaders/CheckShaderMaxIfStatements.ts
-  const fragTemplate = [
-    "precision mediump float;",
-    "void main(void){",
-    "float test = 0.1;",
-    "%forloop%",
-    "gl_FragColor = vec4(0.0);",
-    "}"
-  ].join("\n");
-  function GenerateSrc(maxIfs) {
-    let src = "";
-    for (let i = 0; i < maxIfs; ++i) {
-      if (i > 0) {
-        src += "\nelse ";
-      }
-      if (i < maxIfs - 1) {
-        src += `if(test == ${i}.0){}`;
-      }
-    }
-    return src;
-  }
-  function CheckShaderMaxIfStatements2(maxIfs) {
-    const shader = gl.createShader(gl.FRAGMENT_SHADER);
-    while (true) {
-      const fragmentSrc = fragTemplate.replace(/%forloop%/gi, GenerateSrc(maxIfs));
-      gl.shaderSource(shader, fragmentSrc);
-      gl.compileShader(shader);
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        maxIfs = maxIfs / 2 | 0;
-      } else {
-        break;
-      }
-    }
-    return maxIfs;
-  }
-
-  // src/renderer/webgl1/renderpass/CreateTempTextures.ts
-  function CreateTempTextures(renderPass) {
-    let maxGPUTextures = CheckShaderMaxIfStatements2(gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS));
-    const maxConfigTextures = GetMaxTextures();
-    if (maxConfigTextures === 0 || maxConfigTextures > 0 && maxConfigTextures > maxGPUTextures) {
-      SetMaxTextures(maxGPUTextures);
-    } else if (maxConfigTextures > 0 && maxConfigTextures < maxGPUTextures) {
-      maxGPUTextures = Math.max(8, maxConfigTextures);
-    }
-    const tempTextures = renderPass.tempTextures;
-    if (tempTextures.length) {
-      tempTextures.forEach((texture) => {
-        gl.deleteTexture(texture);
-      });
-    }
-    const index = [];
-    for (let texturesIndex = 0; texturesIndex < maxGPUTextures; texturesIndex++) {
-      const tempTexture = gl.createTexture();
-      gl.activeTexture(gl.TEXTURE0 + texturesIndex);
-      gl.bindTexture(gl.TEXTURE_2D, tempTexture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]));
-      tempTextures[texturesIndex] = tempTexture;
-      index.push(texturesIndex);
-    }
-    renderPass.maxTextures = maxGPUTextures;
-    renderPass.textureIndex = index;
-    renderPass.currentActiveTexture = 1;
-  }
-
-  // src/renderer/webgl1/renderpass/End.ts
-  function End2(renderPass) {
-    Flush(renderPass);
-  }
-
-  // src/renderer/webgl1/renderpass/PopVertexBuffer.ts
-  function PopVertexBuffer(renderPass) {
-    const stack = renderPass.vertexBufferStack;
-    if (stack.length > 1) {
-      stack.pop();
-    }
-    renderPass.currentVertexBuffer = stack[stack.length - 1];
-    BindVertexBuffer(renderPass);
-  }
-
-  // src/renderer/webgl1/renderpass/SetVertexBuffer.ts
-  function SetVertexBuffer(renderPass, buffer) {
-    const entry = AddVertexBuffer(renderPass, buffer);
-    BindVertexBuffer(renderPass, entry);
-    renderPass.currentVertexBuffer = entry;
-  }
-
-  // src/renderer/webgl1/renderpass/FlushBuffer.ts
-  function FlushBuffer(renderPass, buffer) {
-    SetVertexBuffer(renderPass, buffer);
-    renderPass.currentShader.shader.setAttributes(renderPass);
-    const result = Flush(renderPass, buffer.count);
-    PopVertexBuffer(renderPass);
-    return result;
-  }
-
-  // src/renderer/webgl1/renderpass/IRenderPass.ts
-
-  // src/renderer/webgl1/renderpass/PopBlendMode.ts
-
-  // src/renderer/webgl1/renderpass/PopShader.ts
-  function PopShader(renderPass) {
-    const stack = renderPass.shaderStack;
-    if (stack.length > 1) {
-      stack.pop();
-    }
-    renderPass.currentShader = stack[stack.length - 1];
-    BindShader2(renderPass);
-  }
-
-  // src/renderer/webgl1/textures/CreateGLTexture.ts
-  function CreateGLTexture2(binding) {
-    const {parent: parent2, flipY, unpackPremultiplyAlpha, minFilter, magFilter, wrapS, wrapT, generateMipmap, isPOT} = binding;
-    const source = parent2.image;
-    let width = parent2.width;
-    let height = parent2.height;
-    const glTexture = gl.createTexture();
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, glTexture);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, flipY);
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, unpackPremultiplyAlpha);
-    if (source) {
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
-      width = source.width;
-      height = source.height;
-    } else {
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-    }
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, minFilter);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, magFilter);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrapS);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrapT);
-    if (generateMipmap && isPOT) {
-      gl.generateMipmap(gl.TEXTURE_2D);
-    }
-    binding.texture = glTexture;
-    return glTexture;
-  }
-
-  // src/renderer/webgl1/fbo/DeleteFramebuffer.ts
-  function DeleteFramebuffer2(framebuffer) {
-    if (gl && gl.isFramebuffer(framebuffer)) {
-      gl.deleteFramebuffer(framebuffer);
-    }
-  }
-
-  // src/renderer/webgl1/textures/DeleteGLTexture.ts
-  function DeleteGLTexture2(texture) {
-    if (gl.isTexture(texture)) {
-      gl.deleteTexture(texture);
-    }
-  }
-
-  // src/renderer/webgl1/textures/SetGLTextureFilterMode.ts
-  function SetGLTextureFilterMode2(texture, linear = true) {
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    const mode = linear ? gl.LINEAR : gl.NEAREST;
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mode);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, mode);
-  }
-
-  // src/renderer/webgl1/textures/UpdateGLTexture.ts
-  function UpdateGLTexture2(binding) {
-    const source = binding.parent.image;
-    const width = source.width;
-    const height = source.height;
-    if (width > 0 && height > 0) {
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, binding.texture);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, binding.flipY);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
-    }
-    return binding.texture;
-  }
-
-  // src/renderer/webgl1/textures/GLTextureBinding.ts
-  class GLTextureBinding2 {
-    constructor(parent2, config5 = {}) {
-      this.index = 0;
-      this.indexCounter = -1;
-      this.dirtyIndex = true;
-      this.unpackPremultiplyAlpha = true;
-      this.flipY = false;
-      this.isPOT = false;
-      this.generateMipmap = false;
-      this.parent = parent2;
-      this.isPOT = IsSizePowerOfTwo(parent2.width, parent2.height);
-      const {
-        texture = null,
-        framebuffer = null,
-        depthbuffer = null,
-        unpackPremultiplyAlpha = true,
-        minFilter = this.isPOT ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR,
-        magFilter = gl.LINEAR,
-        wrapS = gl.CLAMP_TO_EDGE,
-        wrapT = gl.CLAMP_TO_EDGE,
-        generateMipmap = this.isPOT,
-        flipY = false
-      } = config5;
-      this.minFilter = minFilter;
-      this.magFilter = magFilter;
-      this.wrapS = wrapS;
-      this.wrapT = wrapT;
-      this.generateMipmap = generateMipmap;
-      this.flipY = flipY;
-      this.unpackPremultiplyAlpha = unpackPremultiplyAlpha;
-      if (framebuffer) {
-        this.framebuffer = framebuffer;
-      }
-      if (depthbuffer) {
-        this.depthbuffer = depthbuffer;
-      }
-      if (texture) {
-        this.texture = texture;
-      } else {
-        CreateGLTexture2(this);
-      }
-    }
-    setFilter(linear) {
-      if (this.texture) {
-        SetGLTextureFilterMode2(this.texture, linear);
-      }
-    }
-    create() {
-      const texture = this.texture;
-      if (texture) {
-        DeleteGLTexture2(texture);
-      }
-      return CreateGLTexture2(this);
-    }
-    update() {
-      const texture = this.texture;
-      if (!texture) {
-        return CreateGLTexture2(this);
-      } else {
-        return UpdateGLTexture2(this);
-      }
-    }
-    setIndex(index) {
-      this.dirtyIndex = index !== this.index;
-      this.index = index;
-    }
-    destroy() {
-      DeleteGLTexture2(this.texture);
-      DeleteFramebuffer2(this.framebuffer);
-      this.parent = null;
-      this.texture = null;
-      this.framebuffer = null;
-    }
-  }
-
-  // src/renderer/webgl1/renderpass/ProcessBindingQueue.ts
-  function ProcessBindingQueue2() {
-    const queue2 = BindingQueue.get();
-    queue2.forEach((entry) => {
-      const {texture, glConfig} = entry;
-      if (!texture.binding) {
-        texture.binding = new GLTextureBinding2(texture, glConfig);
-      }
-    });
-    BindingQueue.clear();
-  }
-
-  // src/renderer/webgl1/buffers/DeleteGLBuffer.ts
-  function DeleteGLBuffer(buffer) {
-    if (gl.isBuffer(buffer)) {
-      gl.deleteBuffer(buffer);
-    }
-  }
-
-  // src/renderer/webgl1/buffers/VertexBuffer.ts
-  class VertexBuffer2 {
-    constructor(config5 = {}) {
-      this.indexed = false;
-      this.isDynamic = false;
-      this.count = 0;
-      this.offset = 0;
-      const {
-        batchSize: batchSize2 = 1,
-        dataSize = 4,
-        isDynamic = true,
-        elementsPerEntry = 4,
-        vertexElementSize = 6
-      } = config5;
-      this.batchSize = batchSize2;
-      this.dataSize = dataSize;
-      this.vertexElementSize = vertexElementSize;
-      this.isDynamic = isDynamic;
-      this.elementsPerEntry = elementsPerEntry;
-      this.vertexByteSize = vertexElementSize * dataSize;
-      this.entryByteSize = this.vertexByteSize * elementsPerEntry;
-      this.bufferByteSize = batchSize2 * this.entryByteSize;
-      this.create();
-    }
-    resize(batchSize2) {
-      this.batchSize = batchSize2;
-      this.bufferByteSize = batchSize2 * this.entryByteSize;
-      if (this.vertexBuffer) {
-        DeleteGLBuffer(this.vertexBuffer);
-      }
-      this.create();
-    }
-    create() {
-      const data = new ArrayBuffer(this.bufferByteSize);
-      this.data = data;
-      this.vertexViewF32 = new Float32Array(data);
-      this.vertexViewU32 = new Uint32Array(data);
-      this.vertexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-      const type = this.isDynamic ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
-      gl.bufferData(gl.ARRAY_BUFFER, data, type);
-      gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    }
-    add(count) {
-      this.count += count;
-      this.offset += this.vertexElementSize * count;
-    }
-    reset() {
-      this.count = 0;
-      this.offset = 0;
-    }
-    canContain(count) {
-      return this.count + count <= this.batchSize;
-    }
-    free() {
-      return Math.max(0, 1 - this.count / this.batchSize);
-    }
-    bind() {
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-    }
-    destroy() {
-      DeleteGLBuffer(this.vertexBuffer);
-      this.data = null;
-      this.vertexViewF32 = null;
-      this.vertexViewU32 = null;
-      this.vertexBuffer = null;
-    }
-  }
-
-  // src/renderer/webgl1/buffers/IndexedVertexBuffer.ts
-  class IndexedVertexBuffer extends VertexBuffer2 {
-    constructor(config5 = {}) {
-      super(config5);
-      const {
-        indexSize = 4,
-        entryIndexSize = 6,
-        indexLayout = null
-      } = config5;
-      this.indexed = true;
-      this.indexSize = indexSize;
-      this.entryIndexSize = entryIndexSize;
-      this.entryElementSize = this.vertexElementSize * this.elementsPerEntry;
-      const seededIndexBuffer = [];
-      if (indexLayout) {
-        this.indexLayout = indexLayout;
-        for (let i = 0; i < this.batchSize * indexSize; i += indexSize) {
-          for (let c = 0; c < indexLayout.length; c++) {
-            seededIndexBuffer.push(i + indexLayout[c]);
-          }
-        }
-      }
-      this.create();
-      this.createIndexBuffer(seededIndexBuffer);
-    }
-    createIndexBuffer(seededIndex) {
-      this.index = new Uint16Array(seededIndex);
-      this.indexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.index, gl.STATIC_DRAW);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-      seededIndex = [];
-    }
-    bind() {
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-    }
-    destroy() {
-      super.destroy();
-      DeleteGLBuffer(this.indexBuffer);
-      this.index = null;
-      this.indexLayout = null;
-      this.indexBuffer = null;
-    }
-  }
-
-  // src/renderer/webgl1/shaders/CreateAttributes.ts
-  function CreateAttributes(program, config5) {
-    const attributes = new Map();
-    const defaultSettings = {
-      size: 1,
-      type: gl.FLOAT,
-      normalized: false,
-      stride: 0,
-      offset: 0
-    };
-    const total = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
-    for (let i = 0; i < total; i++) {
-      const attrib = gl.getActiveAttrib(program, i);
-      if (!attrib) {
-        break;
-      }
-      const name = attrib.name;
-      const index = gl.getAttribLocation(program, name);
-      gl.enableVertexAttribArray(index);
-      const setting = config5.hasOwnProperty(name) ? config5[name] : {};
-      const {
-        size = defaultSettings.size,
-        type = defaultSettings.type,
-        normalized = defaultSettings.normalized,
-        stride = defaultSettings.stride,
-        offset = defaultSettings.offset
-      } = setting;
-      attributes.set(name, {index, size, type, normalized, stride, offset});
-    }
-    return attributes;
-  }
-
-  // src/renderer/webgl1/shaders/DeleteShaders.ts
-  function DeleteShaders2(...shaders2) {
-    shaders2.forEach((shader) => {
-      gl.deleteShader(shader);
-    });
-  }
-
-  // src/renderer/webgl1/shaders/CreateProgram.ts
-  function CreateProgram(...shaders2) {
-    const program = gl.createProgram();
-    shaders2.forEach((shader) => {
-      gl.attachShader(program, shader);
-    });
-    gl.linkProgram(program);
-    const status = gl.getProgramParameter(program, gl.LINK_STATUS);
-    if (!status) {
-      const info = gl.getProgramInfoLog(program);
-      console.error(`Error linking program: ${info}`);
-      gl.deleteProgram(program);
-      DeleteShaders2(...shaders2);
-      return null;
-    }
-    return program;
-  }
-
-  // src/renderer/webgl1/shaders/CreateShader.ts
-  function CreateShader(source, type) {
-    const shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    const status = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-    if (!status) {
-      const info = gl.getShaderInfoLog(shader);
-      const sourceLines = source.split("\n").map((line, index) => {
-        return `${index}: ${line}`;
-      });
-      console.error(`Error compiling shader: ${info}`, sourceLines.join("\n"));
-      gl.deleteShader(shader);
-      return null;
-    }
-    return shader;
-  }
-
-  // src/renderer/webgl1/shaders/CreateUniformSetter.ts
-  function CreateUniformSetter(uniform, location, isArray = false) {
-    switch (uniform.type) {
-      case gl.INT:
-      case gl.BOOL: {
-        if (isArray) {
-          return (v) => {
-            gl.uniform1iv(location, v);
-          };
-        } else {
-          return (v) => {
-            gl.uniform1i(location, v);
-          };
-        }
-      }
-      case gl.INT_VEC2:
-      case gl.BOOL_VEC2: {
-        return (v) => {
-          gl.uniform2iv(location, v);
-        };
-      }
-      case gl.INT_VEC3:
-      case gl.BOOL_VEC3: {
-        return (v) => {
-          gl.uniform3iv(location, v);
-        };
-      }
-      case gl.INT_VEC4:
-      case gl.BOOL_VEC4: {
-        return (v) => {
-          gl.uniform4iv(location, v);
-        };
-      }
-      case gl.FLOAT: {
-        if (isArray) {
-          return (v) => {
-            gl.uniform1fv(location, v);
-          };
-        } else {
-          return (v) => {
-            gl.uniform1f(location, v);
-          };
-        }
-      }
-      case gl.FLOAT_VEC2: {
-        return (v) => {
-          gl.uniform2fv(location, v);
-        };
-      }
-      case gl.FLOAT_VEC3: {
-        return (v) => {
-          gl.uniform3fv(location, v);
-        };
-      }
-      case gl.FLOAT_VEC4: {
-        return (v) => {
-          gl.uniform4fv(location, v);
-        };
-      }
-      case gl.FLOAT_MAT2: {
-        return (v) => {
-          gl.uniformMatrix2fv(location, false, v);
-        };
-      }
-      case gl.FLOAT_MAT3: {
-        return (v) => {
-          gl.uniformMatrix3fv(location, false, v);
-        };
-      }
-      case gl.FLOAT_MAT4: {
-        return (v) => {
-          gl.uniformMatrix4fv(location, false, v);
-        };
-      }
-      case gl.SAMPLER_2D:
-      case gl.SAMPLER_CUBE: {
-        if (uniform.size > 1) {
-          return (v) => {
-            gl.uniform1iv(location, v);
-          };
-        } else {
-          return (v) => {
-            gl.uniform1i(location, v);
-          };
-        }
-      }
-    }
-  }
-
-  // src/renderer/webgl1/shaders/CreateUniforms.ts
-  function CreateUniforms(program) {
-    const uniforms = new Map();
-    const total = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
-    for (let i = 0; i < total; i++) {
-      const uniform = gl.getActiveUniform(program, i);
-      let name = uniform.name;
-      if (name.startsWith("gl_") || name.startsWith("webgl_")) {
-        continue;
-      }
-      const location = gl.getUniformLocation(program, uniform.name);
-      if (location) {
-        let isArray = false;
-        if (name.substr(-3) === "[0]") {
-          name = name.substr(0, name.length - 3);
-          isArray = uniform.size > 1;
-        }
-        uniforms.set(name, CreateUniformSetter(uniform, location, isArray));
-      }
-    }
-    return uniforms;
-  }
-
-  // src/renderer/webgl1/GL_CONST.ts
-  const UNSIGNED_BYTE = 5121;
-  const FLOAT = 5126;
-
-  // src/renderer/webgl1/shaders/DefaultQuadAttributes.ts
-  const DefaultQuadAttributes = {
-    aVertexPosition: {size: 2, type: FLOAT, normalized: false, offset: 0},
-    aTextureCoord: {size: 2, type: FLOAT, normalized: false, offset: 8},
-    aTextureId: {size: 1, type: FLOAT, normalized: false, offset: 16},
-    aTintColor: {size: 4, type: UNSIGNED_BYTE, normalized: true, offset: 20}
-  };
-
-  // src/renderer/webgl1/shaders/DefaultQuadUniforms.ts
-  const DefaultQuadUniforms = {
-    uProjectionMatrix: new Float32Array(),
-    uCameraMatrix: new Float32Array(),
-    uTexture: 0
-  };
-
-  // src/config/Size.ts
-  let _width = 800;
-  let _height = 600;
-  let _resolution = 1;
-  function GetWidth() {
-    return _width;
-  }
-  function GetHeight() {
-    return _height;
-  }
-  function GetResolution() {
-    return _resolution;
-  }
-
-  // src/renderer/webgl1/fbo/CreateDepthBuffer.ts
-  function CreateDepthBuffer2(framebuffer, textureWidth, textureHeight) {
-    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-    const depthBuffer = gl.createRenderbuffer();
-    gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer);
-    gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, textureWidth, textureHeight);
-    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depthBuffer);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    return depthBuffer;
-  }
-
-  // src/renderer/webgl1/fbo/CreateFramebuffer.ts
-  function CreateFramebuffer2(texture, attachment) {
-    if (!attachment) {
-      attachment = gl.COLOR_ATTACHMENT0;
-    }
-    const framebuffer = gl.createFramebuffer();
-    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, attachment, gl.TEXTURE_2D, texture, 0);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    return framebuffer;
-  }
-
-  // src/renderer/webgl1/glsl/SINGLE_QUAD_FRAG.ts
-  const SINGLE_QUAD_FRAG = `#define SHADER_NAME SINGLE_QUAD_FRAG\r
-\r
-precision highp float;\r
-\r
-varying vec2 vTextureCoord;\r
-varying float vTextureId;\r
-varying vec4 vTintColor;\r
-\r
-uniform sampler2D uTexture;\r
-\r
-void main (void)\r
-{\r
-    vec4 color = texture2D(uTexture, vTextureCoord);\r
-\r
-    gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);\r
-}`;
-
-  // src/renderer/webgl1/glsl/SINGLE_QUAD_VERT.ts
-  const SINGLE_QUAD_VERT = `#define SHADER_NAME SINGLE_QUAD_VERT\r
-\r
-precision highp float;\r
-\r
-attribute vec2 aVertexPosition;\r
-attribute vec2 aTextureCoord;\r
-attribute float aTextureId;\r
-attribute vec4 aTintColor;\r
-\r
-uniform mat4 uProjectionMatrix;\r
-uniform mat4 uCameraMatrix;\r
-\r
-varying vec2 vTextureCoord;\r
-varying float vTextureId;\r
-varying vec4 vTintColor;\r
-\r
-void main (void)\r
-{\r
-    vTextureCoord = aTextureCoord;\r
-    vTextureId = aTextureId;\r
-    vTintColor = aTintColor;\r
-\r
-    gl_Position = uProjectionMatrix * uCameraMatrix * vec4(aVertexPosition, 0.0, 1.0);\r
-}`;
-
-  // src/renderer/webgl1/shaders/Shader.ts
-  class Shader2 {
-    constructor(config5) {
-      this.renderToFramebuffer = false;
-      this.renderToDepthbuffer = false;
-      if (config5) {
-        this.fromConfig(config5);
-      }
-    }
-    fromConfig(config5) {
-      const {
-        attributes = DefaultQuadAttributes,
-        fragmentShader = SINGLE_QUAD_FRAG,
-        height = GetHeight(),
-        renderToFramebuffer = false,
-        renderToDepthbuffer = false,
-        resolution = GetResolution(),
-        vertexShader = SINGLE_QUAD_VERT,
-        width = GetWidth(),
-        uniforms = DefaultQuadUniforms
-      } = config5;
-      this.create(fragmentShader, vertexShader, uniforms, attributes);
-      if (renderToFramebuffer) {
-        this.renderToFramebuffer = true;
-        const texture = new Texture5(null, width * resolution, height * resolution);
-        const binding = new GLTextureBinding2(texture);
-        texture.binding = binding;
-        binding.framebuffer = CreateFramebuffer2(binding.texture);
-        if (renderToDepthbuffer) {
-          this.renderToDepthbuffer = true;
-          binding.depthbuffer = CreateDepthBuffer2(binding.framebuffer, texture.width, texture.height);
-        }
-        this.texture = texture;
-        this.framebuffer = binding.framebuffer;
-      }
-    }
-    create(fragmentShaderSource, vertexShaderSource, uniforms, attribs) {
-      const fragmentShader = CreateShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
-      const vertexShader = CreateShader(vertexShaderSource, gl.VERTEX_SHADER);
-      if (!fragmentShader || !vertexShader) {
-        return;
-      }
-      const program = CreateProgram(fragmentShader, vertexShader);
-      if (!program) {
-        return;
-      }
-      const currentProgram = gl.getParameter(gl.CURRENT_PROGRAM);
-      gl.useProgram(program);
-      this.program = program;
-      this.uniformSetters = CreateUniforms(program);
-      this.uniforms = new Map();
-      for (const [key, value] of Object.entries(uniforms)) {
-        this.uniforms.set(key, value);
-      }
-      this.attributes = CreateAttributes(program, attribs);
-      gl.useProgram(currentProgram);
-    }
-    updateUniforms(renderPass) {
-    }
-    bind(renderPass) {
-      this.updateUniforms(renderPass);
-      return this.setUniforms(renderPass);
-    }
-    setUniform(key, value) {
-      const uniforms = this.uniforms;
-      if (uniforms.has(key)) {
-        uniforms.set(key, value);
-        const setter = this.uniformSetters.get(key);
-        setter(value);
-      }
-    }
-    setUniforms(renderPass) {
-      if (!this.program) {
-        return false;
-      }
-      gl.useProgram(this.program);
-      const uniforms = this.uniforms;
-      for (const [name, setter] of this.uniformSetters.entries()) {
-        setter(uniforms.get(name));
-      }
-      return true;
-    }
-    setAttributes(renderPass) {
-      if (this.program) {
-        const stride = renderPass.currentVertexBuffer.vertexByteSize;
-        this.attributes.forEach((attrib) => {
-          gl.vertexAttribPointer(attrib.index, attrib.size, attrib.type, attrib.normalized, stride, attrib.offset);
-        });
-      }
-    }
-    destroy() {
-      DeleteShaders2(this.program);
-      DeleteGLTexture2(this.texture);
-      DeleteFramebuffer2(this.framebuffer);
-      this.uniforms.clear();
-      this.uniformSetters.clear();
-      this.attributes.clear();
-      this.program = null;
-      this.texture = null;
-      this.framebuffer = null;
-    }
-  }
-
-  // src/renderer/webgl1/shaders/QuadShader.ts
-  class QuadShader2 extends Shader2 {
-    constructor(config5 = {}) {
-      const shaderConfig = config5;
-      shaderConfig.attributes = !shaderConfig.attributes ? DefaultQuadAttributes : shaderConfig.attributes;
-      super(shaderConfig);
-    }
-    bind(renderPass) {
-      const uniforms = this.uniforms;
-      uniforms.set("uProjectionMatrix", renderPass.projectionMatrix.data);
-      uniforms.set("uCameraMatrix", renderPass.cameraMatrix.data);
-      return super.bind(renderPass);
-    }
-  }
-
-  // src/renderer/webgl1/shaders/FXShader.ts
-  class FXShader extends QuadShader2 {
-    constructor(config5 = {}) {
-      const shaderConfig = config5;
-      shaderConfig.attributes = !shaderConfig.attributes ? DefaultQuadAttributes : shaderConfig.attributes;
-      shaderConfig.renderToFramebuffer = true;
-      super(shaderConfig);
-    }
-    bind(renderPass) {
-      const renderer = renderPass.renderer;
-      this.uniforms.set("uTime", performance.now());
-      this.uniforms.set("uResolution", [renderer.width, renderer.height]);
-      return super.bind(renderPass);
-    }
-  }
-
-  // src/renderer/webgl1/glsl/MULTI_QUAD_FRAG.ts
-  const MULTI_QUAD_FRAG = `#define SHADER_NAME MULTI_QUAD_FRAG\r
-\r
-precision highp float;\r
-\r
-varying vec2 vTextureCoord;\r
-varying float vTextureId;\r
-varying vec4 vTintColor;\r
-\r
-uniform sampler2D uTexture[%count%];\r
-\r
-void main (void)\r
-{\r
-    vec4 color;\r
-\r
-    %forloop%\r
-\r
-    gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);\r
-}`;
-
-  // src/renderer/webgl1/shaders/MultiTextureQuadShader.ts
-  class MultiTextureQuadShader extends QuadShader2 {
-    constructor(config5 = {}) {
-      if (!config5.fragmentShader) {
-        config5.fragmentShader = MULTI_QUAD_FRAG;
-      }
-      super(config5);
-    }
-    create(fragmentShaderSource, vertexShaderSource, uniforms, attribs) {
-      const maxTextures2 = GetMaxTextures();
-      let src = "";
-      for (let i = 1; i < maxTextures2; i++) {
-        if (i > 1) {
-          src += "\n	else ";
-        }
-        if (i < maxTextures2 - 1) {
-          src += `if (vTextureId < ${i}.5)`;
-        }
-        src += "\n	{";
-        src += `
-		color = texture2D(uTexture[${i}], vTextureCoord);`;
-        src += "\n	}";
-      }
-      fragmentShaderSource = fragmentShaderSource.replace(/%count%/gi, `${maxTextures2}`);
-      fragmentShaderSource = fragmentShaderSource.replace(/%forloop%/gi, src);
-      super.create(fragmentShaderSource, vertexShaderSource, uniforms, attribs);
-    }
-    bind(renderPass) {
-      this.uniforms.set("uTexture", renderPass.textureIndex);
-      return super.bind(renderPass);
-    }
-  }
-
-  // src/renderer/webgl1/shaders/index.ts
-
-  // src/renderer/webgl1/renderpass/SetDefaultBlendMode.ts
-  function SetDefaultBlendMode2(renderPass, enable, sfactor, dfactor) {
-    const entry = {enable, sfactor, dfactor};
-    renderPass.blendModeStack[0] = entry;
-    renderPass.currentBlendMode = entry;
-    renderPass.defaultBlendMode = entry;
-  }
-
-  // src/renderer/webgl1/renderpass/SetDefaultFramebuffer.ts
-  function SetDefaultFramebuffer2(renderPass, framebuffer = null, viewport) {
-    const entry = {framebuffer, viewport};
-    renderPass.framebufferStack[0] = entry;
-    renderPass.currentFramebuffer = entry;
-    renderPass.defaultFramebuffer = entry;
-  }
-
-  // src/renderer/webgl1/renderpass/SetDefaultShader.ts
-  function SetDefaultShader2(renderPass, shader, textureID) {
-    const entry = {shader, textureID};
-    renderPass.shaderStack[0] = entry;
-    renderPass.currentShader = entry;
-    renderPass.defaultShader = entry;
-  }
-
-  // src/renderer/webgl1/renderpass/SetDefaultVertexBuffer.ts
-  function SetDefaultVertexBuffer2(renderPass, buffer) {
-    renderPass.vertexBufferStack[0] = buffer;
-    renderPass.currentVertexBuffer = buffer;
-    renderPass.defaultVertexBuffer = buffer;
-  }
-
-  // src/renderer/webgl1/renderpass/SetDefaultViewport.ts
-  function SetDefaultViewport2(renderPass, x = 0, y = 0, width = 0, height = 0) {
-    const entry = new Rectangle(x, y, width, height);
-    renderPass.viewportStack[0] = entry;
-    renderPass.currentViewport = entry;
-    renderPass.defaultViewport = entry;
-  }
-
-  // src/config/BatchSize.ts
-  let batchSize = 4096;
-
-  // src/renderer/webgl1/renderpass/RenderPass.ts
-  class RenderPass2 {
-    constructor(renderer) {
-      this.count = 0;
-      this.prevCount = 0;
-      this.flushTotal = 0;
-      this.maxTextures = 0;
-      this.currentActiveTexture = 0;
-      this.startActiveTexture = 0;
-      this.tempTextures = [];
-      this.textureIndex = [];
-      this.framebufferStack = [];
-      this.currentFramebuffer = null;
-      this.defaultFramebuffer = null;
-      this.vertexBufferStack = [];
-      this.currentVertexBuffer = null;
-      this.defaultVertexBuffer = null;
-      this.shaderStack = [];
-      this.currentShader = null;
-      this.defaultShader = null;
-      this.viewportStack = [];
-      this.currentViewport = null;
-      this.defaultViewport = null;
-      this.blendModeStack = [];
-      this.currentBlendMode = null;
-      this.defaultBlendMode = null;
-      this.renderer = renderer;
-      this.projectionMatrix = new Matrix4();
-      this.reset();
-    }
-    reset() {
-      const gl3 = this.renderer.gl;
-      const indexLayout = [0, 1, 2, 2, 3, 0];
-      this.quadShader = new QuadShader2();
-      this.quadBuffer = new IndexedVertexBuffer({isDynamic: false, indexLayout});
-      this.quadCamera = new StaticCamera();
-      CreateTempTextures(this);
-      SetDefaultFramebuffer2(this);
-      SetDefaultBlendMode2(this, true, gl3.ONE, gl3.ONE_MINUS_SRC_ALPHA);
-      SetDefaultVertexBuffer2(this, new IndexedVertexBuffer({batchSize, indexLayout}));
-      SetDefaultShader2(this, new MultiTextureQuadShader());
-    }
-    resize(width, height) {
-      Ortho(0, width, height, 0, -1e3, 1e3, this.projectionMatrix);
-      this.quadCamera.reset();
-      SetDefaultViewport2(this, 0, 0, width, height);
-    }
-  }
-
-  // src/renderer/webgl1/renderpass/ResetTextures.ts
-
-  // src/renderer/webgl1/renderpass/SetBlendMode.ts
-
-  // src/renderer/webgl1/renderpass/SetShader.ts
-  function SetShader(renderPass, shader, textureID) {
-    const entry = AddShader(renderPass, shader, textureID);
-    BindShader2(renderPass, entry);
-    renderPass.currentShader = entry;
-  }
-
-  // src/renderer/webgl1/renderpass/Start.ts
-  function Start(renderPass) {
-    renderPass.current2DCamera = renderPass.quadCamera;
-    renderPass.cameraMatrix = renderPass.quadCamera.matrix;
-    renderPass.count = 0;
-    renderPass.flushTotal = 0;
-    BindFramebuffer(renderPass, false, renderPass.defaultFramebuffer);
-    BindBlendMode(renderPass, renderPass.defaultBlendMode);
-    BindViewport(renderPass, renderPass.defaultViewport);
-    BindVertexBuffer(renderPass, renderPass.defaultVertexBuffer);
-  }
-
-  // src/renderer/webgl1/renderpass/UnbindTexture.ts
-  function UnbindTexture(renderPass, index = 0) {
-    gl.activeTexture(gl.TEXTURE0 + index);
-    gl.bindTexture(gl.TEXTURE_2D, renderPass.tempTextures[index]);
-    if (index > 0) {
-      renderPass.startActiveTexture++;
-    }
-  }
-
-  // src/renderer/webgl1/renderpass/index.ts
-
   // src/renderer/webgl1/draw/BatchSingleQuad.ts
   function BatchSingleQuad(renderPass, x, y, width, height, u0, v0, u1, v1, textureIndex = 0, packedColor = 4294967295) {
     const {F32, U32, offset} = GetVertexBufferEntry2(renderPass, 1);
@@ -9538,174 +9880,6 @@ void main (void)\r
     PopShader(renderPass);
     UnbindTexture(renderPass);
   }
-
-  // src/config/BackgroundColor.ts
-  let bgColor = 0;
-  function GetBackgroundColor() {
-    return bgColor;
-  }
-
-  // src/config/Banner.ts
-  let title = "Phaser";
-  let url = "https://phaser4.io";
-  let color = "#fff";
-  let background = "linear-gradient(#3e0081 40%, #00bcc3)";
-  function GetBanner() {
-    if (title !== "") {
-      const game = GameInstance2.get();
-      const version = title === "Phaser" ? " v" + game.VERSION : "";
-      console.log(`%c${title}${version}%c ${url}`, `padding: 4px 16px; color: ${color}; background: ${background}`, "");
-    }
-  }
-
-  // src/config/CanvasContext.ts
-
-  // src/renderer/canvas/CanvasRenderer.ts
-
-  // src/config/SetRenderer.ts
-  let instance2;
-  function GetRenderer() {
-    return instance2;
-  }
-
-  // src/config/SetCanvas.ts
-
-  // src/config/Parent.ts
-  let parent;
-  function GetParent() {
-    return parent;
-  }
-
-  // src/config/Scenes.ts
-  let _scenes = [];
-  function GetScenes() {
-    return _scenes;
-  }
-
-  // src/config/WebGLContext.ts
-  let _contextAttributes2 = {
-    alpha: false,
-    antialias: false,
-    depth: true,
-    premultipliedAlpha: false
-  };
-  function GetWebGLContext() {
-    return _contextAttributes2;
-  }
-
-  // src/renderer/webgl1/colors/GetRGBArray.ts
-  function GetRGBArray2(color2, output = []) {
-    const r = color2 >> 16 & 255;
-    const g = color2 >> 8 & 255;
-    const b = color2 & 255;
-    const a = color2 > 16777215 ? color2 >>> 24 : 255;
-    output[0] = r / 255;
-    output[1] = g / 255;
-    output[2] = b / 255;
-    output[3] = a / 255;
-    return output;
-  }
-
-  // src/renderer/webgl1/WebGLRendererInstance.ts
-  let instance3;
-  const WebGLRendererInstance2 = {
-    get: () => {
-      return instance3;
-    },
-    set: (renderer) => {
-      instance3 = renderer;
-    }
-  };
-
-  // src/renderer/webgl1/WebGLRenderer.ts
-  class WebGLRenderer2 {
-    constructor() {
-      this.clearColor = [0, 0, 0, 1];
-      this.clearBeforeRender = true;
-      this.optimizeRedraw = false;
-      this.autoResize = true;
-      this.contextLost = false;
-      this.width = GetWidth();
-      this.height = GetHeight();
-      this.resolution = GetResolution();
-      this.setBackgroundColor(GetBackgroundColor());
-      const canvas = document.createElement("canvas");
-      canvas.addEventListener("webglcontextlost", (event) => this.onContextLost(event), false);
-      canvas.addEventListener("webglcontextrestored", () => this.onContextRestored(), false);
-      this.canvas = canvas;
-      this.initContext();
-      WebGLRendererInstance2.set(this);
-      this.renderPass = new RenderPass2(this);
-      this.resize(this.width, this.height, this.resolution);
-    }
-    initContext() {
-      const gl3 = this.canvas.getContext("webgl", GetWebGLContext());
-      GL2.set(gl3);
-      this.gl = gl3;
-      gl3.disable(gl3.DEPTH_TEST);
-      gl3.disable(gl3.CULL_FACE);
-    }
-    resize(width, height, resolution = 1) {
-      const calcWidth = width * resolution;
-      const calcHeight = height * resolution;
-      this.width = calcWidth;
-      this.height = calcHeight;
-      this.resolution = resolution;
-      const canvas = this.canvas;
-      canvas.width = calcWidth;
-      canvas.height = calcHeight;
-      if (this.autoResize) {
-        canvas.style.width = width.toString() + "px";
-        canvas.style.height = height.toString() + "px";
-      }
-      this.renderPass.resize(calcWidth, calcHeight);
-    }
-    onContextLost(event) {
-      event.preventDefault();
-      this.contextLost = true;
-    }
-    onContextRestored() {
-      this.contextLost = false;
-      this.initContext();
-    }
-    setBackgroundColor(color2) {
-      GetRGBArray2(color2, this.clearColor);
-      return this;
-    }
-    reset() {
-    }
-    render(renderData) {
-      if (this.contextLost) {
-        return;
-      }
-      const gl3 = this.gl;
-      const renderPass = this.renderPass;
-      ProcessBindingQueue2();
-      if (this.optimizeRedraw && renderData.numDirtyFrames === 0 && renderData.numDirtyCameras === 0) {
-        return;
-      }
-      if (this.clearBeforeRender) {
-        const cls = this.clearColor;
-        gl3.clearColor(cls[0], cls[1], cls[2], cls[3]);
-        gl3.clear(gl3.COLOR_BUFFER_BIT);
-      }
-      const worlds = renderData.worldData;
-      Start(renderPass);
-      for (let i = 0; i < worlds.length; i++) {
-        const {world} = worlds[i];
-        world.renderGL(renderPass);
-        world.postRenderGL(renderPass);
-      }
-      End2(renderPass);
-    }
-    destroy() {
-      WebGLRendererInstance2.set(void 0);
-    }
-  }
-
-  // src/config/SetWebGL.ts
-
-  // src/config/index.ts
 
   // src/gameobjects/layer/Layer.ts
   class Layer2 extends GameObject {
