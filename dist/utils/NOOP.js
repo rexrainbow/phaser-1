@@ -1,4 +1,0 @@
-function NOOP() {
-}
-
-export { NOOP };
