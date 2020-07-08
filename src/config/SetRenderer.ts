@@ -1,24 +1,16 @@
 import { IRendererConstructor } from '../renderer/IRendererConstructor';
 
-class SetRendererConfig
+let instance: IRendererConstructor;
+
+function SetRenderer (renderer: IRendererConstructor): void
 {
-    instance: IRendererConstructor;
-
-    set (renderer: IRendererConstructor): void
-    {
-        this.instance = renderer;
-    }
-
-    get (): IRendererConstructor
-    {
-        return this.instance;
-    }
+    instance = renderer;
 }
 
-const config = new SetRendererConfig();
-
-const SetRenderer = (renderer: IRendererConstructor) => config.set(renderer);
-const GetRenderer = () => config.get();
+function GetRenderer (): IRendererConstructor
+{
+    return instance;
+}
 
 export {
     GetRenderer,
