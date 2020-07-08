@@ -12,6 +12,7 @@
         "distmajor": "npm version major && npm run build && cd dist && npm publish --ignore-scripts",
         "dev": "esbuild --bundle dev/index.ts --outdir=dev/dist --sourcemap",
         "build": "node build.js",
+        "doozer": "node doozer.js",
         "ts": "tsc --build tsconfig.json",
         "lint": "eslint ./src --fix --ext .ts"
     },

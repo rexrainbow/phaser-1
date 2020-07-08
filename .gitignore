@@ -1,5 +1,6 @@
 # Compiled JS
 dev/dist
+tempdist
 
 # System and IDE files
 Thumbs.db
