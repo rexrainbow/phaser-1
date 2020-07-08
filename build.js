@@ -61,13 +61,13 @@ dirTree('src', filterConfig, (item, path) =>
 
 //  Clear folder contents
 
-console.log('Clearing target');
+console.log('✔ Clearing target');
 
 fs.emptyDirSync('./dist');
 
 //  Copy package.json version number to dist/package.json
 
-console.log('Copying dist files');
+console.log('✔ Copying dist files');
 
 const devPackage = fs.readJsonSync('./package.json');
 const distPackage = fs.readJsonSync('./dist.package.json');
@@ -81,7 +81,7 @@ fs.copySync('./LICENSE', './dist/LICENSE');
 fs.copySync('./logo.png', './dist/logo.png');
 fs.copySync('./README.dist.md', './dist/README.md');
 
-console.log('Building Phaser 4');
+console.log('✔ Building Phaser 4');
 
 //  Run esbuild
 
@@ -91,7 +91,7 @@ build({
     bundle: true,
     sourcemap: true
 }).catch(() => {
-    console.log('esbuild error');
+    console.log('❌ esbuild error');
     return;
 });
 
@@ -110,11 +110,11 @@ console.log('✔ Building TypeScript defs');
 
 exec('tsc --build ./tsconfig.json', (error, stdout, stderr) => {
     if (error) {
-        console.log(`error: ${error.message}`);
+        console.log(`❌ error: ${error.message}`);
         return;
     }
     if (stderr) {
-        console.log(`stderr: ${stderr}`);
+        console.log(`❌ stderr: ${stderr}`);
         return;
     }
     console.log('✔ Complete');
