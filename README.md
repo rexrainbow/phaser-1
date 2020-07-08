@@ -23,13 +23,9 @@ You can find all packages under the [@phaserjs](https://www.npmjs.com/settings/p
 | script | action |
 | ------ | ------ |
 | `lint` | Run ESLint across the whole src folder in fix mode |
-| `debug` | Build the main Phaser 4 modules, useful for checking for package errors |
 | `build` | Build all of the Phaser 4 modules |
 | `watch` | Build all modules and enter watch mode |
-| `build-dev` | Build the `dev/index.ts` script to run a local test without publishing |
-| `watch-dev` | Build and watch the `dev/index.ts` script |
-| `build-fastdev` | Build just the `dev/index.ts` without rebuilding the whole of Phaser  |
-| `watch-fastdev` | Build and watch the `dev/index.ts` script without rebuilding Phaser |
+| `dev` | Build the `dev/index.ts` script to run a local test without publishing |
 
 ## VS Code Extensions
 

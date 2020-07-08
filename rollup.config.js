@@ -99,6 +99,7 @@ dirTree('src', filterConfig, (item, path) =>
     ESMInputBundle[entryPoint] = item.path;
 });
 
+/*
 export default [
     {
         //  UMD Bundle
@@ -216,6 +217,61 @@ export default [
         output: [
             {
                 dir: 'dist',
+                format: 'esm'
+            }
+        ]
+    }
+];
+*/
+
+export default [
+    {
+        //  ESM Multiple Entry Point Package
+        input: ESMInputBundle,
+
+        onwarn: (warning, next) =>
+        {
+            //  Because the TypeScript plugin will create d.ts files
+            //  that already exist, so let's not spam the console
+            //  with them.
+            if (warning.code === 'FILE_NAME_CONFLICT')
+            {
+                return;
+            }
+            else
+            {
+                next(warning);
+            }
+        },
+
+        plugins: [
+
+            // del({
+            //     targets: [ './dist', './stats.html' ],
+            //     runOnce: true
+            // }),
+
+            resolve({
+                extensions
+            }),
+
+            typescript({
+                tsconfig: './tsconfig.json'
+            }),
+
+            copy({
+                targets: [
+                    { src: 'LICENSE', dest: 'dist2', copyOnce: true },
+                    { src: 'logo.png', dest: 'dist2', copyOnce: true },
+                    { src: 'README.dist.md', dest: 'dist2', rename: 'README.md', copyOnce: true }
+                ]
+            })
+
+        ],
+
+        output: [
+            {
+                dir: 'dist2',
                 format: 'esm'
             }
         ]

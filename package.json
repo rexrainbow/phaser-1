@@ -4,19 +4,15 @@
     "description": "Phaser 4 Genesis",
     "scripts": {
         "prepublishOnly": "echo \"Error: Don't run 'npm publish' in root. Use 'npm run dist' instead.\" && exit 1",
-        "debug": "rollup -c rollup.debug.config.js",
-        "build": "rollup -c rollup.config.js",
-        "watch": "rollup -c rollup.debug.config.js --watch",
+        "oldbuild": "rollup -c rollup.config.js",
+        "oldwatch": "rollup -c rollup.debug.config.js --watch",
         "testdist": "npm version patch --no-git-tag-version && npm run build",
-        "dist": "npm version patch && npm run build && cd dist && npm publish --ignore-scripts",
-        "distminor": "npm version minor && npm run build && cd dist && npm publish --ignore-scripts",
-        "distmajor": "npm version major && npm run build && cd dist && npm publish --ignore-scripts",
-        "build-dev": "rollup -c dev.rollup.config.js",
-        "watch-dev": "rollup --watch -c dev.rollup.config.js",
-        "build-fastdev": "rollup -c fastdev.rollup.config.js",
-        "esbuild-fastdev": "esbuild --bundle dev/index.ts --outdir=dev/dist --sourcemap",
-        "watch-fastdev": "rollup --watch -c fastdev.rollup.config.js",
-        "ts": "tsc --noEmit",
+        "dist": "npm version patch && npm run build && npm run ts && cd dist && npm publish --ignore-scripts",
+        "distminor": "npm version minor && npm run build && npm run ts && cd dist && npm publish --ignore-scripts",
+        "distmajor": "npm version major && npm run build && npm run ts && cd dist && npm publish --ignore-scripts",
+        "dev": "esbuild --bundle dev/index.ts --outdir=dev/dist --sourcemap",
+        "build": "esbuild --bundle src/index.ts --outfile=dist/Phaser4.js --sourcemap",
+        "ts": "tsc --build tsconfig.json",
         "lint": "eslint ./src --fix --ext .ts"
     },
     "repository": {
@@ -59,7 +55,5 @@
         "typescript": "^3.9.6",
         "uplot": "^1.0.11"
     },
-    "dependencies": {
-        "gl-matrix": "^3.3.0"
-    }
+    "dependencies": {}
 }
