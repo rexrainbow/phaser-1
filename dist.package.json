@@ -5,9 +5,9 @@
     "publishConfig": {
         "access": "public"
     },
-    "main": "Phaser4.js",
-    "module": "Phaser4.js",
-    "jsnext:main": "Phaser4.js",
+    "main": "index.js",
+    "module": "index.js",
+    "jsnext:main": "index.js",
     "types": "index.d.ts",
     "repository": {
         "type": "git",

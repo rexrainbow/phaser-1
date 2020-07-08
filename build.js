@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const dirTree = require('directory-tree');
 const { build } = require('esbuild');
+const { exec } = require('child_process');
 
 const filterConfig = {
     extensions: /\.ts/,
@@ -58,7 +59,44 @@ dirTree('src', filterConfig, (item, path) =>
     // ESMInputBundle[entryPoint] = item.path;
 });
 
+//  Clear folder contents
+
+console.log('Clearing target');
+
+fs.emptyDirSync('./dist');
+
+//  Copy package.json version number to dist/package.json
+
+console.log('Copying dist files');
+
+const devPackage = fs.readJsonSync('./package.json');
+const distPackage = fs.readJsonSync('./dist.package.json');
+
+distPackage.version = devPackage.version;
+
+fs.writeJsonSync('./dist/package.json', distPackage, { spaces: 4 });
+
+//  Copy other files we need
+fs.copySync('./LICENSE', './dist/LICENSE');
+fs.copySync('./logo.png', './dist/logo.png');
+fs.copySync('./README.dist.md', './dist/README.md');
+
+console.log('Building Phaser 4');
+
+//  Run esbuild
+
+build({
+    entryPoints: [ './src/index.ts' ],
+    outfile: './dist/index.js',
+    bundle: true,
+    sourcemap: true
+}).catch(() => {
+    console.log('esbuild error');
+    return;
+});
+
 //  For when esbuild supports multiple entry points with the same name
+
 // build({
 //     entryPoints: ESMInputBundle,
 //     outdir: './dist2/',
@@ -66,12 +104,18 @@ dirTree('src', filterConfig, (item, path) =>
 //     bundle: false,
 // }).catch(() => process.exit(1));
 
-build({
-    entryPoint: './src/index.ts',
-    bundle: true,
-    outfile: './dist2/Phaser4.js',
-    minify: false,
-    sourcemap: true,
-    format: 'esm'
-}).catch(() => process.exit(1));
+//  Run tsc
 
+console.log('✔ Building TypeScript defs');
+
+exec('tsc --build ./tsconfig.json', (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+    }
+    console.log('✔ Complete');
+});
