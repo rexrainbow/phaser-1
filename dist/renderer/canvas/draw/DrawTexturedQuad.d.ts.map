@@ -1,1 +1,0 @@
-{"version":3,"file":"DrawTexturedQuad.d.ts","sourceRoot":"","sources":["../../../../src/renderer/canvas/draw/DrawTexturedQuad.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,eAAe,EAAE,MAAM,oBAAoB,CAAC;AACrD,OAAO,EAAE,OAAO,EAAE,MAAM,qCAAqC,CAAC;AAE9D,wBAAgB,gBAAgB,CAAE,CAAC,SAAS,OAAO,EAAG,MAAM,EAAE,CAAC,EAAE,QAAQ,EAAE,eAAe,GAAG,IAAI,CAyBhG"}

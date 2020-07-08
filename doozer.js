@@ -71,13 +71,14 @@ console.log('✔ The doozers are building Phaser 4');
 //  Run esbuild
 
 build({
-    entryPoints: [ './src/index.ts' ],
+    // entryPoints: [ './src/index.ts' ],
+    entryPoints: ESMInputBundle,
     outdir: './tempdist',
-    bundle: true,
+    bundle: false,
     sourcemap: true,
     target: 'es6',
-    format: 'esm',
-    splitting: true
+    // format: 'esm',
+    // splitting: true
 }).catch(() => {
     console.log('❌ esbuild error');
     return;

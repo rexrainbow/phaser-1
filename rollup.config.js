@@ -99,14 +99,13 @@ dirTree('src', filterConfig, (item, path) =>
     ESMInputBundle[entryPoint] = item.path;
 });
 
-/*
 export default [
     {
         //  UMD Bundle
         input: './src/index.ts',
         output: [
             {
-                file: './dist/Phaser4.js',
+                file: './dist/umd/Phaser4.js',
                 format: 'umd',
                 name: 'Phaser4',
                 sourcemap: true,
@@ -128,7 +127,7 @@ export default [
             }),
 
             typescript({
-                tsconfig: './tsconfig.json'
+                tsconfig: './tsconfig-umd.json'
             }),
 
             copy({
@@ -152,9 +151,24 @@ export default [
         //  UMD Minified Bundle
         input: './src/index.ts',
 
+        onwarn: (warning, next) =>
+        {
+            //  Because the TypeScript plugin will create d.ts files
+            //  that already exist, so let's not spam the console
+            //  with them.
+            if (warning.code === 'FILE_NAME_CONFLICT')
+            {
+                return;
+            }
+            else
+            {
+                next(warning);
+            }
+        },
+
         output: [
             {
-                file: './dist/Phaser4.min.js',
+                file: './dist/umd/Phaser4.min.js',
                 format: 'umd',
                 name: 'Phaser4',
                 sourcemap: false,
@@ -178,11 +192,12 @@ export default [
             }),
 
             typescript({
-                tsconfig: './tsconfig.json'
+                tsconfig: './tsconfig-umd.json'
             })
 
         ]
     },
+    /*
     {
         //  ESM Multiple Entry Point Package
         input: ESMInputBundle,
@@ -221,59 +236,5 @@ export default [
             }
         ]
     }
-];
-*/
-
-export default [
-    {
-        //  ESM Multiple Entry Point Package
-        input: ESMInputBundle,
-
-        onwarn: (warning, next) =>
-        {
-            //  Because the TypeScript plugin will create d.ts files
-            //  that already exist, so let's not spam the console
-            //  with them.
-            if (warning.code === 'FILE_NAME_CONFLICT')
-            {
-                return;
-            }
-            else
-            {
-                next(warning);
-            }
-        },
-
-        plugins: [
-
-            // del({
-            //     targets: [ './dist', './stats.html' ],
-            //     runOnce: true
-            // }),
-
-            resolve({
-                extensions
-            }),
-
-            typescript({
-                tsconfig: './tsconfig.json'
-            }),
-
-            copy({
-                targets: [
-                    { src: 'LICENSE', dest: 'dist2', copyOnce: true },
-                    { src: 'logo.png', dest: 'dist2', copyOnce: true },
-                    { src: 'README.dist.md', dest: 'dist2', rename: 'README.md', copyOnce: true }
-                ]
-            })
-
-        ],
-
-        output: [
-            {
-                dir: 'dist2',
-                format: 'esm'
-            }
-        ]
-    }
+    */
 ];
