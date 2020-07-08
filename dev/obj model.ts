@@ -2,10 +2,10 @@ import * as Materials from '../src/materials3d';
 
 import { AKey, DownKey, LeftKey, RightKey, UpKey } from '../src/input/keyboard/keys';
 import { BackgroundColor, Parent, Scenes, SetWebGL, Size } from '../src/config';
+import { Game, Scene } from '../src/';
 
 import { AddChildren3D } from '../src/display3d/AddChildren3D';
 import { Cache } from '../src/cache/Cache';
-import { Game } from '../src/Game';
 import { Geometry } from '../src/gameobjects3d/geometry/Geometry';
 import { ImageFile } from '../src/loader/files/ImageFile';
 import { Keyboard } from '../src/input/keyboard';
@@ -14,7 +14,6 @@ import { Mesh } from '../src/gameobjects3d/mesh/Mesh';
 import { Mouse } from '../src/input/mouse/Mouse';
 import { OBJGeometryFile } from '../src/loader/files/OBJGeometryFile';
 import { On } from '../src/events';
-import { Scene } from '../src/scenes/Scene';
 import { World3D } from '../src/world3d/World3D';
 
 class Demo extends Scene
