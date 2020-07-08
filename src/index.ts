@@ -1,5 +1,6 @@
 import * as Camera from './camera/';
 import * as Camera3D from './camera3d/';
+import * as Config from './config/';
 import * as DOM from './dom/';
 import * as Device from './device/';
 import * as Display from './display/';
@@ -25,6 +26,7 @@ import { Scene } from './scenes/Scene';
 export {
     Camera,
     Camera3D,
+    Config,
     Device,
     DOM,
     Display,
