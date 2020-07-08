@@ -89,7 +89,8 @@ build({
     entryPoints: [ './src/index.ts' ],
     outfile: './dist/index.js',
     bundle: true,
-    sourcemap: true
+    sourcemap: true,
+    format: 'esm'
 }).catch(() => {
     console.log('❌ esbuild error');
     return;
