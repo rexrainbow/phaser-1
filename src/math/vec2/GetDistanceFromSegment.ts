@@ -1,18 +1,18 @@
+import { GetVec2Distance } from './GetVec2Distance';
+import { GetVec2DistanceSquared } from './GetVec2DistanceSquared';
 import { Vec2 } from './Vec2';
 import { Vec2Add } from './Vec2Add';
-import { Vec2Distance } from './Vec2Distance';
-import { Vec2DistanceSquared } from './Vec2DistanceSquared';
 import { Vec2Dot } from './Vec2Dot';
 import { Vec2MultiplyByFloats } from './Vec2MultiplyByFloats';
 import { Vec2Subtract } from './Vec2Subtract';
 
 export function GetDistanceFromSegment (p: Vec2, a: Vec2, b: Vec2): number
 {
-    const d = Vec2DistanceSquared(a, b);
+    const d = GetVec2DistanceSquared(a, b);
 
     if (d === 0)
     {
-        return Vec2Distance(p, a);
+        return GetVec2Distance(p, a);
     }
 
     const v = Vec2Subtract(b, a);
@@ -23,5 +23,5 @@ export function GetDistanceFromSegment (p: Vec2, a: Vec2, b: Vec2): number
 
     const proj = Vec2Add(a, Vec2MultiplyByFloats(v, t, t, v));
 
-    return Vec2Distance(p, proj);
+    return GetVec2Distance(p, proj);
 }

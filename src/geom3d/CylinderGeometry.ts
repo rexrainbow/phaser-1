@@ -1,7 +1,7 @@
 import { CreateVertexSet } from '../gameobjects3d/geometry/CreateVertexSet';
-import { Normalize } from '../math/vec3/Normalize';
 import { Vec2 } from '../math/vec2/Vec2';
 import { Vec3 } from '../math/vec3/Vec3';
+import { Vec3Normalize } from '../math/vec3/Vec3Normalize';
 import { VertexSet } from '../gameobjects3d/geometry/VertexSet';
 
 function GenerateCap (top: boolean, data: VertexSet, index: number, halfHeight: number, radiusTop: number, radiusBottom: number, radialSegments: number, thetaStart: number, thetaLength: number): number
@@ -151,7 +151,7 @@ export function CylinderGeometry (radiusTop: number = 1, radiusBottom: number = 
             // normal
             normal.set(sinTheta, slope, cosTheta);
 
-            Normalize(normal, normal);
+            Vec3Normalize(normal, normal);
 
             normals.push(normal.x, normal.y, normal.z);
 

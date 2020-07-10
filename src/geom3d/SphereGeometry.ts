@@ -1,6 +1,6 @@
 import { CreateVertexSet } from '../gameobjects3d/geometry/CreateVertexSet';
-import { Normalize } from '../math/vec3/Normalize';
 import { Vec3 } from '../math/vec3/Vec3';
+import { Vec3Normalize } from '../math/vec3/Vec3Normalize';
 import { VertexSet } from '../gameobjects3d/geometry/VertexSet';
 
 export function SphereGeometry (radius = 1, widthSegments = 3, heightSegments = 3, phiStart = 0, phiLength = Math.PI * 2, thetaStart = 0, thetaLength = Math.PI): VertexSet
@@ -62,7 +62,7 @@ export function SphereGeometry (radius = 1, widthSegments = 3, heightSegments = 
 
             // normal
 
-            Normalize(vertex, normal);
+            Vec3Normalize(vertex, normal);
 
             normals.push(normal.x, normal.y, normal.z);
 

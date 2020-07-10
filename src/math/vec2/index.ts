@@ -1,15 +1,18 @@
 import { GetChebyshevDistance } from './GetChebyshevDistance';
 import { GetDistanceFromSegment } from './GetDistanceFromSegment';
-import { GetManhattanDistance } from './GetManhattanDistance';
-import { GetManhattanLength } from './GetManhattanLength';
+import { GetVec2Angle } from './GetVec2Angle';
+import { GetVec2AngleY } from './GetVec2AngleY';
+import { GetVec2Distance } from './GetVec2Distance';
+import { GetVec2DistancePower } from './GetVec2DistancePower';
+import { GetVec2DistanceSquared } from './GetVec2DistanceSquared';
 import { GetVec2Length } from './GetVec2Length';
 import { GetVec2LengthSquared } from './GetVec2LengthSquared';
+import { GetVec2ManhattanDistance } from './GetVec2ManhattanDistance';
+import { GetVec2ManhattanLength } from './GetVec2ManhattanLength';
 import { Vec2 } from './Vec2';
 import { Vec2Abs } from './Vec2Abs';
 import { Vec2Add } from './Vec2Add';
 import { Vec2AddScalar } from './Vec2AddScalar';
-import { Vec2Angle } from './Vec2Angle';
-import { Vec2AngleY } from './Vec2AngleY';
 import { Vec2Bezier } from './Vec2Bezier';
 import { Vec2Callback } from './Vec2Callback';
 import { Vec2CatmullRom } from './Vec2CatmullRom';
@@ -20,9 +23,6 @@ import { Vec2ClampScalar } from './Vec2ClampScalar';
 import { Vec2Clone } from './Vec2Clone';
 import { Vec2CopyFrom } from './Vec2CopyFrom';
 import { Vec2Cross } from './Vec2Cross';
-import { Vec2Distance } from './Vec2Distance';
-import { Vec2DistancePower } from './Vec2DistancePower';
-import { Vec2DistanceSquared } from './Vec2DistanceSquared';
 import { Vec2Divide } from './Vec2Divide';
 import { Vec2DivideScalar } from './Vec2DivideScalar';
 import { Vec2Dot } from './Vec2Dot';
@@ -60,16 +60,16 @@ import { Vec2Zero } from './Vec2Zero';
 export {
     GetChebyshevDistance,
     GetDistanceFromSegment,
-    GetManhattanDistance,
-    GetManhattanLength,
+    GetVec2ManhattanDistance,
+    GetVec2ManhattanLength,
     GetVec2Length,
     GetVec2LengthSquared,
     Vec2,
     Vec2Abs,
     Vec2Add,
     Vec2AddScalar,
-    Vec2Angle,
-    Vec2AngleY,
+    GetVec2Angle,
+    GetVec2AngleY,
     Vec2Bezier,
     Vec2Callback,
     Vec2CatmullRom,
@@ -80,9 +80,9 @@ export {
     Vec2Clone,
     Vec2CopyFrom,
     Vec2Cross,
-    Vec2Distance,
-    Vec2DistancePower,
-    Vec2DistanceSquared,
+    GetVec2Distance,
+    GetVec2DistancePower,
+    GetVec2DistanceSquared,
     Vec2Divide,
     Vec2DivideScalar,
     Vec2Dot,
