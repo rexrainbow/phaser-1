@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "target": "esnext",
+        "module": "es2015",
+        "lib": [ "dom", "es5", "es6", "es7", "esnext" ],
+        "outDir": "./dist",
+        "declarationDir": "./dist",
+        "sourceMap": true,
+        "declaration": true,
+        "declarationMap": true,
+        "removeComments": true,
+        "esModuleInterop": true,
+        "downlevelIteration": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "alwaysStrict": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": false,
+        "strictPropertyInitialization": false,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "src/stats/",
+        "src/motion/tween/index.ts",
+        "src/motion/tween/Tween.ts",
+        "src/motion/tween/TweenPlugin.ts",
+        "src/motion/tween/ITweenPlugin.ts"
+    ]
+}
