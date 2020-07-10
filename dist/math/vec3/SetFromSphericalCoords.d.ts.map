@@ -1,0 +1,1 @@
+{"version":3,"file":"SetFromSphericalCoords.d.ts","sourceRoot":"","sources":["../../src/math/vec3/SetFromSphericalCoords.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,QAAQ,CAAC;AAE9B,wBAAgB,sBAAsB,CAAE,MAAM,EAAE,MAAM,EAAE,GAAG,EAAE,MAAM,EAAE,KAAK,EAAE,MAAM,EAAE,GAAG,GAAE,IAAiB,GAAG,IAAI,CAShH"}

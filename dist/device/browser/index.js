@@ -1,0 +1,12 @@
+export { IsChrome } from './IsChrome.js';
+export { IsEdge } from './IsEdge.js';
+export { IsFirefox } from './IsFirefox.js';
+export { IsMSIE } from './IsMSIE.js';
+import '../os/IsiOS.js';
+export { IsMobileSafari } from './IsMobileSafari.js';
+export { IsOpera } from './IsOpera.js';
+import '../os/IsWindowsPhone.js';
+export { IsSafari } from './IsSafari.js';
+export { IsSilk } from './IsSilk.js';
+export { IsTrident } from './IsTrident.js';
+export { GetBrowser } from './GetBrowser.js';

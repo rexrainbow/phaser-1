@@ -1,0 +1,1 @@
+{"version":3,"file":"ClampScalar.d.ts","sourceRoot":"","sources":["../../src/math/vec3/ClampScalar.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,IAAI,EAAE,MAAM,QAAQ,CAAC;AAE9B,wBAAgB,WAAW,CAAE,CAAC,EAAE,IAAI,EAAE,GAAG,EAAE,MAAM,EAAE,GAAG,EAAE,MAAM,EAAE,GAAG,GAAE,IAAiB,GAAG,IAAI,CAO5F"}

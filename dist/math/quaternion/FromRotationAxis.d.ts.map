@@ -1,0 +1,1 @@
+{"version":3,"file":"FromRotationAxis.d.ts","sourceRoot":"","sources":["../../src/math/quaternion/FromRotationAxis.ts"],"names":[],"mappings":"AAAA,OAAO,EAAa,IAAI,EAAE,MAAM,UAAU,CAAC;AAE3C,OAAO,EAAE,UAAU,EAAE,MAAM,cAAc,CAAC;AAE1C,wBAAgB,gBAAgB,CAAE,IAAI,EAAE,IAAI,EAAE,KAAK,EAAE,MAAM,EAAE,GAAG,GAAE,UAA6B,GAAG,UAAU,CAc3G"}
