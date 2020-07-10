@@ -1,6 +1,6 @@
-import { Distance } from '../math/vec2/Distance';
 import { IGameObject } from '../gameobjects/IGameObject';
 import { Vec2 } from '../math/vec2/Vec2';
+import { Vec2Distance } from '../math/vec2/Vec2Distance';
 
 export function GetClosestChild (parent: IGameObject, point: Vec2): IGameObject
 {
@@ -11,7 +11,7 @@ export function GetClosestChild (parent: IGameObject, point: Vec2): IGameObject
 
     children.forEach(child =>
     {
-        const childDistance = Distance(point, child.transform.position);
+        const childDistance = Vec2Distance(point, child.transform.position);
 
         if (!closest || childDistance < distance)
         {

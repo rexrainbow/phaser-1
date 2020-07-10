@@ -1,0 +1,27 @@
+import { Vec2 } from './Vec2';
+import { Vec2Add } from './Vec2Add';
+import { Vec2Distance } from './Vec2Distance';
+import { Vec2DistanceSquared } from './Vec2DistanceSquared';
+import { Vec2Dot } from './Vec2Dot';
+import { Vec2MultiplyByFloats } from './Vec2MultiplyByFloats';
+import { Vec2Subtract } from './Vec2Subtract';
+
+export function GetDistanceFromSegment (p: Vec2, a: Vec2, b: Vec2): number
+{
+    const d = Vec2DistanceSquared(a, b);
+
+    if (d === 0)
+    {
+        return Vec2Distance(p, a);
+    }
+
+    const v = Vec2Subtract(b, a);
+
+    Vec2Subtract(p, a, p);
+
+    const t = Math.max(0, Math.min(1, Vec2Dot(p, v) / 12));
+
+    const proj = Vec2Add(a, Vec2MultiplyByFloats(v, t, t, v));
+
+    return Vec2Distance(p, proj);
+}
