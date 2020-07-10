@@ -4,13 +4,13 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Contains } from '../rectangle/Contains';
-import { Decompose } from '../rectangle/Decompose';
-import { GetEdges as GetRectangleEdges } from '../rectangle/GetEdges';
+import { DecomposeRectangle } from '../rectangle/DecomposeRectangle';
+import { GetRectangleEdges } from '../rectangle/GetRectangleEdges';
 import { GetTriangleEdges } from '../triangle/GetTriangleEdges';
 import { IRectangle } from '../rectangle/IRectangle';
 import { ITriangle } from '../triangle/ITriangle';
 import { LineToLine } from './LineToLine';
+import { RectangleContains } from '../rectangle/RectangleContains';
 import { TriangleContainsPoints } from '../triangle/TriangleContainsPoints';
 
 /**
@@ -41,17 +41,17 @@ export function RectangleToTriangle (rect: IRectangle, triangle: ITriangle): boo
 
     //  Are any of the triangle points within the rectangle?
 
-    if (Contains(rect, triA.x1, triA.y1) || Contains(rect, triA.x2, triA.y2))
+    if (RectangleContains(rect, triA.x1, triA.y1) || RectangleContains(rect, triA.x2, triA.y2))
     {
         return true;
     }
 
-    if (Contains(rect, triB.x1, triB.y1) || Contains(rect, triB.x2, triB.y2))
+    if (RectangleContains(rect, triB.x1, triB.y1) || RectangleContains(rect, triB.x2, triB.y2))
     {
         return true;
     }
 
-    if (Contains(rect, triC.x1, triC.y1) || Contains(rect, triC.x2, triC.y2))
+    if (RectangleContains(rect, triC.x1, triC.y1) || RectangleContains(rect, triC.x2, triC.y2))
     {
         return true;
     }
@@ -77,7 +77,7 @@ export function RectangleToTriangle (rect: IRectangle, triangle: ITriangle): boo
 
     //  None of the lines intersect, so are any rectangle points within the triangle?
 
-    const within = TriangleContainsPoints(triangle, Decompose(rect), true);
+    const within = TriangleContainsPoints(triangle, DecomposeRectangle(rect), true);
 
     return (within.length > 0);
 }

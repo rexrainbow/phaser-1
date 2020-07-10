@@ -4,88 +4,88 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Area } from './Area';
-import { Ceil } from './Ceil';
-import { CeilAll } from './CeilAll';
-import { CenterOn } from './CenterOn';
-import { CenterX } from './CenterX';
-import { CenterY } from './CenterY';
-import { Clone } from './Clone';
-import { Contains } from './Contains';
-import { ContainsPoint } from './ContainsPoint';
-import { ContainsRect } from './ContainsRect';
-import { CopyFrom } from './CopyFrom';
-import { Decompose } from './Decompose';
-import { Equals } from './Equals';
-import { FitInside } from './FitInside';
-import { FitOutside } from './FitOutside';
-import { Floor } from './Floor';
-import { FloorAll } from './FloorAll';
-import { FromPoints } from './FromPoints';
-import { GetAspectRatio } from './GetAspectRatio';
-import { GetCenter } from './GetCenter';
-import { GetEdges } from './GetEdges';
-import { GetPoint } from './GetPoint';
-import { GetPoints } from './GetPoints';
-import { GetSize } from './GetSize';
-import { Inflate } from './Inflate';
-import { Intersection } from './Intersection';
-import { MarchingAnts } from './MarchingAnts';
-import { MergePoints } from './MergePoints';
-import { MergeRect } from './MergeRect';
-import { MergeXY } from './MergeXY';
-import { Offset } from './Offset';
-import { OffsetPoint } from './OffsetPoint';
-import { Overlaps } from './Overlaps';
-import { Perimeter } from './Perimeter';
-import { PerimeterPoint } from './PerimeterPoint';
-import { Random } from './Random';
-import { RandomOutside } from './RandomOutside';
+import { CeilRectangle } from './CeilRectangle';
+import { CeilRectanglePosition } from './CeilRectanglePosition';
+import { CenterRectangleOn } from './CenterRectangleOn';
+import { CloneRectangle } from './CloneRectangle';
+import { CopyRectangleFrom } from './CopyRectangleFrom';
+import { DecomposeRectangle } from './DecomposeRectangle';
+import { FitRectangleInside } from './FitRectangleInside';
+import { FitRectangleOutside } from './FitRectangleOutside';
+import { FitRectangleToPoint } from './FitRectangleToPoint';
+import { FitRectangleToPoints } from './FitRectangleToPoints';
+import { FloorRectangle } from './FloorRectangle';
+import { FloorRectanglePosition } from './FloorRectanglePosition';
+import { GetRectangleArea } from './GetRectangleArea';
+import { GetRectangleAspectRatio } from './GetRectangleAspectRatio';
+import { GetRectangleCenter } from './GetRectangleCenter';
+import { GetRectangleCenterX } from './GetRectangleCenterX';
+import { GetRectangleCenterY } from './GetRectangleCenterY';
+import { GetRectangleEdges } from './GetRectangleEdges';
+import { GetRectangleIntersection } from './GetRectangleIntersection';
+import { GetRectangleMarchingAnts } from './GetRectangleMarchingAnts';
+import { GetRectangleOverlap } from './GetRectangleOverlap';
+import { GetRectanglePerimeter } from './GetRectanglePerimeter';
+import { GetRectanglePerimeterPoint } from './GetRectanglePerimeterPoint';
+import { GetRectanglePoint } from './GetRectanglePoint';
+import { GetRectanglePoints } from './GetRectanglePoints';
+import { GetRectangleRandomPoint } from './GetRectangleRandomPoint';
+import { GetRectangleRandomPointOutside } from './GetRectangleRandomPointOutside';
+import { GetRectangleSize } from './GetRectangleSize';
+import { GetRectangleUnion } from './GetRectangleUnion';
+import { InflateRectangle } from './InflateRectangle';
+import { MergeRectangle } from './MergeRectangle';
 import { Rectangle } from './Rectangle';
-import { SameDimensions } from './SameDimensions';
-import { Scale } from './Scale';
-import { Union } from './Union';
+import { RectangleContains } from './RectangleContains';
+import { RectangleContainsPoint } from './RectangleContainsPoint';
+import { RectangleContainsRectangle } from './RectangleContainsRectangle';
+import { RectangleEquals } from './RectangleEquals';
+import { RectangleFromPoints } from './RectangleFromPoints';
+import { RectangleSizeEquals } from './RectangleSizeEquals';
+import { ScaleRectangle } from './ScaleRectangle';
+import { TranslateRectangle } from './TranslateRectangle';
+import { TranslateRectanglePoint } from './TranslateRectanglePoint';
 
 export {
-    Area,
-    Ceil,
-    CeilAll,
-    CenterOn,
-    CenterX,
-    CenterY,
-    Clone,
-    Contains,
-    ContainsPoint,
-    ContainsRect,
-    CopyFrom,
-    Decompose,
-    Equals,
-    FitInside,
-    FitOutside,
-    Floor,
-    FloorAll,
-    FromPoints,
-    GetAspectRatio,
-    GetCenter,
-    GetEdges,
-    GetPoint,
-    GetPoints,
-    GetSize,
-    Inflate,
-    Intersection,
-    MarchingAnts,
-    MergePoints,
-    MergeRect,
-    MergeXY,
-    Offset,
-    OffsetPoint,
-    Overlaps,
-    Perimeter,
-    PerimeterPoint,
-    Random,
-    RandomOutside,
+    CeilRectangle,
+    CeilRectanglePosition,
+    CenterRectangleOn,
+    CloneRectangle,
+    CopyRectangleFrom,
+    DecomposeRectangle,
+    FitRectangleInside,
+    FitRectangleOutside,
+    FitRectangleToPoint,
+    FitRectangleToPoints,
+    FloorRectangle,
+    FloorRectanglePosition,
+    GetRectangleArea,
+    GetRectangleAspectRatio,
+    GetRectangleCenter,
+    GetRectangleCenterX,
+    GetRectangleCenterY,
+    GetRectangleEdges,
+    GetRectangleIntersection,
+    GetRectangleMarchingAnts,
+    GetRectangleOverlap,
+    GetRectanglePerimeter,
+    GetRectanglePerimeterPoint,
+    GetRectanglePoint,
+    GetRectanglePoints,
+    GetRectangleRandomPoint,
+    GetRectangleRandomPointOutside,
+    GetRectangleSize,
+    GetRectangleUnion,
+    InflateRectangle,
+    MergeRectangle,
     Rectangle,
-    SameDimensions,
-    Scale,
-    Union
+    RectangleContains,
+    RectangleContainsPoint,
+    RectangleContainsRectangle,
+    RectangleEquals,
+    RectangleFromPoints,
+    RectangleSizeEquals,
+    ScaleRectangle,
+    TranslateRectangle,
+    TranslateRectanglePoint
 };

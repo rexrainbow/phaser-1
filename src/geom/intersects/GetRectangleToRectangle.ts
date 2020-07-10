@@ -5,8 +5,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { GetEdges } from '../rectangle/GetEdges';
 import { GetLineToRectangle } from './GetLineToRectangle';
+import { GetRectangleEdges } from '../rectangle/GetRectangleEdges';
 import { IRectangle } from '../rectangle/IRectangle';
 import { RectangleToRectangle } from './RectangleToRectangle';
 import { Vec2 } from '../../math/vec2/Vec2';
@@ -29,7 +29,7 @@ export function GetRectangleToRectangle (rectA: IRectangle, rectB: IRectangle, o
 {
     if (RectangleToRectangle(rectA, rectB))
     {
-        const [ lineA, lineB, lineC, lineD ] = GetEdges(rectA);
+        const [ lineA, lineB, lineC, lineD ] = GetRectangleEdges(rectA);
 
         GetLineToRectangle(lineA, rectB, out);
         GetLineToRectangle(lineB, rectB, out);

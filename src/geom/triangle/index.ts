@@ -10,7 +10,6 @@ import { CenterTriangleOn } from './CenterTriangleOn';
 import { CloneTriangle } from './CloneTriangle';
 import { CopyTriangleFrom } from './CopyTriangleFrom';
 import { DecomposeTriangle } from './DecomposeTriangle';
-import { GetRandomTrianglePoint } from './GetRandomTrianglePoint';
 import { GetTriangleArea } from './GetTriangleArea';
 import { GetTriangleCentroid } from './GetTriangleCentroid';
 import { GetTriangleCircumCenter } from './GetTriangleCircumCenter';
@@ -20,6 +19,7 @@ import { GetTriangleInCenter } from './GetTriangleInCenter';
 import { GetTrianglePerimeter } from './GetTrianglePerimeter';
 import { GetTrianglePoint } from './GetTrianglePoint';
 import { GetTrianglePoints } from './GetTrianglePoints';
+import { GetTriangleRandomPoint } from './GetTriangleRandomPoint';
 import { RotateTriangle } from './RotateTriangle';
 import { RotateTriangleAround } from './RotateTriangleAround';
 import { RotateTriangleAroundPoint } from './RotateTriangleAroundPoint';
@@ -46,7 +46,7 @@ export {
     GetTrianglePerimeter,
     GetTrianglePoint,
     GetTrianglePoints,
-    GetRandomTrianglePoint,
+    GetTriangleRandomPoint,
     RotateTriangle,
     RotateTriangleAround,
     RotateTriangleAroundPoint,

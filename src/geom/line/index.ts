@@ -21,10 +21,10 @@ import { GetLineNormalY } from './GetLineNormalY';
 import { GetLinePerpSlope } from './GetLinePerpSlope';
 import { GetLinePoint } from './GetLinePoint';
 import { GetLinePoints } from './GetLinePoints';
+import { GetLineRandomPoint } from './GetLineRandomPoint';
 import { GetLineReflectAngle } from './GetLineReflectAngle';
 import { GetLineSlope } from './GetLineSlope';
 import { GetLineWidth } from './GetLineWidth';
-import { GetRandomPointOnLine } from './GetRandomPointOnLine';
 import { GetShortestLineDistance } from './GetShortestLineDistance';
 import { Line } from './Line';
 import { LineEquals } from './LineEquals';
@@ -56,7 +56,7 @@ export {
     GetLineReflectAngle,
     GetLineSlope,
     GetLineWidth,
-    GetRandomPointOnLine,
+    GetLineRandomPoint,
     GetShortestLineDistance,
     Line,
     LineEquals,

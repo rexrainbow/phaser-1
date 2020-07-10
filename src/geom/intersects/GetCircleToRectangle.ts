@@ -6,8 +6,8 @@
  */
 
 import { CircleToRectangle } from './CircleToRectangle';
-import { GetEdges } from '../rectangle/GetEdges';
 import { GetLineToCircle } from './GetLineToCircle';
+import { GetRectangleEdges } from '../rectangle/GetRectangleEdges';
 import { ICircle } from '../circle/ICircle';
 import { IRectangle } from '../rectangle/IRectangle';
 import { Vec2 } from '../../math/vec2/Vec2';
@@ -29,7 +29,7 @@ export function GetCircleToRectangle (circle: ICircle, rect: IRectangle, out: Ve
 {
     if (CircleToRectangle(circle, rect))
     {
-        const [ line1, line2, line3, line4 ] = GetEdges(rect);
+        const [ line1, line2, line3, line4 ] = GetRectangleEdges(rect);
 
         GetLineToCircle(line1, circle, out);
         GetLineToCircle(line2, circle, out);

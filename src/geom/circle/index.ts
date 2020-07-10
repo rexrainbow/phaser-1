@@ -17,7 +17,7 @@ import { GetCircleCircumference } from './GetCircleCircumference';
 import { GetCircleCircumferencePoint } from './GetCircleCircumferencePoint';
 import { GetCirclePoint } from './GetCirclePoint';
 import { GetCirclePoints } from './GetCirclePoints';
-import { GetRandomCirclePoint } from './GetRandomCirclePoint';
+import { GetCircleRandomPoint } from './GetCircleRandomPoint';
 import { TranslateCircle } from './TranslateCircle';
 import { TranslateCirclePoint } from './TranslateCirclePoint';
 
@@ -27,7 +27,7 @@ export {
     CircleContainsPoint,
     CircleContainsRect,
     CircleEquals,
-    GetRandomCirclePoint,
+    GetCircleRandomPoint,
     CloneCircle,
     CopyCircleFrom,
     GetCircleArea,

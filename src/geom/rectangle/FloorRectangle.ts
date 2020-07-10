@@ -1,0 +1,20 @@
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+
+import { IRectangle } from './IRectangle';
+
+/**
+ * Rounds a Rectangle's position and size down to the largest integer less than or equal to each current coordinate or dimension.
+ */
+export function FloorRectangle (rect: IRectangle): IRectangle
+{
+    rect.x = Math.floor(rect.x);
+    rect.y = Math.floor(rect.y);
+    rect.width = Math.floor(rect.width);
+    rect.height = Math.floor(rect.height);
+
+    return rect;
+}

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Contains } from './Contains';
+import { RectangleContains } from './RectangleContains';
 
 export class Rectangle
 {
@@ -30,7 +30,7 @@ export class Rectangle
 
     contains (x: number, y: number): boolean
     {
-        return Contains(this, x, y);
+        return RectangleContains(this, x, y);
     }
 
     set right (value: number)

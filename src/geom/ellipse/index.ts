@@ -17,7 +17,7 @@ import { GetEllipseCircumference } from './GetEllipseCircumference';
 import { GetEllipseCircumferencePoint } from './GetEllipseCircumferencePoint';
 import { GetEllipsePoint } from './GetEllipsePoint';
 import { GetEllipsePoints } from './GetEllipsePoints';
-import { GetRandomPointInEllipse } from './GetRandomPointInEllipse';
+import { GetEllipseRandomPoint } from './GetEllipseRandomPoint';
 import { TranslateEllipse } from './TranslateEllipse';
 import { TranslateEllipsePoint } from './TranslateEllipsePoint';
 
@@ -29,7 +29,7 @@ export {
     EllipseContainsPoint,
     EllipseContainsRect,
     EllipseEquals,
-    GetRandomPointInEllipse,
+    GetEllipseRandomPoint,
     GetEllipseArea,
     GetEllipseBounds,
     GetEllipseCircumference,
