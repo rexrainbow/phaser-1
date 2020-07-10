@@ -27,7 +27,7 @@
 // import runTest from './render layer 1';
 // import runTest from './effect layer new shader';
 
-// import runTest from './sprite image';
+import runTest from './sprite image';
 
 // import runTest from './webgl batch test';
 // import runTest from './display list debug 1';
@@ -47,7 +47,7 @@
 // import runTest from './materials';
 // import runTest from './json model';
 
-import runTest from './obj model';
+// import runTest from './obj model';
 
 // import runTest from './dynamic frame';
 

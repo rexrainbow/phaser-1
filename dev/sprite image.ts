@@ -1,7 +1,7 @@
 import * as Easing from '../src/math/easing';
 
 import { AddChild, AddChildren } from '../src/display/';
-import { BackgroundColor, BatchSize, Parent, Scenes, SetWebGL, Size } from '../src/config';
+import { BackgroundColor, Parent, Scenes, WebGL } from '../src/config';
 
 import { AddTween } from '../src/motion/tween/nano/AddTween';
 import { Game } from '../src/Game';
@@ -47,9 +47,7 @@ class Demo extends Scene
 export default function (): void
 {
     new Game(
-        SetWebGL(),
-        BatchSize(128),
-        Size(800, 600),
+        WebGL(),
         Parent('gameParent'),
         BackgroundColor(0x2d2d2d),
         Scenes(Demo)
