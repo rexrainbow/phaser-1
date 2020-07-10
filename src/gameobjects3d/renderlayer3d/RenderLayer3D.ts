@@ -1,5 +1,5 @@
 import { Flush, PopFramebuffer, SetFramebuffer } from '../../renderer/webgl1/renderpass';
-import { GetHeight, GetResolution, GetWidth } from '../../config';
+import { GetHeight, GetResolution, GetWidth } from '../../config/size';
 
 import { CreateDepthBuffer } from '../../renderer/webgl1/fbo/CreateDepthBuffer';
 import { CreateFramebuffer } from '../../renderer/webgl1/fbo/CreateFramebuffer';

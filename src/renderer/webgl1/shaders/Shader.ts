@@ -1,4 +1,4 @@
-import { GetHeight, GetResolution, GetWidth } from '../../../config/Size';
+import { GetHeight, GetResolution, GetWidth } from '../../../config/size/';
 
 import { CreateAttributes } from './CreateAttributes';
 import { CreateDepthBuffer } from '../fbo/CreateDepthBuffer';

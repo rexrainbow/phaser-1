@@ -1,4 +1,4 @@
-import { GetMaxTextures } from '../../../config/MaxTextures';
+import { GetMaxTextures } from '../../../config/maxtextures/GetMaxTextures';
 import { IRenderPass } from '../renderpass/IRenderPass';
 import { IShaderConfig } from './IShaderConfig';
 import { MULTI_QUAD_FRAG } from '../glsl/MULTI_QUAD_FRAG';

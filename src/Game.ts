@@ -1,10 +1,13 @@
 import { AddToDOM, DOMContentLoaded } from './dom';
 import { Emit, EventEmitter } from './events';
-import { GetBanner, GetParent, GetRenderer } from './config';
 
 import { GameInstance } from './GameInstance';
+import { GetBanner } from './config/banner';
+import { GetParent } from './config/parent';
+import { GetRenderer } from './config/renderer';
 import { IRenderer } from './renderer/IRenderer';
 import { SceneManager } from './scenes/SceneManager';
+import { SetConfigDefaults } from './config/SetConfigDefaults';
 import { TextureManager } from './textures/TextureManager';
 
 export class Game extends EventEmitter
@@ -32,6 +35,8 @@ export class Game extends EventEmitter
         super();
 
         GameInstance.set(this);
+
+        SetConfigDefaults();
 
         DOMContentLoaded(() => this.boot(settings));
     }

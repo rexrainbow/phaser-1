@@ -1,10 +1,10 @@
-import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
+import { GetHeight, GetResolution, GetWidth } from '../../config/size/';
 
 import { End } from './renderpass/End';
 import { GL } from './GL';
-import { GetBackgroundColor } from '../../config/BackgroundColor';
+import { GetBackgroundColor } from '../../config/backgroundcolor/GetBackgroundColor';
 import { GetRGBArray } from './colors/GetRGBArray';
-import { GetWebGLContext } from '../../config/WebGLContext';
+import { GetWebGLContext } from '../../config/webglcontext/GetWebGLContext';
 import { IRenderPass } from './renderpass/IRenderPass';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 import { ProcessBindingQueue } from './renderpass/ProcessBindingQueue';

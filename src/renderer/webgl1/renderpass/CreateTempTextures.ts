@@ -1,4 +1,4 @@
-import { GetMaxTextures, SetMaxTextures } from '../../../config/MaxTextures';
+import { GetMaxTextures, SetMaxTextures } from '../../../config/maxtextures/';
 
 import { CheckShaderMaxIfStatements } from '../shaders/CheckShaderMaxIfStatements';
 import { IRenderPass } from './IRenderPass';

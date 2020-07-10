@@ -1,4 +1,5 @@
 import { CreateTempTextures } from './CreateTempTextures';
+import { GetBatchSize } from '../../../config/batchsize/GetBatchSize';
 import { IBaseCamera } from '../../../camera/IBaseCamera';
 import { IRenderPass } from './IRenderPass';
 import { IShader } from '../shaders/IShader';
@@ -16,7 +17,6 @@ import { SetDefaultShader } from './SetDefaultShader';
 import { SetDefaultVertexBuffer } from './SetDefaultVertexBuffer';
 import { SetDefaultViewport } from './SetDefaultViewport';
 import { StaticCamera } from '../../../camera';
-import { batchSize } from '../../../config/BatchSize';
 
 export type FramebufferStackEntry = {
     framebuffer: WebGLFramebuffer;
@@ -116,7 +116,7 @@ export class RenderPass implements IRenderPass
 
         SetDefaultFramebuffer(this);
         SetDefaultBlendMode(this, true, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        SetDefaultVertexBuffer(this, new IndexedVertexBuffer({ batchSize, indexLayout }));
+        SetDefaultVertexBuffer(this, new IndexedVertexBuffer({ batchSize: GetBatchSize(), indexLayout }));
         SetDefaultShader(this, new MultiTextureQuadShader());
     }
 

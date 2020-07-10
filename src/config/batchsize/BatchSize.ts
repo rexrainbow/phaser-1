@@ -1,9 +1,9 @@
-export let batchSize = 4096;
+import { SetBatchSize } from './SetBatchSize';
 
 export function BatchSize (size: number): () => void
 {
     return (): void =>
     {
-        batchSize = size;
+        SetBatchSize(size);
     };
 }

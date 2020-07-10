@@ -1,5 +1,5 @@
+import { GetDefaultOriginX, GetDefaultOriginY } from '../../../config/defaultorigin/';
 import { Vec2, Vec2Callback } from '../../../math/vec2';
-import { originX, originY } from '../../../config/DefaultOrigin';
 
 import { DIRTY_CONST } from '../../DIRTY_CONST';
 import { IGameObject } from '../../IGameObject';
@@ -41,7 +41,7 @@ export class TransformComponent implements ITransformComponent
         this.position = new Vec2Callback(update, x, y);
         this.scale = new Vec2Callback(update, 1, 1);
         this.skew = new Vec2Callback(update);
-        this.origin = new Vec2Callback(updateExtent, originX, originY);
+        this.origin = new Vec2Callback(updateExtent, GetDefaultOriginX(), GetDefaultOriginY());
 
         this.extent = new Rectangle();
     }

@@ -1,8 +1,8 @@
-import { GetHeight, GetResolution, GetWidth } from '../../config/Size';
+import { GetHeight, GetResolution, GetWidth } from '../../config/size/';
 
 import { BindingQueue } from '../BindingQueue';
-import { GetBackgroundColor } from '../../config/BackgroundColor';
-import { GetCanvasContext } from '../../config/CanvasContext';
+import { GetBackgroundColor } from '../../config/backgroundcolor/GetBackgroundColor';
+import { GetCanvasContext } from '../../config/canvascontext/GetCanvasContext';
 import { ISceneRenderData } from '../../scenes/ISceneRenderData';
 
 export class CanvasRenderer
