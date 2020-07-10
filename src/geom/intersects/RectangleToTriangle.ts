@@ -5,13 +5,13 @@
  */
 
 import { Contains } from '../rectangle/Contains';
-import { ContainsArray } from '../triangle/ContainsArray';
 import { Decompose } from '../rectangle/Decompose';
 import { GetEdges as GetRectangleEdges } from '../rectangle/GetEdges';
-import { GetEdges as GetTriangleEdges } from '../triangle/GetEdges';
+import { GetTriangleEdges } from '../triangle/GetTriangleEdges';
 import { IRectangle } from '../rectangle/IRectangle';
 import { ITriangle } from '../triangle/ITriangle';
 import { LineToLine } from './LineToLine';
+import { TriangleContainsPoints } from '../triangle/TriangleContainsPoints';
 
 /**
  * Checks for intersection between Rectangle shape and Triangle shape.
@@ -77,7 +77,7 @@ export function RectangleToTriangle (rect: IRectangle, triangle: ITriangle): boo
 
     //  None of the lines intersect, so are any rectangle points within the triangle?
 
-    const within = ContainsArray(triangle, Decompose(rect), true);
+    const within = TriangleContainsPoints(triangle, Decompose(rect), true);
 
     return (within.length > 0);
 }

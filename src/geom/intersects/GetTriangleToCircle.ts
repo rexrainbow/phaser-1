@@ -5,8 +5,8 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { GetEdges } from '../triangle/GetEdges';
 import { GetLineToCircle } from './GetLineToCircle';
+import { GetTriangleEdges } from '../triangle/GetTriangleEdges';
 import { ICircle } from '../circle/ICircle';
 import { ITriangle } from '../triangle/ITriangle';
 import { TriangleToCircle } from './TriangleToCircle';
@@ -30,7 +30,7 @@ export function GetTriangleToCircle (triangle: ITriangle, circle: ICircle, out: 
 {
     if (TriangleToCircle(triangle, circle))
     {
-        const [ lineA, lineB, lineC ] = GetEdges(triangle);
+        const [ lineA, lineB, lineC ] = GetTriangleEdges(triangle);
 
         GetLineToCircle(lineA, circle, out);
         GetLineToCircle(lineB, circle, out);

@@ -4,11 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Contains } from '../triangle/Contains';
-import { GetEdges } from '../triangle/GetEdges';
+import { GetTriangleEdges } from '../triangle/GetTriangleEdges';
 import { ICircle } from '../circle/ICircle';
 import { ITriangle } from '../triangle/ITriangle';
 import { LineToCircle } from './LineToCircle';
+import { TriangleContains } from '../triangle/TriangleContains';
 
 /**
  * Checks if a Triangle and a Circle intersect.
@@ -36,12 +36,12 @@ export function TriangleToCircle (triangle: ITriangle, circle: ICircle): boolean
         return false;
     }
 
-    if (Contains(triangle, circle.x, circle.y))
+    if (TriangleContains(triangle, circle.x, circle.y))
     {
         return true;
     }
 
-    const [ line1, line2, line3 ] = GetEdges(triangle);
+    const [ line1, line2, line3 ] = GetTriangleEdges(triangle);
 
     return (
         LineToCircle(line1, circle) ||

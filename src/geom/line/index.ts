@@ -4,64 +4,66 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Angle } from './Angle';
-import { BresenhamPoints } from './BresenhamPoints';
-import { CenterOn } from './CenterOn';
-import { Clone } from './Clone';
-import { CopyFrom } from './CopyFrom';
-import { Equals } from './Equals';
-import { Extend } from './Extend';
-import { GetMidPoint } from './GetMidPoint';
-import { GetNearestPoint } from './GetNearestPoint';
-import { GetNormal } from './GetNormal';
-import { GetPoint } from './GetPoint';
-import { GetPoints } from './GetPoints';
-import { GetShortestDistance } from './GetShortestDistance';
-import { Height } from './Height';
-import { Length } from './Length';
+import { CenterLineOn } from './CenterLineOn';
+import { CloneLine } from './CloneLine';
+import { CopyLineFrom } from './CopyLineFrom';
+import { ExtendLine } from './ExtendLine';
+import { GetLineAngle } from './GetLineAngle';
+import { GetLineBresenhamPoints } from './GetLineBresenhamPoints';
+import { GetLineHeight } from './GetLineHeight';
+import { GetLineLength } from './GetLineLength';
+import { GetLineMidPoint } from './GetLineMidPoint';
+import { GetLineNearestPoint } from './GetLineNearestPoint';
+import { GetLineNormal } from './GetLineNormal';
+import { GetLineNormalAngle } from './GetLineNormalAngle';
+import { GetLineNormalX } from './GetLineNormalX';
+import { GetLineNormalY } from './GetLineNormalY';
+import { GetLinePerpSlope } from './GetLinePerpSlope';
+import { GetLinePoint } from './GetLinePoint';
+import { GetLinePoints } from './GetLinePoints';
+import { GetLineReflectAngle } from './GetLineReflectAngle';
+import { GetLineSlope } from './GetLineSlope';
+import { GetLineWidth } from './GetLineWidth';
+import { GetRandomPointOnLine } from './GetRandomPointOnLine';
+import { GetShortestLineDistance } from './GetShortestLineDistance';
 import { Line } from './Line';
-import { NormalAngle } from './NormalAngle';
-import { NormalX } from './NormalX';
-import { NormalY } from './NormalY';
-import { Offset } from './Offset';
-import { PerpSlope } from './PerpSlope';
-import { Random } from './Random';
-import { ReflectAngle } from './ReflectAngle';
-import { Rotate } from './Rotate';
-import { RotateAroundPoint } from './RotateAroundPoint';
-import { RotateAroundXY } from './RotateAroundXY';
-import { SetToAngle } from './SetToAngle';
-import { Slope } from './Slope';
-import { Width } from './Width';
+import { LineEquals } from './LineEquals';
+import { LineSetToAngle } from './SetLineToAngle';
+import { RotateLine } from './RotateLine';
+import { RotateLineAround } from './RotateLineAround';
+import { RotateLineAroundPoint } from './RotateLineAroundPoint';
+import { TranslateLine } from './TranslateLine';
+import { TranslateLinePoint } from './TranslateLinePoint';
 
 export {
-    Angle,
-    BresenhamPoints,
-    CenterOn,
-    Clone,
-    CopyFrom,
-    Equals,
-    Extend,
-    GetMidPoint,
-    GetNearestPoint,
-    GetNormal,
-    GetPoint,
-    GetPoints,
-    GetShortestDistance,
-    Height,
-    Length,
+    CenterLineOn,
+    CloneLine,
+    CopyLineFrom,
+    ExtendLine,
+    GetLineAngle,
+    GetLineBresenhamPoints,
+    GetLineHeight,
+    GetLineLength,
+    GetLineMidPoint,
+    GetLineNearestPoint,
+    GetLineNormal,
+    GetLineNormalAngle,
+    GetLineNormalX,
+    GetLineNormalY,
+    GetLinePerpSlope,
+    GetLinePoint,
+    GetLinePoints,
+    GetLineReflectAngle,
+    GetLineSlope,
+    GetLineWidth,
+    GetRandomPointOnLine,
+    GetShortestLineDistance,
     Line,
-    NormalAngle,
-    NormalX,
-    NormalY,
-    Offset,
-    PerpSlope,
-    Random,
-    ReflectAngle,
-    Rotate,
-    RotateAroundPoint,
-    RotateAroundXY,
-    SetToAngle,
-    Slope,
-    Width
+    LineEquals,
+    LineSetToAngle,
+    RotateLine,
+    RotateLineAround,
+    RotateLineAroundPoint,
+    TranslateLine,
+    TranslateLinePoint
 };

@@ -5,7 +5,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { GetEdges } from '../triangle/GetEdges';
+import { GetTriangleEdges } from '../triangle/GetTriangleEdges';
 import { ILine } from '../line/ILine';
 import { ITriangle } from '../triangle/ITriangle';
 import { LineToLine } from './LineToLine';
@@ -30,7 +30,7 @@ export function GetTriangleToLine (triangle: ITriangle, line: ILine, out: Vec2[]
 {
     if (TriangleToLine(triangle, line))
     {
-        const [ lineA, lineB, lineC ] = GetEdges(triangle);
+        const [ lineA, lineB, lineC ] = GetTriangleEdges(triangle);
 
         const points = [ new Vec2(), new Vec2(), new Vec2() ];
 

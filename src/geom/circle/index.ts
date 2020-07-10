@@ -4,38 +4,38 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Area } from './Area';
 import { Circle } from './Circle';
-import { Circumference } from './Circumference';
-import { CircumferencePoint } from './CircumferencePoint';
-import { Clone } from './Clone';
-import { Contains } from './Contains';
-import { ContainsPoint } from './ContainsPoint';
-import { ContainsRect } from './ContainsRect';
-import { CopyFrom } from './CopyFrom';
-import { Equals } from './Equals';
-import { GetBounds } from './GetBounds';
-import { GetPoint } from './GetPoint';
-import { GetPoints } from './GetPoints';
-import { Offset } from './Offset';
-import { OffsetPoint } from './OffsetPoint';
-import { Random } from './Random';
+import { CircleContains } from './CircleContains';
+import { CircleContainsPoint } from './CircleContainsPoint';
+import { CircleContainsRect } from './CircleContainsRect';
+import { CircleEquals } from './CircleEquals';
+import { CloneCircle } from './CloneCircle';
+import { CopyCircleFrom } from './CopyCircleFrom';
+import { GetCircleArea } from './GetCircleArea';
+import { GetCircleBounds } from './GetCircleBounds';
+import { GetCircleCircumference } from './GetCircleCircumference';
+import { GetCircleCircumferencePoint } from './GetCircleCircumferencePoint';
+import { GetCirclePoint } from './GetCirclePoint';
+import { GetCirclePoints } from './GetCirclePoints';
+import { GetRandomCirclePoint } from './GetRandomCirclePoint';
+import { TranslateCircle } from './TranslateCircle';
+import { TranslateCirclePoint } from './TranslateCirclePoint';
 
 export {
-    Area,
     Circle,
-    Circumference,
-    CircumferencePoint,
-    Clone,
-    Contains,
-    ContainsPoint,
-    ContainsRect,
-    CopyFrom,
-    Equals,
-    GetBounds,
-    GetPoint,
-    GetPoints,
-    Offset,
-    OffsetPoint,
-    Random
+    CircleContains,
+    CircleContainsPoint,
+    CircleContainsRect,
+    CircleEquals,
+    GetRandomCirclePoint,
+    CloneCircle,
+    CopyCircleFrom,
+    GetCircleArea,
+    GetCircleBounds,
+    GetCircleCircumference,
+    GetCircleCircumferencePoint,
+    GetCirclePoint,
+    GetCirclePoints,
+    TranslateCircle,
+    TranslateCirclePoint
 };

@@ -4,11 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { ContainsArray } from '../triangle/ContainsArray';
-import { Decompose } from '../triangle/Decompose';
-import { GetEdges } from '../triangle/GetEdges';
+import { DecomposeTriangle } from '../triangle/DecomposeTriangle';
+import { GetTriangleEdges } from '../triangle/GetTriangleEdges';
 import { ITriangle } from '../triangle/ITriangle';
 import { LineToLine } from './LineToLine';
+import { TriangleContainsPoints } from '../triangle/TriangleContainsPoints';
 
 /**
  * Checks if two Triangles intersect.
@@ -35,8 +35,8 @@ export function TriangleToTriangle (triangleA: ITriangle, triangleB: ITriangle):
         return false;
     }
 
-    const [ lineAA, lineAB, lineAC ] = GetEdges(triangleA);
-    const [ lineBA, lineBB, lineBC ] = GetEdges(triangleB);
+    const [ lineAA, lineAB, lineAC ] = GetTriangleEdges(triangleA);
+    const [ lineBA, lineBB, lineBC ] = GetTriangleEdges(triangleB);
 
     //  Now check the lines against each line of TriangleB
     if (
@@ -56,7 +56,7 @@ export function TriangleToTriangle (triangleA: ITriangle, triangleB: ITriangle):
 
     //  Nope, so check to see if any of the points of triangleA are within triangleB
 
-    const withinA = ContainsArray(triangleB, Decompose(triangleA), true);
+    const withinA = TriangleContainsPoints(triangleB, DecomposeTriangle(triangleA), true);
 
     if (withinA.length > 0)
     {
@@ -65,7 +65,7 @@ export function TriangleToTriangle (triangleA: ITriangle, triangleB: ITriangle):
 
     //  Finally check to see if any of the points of triangleB are within triangleA
 
-    const withinB = ContainsArray(triangleA, Decompose(triangleB), true);
+    const withinB = TriangleContainsPoints(triangleA, DecomposeTriangle(triangleB), true);
 
     return (withinB.length > 0);
 }

@@ -4,11 +4,11 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Contains } from '../triangle/Contains';
-import { GetEdges } from '../triangle/GetEdges';
+import { GetTriangleEdges } from '../triangle/GetTriangleEdges';
 import { ILine } from '../line/ILine';
 import { ITriangle } from '../triangle/ITriangle';
 import { LineToLine } from './LineToLine';
+import { TriangleContains } from '../triangle/TriangleContains';
 
 /**
  * Checks if a Triangle and a Line intersect.
@@ -28,12 +28,12 @@ export function TriangleToLine (triangle: ITriangle, line: ILine): boolean
     const { x1, y1, x2, y2 } = line;
 
     //  If the Triangle contains either the start or end point of the line, it intersects
-    if (Contains(triangle, x1, y1) || Contains(triangle, x2, y2))
+    if (TriangleContains(triangle, x1, y1) || TriangleContains(triangle, x2, y2))
     {
         return true;
     }
 
-    const [ line1, line2, line3 ] = GetEdges(triangle);
+    const [ line1, line2, line3 ] = GetTriangleEdges(triangle);
 
     //  Now check the line against each line of the Triangle
     return (

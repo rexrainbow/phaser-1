@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Contains } from './Contains';
+import { TriangleContains } from './TriangleContains';
 
 /**
  * @classdesc
@@ -54,7 +54,7 @@ export class Triangle
 
     contains (x: number, y: number): boolean
     {
-        return Contains(this, x, y);
+        return TriangleContains(this, x, y);
     }
 
     get left (): number

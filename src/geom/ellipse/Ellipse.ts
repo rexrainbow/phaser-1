@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Contains } from './Contains';
+import { EllipseContains } from './EllipseContains';
 
 /**
  * @classdesc
@@ -59,7 +59,7 @@ export class Ellipse
      */
     contains (x: number, y: number): boolean
     {
-        return Contains(this, x, y);
+        return EllipseContains(this, x, y);
     }
 
     /**

@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Contains } from '../circle/Contains';
+import { CircleContains } from '../circle/CircleContains';
 import { ICircle } from '../circle/ICircle';
 import { ILine } from '../line/ILine';
 import { Vec2 } from '../../math/vec2/Vec2';
@@ -15,15 +15,6 @@ const tmp: Vec2 = new Vec2();
  * Checks for intersection between the line segment and circle.
  *
  * Based on code by [Matt DesLauriers](https://github.com/mattdesl/line-circle-collision/blob/master/LICENSE.md).
- *
- * @function Phaser.Geom.Intersects.LineToCircle
- * @since 3.0.0
- *
- * @param {Phaser.Geom.Line} line - The line segment to check.
- * @param {Phaser.Geom.Circle} circle - The circle to check against the line.
- * @param {(Phaser.Geom.Point|any)} [nearest] - An optional Point-like object. If given the closest point on the Line where the circle intersects will be stored in this object.
- *
- * @return {boolean} `true` if the two objects intersect, otherwise `false`.
  */
 export function LineToCircle (line: ILine, circle: ICircle, nearest?: Vec2): boolean
 {
@@ -34,14 +25,14 @@ export function LineToCircle (line: ILine, circle: ICircle, nearest?: Vec2): boo
 
     const { x1, y1, x2, y2 } = line;
 
-    if (Contains(circle, x1, y1))
+    if (CircleContains(circle, x1, y1))
     {
         nearest.set(x1, y1);
 
         return true;
     }
 
-    if (Contains(circle, x2, y2))
+    if (CircleContains(circle, x2, y2))
     {
         nearest.set(x2, y2);
 
@@ -75,6 +66,6 @@ export function LineToCircle (line: ILine, circle: ICircle, nearest?: Vec2): boo
     return (
         pLen2 <= dLen2 &&
         ((px * dx) + (py * dy)) >= 0 &&
-        Contains(circle, nearest.x, nearest.y)
+        CircleContains(circle, nearest.x, nearest.y)
     );
 }

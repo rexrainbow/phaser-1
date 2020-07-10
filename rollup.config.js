@@ -197,7 +197,6 @@ export default [
 
         ]
     },
-    /*
     {
         //  ESM Multiple Entry Point Package
         input: ESMInputBundle,
@@ -236,5 +235,4 @@ export default [
             }
         ]
     }
-    */
 ];

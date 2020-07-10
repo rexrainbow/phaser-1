@@ -4,56 +4,56 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Area } from './Area';
-import { BuildEquilateral } from './BuildEquilateral';
-import { BuildRight } from './BuildRight';
-import { CenterOn } from './CenterOn';
-import { Centroid } from './Centroid';
-import { CircumCenter } from './CircumCenter';
-import { CircumCircle } from './CircumCircle';
-import { Clone } from './Clone';
-import { Contains } from './Contains';
-import { ContainsArray } from './ContainsArray';
-import { ContainsPoint } from './ContainsPoint';
-import { CopyFrom } from './CopyFrom';
-import { Decompose } from './Decompose';
-import { Equals } from './Equals';
-import { GetEdges } from './GetEdges';
-import { GetPoint } from './GetPoint';
-import { GetPoints } from './GetPoints';
-import { InCenter } from './InCenter';
-import { Offset } from './Offset';
-import { Perimeter } from './Perimeter';
-import { Random } from './Random';
-import { Rotate } from './Rotate';
-import { RotateAroundPoint } from './RotateAroundPoint';
-import { RotateAroundXY } from './RotateAroundXY';
+import { BuildEquilateralTriangle } from './BuildEquilateralTriangle';
+import { BuildRightTriangle } from './BuildRightTriangle';
+import { CenterTriangleOn } from './CenterTriangleOn';
+import { CloneTriangle } from './CloneTriangle';
+import { CopyTriangleFrom } from './CopyTriangleFrom';
+import { DecomposeTriangle } from './DecomposeTriangle';
+import { GetRandomTrianglePoint } from './GetRandomTrianglePoint';
+import { GetTriangleArea } from './GetTriangleArea';
+import { GetTriangleCentroid } from './GetTriangleCentroid';
+import { GetTriangleCircumCenter } from './GetTriangleCircumCenter';
+import { GetTriangleCircumCircle } from './GetTriangleCircumCircle';
+import { GetTriangleEdges } from './GetTriangleEdges';
+import { GetTriangleInCenter } from './GetTriangleInCenter';
+import { GetTrianglePerimeter } from './GetTrianglePerimeter';
+import { GetTrianglePoint } from './GetTrianglePoint';
+import { GetTrianglePoints } from './GetTrianglePoints';
+import { RotateTriangle } from './RotateTriangle';
+import { RotateTriangleAround } from './RotateTriangleAround';
+import { RotateTriangleAroundPoint } from './RotateTriangleAroundPoint';
+import { TranslateTriangle } from './TranslateTriangle';
 import { Triangle } from './Triangle';
+import { TriangleContains } from './TriangleContains';
+import { TriangleContainsPoint } from './TriangleContainsPoint';
+import { TriangleContainsPoints } from './TriangleContainsPoints';
+import { TriangleEquals } from './TriangleEquals';
 
 export {
-    Area,
-    BuildEquilateral,
-    BuildRight,
-    CenterOn,
-    Centroid,
-    CircumCenter,
-    CircumCircle,
-    Clone,
-    Contains,
-    ContainsArray,
-    ContainsPoint,
-    CopyFrom,
-    Decompose,
-    Equals,
-    GetEdges,
-    GetPoint,
-    GetPoints,
-    InCenter,
-    Offset,
-    Perimeter,
-    Random,
-    Rotate,
-    RotateAroundPoint,
-    RotateAroundXY,
-    Triangle
+    BuildEquilateralTriangle,
+    BuildRightTriangle,
+    CenterTriangleOn,
+    CloneTriangle,
+    CopyTriangleFrom,
+    DecomposeTriangle,
+    GetTriangleArea,
+    GetTriangleCentroid,
+    GetTriangleCircumCenter,
+    GetTriangleCircumCircle,
+    GetTriangleEdges,
+    GetTriangleInCenter,
+    GetTrianglePerimeter,
+    GetTrianglePoint,
+    GetTrianglePoints,
+    GetRandomTrianglePoint,
+    RotateTriangle,
+    RotateTriangleAround,
+    RotateTriangleAroundPoint,
+    TranslateTriangle,
+    Triangle,
+    TriangleContains,
+    TriangleContainsPoint,
+    TriangleContainsPoints,
+    TriangleEquals
 };

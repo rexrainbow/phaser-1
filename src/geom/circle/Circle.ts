@@ -4,7 +4,7 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Contains } from './Contains';
+import { CircleContains } from './CircleContains';
 
 /**
  * @classdesc
@@ -47,7 +47,7 @@ export class Circle
 
     contains (x: number, y: number): boolean
     {
-        return Contains(this, x, y);
+        return CircleContains(this, x, y);
     }
 
     get radius (): number

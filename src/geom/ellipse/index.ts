@@ -4,38 +4,38 @@
  * @license      {@link https://opensource.org/licenses/MIT|MIT License}
  */
 
-import { Area } from './Area';
-import { Circumference } from './Circumference';
-import { CircumferencePoint } from './CircumferencePoint';
-import { Clone } from './Clone';
-import { Contains } from './Contains';
-import { ContainsPoint } from './ContainsPoint';
-import { ContainsRect } from './ContainsRect';
-import { CopyFrom } from './CopyFrom';
+import { CloneEllipse } from './CloneEllipse';
+import { CopyEllipseFrom } from './CopyEllipseFrom';
 import { Ellipse } from './Ellipse';
-import { Equals } from './Equals';
-import { GetBounds } from './GetBounds';
-import { GetPoint } from './GetPoint';
-import { GetPoints } from './GetPoints';
-import { Offset } from './Offset';
-import { OffsetPoint } from './OffsetPoint';
-import { Random } from './Random';
+import { EllipseContains } from './EllipseContains';
+import { EllipseContainsPoint } from './EllipseContainsPoint';
+import { EllipseContainsRect } from './EllipseContainsRect';
+import { EllipseEquals } from './EllipseEquals';
+import { GetEllipseArea } from './GetEllipseArea';
+import { GetEllipseBounds } from './GetEllipseBounds';
+import { GetEllipseCircumference } from './GetEllipseCircumference';
+import { GetEllipseCircumferencePoint } from './GetEllipseCircumferencePoint';
+import { GetEllipsePoint } from './GetEllipsePoint';
+import { GetEllipsePoints } from './GetEllipsePoints';
+import { GetRandomPointInEllipse } from './GetRandomPointInEllipse';
+import { TranslateEllipse } from './TranslateEllipse';
+import { TranslateEllipsePoint } from './TranslateEllipsePoint';
 
 export {
-    Area,
-    Circumference,
-    CircumferencePoint,
-    Clone,
-    Contains,
-    ContainsPoint,
-    ContainsRect,
-    CopyFrom,
+    CloneEllipse,
+    CopyEllipseFrom,
     Ellipse,
-    Equals,
-    GetBounds,
-    GetPoint,
-    GetPoints,
-    Offset,
-    OffsetPoint,
-    Random
+    EllipseContains,
+    EllipseContainsPoint,
+    EllipseContainsRect,
+    EllipseEquals,
+    GetRandomPointInEllipse,
+    GetEllipseArea,
+    GetEllipseBounds,
+    GetEllipseCircumference,
+    GetEllipseCircumferencePoint,
+    GetEllipsePoint,
+    GetEllipsePoints,
+    TranslateEllipse,
+    TranslateEllipsePoint
 };
