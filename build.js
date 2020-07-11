@@ -86,26 +86,15 @@ console.log('✔ Building Phaser 4');
 //  Run esbuild
 
 build({
-    entryPoints: [ './src/index.ts' ],
-    outfile: './dist/index.js',
-    bundle: true,
-    sourcemap: true,
+    entryPoints: ESMInputBundle,
+    outdir: './dist/',
     target: 'es6',
-    format: 'esm',
-    splitting: true
+    minify: false,
+    bundle: false,
 }).catch(() => {
     console.log('❌ esbuild error');
     return;
 });
-
-//  For when esbuild supports multiple entry points with the same name
-
-// build({
-//     entryPoints: ESMInputBundle,
-//     outdir: './dist2/',
-//     minify: false,
-//     bundle: false,
-// }).catch(() => process.exit(1));
 
 //  Run tsc
 
@@ -120,5 +109,5 @@ exec('tsc --build ./tsconfig.json', (error, stdout, stderr) => {
         console.log(`❌ stderr: ${stderr}`);
         return;
     }
-    console.log('✔ Complete');
+    console.log('✔ Complete (๑˃̵ᴗ˂̵)و');
 });
