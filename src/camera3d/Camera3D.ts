@@ -1,4 +1,4 @@
-import { Add, CrossNormalize, Left, Normalize, Subtract, TransformQuat, UP, Up, Vec3, Vec3Callback } from '../math/vec3';
+import { Left, UP, Up, Vec3, Vec3Add, Vec3Callback, Vec3CrossNormalize, Vec3Normalize, Vec3Subtract, Vec3TransformQuat } from '../math/vec3';
 import { LookAt, Matrix4, Perspective, TranslateFromFloats } from '../math/mat4';
 import { Quaternion, SetAxisAngle } from '../math/quaternion';
 
@@ -78,12 +78,12 @@ export class Camera3D
         const dir = this.direction;
         const left = this.left;
 
-        Subtract(point, pos, dir);
+        Vec3Subtract(point, pos, dir);
 
-        Normalize(dir, dir);
+        Vec3Normalize(dir, dir);
 
-        CrossNormalize(UP, dir, left);
-        CrossNormalize(dir, left, this.up);
+        Vec3CrossNormalize(UP, dir, left);
+        Vec3CrossNormalize(dir, left, this.up);
 
         return this.update();
     }
@@ -96,13 +96,13 @@ export class Camera3D
 
         const q = SetAxisAngle(axisVec, angle, this._axis);
 
-        TransformQuat(dir, q, dir);
-        TransformQuat(left, q, left);
-        TransformQuat(up, q, up);
+        Vec3TransformQuat(dir, q, dir);
+        Vec3TransformQuat(left, q, left);
+        Vec3TransformQuat(up, q, up);
 
-        Normalize(up, up);
-        Normalize(left, left);
-        Normalize(dir, dir);
+        Vec3Normalize(up, up);
+        Vec3Normalize(left, left);
+        Vec3Normalize(dir, dir);
 
         return this.update();
     }
@@ -144,7 +144,7 @@ export class Camera3D
         const lookView = this._lookAtView;
         const pos = this.position;
 
-        Add(pos, this.direction, lookPosition);
+        Vec3Add(pos, this.direction, lookPosition);
 
         LookAt(pos, lookPosition, this.up, lookView);
 

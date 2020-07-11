@@ -1,6 +1,6 @@
-import { Dot } from '../vec3';
 import { IVec3Like } from '../vec3/IVec3Like';
 import { Quaternion } from './Quaternion';
+import { Vec3Dot } from '../vec3';
 
 // assumes direction vectors are normalized
 
@@ -11,7 +11,7 @@ export function SetFromUnitVectors (a: Quaternion, from: IVec3Like, to: IVec3Lik
 
     const epsilon = 0.000001;
 
-    let r = Dot(from, to) + 1;
+    let r = Vec3Dot(from, to) + 1;
 
     if (r < epsilon)
     {

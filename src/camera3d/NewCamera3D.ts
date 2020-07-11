@@ -1,5 +1,5 @@
 import { Clamp, DegToRad } from '../math';
-import { FORWARD, Forward, RIGHT, Right, ScaleAndAdd, TransformMat4Zero, UP, Up, Vec3, Vec3Callback } from '../math/vec3';
+import { FORWARD, Forward, RIGHT, Right, UP, Up, Vec3, Vec3Callback, Vec3ScaleAndAdd, Vec3TransformMat4Zero } from '../math/vec3';
 import { FromRotationXYTranslation, Invert, LookAt, Matrix4, Multiply, Perspective, TargetTo } from '../math/mat4';
 import { Quaternion, RotationYawPitchRoll } from '../math/quaternion';
 
@@ -96,9 +96,9 @@ export class NewCamera3D
 
         FromRotationXYTranslation(this.rotation, this.position, !this.isOrbit, matrix);
 
-        TransformMat4Zero(FORWARD, matrix, this.forward);
-        TransformMat4Zero(UP, matrix, this.up);
-        TransformMat4Zero(RIGHT, matrix, this.right);
+        Vec3TransformMat4Zero(FORWARD, matrix, this.forward);
+        Vec3TransformMat4Zero(UP, matrix, this.up);
+        Vec3TransformMat4Zero(RIGHT, matrix, this.right);
 
         Invert(matrix, view);
 
@@ -113,7 +113,7 @@ export class NewCamera3D
 
         if (!this.isOrbit)
         {
-            ScaleAndAdd(pos, this.right, amount, pos);
+            Vec3ScaleAndAdd(pos, this.right, amount, pos);
         }
 
         return this;
@@ -130,7 +130,7 @@ export class NewCamera3D
         }
         else
         {
-            ScaleAndAdd(pos, up, amount, pos);
+            Vec3ScaleAndAdd(pos, up, amount, pos);
         }
 
         return this;
@@ -146,7 +146,7 @@ export class NewCamera3D
         }
         else
         {
-            ScaleAndAdd(pos, this.forward, amount, pos);
+            Vec3ScaleAndAdd(pos, this.forward, amount, pos);
         }
 
         return this;

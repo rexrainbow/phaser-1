@@ -1,4 +1,4 @@
-import { Normalize, Subtract, Vec3 } from '../math/vec3';
+import { Vec3, Vec3Normalize, Vec3Subtract } from '../math/vec3';
 
 import { CreateVertexSet } from '../gameobjects3d/geometry/CreateVertexSet';
 import { VertexSet } from '../gameobjects3d/geometry/VertexSet';
@@ -40,8 +40,8 @@ export function TorusGeometry (radius: number = 1, tube: number = 0.4, radialSeg
             center.x = radius * Math.cos(u);
             center.y = radius * Math.sin(u);
 
-            Subtract(vertex, center, normal);
-            Normalize(normal, normal);
+            Vec3Subtract(vertex, center, normal);
+            Vec3Normalize(normal, normal);
 
             normals.push(normal.x, normal.y, normal.z);
 
