@@ -1,106 +1,60 @@
-import '../../../GameInstance.js';
-import '../../../utils/base64/Base64ToArrayBuffer.js';
-import '../../../utils/NOOP.js';
-import { Matrix4 } from '../../../math/mat4/Matrix4.js';
-import '../../../math/mat4/Identity.js';
-import { Ortho } from '../../../math/mat4/Ortho.js';
-import '../../../math/matrix2d/Matrix2D.js';
-import '../../../geom/rectangle/RectangleContains.js';
-import '../../../geom/rectangle/Rectangle.js';
-import { StaticCamera } from '../../../camera/StaticCamera.js';
-import '../../../math/pow2/IsSizePowerOfTwo.js';
-import '../../../config/const.js';
-import '../../../config/ConfigStore.js';
-import { GetBatchSize } from '../../../config/batchsize/GetBatchSize.js';
-import '../../../config/size/GetHeight.js';
-import '../../../config/size/GetResolution.js';
-import '../../../config/size/GetWidth.js';
-import '../../BindingQueue.js';
-import '../../../config/maxtextures/SetMaxTextures.js';
-import '../GL.js';
-import '../textures/CreateGLTexture.js';
-import '../fbo/DeleteFramebuffer.js';
-import '../textures/DeleteGLTexture.js';
-import '../textures/SetGLTextureFilterMode.js';
-import '../textures/UpdateGLTexture.js';
-import '../textures/GLTextureBinding.js';
-import '../../../config/maxtextures/GetMaxTextures.js';
-import '../shaders/CheckShaderMaxIfStatements.js';
-import { CreateTempTextures } from './CreateTempTextures.js';
-import '../buffers/DeleteGLBuffer.js';
-import '../buffers/VertexBuffer.js';
-import { IndexedVertexBuffer } from '../buffers/IndexedVertexBuffer.js';
-import '../shaders/CreateAttributes.js';
-import '../shaders/DeleteShaders.js';
-import '../shaders/CreateProgram.js';
-import '../shaders/CreateShader.js';
-import '../shaders/CreateUniformSetter.js';
-import '../shaders/CreateUniforms.js';
-import '../GL_CONST.js';
-import '../shaders/DefaultQuadAttributes.js';
-import '../shaders/DefaultQuadUniforms.js';
-import '../fbo/CreateDepthBuffer.js';
-import '../fbo/CreateFramebuffer.js';
-import '../glsl/SINGLE_QUAD_FRAG.js';
-import '../glsl/SINGLE_QUAD_VERT.js';
-import '../../../textures/Frame.js';
-import '../../../textures/Texture.js';
-import '../shaders/Shader.js';
-import { QuadShader } from '../shaders/QuadShader.js';
-import '../glsl/MULTI_QUAD_FRAG.js';
-import { MultiTextureQuadShader } from '../shaders/MultiTextureQuadShader.js';
-import { SetDefaultBlendMode } from './SetDefaultBlendMode.js';
-import { SetDefaultFramebuffer } from './SetDefaultFramebuffer.js';
-import { SetDefaultShader } from './SetDefaultShader.js';
-import { SetDefaultVertexBuffer } from './SetDefaultVertexBuffer.js';
-import { SetDefaultViewport } from './SetDefaultViewport.js';
-
-class RenderPass {
-    constructor(renderer) {
-        this.count = 0;
-        this.prevCount = 0;
-        this.flushTotal = 0;
-        this.maxTextures = 0;
-        this.currentActiveTexture = 0;
-        this.startActiveTexture = 0;
-        this.tempTextures = [];
-        this.textureIndex = [];
-        this.framebufferStack = [];
-        this.currentFramebuffer = null;
-        this.defaultFramebuffer = null;
-        this.vertexBufferStack = [];
-        this.currentVertexBuffer = null;
-        this.defaultVertexBuffer = null;
-        this.shaderStack = [];
-        this.currentShader = null;
-        this.defaultShader = null;
-        this.viewportStack = [];
-        this.currentViewport = null;
-        this.defaultViewport = null;
-        this.blendModeStack = [];
-        this.currentBlendMode = null;
-        this.defaultBlendMode = null;
-        this.renderer = renderer;
-        this.projectionMatrix = new Matrix4();
-        this.reset();
-    }
-    reset() {
-        const gl = this.renderer.gl;
-        const indexLayout = [0, 1, 2, 2, 3, 0];
-        this.quadShader = new QuadShader();
-        this.quadBuffer = new IndexedVertexBuffer({ isDynamic: false, indexLayout });
-        this.quadCamera = new StaticCamera();
-        CreateTempTextures(this);
-        SetDefaultFramebuffer(this);
-        SetDefaultBlendMode(this, true, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        SetDefaultVertexBuffer(this, new IndexedVertexBuffer({ batchSize: GetBatchSize(), indexLayout }));
-        SetDefaultShader(this, new MultiTextureQuadShader());
-    }
-    resize(width, height) {
-        Ortho(0, width, height, 0, -1000, 1000, this.projectionMatrix);
-        this.quadCamera.reset();
-        SetDefaultViewport(this, 0, 0, width, height);
-    }
+import {CreateTempTextures as CreateTempTextures2} from "./CreateTempTextures";
+import {GetBatchSize as GetBatchSize2} from "../../../config/batchsize/GetBatchSize";
+import {IndexedVertexBuffer as IndexedVertexBuffer2} from "../buffers/IndexedVertexBuffer";
+import {Matrix4 as Matrix42} from "../../../math/mat4/Matrix4";
+import {MultiTextureQuadShader} from "../shaders";
+import {Ortho as Ortho2} from "../../../math/mat4/Ortho";
+import {QuadShader as QuadShader2} from "../shaders/QuadShader";
+import {SetDefaultBlendMode as SetDefaultBlendMode2} from "./SetDefaultBlendMode";
+import {SetDefaultFramebuffer as SetDefaultFramebuffer2} from "./SetDefaultFramebuffer";
+import {SetDefaultShader as SetDefaultShader2} from "./SetDefaultShader";
+import {SetDefaultVertexBuffer as SetDefaultVertexBuffer2} from "./SetDefaultVertexBuffer";
+import {SetDefaultViewport as SetDefaultViewport2} from "./SetDefaultViewport";
+import {StaticCamera} from "../../../camera";
+export class RenderPass {
+  constructor(renderer) {
+    this.count = 0;
+    this.prevCount = 0;
+    this.flushTotal = 0;
+    this.maxTextures = 0;
+    this.currentActiveTexture = 0;
+    this.startActiveTexture = 0;
+    this.tempTextures = [];
+    this.textureIndex = [];
+    this.framebufferStack = [];
+    this.currentFramebuffer = null;
+    this.defaultFramebuffer = null;
+    this.vertexBufferStack = [];
+    this.currentVertexBuffer = null;
+    this.defaultVertexBuffer = null;
+    this.shaderStack = [];
+    this.currentShader = null;
+    this.defaultShader = null;
+    this.viewportStack = [];
+    this.currentViewport = null;
+    this.defaultViewport = null;
+    this.blendModeStack = [];
+    this.currentBlendMode = null;
+    this.defaultBlendMode = null;
+    this.renderer = renderer;
+    this.projectionMatrix = new Matrix42();
+    this.reset();
+  }
+  reset() {
+    const gl = this.renderer.gl;
+    const indexLayout = [0, 1, 2, 2, 3, 0];
+    this.quadShader = new QuadShader2();
+    this.quadBuffer = new IndexedVertexBuffer2({isDynamic: false, indexLayout});
+    this.quadCamera = new StaticCamera();
+    CreateTempTextures2(this);
+    SetDefaultFramebuffer2(this);
+    SetDefaultBlendMode2(this, true, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    SetDefaultVertexBuffer2(this, new IndexedVertexBuffer2({batchSize: GetBatchSize2(), indexLayout}));
+    SetDefaultShader2(this, new MultiTextureQuadShader());
+  }
+  resize(width, height) {
+    Ortho2(0, width, height, 0, -1e3, 1e3, this.projectionMatrix);
+    this.quadCamera.reset();
+    SetDefaultViewport2(this, 0, 0, width, height);
+  }
 }
-
-export { RenderPass };

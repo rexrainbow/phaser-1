@@ -1,22 +1,14 @@
-import '../../../geom/rectangle/RectangleContains.js';
-import '../../../geom/rectangle/Rectangle.js';
-import './AddViewport.js';
-import '../GL.js';
-import { BindViewport } from './BindViewport.js';
-import './SetViewport.js';
-import { BindFramebuffer } from './BindFramebuffer.js';
-import { BindBlendMode } from './BindBlendMode.js';
-import { BindVertexBuffer } from './BindVertexBuffer.js';
-
-function Start(renderPass) {
-    renderPass.current2DCamera = renderPass.quadCamera;
-    renderPass.cameraMatrix = renderPass.quadCamera.matrix;
-    renderPass.count = 0;
-    renderPass.flushTotal = 0;
-    BindFramebuffer(renderPass, false, renderPass.defaultFramebuffer);
-    BindBlendMode(renderPass, renderPass.defaultBlendMode);
-    BindViewport(renderPass, renderPass.defaultViewport);
-    BindVertexBuffer(renderPass, renderPass.defaultVertexBuffer);
+import {BindBlendMode as BindBlendMode2} from "./BindBlendMode";
+import {BindFramebuffer as BindFramebuffer2} from "./BindFramebuffer";
+import {BindVertexBuffer as BindVertexBuffer2} from "./BindVertexBuffer";
+import {BindViewport as BindViewport2} from "./BindViewport";
+export function Start(renderPass) {
+  renderPass.current2DCamera = renderPass.quadCamera;
+  renderPass.cameraMatrix = renderPass.quadCamera.matrix;
+  renderPass.count = 0;
+  renderPass.flushTotal = 0;
+  BindFramebuffer2(renderPass, false, renderPass.defaultFramebuffer);
+  BindBlendMode2(renderPass, renderPass.defaultBlendMode);
+  BindViewport2(renderPass, renderPass.defaultViewport);
+  BindVertexBuffer2(renderPass, renderPass.defaultVertexBuffer);
 }
-
-export { Start };

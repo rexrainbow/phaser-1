@@ -1,1 +1,1 @@
-{"version":3,"file":"GetScenes.d.ts","sourceRoot":"","sources":["../../src/config/scenes/GetScenes.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,iBAAiB,EAAE,MAAM,gCAAgC,CAAC;AAEnE,wBAAgB,SAAS,IAAK,iBAAiB,EAAE,CAGhD"}
+{"version":3,"file":"GetScenes.d.ts","sourceRoot":"","sources":["../../../src/config/scenes/GetScenes.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,iBAAiB,EAAE,MAAM,gCAAgC,CAAC;AAEnE,wBAAgB,SAAS,IAAK,iBAAiB,EAAE,CAGhD"}

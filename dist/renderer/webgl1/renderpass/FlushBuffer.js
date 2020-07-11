@@ -1,27 +1,10 @@
-import '../../../geom/rectangle/RectangleContains.js';
-import '../../../geom/rectangle/Rectangle.js';
-import './AddViewport.js';
-import '../GL.js';
-import './BindViewport.js';
-import './SetViewport.js';
-import './BindFramebuffer.js';
-import './PopViewport.js';
-import './PopFramebuffer.js';
-import './AddFramebuffer.js';
-import './SetFramebuffer.js';
-import './Draw.js';
-import { Flush } from './Flush.js';
-import './AddVertexBuffer.js';
-import './BindVertexBuffer.js';
-import { PopVertexBuffer } from './PopVertexBuffer.js';
-import { SetVertexBuffer } from './SetVertexBuffer.js';
-
-function FlushBuffer(renderPass, buffer) {
-    SetVertexBuffer(renderPass, buffer);
-    renderPass.currentShader.shader.setAttributes(renderPass);
-    const result = Flush(renderPass, buffer.count);
-    PopVertexBuffer(renderPass);
-    return result;
+import {Flush as Flush2} from "./Flush";
+import {PopVertexBuffer as PopVertexBuffer2} from "./PopVertexBuffer";
+import {SetVertexBuffer as SetVertexBuffer2} from "./SetVertexBuffer";
+export function FlushBuffer(renderPass, buffer) {
+  SetVertexBuffer2(renderPass, buffer);
+  renderPass.currentShader.shader.setAttributes(renderPass);
+  const result = Flush2(renderPass, buffer.count);
+  PopVertexBuffer2(renderPass);
+  return result;
 }
-
-export { FlushBuffer };

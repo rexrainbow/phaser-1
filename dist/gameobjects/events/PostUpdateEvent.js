@@ -1,3 +1,1 @@
-const PostUpdateEvent = 'postupdate';
-
-export { PostUpdateEvent };
+export const PostUpdateEvent = "postupdate";

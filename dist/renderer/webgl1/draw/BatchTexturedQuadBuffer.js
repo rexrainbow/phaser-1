@@ -1,4 +1,2 @@
-function BatchTexturedQuadBuffer(batch, renderPass) {
+export function BatchTexturedQuadBuffer(batch, renderPass) {
 }
-
-export { BatchTexturedQuadBuffer };

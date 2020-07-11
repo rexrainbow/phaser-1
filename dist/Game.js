@@ -1,94 +1,68 @@
-import { GameInstance } from './GameInstance.js';
-import './config/const.js';
-import './config/ConfigStore.js';
-import './config/backgroundcolor/SetBackgroundColor.js';
-import './config/banner/SetBanner.js';
-import { GetBanner } from './config/banner/GetBanner.js';
-import './config/batchsize/SetBatchSize.js';
-import './config/size/SetSize.js';
-import './renderer/BindingQueue.js';
-import './config/defaultorigin/SetDefaultOrigin.js';
-import './config/maxtextures/SetMaxTextures.js';
-import './dom/GetElement.js';
-import './textures/Frame.js';
-import './textures/Texture.js';
-import { GetParent } from './config/parent/GetParent.js';
-import { GetRenderer } from './config/renderer/GetRenderer.js';
-import './config/scenes/GetScenes.js';
-import { SetConfigDefaults } from './config/SetConfigDefaults.js';
-import { Emit } from './events/Emit.js';
-import { AddToDOM } from './dom/AddToDOM.js';
-import { DOMContentLoaded } from './dom/DOMContentLoaded.js';
-import { EventEmitter } from './events/EventEmitter.js';
-import './events/EventInstance.js';
-import './events/On.js';
-import './events/Once.js';
-import './scenes/CreateSceneRenderData.js';
-import './scenes/ResetSceneRenderData.js';
-import './scenes/SceneManagerInstance.js';
-import { SceneManager } from './scenes/SceneManager.js';
-import './textures/CreateCanvas.js';
-import './textures/TextureManagerInstance.js';
-import { TextureManager } from './textures/TextureManager.js';
-
-class Game extends EventEmitter {
-    constructor(...settings) {
-        super();
-        this.VERSION = '4.0.0-beta1';
-        this.isBooted = false;
-        this.isPaused = false;
-        this.willUpdate = true;
-        this.willRender = true;
-        this.lastTick = 0;
-        this.elapsed = 0;
-        this.frame = 0;
-        GameInstance.set(this);
-        SetConfigDefaults();
-        DOMContentLoaded(() => this.boot(settings));
+import {AddToDOM, DOMContentLoaded} from "./dom";
+import {Emit, EventEmitter} from "./events";
+import {GameInstance as GameInstance2} from "./GameInstance";
+import {GetBanner} from "./config/banner";
+import {GetParent} from "./config/parent";
+import {GetRenderer} from "./config/renderer";
+import {SceneManager as SceneManager2} from "./scenes/SceneManager";
+import {SetConfigDefaults as SetConfigDefaults2} from "./config/SetConfigDefaults";
+import {TextureManager as TextureManager2} from "./textures/TextureManager";
+export class Game extends EventEmitter {
+  constructor(...settings) {
+    super();
+    this.VERSION = "4.0.0-beta1";
+    this.isBooted = false;
+    this.isPaused = false;
+    this.willUpdate = true;
+    this.willRender = true;
+    this.lastTick = 0;
+    this.elapsed = 0;
+    this.frame = 0;
+    GameInstance2.set(this);
+    SetConfigDefaults2();
+    DOMContentLoaded(() => this.boot(settings));
+  }
+  boot(settings) {
+    settings.forEach((setting) => setting());
+    const renderer2 = GetRenderer();
+    this.renderer = new renderer2();
+    this.textureManager = new TextureManager2();
+    this.sceneManager = new SceneManager2();
+    const parent2 = GetParent();
+    if (parent2) {
+      AddToDOM(this.renderer.canvas, parent2);
     }
-    boot(settings) {
-        settings.forEach(setting => setting());
-        const renderer = GetRenderer();
-        this.renderer = new renderer();
-        this.textureManager = new TextureManager();
-        this.sceneManager = new SceneManager();
-        const parent = GetParent();
-        if (parent) {
-            AddToDOM(this.renderer.canvas, parent);
-        }
-        this.isBooted = true;
-        GetBanner();
-        Emit(this, 'boot');
-        this.lastTick = performance.now();
-        this.step(this.lastTick);
+    this.isBooted = true;
+    GetBanner();
+    Emit(this, "boot");
+    this.lastTick = performance.now();
+    this.step(this.lastTick);
+  }
+  pause() {
+    this.isPaused = true;
+  }
+  resume() {
+    this.isPaused = false;
+    this.lastTick = performance.now();
+  }
+  step(time) {
+    const delta = time - this.lastTick;
+    this.lastTick = time;
+    this.elapsed += delta;
+    if (!this.isPaused) {
+      if (this.willUpdate) {
+        this.sceneManager.update(delta, time);
+        Emit(this, "update", delta, time);
+      }
+      if (this.willRender) {
+        this.renderer.render(this.sceneManager.render(this.frame));
+      }
     }
-    pause() {
-        this.isPaused = true;
-    }
-    resume() {
-        this.isPaused = false;
-        this.lastTick = performance.now();
-    }
-    step(time) {
-        const delta = time - this.lastTick;
-        this.lastTick = time;
-        this.elapsed += delta;
-        if (!this.isPaused) {
-            if (this.willUpdate) {
-                this.sceneManager.update(delta, time);
-                Emit(this, 'update', delta, time);
-            }
-            if (this.willRender) {
-                this.renderer.render(this.sceneManager.render(this.frame));
-            }
-        }
-        this.frame++;
-        GameInstance.setFrame(this.frame);
-        GameInstance.setElapsed(this.elapsed);
-        requestAnimationFrame(now => this.step(now));
-    }
-    destroy() {
-    }
+    this.frame++;
+    GameInstance2.setFrame(this.frame);
+    GameInstance2.setElapsed(this.elapsed);
+    requestAnimationFrame((now) => this.step(now));
+  }
+  destroy() {
+  }
 }
-
-export { Game };

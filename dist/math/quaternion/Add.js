@@ -1,9 +1,4 @@
-import '../../utils/base64/Base64ToArrayBuffer.js';
-import '../../utils/NOOP.js';
-import { Quaternion } from './Quaternion.js';
-
-function Add(a, b, out = new Quaternion()) {
-    return out.set(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+import {Quaternion as Quaternion2} from "./Quaternion";
+export function Add(a, b, out = new Quaternion2()) {
+  return out.set(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
 }
-
-export { Add };

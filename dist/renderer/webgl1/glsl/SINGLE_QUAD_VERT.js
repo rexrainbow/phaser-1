@@ -1,4 +1,4 @@
-const SINGLE_QUAD_VERT = `#define SHADER_NAME SINGLE_QUAD_VERT
+export const SINGLE_QUAD_VERT = `#define SHADER_NAME SINGLE_QUAD_VERT
 
 precision highp float;
 
@@ -22,5 +22,3 @@ void main (void)
 
     gl_Position = uProjectionMatrix * uCameraMatrix * vec4(aVertexPosition, 0.0, 1.0);
 }`;
-
-export { SINGLE_QUAD_VERT };

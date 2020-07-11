@@ -1,30 +1,18 @@
-import '../gameobjects/events/AddedToWorldEvent.js';
-import '../gameobjects/events/RemovedFromWorldEvent.js';
-import '../events/Emit.js';
-import '../gameobjects/DIRTY_CONST.js';
-import './DepthFirstSearch3D.js';
-import { GetChild3DIndex } from './GetChild3DIndex.js';
-import './RemoveChild3DAt.js';
-import { RemoveChild3D } from './RemoveChild3D.js';
-import './SetWorld3D.js';
-import './SetParent3D.js';
-import { AddChild3DAt } from './AddChild3DAt.js';
-import { MoveChild3DTo } from './MoveChild3DTo.js';
-
-function ReplaceChild3D(target, source) {
-    const targetParent = target.parent;
-    const sourceParent = source.parent;
-    const targetIndex = GetChild3DIndex(targetParent, target);
-    if (targetParent === sourceParent) {
-        MoveChild3DTo(targetParent, source, targetIndex);
-        RemoveChild3D(targetParent, target);
-    }
-    else {
-        RemoveChild3D(targetParent, target);
-        RemoveChild3D(sourceParent, source);
-        AddChild3DAt(targetParent, targetIndex, source);
-    }
-    return target;
+import {AddChild3DAt as AddChild3DAt2} from "./AddChild3DAt";
+import {GetChild3DIndex as GetChild3DIndex2} from "./GetChild3DIndex";
+import {MoveChild3DTo as MoveChild3DTo2} from "./MoveChild3DTo";
+import {RemoveChild3D as RemoveChild3D2} from "./RemoveChild3D";
+export function ReplaceChild3D(target, source) {
+  const targetParent = target.parent;
+  const sourceParent = source.parent;
+  const targetIndex = GetChild3DIndex2(targetParent, target);
+  if (targetParent === sourceParent) {
+    MoveChild3DTo2(targetParent, source, targetIndex);
+    RemoveChild3D2(targetParent, target);
+  } else {
+    RemoveChild3D2(targetParent, target);
+    RemoveChild3D2(sourceParent, source);
+    AddChild3DAt2(targetParent, targetIndex, source);
+  }
+  return target;
 }
-
-export { ReplaceChild3D };

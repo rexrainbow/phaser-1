@@ -1,46 +1,50 @@
-import '../utils/base64/Base64ToArrayBuffer.js';
-import '../utils/NOOP.js';
-import '../math/mat4/Matrix4.js';
-import '../math/vec3/Vec3.js';
-import '../math/mat4/Invert.js';
-import '../math/mat4/Multiply.js';
-import '../math/vec3/Backward.js';
-import '../math/vec3/Down.js';
-import '../math/vec3/Forward.js';
-import '../math/vec3/Left.js';
-import '../math/vec3/Right.js';
-import '../math/vec3/Up.js';
-import '../math/vec3/Zero.js';
-import '../math/vec3/const.js';
-import '../math/vec3/Scale.js';
-import '../math/Clamp.js';
-import '../math/vec3/TransformMat4.js';
-import '../math/vec3/Project.js';
-import '../math/vec3/Vec3Callback.js';
-import '../math/vec3/RGBCallback.js';
-import '../math/vec3/Unproject.js';
-import '../gameobjects3d/material/Material.js';
-export { BlackPlastic } from './BlackPlastic.js';
-export { BlackRubber } from './BlackRubber.js';
-export { Brass } from './Brass.js';
-export { Bronze } from './Bronze.js';
-export { Chrome } from './Chrome.js';
-export { Copper } from './Copper.js';
-export { CyanPlastic } from './CyanPlastic.js';
-export { CyanRubber } from './CyanRubber.js';
-export { Emerald } from './Emerald.js';
-export { Gold } from './Gold.js';
-export { GreenPlastic } from './GreenPlastic.js';
-export { GreenRubber } from './GreenRubber.js';
-export { Jade } from './Jade.js';
-export { Obsidian } from './Obsidian.js';
-export { Pearl } from './Pearl.js';
-export { RedPlastic } from './RedPlastic.js';
-export { RedRubber } from './RedRubber.js';
-export { Ruby } from './Ruby.js';
-export { Silver } from './Silver.js';
-export { Turquoise } from './Turquoise.js';
-export { WhitePlastic } from './WhitePlastic.js';
-export { WhiteRubber } from './WhiteRubber.js';
-export { YellowPlastic } from './YellowPlastic.js';
-export { YellowRubber } from './YellowRubber.js';
+import {BlackPlastic as BlackPlastic2} from "./BlackPlastic";
+import {BlackRubber as BlackRubber2} from "./BlackRubber";
+import {Brass as Brass2} from "./Brass";
+import {Bronze as Bronze2} from "./Bronze";
+import {Chrome as Chrome2} from "./Chrome";
+import {Copper as Copper2} from "./Copper";
+import {CyanPlastic as CyanPlastic2} from "./CyanPlastic";
+import {CyanRubber as CyanRubber2} from "./CyanRubber";
+import {Emerald as Emerald2} from "./Emerald";
+import {Gold as Gold2} from "./Gold";
+import {GreenPlastic as GreenPlastic2} from "./GreenPlastic";
+import {GreenRubber as GreenRubber2} from "./GreenRubber";
+import {Jade as Jade2} from "./Jade";
+import {Obsidian as Obsidian2} from "./Obsidian";
+import {Pearl as Pearl2} from "./Pearl";
+import {RedPlastic as RedPlastic2} from "./RedPlastic";
+import {RedRubber as RedRubber2} from "./RedRubber";
+import {Ruby as Ruby2} from "./Ruby";
+import {Silver as Silver2} from "./Silver";
+import {Turquoise as Turquoise2} from "./Turquoise";
+import {WhitePlastic as WhitePlastic2} from "./WhitePlastic";
+import {WhiteRubber as WhiteRubber2} from "./WhiteRubber";
+import {YellowPlastic as YellowPlastic2} from "./YellowPlastic";
+import {YellowRubber as YellowRubber2} from "./YellowRubber";
+export {
+  BlackPlastic2 as BlackPlastic,
+  BlackRubber2 as BlackRubber,
+  Brass2 as Brass,
+  Bronze2 as Bronze,
+  Chrome2 as Chrome,
+  Copper2 as Copper,
+  CyanPlastic2 as CyanPlastic,
+  CyanRubber2 as CyanRubber,
+  Emerald2 as Emerald,
+  Gold2 as Gold,
+  GreenPlastic2 as GreenPlastic,
+  GreenRubber2 as GreenRubber,
+  Jade2 as Jade,
+  Obsidian2 as Obsidian,
+  Pearl2 as Pearl,
+  RedPlastic2 as RedPlastic,
+  RedRubber2 as RedRubber,
+  Ruby2 as Ruby,
+  Silver2 as Silver,
+  Turquoise2 as Turquoise,
+  WhitePlastic2 as WhitePlastic,
+  WhiteRubber2 as WhiteRubber,
+  YellowPlastic2 as YellowPlastic,
+  YellowRubber2 as YellowRubber
+};

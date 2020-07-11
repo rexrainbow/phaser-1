@@ -1,11 +1,6 @@
-import '../const.js';
-import '../ConfigStore.js';
-import { SetMaxTextures } from './SetMaxTextures.js';
-
-function MaxTextures(max = 0) {
-    return () => {
-        SetMaxTextures(max);
-    };
+import {SetMaxTextures as SetMaxTextures2} from "./SetMaxTextures";
+export function MaxTextures(max = 0) {
+  return () => {
+    SetMaxTextures2(max);
+  };
 }
-
-export { MaxTextures };

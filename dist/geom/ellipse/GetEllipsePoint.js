@@ -1,12 +1,13 @@
-import { Vec2 } from '../../math/vec2/Vec2.js';
-import { MATH_CONST } from '../../math/const.js';
-import '../../math/Clamp.js';
-import { FromPercent } from '../../math/FromPercent.js';
-import { GetEllipseCircumferencePoint } from './GetEllipseCircumferencePoint.js';
-
-function GetEllipsePoint(ellipse, position, out = new Vec2()) {
-    const angle = FromPercent(position, 0, MATH_CONST.PI2);
-    return GetEllipseCircumferencePoint(ellipse, angle, out);
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+import {FromPercent as FromPercent2} from "../../math/FromPercent";
+import {GetEllipseCircumferencePoint as GetEllipseCircumferencePoint2} from "./GetEllipseCircumferencePoint";
+import {MATH_CONST} from "../../math/const";
+import {Vec2 as Vec22} from "../../math/vec2/Vec2";
+export function GetEllipsePoint(ellipse, position, out = new Vec22()) {
+  const angle = FromPercent2(position, 0, MATH_CONST.PI2);
+  return GetEllipseCircumferencePoint2(ellipse, angle, out);
 }
-
-export { GetEllipsePoint };

@@ -1,12 +1,10 @@
 let _audioElement;
-function CanPlayAudioType(type, audioElement) {
-    if (!audioElement) {
-        if (!_audioElement) {
-            _audioElement = document.createElement('audio');
-        }
-        audioElement = _audioElement;
+export function CanPlayAudioType(type, audioElement) {
+  if (!audioElement) {
+    if (!_audioElement) {
+      _audioElement = document.createElement("audio");
     }
-    return (audioElement && audioElement.canPlayType(type) !== '');
+    audioElement = _audioElement;
+  }
+  return audioElement && audioElement.canPlayType(type) !== "";
 }
-
-export { CanPlayAudioType };

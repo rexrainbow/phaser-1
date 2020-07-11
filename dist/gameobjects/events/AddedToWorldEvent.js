@@ -1,3 +1,1 @@
-const AddedToWorldEvent = 'addedtoworld';
-
-export { AddedToWorldEvent };
+export const AddedToWorldEvent = "addedtoworld";

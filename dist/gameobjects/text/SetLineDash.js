@@ -1,8 +1,6 @@
-function SetLineDash(segments, ...text) {
-    text.forEach(entity => {
-        entity.lineDash = segments;
-        entity.updateText();
-    });
+export function SetLineDash(segments, ...text) {
+  text.forEach((entity) => {
+    entity.lineDash = segments;
+    entity.updateText();
+  });
 }
-
-export { SetLineDash };

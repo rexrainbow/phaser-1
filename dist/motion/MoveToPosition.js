@@ -1,14 +1,19 @@
-import '../math/vec2/DistanceSquared.js';
-import { Distance } from '../math/vec2/Distance.js';
-
-function MoveToPosition(x, y, duration, ...children) {
-    children.forEach(child => {
-        const px = child.x;
-        const py = child.y;
-        const speed = Distance({ x: px, y: py }, { x, y }) / (duration / 1000);
-        const world = child.world;
-    });
-    return children;
+import {AngleBetween} from "../math/angle";
+import {GetVec2Distance as GetVec2Distance2} from "../math/vec2/GetVec2Distance";
+export function MoveToPosition(x, y, duration, ...children) {
+  children.forEach((child) => {
+    const px = child.x;
+    const py = child.y;
+    const azimuth = AngleBetween(px, py, x, y);
+    const speed = GetVec2Distance2({x: px, y: py}, {x, y}) / (duration / 1e3);
+    const incX = Math.cos(azimuth) * speed;
+    const incY = Math.sin(azimuth) * speed;
+    const moveHandler = (delta) => {
+      delta /= 1e3;
+      child.x += incX * delta;
+      child.y += incY * delta;
+    };
+    const world = child.world;
+  });
+  return children;
 }
-
-export { MoveToPosition };

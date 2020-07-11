@@ -1,24 +1,16 @@
-import { DepthFirstSearch } from './DepthFirstSearch.js';
-import './GetChildIndex.js';
-import './RemoveChildAt.js';
-import { RemoveChild } from './RemoveChild.js';
-import '../gameobjects/events/AddedToWorldEvent.js';
-import '../gameobjects/events/RemovedFromWorldEvent.js';
-import '../events/Emit.js';
-import { SetWorld } from './SetWorld.js';
-
-function SetParent(parent, ...children) {
-    children.forEach(child => {
-        if (child.parent) {
-            RemoveChild(child.parent, child);
-        }
-        child.parent = parent;
-    });
-    const parentWorld = parent.world;
-    if (parentWorld) {
-        SetWorld(parentWorld, ...DepthFirstSearch(parent));
+import {DepthFirstSearch as DepthFirstSearch2} from "./DepthFirstSearch";
+import {RemoveChild as RemoveChild2} from "./RemoveChild";
+import {SetWorld as SetWorld2} from "./SetWorld";
+export function SetParent(parent, ...children) {
+  children.forEach((child) => {
+    if (child.parent) {
+      RemoveChild2(child.parent, child);
     }
-    return children;
+    child.parent = parent;
+  });
+  const parentWorld = parent.world;
+  if (parentWorld) {
+    SetWorld2(parentWorld, ...DepthFirstSearch2(parent));
+  }
+  return children;
 }
-
-export { SetParent };

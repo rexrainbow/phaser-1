@@ -1,10 +1,5 @@
-import '../../utils/base64/Base64ToArrayBuffer.js';
-import '../../utils/NOOP.js';
-import { Quaternion } from './Quaternion.js';
-import { RotationYawPitchRoll } from './RotationYawPitchRoll.js';
-
-function FromEulerAngles(x, y, z, out = new Quaternion()) {
-    return RotationYawPitchRoll(y, x, z, out);
+import {Quaternion as Quaternion2} from "./Quaternion";
+import {RotationYawPitchRoll as RotationYawPitchRoll2} from "./RotationYawPitchRoll";
+export function FromEulerAngles(x, y, z, out = new Quaternion2()) {
+  return RotationYawPitchRoll2(y, x, z, out);
 }
-
-export { FromEulerAngles };

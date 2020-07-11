@@ -1,7 +1,9 @@
-import { CircleContains } from './CircleContains.js';
-
-function CircleContainsPoint(circle, point) {
-    return CircleContains(circle, point.x, point.y);
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+import {CircleContains as CircleContains2} from "./CircleContains";
+export function CircleContainsPoint(circle, point) {
+  return CircleContains2(circle, point.x, point.y);
 }
-
-export { CircleContainsPoint };

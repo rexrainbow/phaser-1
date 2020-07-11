@@ -1,33 +1,70 @@
-import './back/In.js';
-import './back/InOut.js';
-import './back/Out.js';
-import './bounce/In.js';
-import './bounce/InOut.js';
-import './bounce/Out.js';
-import './circular/In.js';
-import './circular/InOut.js';
-import './circular/Out.js';
-import './cubic/In.js';
-import './cubic/InOut.js';
-import './cubic/Out.js';
-import './elastic/In.js';
-import './elastic/InOut.js';
-import './elastic/Out.js';
-import './expo/In.js';
-import './expo/InOut.js';
-import './expo/Out.js';
-import './quadratic/In.js';
-import './quadratic/InOut.js';
-import './quadratic/Out.js';
-import './quartic/In.js';
-import './quartic/InOut.js';
-import './quartic/Out.js';
-import './quintic/In.js';
-import './quintic/InOut.js';
-import './quintic/Out.js';
-import './sine/In.js';
-import './sine/InOut.js';
-import './sine/Out.js';
-import '../../Linear-8dd9e56a.js';
-import '../../Stepped-b024975a.js';
-export { a as GetEase } from '../../GetEase-ade1c4dd.js';
+import * as Back from "./back";
+import * as Bounce from "./bounce";
+import * as Circular from "./circular";
+import * as Cubic from "./cubic";
+import * as Elastic from "./elastic";
+import * as Expo from "./expo";
+import * as Quadratic from "./quadratic";
+import * as Quartic from "./quartic";
+import * as Quintic from "./quintic";
+import * as Sine from "./sine";
+import {Linear as Linear2} from "./Linear";
+import {Stepped as Stepped2} from "./Stepped";
+const EaseMap = new Map([
+  ["power0", Linear2],
+  ["power1", Quadratic.Out],
+  ["power2", Cubic.Out],
+  ["power3", Quartic.Out],
+  ["power4", Quintic.Out],
+  ["linear", Linear2],
+  ["quad", Quadratic.Out],
+  ["cubic", Cubic.Out],
+  ["quart", Quartic.Out],
+  ["quint", Quintic.Out],
+  ["sine", Sine.Out],
+  ["expo", Expo.Out],
+  ["circ", Circular.Out],
+  ["elastic", Elastic.Out],
+  ["back", Back.Out],
+  ["bounce", Bounce.Out],
+  ["stepped", Stepped2],
+  ["quad.in", Quadratic.In],
+  ["cubic.in", Cubic.In],
+  ["quart.in", Quartic.In],
+  ["quint.in", Quintic.In],
+  ["sine.in", Sine.In],
+  ["expo.in", Expo.In],
+  ["circ.in", Circular.In],
+  ["elastic.in", Elastic.In],
+  ["back.in", Back.In],
+  ["bounce.in", Bounce.In],
+  ["quad.out", Quadratic.Out],
+  ["cubic.out", Cubic.Out],
+  ["quart.out", Quartic.Out],
+  ["quint.out", Quintic.Out],
+  ["sine.out", Sine.Out],
+  ["expo.out", Expo.Out],
+  ["circ.out", Circular.Out],
+  ["elastic.out", Elastic.Out],
+  ["back.out", Back.Out],
+  ["bounce.out", Bounce.Out],
+  ["quad.inout", Quadratic.InOut],
+  ["cubic.inout", Cubic.InOut],
+  ["quart.inout", Quartic.InOut],
+  ["quint.inout", Quintic.InOut],
+  ["sine.inout", Sine.InOut],
+  ["expo.inout", Expo.InOut],
+  ["circ.inout", Circular.InOut],
+  ["elastic.inout", Elastic.InOut],
+  ["back.inout", Back.InOut],
+  ["bounce.inout", Bounce.InOut]
+]);
+export function GetEase(name) {
+  name = name.toLowerCase();
+  name = name.replace("ease", "");
+  if (EaseMap.has(name)) {
+    return EaseMap.get(name);
+  } else {
+    return Linear2;
+  }
+}

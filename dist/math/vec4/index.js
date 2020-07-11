@@ -1,54 +1,98 @@
-import '../../utils/NOOP.js';
-import '../Bezier.js';
-import '../CatmullRom.js';
-import '../Clamp.js';
-import '../fuzzy/FuzzyEqual.js';
-import '../Hermite.js';
-export { Vec4 } from './Vec4.js';
-export { Abs } from './Abs.js';
-export { Add } from './Add.js';
-export { AddScalar } from './AddScalar.js';
-export { Bezier } from './Bezier.js';
-export { CatmullRom } from './CatmullRom.js';
-export { Ceil } from './Ceil.js';
-export { Scale } from './Scale.js';
-export { Center } from './Center.js';
-export { Clamp } from './Clamp.js';
-export { DivideScalar } from './DivideScalar.js';
-export { Length } from './Length.js';
-export { ClampLength } from './ClampLength.js';
-export { ClampScalar } from './ClampScalar.js';
-export { Clone } from './Clone.js';
-export { CopyFrom } from './CopyFrom.js';
-export { Cross } from './Cross.js';
-export { DistanceSquared } from './DistanceSquared.js';
-export { Distance } from './Distance.js';
-export { Divide } from './Divide.js';
-export { Dot } from './Dot.js';
-export { Equals } from './Equals.js';
-export { Floor } from './Floor.js';
-export { Fract } from './Fract.js';
-export { FuzzyEquals } from './FuzzyEquals.js';
-export { Hermite } from './Hermite.js';
-export { LengthSquared } from './LengthSquared.js';
-export { Lerp } from './Lerp.js';
-export { ManhattanDistance } from './ManhattanDistance.js';
-export { ManhattanLength } from './ManhattanLength.js';
-export { Max } from './Max.js';
-export { Min } from './Min.js';
-export { Multiply } from './Multiply.js';
-export { MultiplyByFloats } from './MultiplyByFloats.js';
-export { Negate } from './Negate.js';
-export { Normalize } from './Normalize.js';
-export { One } from './One.js';
-export { Vec4Callback } from './Vec4Callback.js';
-export { RGBACallback } from './RGBACallback.js';
-export { Random } from './Random.js';
-export { Round } from './Round.js';
-export { RoundToZero } from './RoundToZero.js';
-export { ScaleAndAdd } from './ScaleAndAdd.js';
-export { SetLength } from './SetLength.js';
-export { Subtract } from './Subtract.js';
-export { SubtractScalar } from './SubtractScalar.js';
-export { TransformMat4 } from './TransformMat4.js';
-export { Zero } from './Zero.js';
+import {Abs as Abs2} from "./Abs";
+import {Add as Add2} from "./Add";
+import {AddScalar as AddScalar2} from "./AddScalar";
+import {Bezier as Bezier2} from "./Bezier";
+import {CatmullRom as CatmullRom2} from "./CatmullRom";
+import {Ceil as Ceil2} from "./Ceil";
+import {Center as Center2} from "./Center";
+import {Clamp as Clamp2} from "./Clamp";
+import {ClampLength as ClampLength2} from "./ClampLength";
+import {ClampScalar as ClampScalar2} from "./ClampScalar";
+import {Clone as Clone2} from "./Clone";
+import {CopyFrom as CopyFrom2} from "./CopyFrom";
+import {Cross as Cross2} from "./Cross";
+import {Distance as Distance2} from "./Distance";
+import {DistanceSquared as DistanceSquared2} from "./DistanceSquared";
+import {Divide as Divide2} from "./Divide";
+import {DivideScalar as DivideScalar2} from "./DivideScalar";
+import {Dot as Dot2} from "./Dot";
+import {Equals as Equals2} from "./Equals";
+import {Floor as Floor2} from "./Floor";
+import {Fract as Fract2} from "./Fract";
+import {FuzzyEquals as FuzzyEquals2} from "./FuzzyEquals";
+import {Hermite as Hermite2} from "./Hermite";
+import {Length as Length2} from "./Length";
+import {LengthSquared as LengthSquared2} from "./LengthSquared";
+import {Lerp as Lerp2} from "./Lerp";
+import {ManhattanDistance as ManhattanDistance2} from "./ManhattanDistance";
+import {ManhattanLength as ManhattanLength2} from "./ManhattanLength";
+import {Max as Max2} from "./Max";
+import {Min as Min2} from "./Min";
+import {Multiply as Multiply2} from "./Multiply";
+import {MultiplyByFloats as MultiplyByFloats2} from "./MultiplyByFloats";
+import {Negate as Negate2} from "./Negate";
+import {Normalize as Normalize2} from "./Normalize";
+import {One as One2} from "./One";
+import {RGBACallback as RGBACallback2} from "./RGBACallback";
+import {Random as Random2} from "./Random";
+import {Round as Round2} from "./Round";
+import {RoundToZero as RoundToZero2} from "./RoundToZero";
+import {Scale as Scale2} from "./Scale";
+import {ScaleAndAdd as ScaleAndAdd2} from "./ScaleAndAdd";
+import {SetLength as SetLength2} from "./SetLength";
+import {Subtract as Subtract2} from "./Subtract";
+import {SubtractScalar as SubtractScalar2} from "./SubtractScalar";
+import {TransformMat4 as TransformMat42} from "./TransformMat4";
+import {Vec4 as Vec42} from "./Vec4";
+import {Vec4Callback as Vec4Callback2} from "./Vec4Callback";
+import {Zero as Zero2} from "./Zero";
+export {
+  Abs2 as Abs,
+  Add2 as Add,
+  AddScalar2 as AddScalar,
+  Bezier2 as Bezier,
+  CatmullRom2 as CatmullRom,
+  Ceil2 as Ceil,
+  Center2 as Center,
+  Clamp2 as Clamp,
+  ClampLength2 as ClampLength,
+  ClampScalar2 as ClampScalar,
+  Clone2 as Clone,
+  CopyFrom2 as CopyFrom,
+  Cross2 as Cross,
+  Distance2 as Distance,
+  DistanceSquared2 as DistanceSquared,
+  Divide2 as Divide,
+  DivideScalar2 as DivideScalar,
+  Dot2 as Dot,
+  Equals2 as Equals,
+  Floor2 as Floor,
+  Fract2 as Fract,
+  FuzzyEquals2 as FuzzyEquals,
+  Hermite2 as Hermite,
+  Length2 as Length,
+  LengthSquared2 as LengthSquared,
+  Lerp2 as Lerp,
+  ManhattanDistance2 as ManhattanDistance,
+  ManhattanLength2 as ManhattanLength,
+  Max2 as Max,
+  Min2 as Min,
+  Multiply2 as Multiply,
+  MultiplyByFloats2 as MultiplyByFloats,
+  Negate2 as Negate,
+  Normalize2 as Normalize,
+  One2 as One,
+  RGBACallback2 as RGBACallback,
+  Random2 as Random,
+  Round2 as Round,
+  RoundToZero2 as RoundToZero,
+  Scale2 as Scale,
+  ScaleAndAdd2 as ScaleAndAdd,
+  SetLength2 as SetLength,
+  Subtract2 as Subtract,
+  SubtractScalar2 as SubtractScalar,
+  TransformMat42 as TransformMat4,
+  Vec42 as Vec4,
+  Vec4Callback2 as Vec4Callback,
+  Zero2 as Zero
+};

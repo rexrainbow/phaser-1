@@ -1,5 +1,3 @@
-function IsAndroid() {
-    return (navigator.userAgent.includes('Android'));
+export function IsAndroid() {
+  return navigator.userAgent.includes("Android");
 }
-
-export { IsAndroid };

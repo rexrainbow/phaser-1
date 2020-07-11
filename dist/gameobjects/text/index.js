@@ -1,76 +1,30 @@
-import '../../GameInstance.js';
-import '../../utils/NOOP.js';
-import '../../math/matrix2d/Matrix2D.js';
-import '../../geom/rectangle/RectangleContains.js';
-import '../../geom/rectangle/Rectangle.js';
-import '../../math/vec2/Vec2.js';
-import '../../math/vec2/Vec2Callback.js';
-import '../../math/matrix2d/CopyFrom.js';
-import '../../config/const.js';
-import '../../config/ConfigStore.js';
-import '../../renderer/BindingQueue.js';
-import '../../config/defaultorigin/GetDefaultOriginX.js';
-import '../../config/defaultorigin/GetDefaultOriginY.js';
-import '../../renderer/webgl1/renderpass/AddViewport.js';
-import '../../renderer/webgl1/GL.js';
-import '../../renderer/webgl1/renderpass/BindViewport.js';
-import '../../renderer/webgl1/renderpass/SetViewport.js';
-import '../../renderer/webgl1/renderpass/BindFramebuffer.js';
-import '../../renderer/webgl1/renderpass/PopViewport.js';
-import '../../renderer/webgl1/renderpass/PopFramebuffer.js';
-import '../../renderer/webgl1/renderpass/AddFramebuffer.js';
-import '../../renderer/webgl1/renderpass/SetFramebuffer.js';
-import '../../renderer/webgl1/renderpass/Draw.js';
-import '../../renderer/webgl1/renderpass/Flush.js';
-import '../../textures/Frame.js';
-import '../../textures/Texture.js';
-import '../../renderer/webgl1/renderpass/GetVertexBufferEntry.js';
-import '../../renderer/webgl1/renderpass/SetTexture.js';
-import '../../display/DepthFirstSearch.js';
-import '../../display/GetChildIndex.js';
-import '../../display/RemoveChildAt.js';
-import '../../display/RemoveChild.js';
-import '../events/AddedToWorldEvent.js';
-import '../events/DestroyEvent.js';
-import '../events/RemovedFromWorldEvent.js';
-import '../../events/Emit.js';
-import '../../display/SetWorld.js';
-import '../../display/SetParent.js';
-import '../DIRTY_CONST.js';
-import '../../display/RemoveChildrenBetween.js';
-import '../../display/DestroyChildren.js';
-import '../../display/ReparentChildren.js';
-import '../../textures/CreateCanvas.js';
-import '../../textures/TextureManagerInstance.js';
-import '../../renderer/webgl1/draw/BatchTexturedQuad.js';
-import '../components/transform/GetVertices.js';
-import '../components/bounds/BoundsComponent.js';
-import '../components/input/InputComponent.js';
-import '../components/transform/UpdateLocalTransform.js';
-import '../components/transform/UpdateWorldTransform.js';
-import '../components/transform/TransformComponent.js';
-import '../GameObject.js';
-import '../container/Container.js';
-import '../../renderer/canvas/draw/DrawTexturedQuad.js';
-import '../../renderer/webgl1/colors/PackColors.js';
-import '../sprite/SetFrame.js';
-import '../sprite/SetTexture.js';
-import '../sprite/UpdateVertices.js';
-import '../../renderer/webgl1/colors/PackColor.js';
-import '../components/Vertex.js';
-import '../sprite/Sprite.js';
-import '../../textures/types/CanvasTexture.js';
-export { Text } from './Text.js';
-export { SetBackgroundStyle } from './SetBackgroundStyle.js';
-export { SetCornerRadius } from './SetCornerRadius.js';
-export { SetFillStyle } from './SetFillStyle.js';
-export { SetFixedSize } from './SetFixedSize.js';
-export { SetFont } from './SetFont.js';
-export { SetLineDash } from './SetLineDash.js';
-export { SetLineSpacing } from './SetLineSpacing.js';
-export { SetLineWidth } from './SetLineWidth.js';
-export { SetPadding } from './SetPadding.js';
-export { SetStrokeStyle } from './SetStrokeStyle.js';
-export { SetText } from './SetText.js';
-export { SetTextAlign } from './SetTextAlign.js';
-export { SetTextBaseline } from './SetTextBaseline.js';
+import {SetBackgroundStyle as SetBackgroundStyle2} from "./SetBackgroundStyle";
+import {SetCornerRadius as SetCornerRadius2} from "./SetCornerRadius";
+import {SetFillStyle as SetFillStyle2} from "./SetFillStyle";
+import {SetFixedSize as SetFixedSize2} from "./SetFixedSize";
+import {SetFont as SetFont2} from "./SetFont";
+import {SetLineDash as SetLineDash2} from "./SetLineDash";
+import {SetLineSpacing as SetLineSpacing2} from "./SetLineSpacing";
+import {SetLineWidth as SetLineWidth2} from "./SetLineWidth";
+import {SetPadding as SetPadding2} from "./SetPadding";
+import {SetStrokeStyle as SetStrokeStyle2} from "./SetStrokeStyle";
+import {SetText as SetText2} from "./SetText";
+import {SetTextAlign as SetTextAlign2} from "./SetTextAlign";
+import {SetTextBaseline as SetTextBaseline2} from "./SetTextBaseline";
+import {Text as Text2} from "./Text";
+export {
+  SetBackgroundStyle2 as SetBackgroundStyle,
+  SetCornerRadius2 as SetCornerRadius,
+  SetFillStyle2 as SetFillStyle,
+  SetFixedSize2 as SetFixedSize,
+  SetFont2 as SetFont,
+  SetLineDash2 as SetLineDash,
+  SetLineSpacing2 as SetLineSpacing,
+  SetLineWidth2 as SetLineWidth,
+  SetPadding2 as SetPadding,
+  SetStrokeStyle2 as SetStrokeStyle,
+  SetText2 as SetText,
+  SetTextAlign2 as SetTextAlign,
+  SetTextBaseline2 as SetTextBaseline,
+  Text2 as Text
+};

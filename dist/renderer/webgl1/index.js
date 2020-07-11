@@ -1,79 +1,24 @@
-import '../../GameInstance.js';
-import '../../utils/base64/Base64ToArrayBuffer.js';
-import '../../utils/NOOP.js';
-import '../../math/mat4/Matrix4.js';
-import '../../math/mat4/Identity.js';
-import '../../math/mat4/Ortho.js';
-import '../../math/matrix2d/Matrix2D.js';
-import '../../geom/rectangle/RectangleContains.js';
-import '../../geom/rectangle/Rectangle.js';
-import '../../camera/StaticCamera.js';
-import '../../math/pow2/IsSizePowerOfTwo.js';
-import '../../config/const.js';
-import '../../config/ConfigStore.js';
-import '../../config/backgroundcolor/GetBackgroundColor.js';
-import '../../config/batchsize/GetBatchSize.js';
-import '../../config/size/GetHeight.js';
-import '../../config/size/GetResolution.js';
-import '../../config/size/GetWidth.js';
-import '../BindingQueue.js';
-import '../../config/maxtextures/SetMaxTextures.js';
-import './renderpass/AddViewport.js';
-export { GL } from './GL.js';
-import './renderpass/BindViewport.js';
-import './renderpass/SetViewport.js';
-import './renderpass/BindFramebuffer.js';
-import './renderpass/PopViewport.js';
-import './renderpass/PopFramebuffer.js';
-import './renderpass/AddFramebuffer.js';
-import './renderpass/SetFramebuffer.js';
-import './renderpass/Draw.js';
-import './renderpass/Flush.js';
-import './renderpass/End.js';
-import './colors/GetRGBArray.js';
-import '../../config/webglcontext/GetWebGLContext.js';
-export { CreateGLTexture } from './textures/CreateGLTexture.js';
-export { DeleteFramebuffer } from './fbo/DeleteFramebuffer.js';
-export { DeleteGLTexture } from './textures/DeleteGLTexture.js';
-export { SetGLTextureFilterMode } from './textures/SetGLTextureFilterMode.js';
-export { UpdateGLTexture } from './textures/UpdateGLTexture.js';
-import './textures/GLTextureBinding.js';
-import './renderpass/ProcessBindingQueue.js';
-import '../../config/maxtextures/GetMaxTextures.js';
-import './shaders/CheckShaderMaxIfStatements.js';
-import './renderpass/CreateTempTextures.js';
-export { DeleteGLBuffer } from './buffers/DeleteGLBuffer.js';
-import './buffers/VertexBuffer.js';
-import './buffers/IndexedVertexBuffer.js';
-import './shaders/CreateAttributes.js';
-import './shaders/DeleteShaders.js';
-import './shaders/CreateProgram.js';
-import './shaders/CreateShader.js';
-import './shaders/CreateUniformSetter.js';
-import './shaders/CreateUniforms.js';
-import './GL_CONST.js';
-import './shaders/DefaultQuadAttributes.js';
-import './shaders/DefaultQuadUniforms.js';
-import './fbo/CreateDepthBuffer.js';
-export { CreateFramebuffer } from './fbo/CreateFramebuffer.js';
-import './glsl/SINGLE_QUAD_FRAG.js';
-import './glsl/SINGLE_QUAD_VERT.js';
-import '../../textures/Frame.js';
-import '../../textures/Texture.js';
-import './shaders/Shader.js';
-import './shaders/QuadShader.js';
-import './glsl/MULTI_QUAD_FRAG.js';
-import './shaders/MultiTextureQuadShader.js';
-import './renderpass/SetDefaultBlendMode.js';
-import './renderpass/SetDefaultFramebuffer.js';
-import './renderpass/SetDefaultShader.js';
-import './renderpass/SetDefaultVertexBuffer.js';
-import './renderpass/SetDefaultViewport.js';
-import './renderpass/RenderPass.js';
-import './renderpass/BindBlendMode.js';
-import './renderpass/BindVertexBuffer.js';
-import './renderpass/Start.js';
-import './WebGLRendererInstance.js';
-export { WebGLRenderer } from './WebGLRenderer.js';
-export { PackColors } from './colors/PackColors.js';
-export { PackColor } from './colors/PackColor.js';
+import {CreateFramebuffer as CreateFramebuffer2} from "./fbo/CreateFramebuffer";
+import {CreateGLTexture as CreateGLTexture2} from "./textures/CreateGLTexture";
+import {DeleteFramebuffer as DeleteFramebuffer2} from "./fbo/DeleteFramebuffer";
+import {DeleteGLBuffer as DeleteGLBuffer2} from "./buffers/DeleteGLBuffer";
+import {DeleteGLTexture as DeleteGLTexture2} from "./textures/DeleteGLTexture";
+import {GL as GL2} from "./GL";
+import {PackColor as PackColor2} from "./colors/PackColor";
+import {PackColors as PackColors2} from "./colors/PackColors";
+import {SetGLTextureFilterMode as SetGLTextureFilterMode2} from "./textures/SetGLTextureFilterMode";
+import {UpdateGLTexture as UpdateGLTexture2} from "./textures/UpdateGLTexture";
+import {WebGLRenderer as WebGLRenderer2} from "./WebGLRenderer";
+export {
+  CreateFramebuffer2 as CreateFramebuffer,
+  CreateGLTexture2 as CreateGLTexture,
+  DeleteFramebuffer2 as DeleteFramebuffer,
+  DeleteGLBuffer2 as DeleteGLBuffer,
+  DeleteGLTexture2 as DeleteGLTexture,
+  GL2 as GL,
+  PackColor2 as PackColor,
+  PackColors2 as PackColors,
+  SetGLTextureFilterMode2 as SetGLTextureFilterMode,
+  UpdateGLTexture2 as UpdateGLTexture,
+  WebGLRenderer2 as WebGLRenderer
+};

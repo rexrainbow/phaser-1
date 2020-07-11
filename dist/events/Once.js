@@ -1,8 +1,4 @@
-import './EventInstance.js';
-import { On } from './On.js';
-
-function Once(emitter, event, callback, context = emitter) {
-    return On(emitter, event, callback, context, true);
+import {On as On2} from "./On";
+export function Once(emitter, event, callback, context = emitter) {
+  return On2(emitter, event, callback, context, true);
 }
-
-export { Once };

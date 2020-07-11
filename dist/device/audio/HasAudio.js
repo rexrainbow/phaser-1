@@ -1,5 +1,3 @@
-function HasAudio() {
-    return (window && window.hasOwnProperty('Audio'));
+export function HasAudio() {
+  return window && window.hasOwnProperty("Audio");
 }
-
-export { HasAudio };

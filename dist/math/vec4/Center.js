@@ -1,10 +1,7 @@
-import { Vec4 } from './Vec4.js';
-import { Add } from './Add.js';
-import { Scale } from './Scale.js';
-
-function Center(a, b, out = new Vec4()) {
-    Add(a, b, out);
-    return Scale(out, 0.5, out);
+import {Add as Add2} from "./Add";
+import {Scale as Scale2} from "./Scale";
+import {Vec4 as Vec42} from "./Vec4";
+export function Center(a, b, out = new Vec42()) {
+  Add2(a, b, out);
+  return Scale2(out, 0.5, out);
 }
-
-export { Center };

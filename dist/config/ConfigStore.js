@@ -1,3 +1,1 @@
-const ConfigStore = new Map();
-
-export { ConfigStore };
+export const ConfigStore = new Map();

@@ -1,8 +1,5 @@
-import { CONFIG_DEFAULTS } from '../const.js';
-import { ConfigStore } from '../ConfigStore.js';
-
-function GetWidth() {
-    return ConfigStore.get(CONFIG_DEFAULTS.SIZE).width;
+import {CONFIG_DEFAULTS} from "../const";
+import {ConfigStore as ConfigStore2} from "../ConfigStore";
+export function GetWidth() {
+  return ConfigStore2.get(CONFIG_DEFAULTS.SIZE).width;
 }
-
-export { GetWidth };

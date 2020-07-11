@@ -1,11 +1,6 @@
-import '../const.js';
-import '../ConfigStore.js';
-import { SetCanvasContext } from './SetCanvasContext.js';
-
-function CanvasContext(contextAttributes) {
-    return () => {
-        SetCanvasContext(contextAttributes);
-    };
+import {SetCanvasContext as SetCanvasContext2} from "./SetCanvasContext";
+export function CanvasContext(contextAttributes) {
+  return () => {
+    SetCanvasContext2(contextAttributes);
+  };
 }
-
-export { CanvasContext };

@@ -1,4 +1,4 @@
-const AMBIENT_LIGHT_FRAG = `#define SHADER_NAME AMBIENT_LIGHT_FRAG
+export const AMBIENT_LIGHT_FRAG = `#define SHADER_NAME AMBIENT_LIGHT_FRAG
 
 precision highp float;
 
@@ -40,5 +40,3 @@ void main (void)
 
     gl_FragColor = vec4(result, color.a);
 }`;
-
-export { AMBIENT_LIGHT_FRAG };

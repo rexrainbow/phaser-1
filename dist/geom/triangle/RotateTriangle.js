@@ -1,10 +1,11 @@
-import '../../math/vec2/Vec2.js';
-import { GetTriangleInCenter } from './GetTriangleInCenter.js';
-import { RotateTriangleAround } from './RotateTriangleAround.js';
-
-function RotateTriangle(triangle, angle) {
-    const point = GetTriangleInCenter(triangle);
-    return RotateTriangleAround(triangle, point.x, point.y, angle);
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+import {GetTriangleInCenter as GetTriangleInCenter2} from "./GetTriangleInCenter";
+import {RotateTriangleAround as RotateTriangleAround2} from "./RotateTriangleAround";
+export function RotateTriangle(triangle, angle) {
+  const point = GetTriangleInCenter2(triangle);
+  return RotateTriangleAround2(triangle, point.x, point.y, angle);
 }
-
-export { RotateTriangle };

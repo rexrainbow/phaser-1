@@ -1,7 +1,4 @@
-import { Vec3 } from './Vec3.js';
-
-function Zero() {
-    return new Vec3(0, 0, 0);
+import {Vec3 as Vec32} from "./Vec3";
+export function Zero() {
+  return new Vec32(0, 0, 0);
 }
-
-export { Zero };

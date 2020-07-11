@@ -1,12 +1,7 @@
-import { Vec4 } from './Vec4.js';
-import { Scale } from './Scale.js';
-import './DivideScalar.js';
-import './Length.js';
-import { Normalize } from './Normalize.js';
-
-function SetLength(a, length, out = new Vec4()) {
-    Normalize(a, out);
-    return Scale(out, length, out);
+import {Normalize as Normalize2} from "./Normalize";
+import {Scale as Scale2} from "./Scale";
+import {Vec4 as Vec42} from "./Vec4";
+export function SetLength(a, length, out = new Vec42()) {
+  Normalize2(a, out);
+  return Scale2(out, length, out);
 }
-
-export { SetLength };

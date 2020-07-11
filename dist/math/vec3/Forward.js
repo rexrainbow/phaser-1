@@ -1,7 +1,4 @@
-import { Vec3 } from './Vec3.js';
-
-function Forward() {
-    return new Vec3(0, 0, 1);
+import {Vec3 as Vec32} from "./Vec3";
+export function Forward() {
+  return new Vec32(0, 0, 1);
 }
-
-export { Forward };

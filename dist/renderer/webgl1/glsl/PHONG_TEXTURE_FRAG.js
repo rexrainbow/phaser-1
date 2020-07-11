@@ -1,4 +1,4 @@
-const PHONG_TEXTURE_FRAG = `#define SHADER_NAME phong_texture_frag
+export const PHONG_TEXTURE_FRAG = `#define SHADER_NAME phong_texture_frag
 
 precision highp float;
 
@@ -47,5 +47,3 @@ void main(void)
     gl_FragColor = finalColor;
 }
 `;
-
-export { PHONG_TEXTURE_FRAG };

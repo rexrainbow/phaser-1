@@ -1,11 +1,6 @@
-import '../const.js';
-import '../ConfigStore.js';
-import { SetScenes } from './SetScenes.js';
-
-function Scenes(scenes) {
-    return () => {
-        SetScenes(scenes);
-    };
+import {SetScenes as SetScenes2} from "./SetScenes";
+export function Scenes(scenes) {
+  return () => {
+    SetScenes2(scenes);
+  };
 }
-
-export { Scenes };

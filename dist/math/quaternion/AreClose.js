@@ -1,7 +1,4 @@
-import { Dot } from './Dot.js';
-
-function AreClose(a, b) {
-    return (Dot(a, b) >= 0);
+import {Dot as Dot2} from "./Dot";
+export function AreClose(a, b) {
+  return Dot2(a, b) >= 0;
 }
-
-export { AreClose };

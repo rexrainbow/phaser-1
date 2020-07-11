@@ -1,5 +1,3 @@
-function IsWebApp() {
-    return (navigator.hasOwnProperty('standalone'));
+export function IsWebApp() {
+  return navigator.hasOwnProperty("standalone");
 }
-
-export { IsWebApp };

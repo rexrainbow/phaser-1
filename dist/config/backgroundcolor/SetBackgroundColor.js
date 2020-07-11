@@ -1,8 +1,5 @@
-import { CONFIG_DEFAULTS } from '../const.js';
-import { ConfigStore } from '../ConfigStore.js';
-
-function SetBackgroundColor(color) {
-    ConfigStore.set(CONFIG_DEFAULTS.BACKGROUND_COLOR, color);
+import {CONFIG_DEFAULTS} from "../const";
+import {ConfigStore as ConfigStore2} from "../ConfigStore";
+export function SetBackgroundColor(color) {
+  ConfigStore2.set(CONFIG_DEFAULTS.BACKGROUND_COLOR, color);
 }
-
-export { SetBackgroundColor };

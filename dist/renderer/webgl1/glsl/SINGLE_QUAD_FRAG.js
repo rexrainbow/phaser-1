@@ -1,4 +1,4 @@
-const SINGLE_QUAD_FRAG = `#define SHADER_NAME SINGLE_QUAD_FRAG
+export const SINGLE_QUAD_FRAG = `#define SHADER_NAME SINGLE_QUAD_FRAG
 
 precision highp float;
 
@@ -14,5 +14,3 @@ void main (void)
 
     gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);
 }`;
-
-export { SINGLE_QUAD_FRAG };

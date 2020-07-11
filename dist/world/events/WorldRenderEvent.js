@@ -1,3 +1,1 @@
-const WorldRenderEvent = 'worldrender';
-
-export { WorldRenderEvent };
+export const WorldRenderEvent = "worldrender";

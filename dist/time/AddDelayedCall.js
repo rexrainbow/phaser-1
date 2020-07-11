@@ -1,12 +1,8 @@
-import './NOOP.js';
-import { AddTimer } from './AddTimer.js';
-
-function AddDelayedCall(clock, delay, callback) {
-    AddTimer(clock, {
-        duration: 0,
-        delay,
-        onComplete: callback
-    });
+import {AddTimer as AddTimer2} from "./AddTimer";
+export function AddDelayedCall(clock, delay, callback) {
+  AddTimer2(clock, {
+    duration: 0,
+    delay,
+    onComplete: callback
+  });
 }
-
-export { AddDelayedCall };

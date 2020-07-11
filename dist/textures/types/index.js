@@ -1,10 +1,12 @@
-import '../../renderer/BindingQueue.js';
-import '../Frame.js';
-import '../Texture.js';
-import '../CreateCanvas.js';
-export { CanvasTexture } from './CanvasTexture.js';
-import '../palettes/Arne16.js';
-export { GridTexture } from './GridTexture.js';
-export { PixelTexture } from './PixelTexture.js';
-export { RenderTexture } from './RenderTexture.js';
-export { SolidColorTexture } from './SolidColorTexture.js';
+import {CanvasTexture as CanvasTexture2} from "./CanvasTexture";
+import {GridTexture as GridTexture2} from "./GridTexture";
+import {PixelTexture as PixelTexture2} from "./PixelTexture";
+import {RenderTexture as RenderTexture2} from "./RenderTexture";
+import {SolidColorTexture as SolidColorTexture2} from "./SolidColorTexture";
+export {
+  CanvasTexture2 as CanvasTexture,
+  GridTexture2 as GridTexture,
+  PixelTexture2 as PixelTexture,
+  RenderTexture2 as RenderTexture,
+  SolidColorTexture2 as SolidColorTexture
+};

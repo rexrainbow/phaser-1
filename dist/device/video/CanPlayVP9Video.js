@@ -1,7 +1,4 @@
-import { CanPlayVideoType } from './CanPlayVideoType.js';
-
-function CanPlayVP9Video(videoElement) {
-    return CanPlayVideoType('video/webm; codecs="vp9"', videoElement);
+import {CanPlayVideoType as CanPlayVideoType2} from "./CanPlayVideoType";
+export function CanPlayVP9Video(videoElement) {
+  return CanPlayVideoType2('video/webm; codecs="vp9"', videoElement);
 }
-
-export { CanPlayVP9Video };

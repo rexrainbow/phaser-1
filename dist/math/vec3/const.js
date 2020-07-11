@@ -1,18 +1,14 @@
-import './Vec3.js';
-import { Backward } from './Backward.js';
-import { Down } from './Down.js';
-import { Forward } from './Forward.js';
-import { Left } from './Left.js';
-import { Right } from './Right.js';
-import { Up } from './Up.js';
-import { Zero } from './Zero.js';
-
-const UP = Up();
-const DOWN = Down();
-const LEFT = Left();
-const RIGHT = Right();
-const FORWARD = Forward();
-const BACKWARD = Backward();
-const ZERO = Zero();
-
-export { BACKWARD, DOWN, FORWARD, LEFT, RIGHT, UP, ZERO };
+import {Backward as Backward2} from "./Backward";
+import {Down as Down2} from "./Down";
+import {Forward as Forward2} from "./Forward";
+import {Left as Left2} from "./Left";
+import {Right as Right2} from "./Right";
+import {Up as Up2} from "./Up";
+import {Zero as Zero2} from "./Zero";
+export const UP = Up2();
+export const DOWN = Down2();
+export const LEFT = Left2();
+export const RIGHT = Right2();
+export const FORWARD = Forward2();
+export const BACKWARD = Backward2();
+export const ZERO = Zero2();

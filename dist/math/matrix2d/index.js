@@ -1,30 +1,60 @@
-export { Matrix2D } from './Matrix2D.js';
-import '../vec2/Vec2.js';
-export { Add } from './Add.js';
-export { Append } from './Append.js';
-export { Clone } from './Clone.js';
-export { CopyFrom } from './CopyFrom.js';
-export { CopyToContext } from './CopyToContext.js';
-export { Determinant } from './Determinant.js';
-export { Equals } from './Equals.js';
-export { ExactEquals } from './ExactEquals.js';
-export { Frobenius } from './Frobenius.js';
-export { Rotate } from './Rotate.js';
-export { FromRotation } from './FromRotation.js';
-export { Scale } from './Scale.js';
-export { FromScaling } from './FromScaling.js';
-export { Translate } from './Translate.js';
-export { FromTranslation } from './FromTranslation.js';
-export { GlobalToLocal } from './GlobalToLocal.js';
-export { ITRS } from './ITRS.js';
-export { ITRSS } from './ITRSS.js';
-export { Identity } from './Identity.js';
-export { Invert } from './Invert.js';
-export { LocalToGlobal } from './LocalToGlobal.js';
-export { Multiply } from './Multiply.js';
-export { MultiplyScalar } from './MultiplyScalar.js';
-export { MultiplyScalarAndAdd } from './MultiplyScalarAndAdd.js';
-export { SetToContext } from './SetToContext.js';
-export { Skew } from './Skew.js';
-export { Subtract } from './Subtract.js';
-export { Zero } from './Zero.js';
+import {Add as Add2} from "./Add";
+import {Append as Append2} from "./Append";
+import {Clone as Clone2} from "./Clone";
+import {CopyFrom as CopyFrom2} from "./CopyFrom";
+import {CopyToContext as CopyToContext2} from "./CopyToContext";
+import {Determinant as Determinant2} from "./Determinant";
+import {Equals as Equals2} from "./Equals";
+import {ExactEquals as ExactEquals2} from "./ExactEquals";
+import {Frobenius as Frobenius2} from "./Frobenius";
+import {FromRotation as FromRotation2} from "./FromRotation";
+import {FromScaling as FromScaling2} from "./FromScaling";
+import {FromTranslation as FromTranslation2} from "./FromTranslation";
+import {GlobalToLocal as GlobalToLocal2} from "./GlobalToLocal";
+import {ITRS as ITRS2} from "./ITRS";
+import {ITRSS as ITRSS2} from "./ITRSS";
+import {Identity as Identity2} from "./Identity";
+import {Invert as Invert2} from "./Invert";
+import {LocalToGlobal as LocalToGlobal2} from "./LocalToGlobal";
+import {Matrix2D as Matrix2D2} from "./Matrix2D";
+import {Multiply as Multiply2} from "./Multiply";
+import {MultiplyScalar as MultiplyScalar2} from "./MultiplyScalar";
+import {MultiplyScalarAndAdd as MultiplyScalarAndAdd2} from "./MultiplyScalarAndAdd";
+import {Rotate as Rotate2} from "./Rotate";
+import {Scale as Scale2} from "./Scale";
+import {SetToContext as SetToContext2} from "./SetToContext";
+import {Skew as Skew2} from "./Skew";
+import {Subtract as Subtract2} from "./Subtract";
+import {Translate as Translate2} from "./Translate";
+import {Zero as Zero2} from "./Zero";
+export {
+  Add2 as Add,
+  Append2 as Append,
+  Clone2 as Clone,
+  CopyFrom2 as CopyFrom,
+  CopyToContext2 as CopyToContext,
+  Determinant2 as Determinant,
+  Equals2 as Equals,
+  ExactEquals2 as ExactEquals,
+  Frobenius2 as Frobenius,
+  FromRotation2 as FromRotation,
+  FromScaling2 as FromScaling,
+  FromTranslation2 as FromTranslation,
+  GlobalToLocal2 as GlobalToLocal,
+  Identity2 as Identity,
+  Invert2 as Invert,
+  ITRS2 as ITRS,
+  ITRSS2 as ITRSS,
+  LocalToGlobal2 as LocalToGlobal,
+  Matrix2D2 as Matrix2D,
+  Multiply2 as Multiply,
+  MultiplyScalar2 as MultiplyScalar,
+  MultiplyScalarAndAdd2 as MultiplyScalarAndAdd,
+  Rotate2 as Rotate,
+  Scale2 as Scale,
+  SetToContext2 as SetToContext,
+  Skew2 as Skew,
+  Subtract2 as Subtract,
+  Translate2 as Translate,
+  Zero2 as Zero
+};

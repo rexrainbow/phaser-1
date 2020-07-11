@@ -1,7 +1,12 @@
-import '../const.js';
-import '../ConfigStore.js';
-export { GetHeight } from './GetHeight.js';
-export { GetResolution } from './GetResolution.js';
-export { GetWidth } from './GetWidth.js';
-export { SetSize } from './SetSize.js';
-export { Size } from './Size.js';
+import {GetHeight as GetHeight2} from "./GetHeight";
+import {GetResolution as GetResolution2} from "./GetResolution";
+import {GetWidth as GetWidth2} from "./GetWidth";
+import {SetSize as SetSize2} from "./SetSize";
+import {Size as Size2} from "./Size";
+export {
+  GetWidth2 as GetWidth,
+  GetHeight2 as GetHeight,
+  GetResolution2 as GetResolution,
+  SetSize2 as SetSize,
+  Size2 as Size
+};

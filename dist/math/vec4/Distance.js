@@ -1,7 +1,4 @@
-import { DistanceSquared } from './DistanceSquared.js';
-
-function Distance(a, b) {
-    return Math.sqrt(DistanceSquared(a, b));
+import {DistanceSquared as DistanceSquared2} from "./DistanceSquared";
+export function Distance(a, b) {
+  return Math.sqrt(DistanceSquared2(a, b));
 }
-
-export { Distance };

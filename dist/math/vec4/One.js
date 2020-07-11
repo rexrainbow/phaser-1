@@ -1,7 +1,4 @@
-import { Vec4 } from './Vec4.js';
-
-function One() {
-    return new Vec4(1, 1, 1, 1);
+import {Vec4 as Vec42} from "./Vec4";
+export function One() {
+  return new Vec42(1, 1, 1, 1);
 }
-
-export { One };

@@ -1,8 +1,5 @@
-import { CONFIG_DEFAULTS } from '../const.js';
-import { ConfigStore } from '../ConfigStore.js';
-
-function GetDefaultOriginY() {
-    return ConfigStore.get(CONFIG_DEFAULTS.DEFAULT_ORIGIN).y;
+import {CONFIG_DEFAULTS} from "../const";
+import {ConfigStore as ConfigStore2} from "../ConfigStore";
+export function GetDefaultOriginY() {
+  return ConfigStore2.get(CONFIG_DEFAULTS.DEFAULT_ORIGIN).y;
 }
-
-export { GetDefaultOriginY };

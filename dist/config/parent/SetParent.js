@@ -1,11 +1,8 @@
-import { CONFIG_DEFAULTS } from '../const.js';
-import { ConfigStore } from '../ConfigStore.js';
-import { GetElement } from '../../dom/GetElement.js';
-
-function SetParent(parentElement) {
-    if (parentElement) {
-        ConfigStore.set(CONFIG_DEFAULTS.PARENT, GetElement(parentElement));
-    }
+import {CONFIG_DEFAULTS} from "../const";
+import {ConfigStore as ConfigStore2} from "../ConfigStore";
+import {GetElement as GetElement2} from "../../dom/GetElement";
+export function SetParent(parentElement) {
+  if (parentElement) {
+    ConfigStore2.set(CONFIG_DEFAULTS.PARENT, GetElement2(parentElement));
+  }
 }
-
-export { SetParent };

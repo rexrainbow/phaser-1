@@ -1,18 +1,14 @@
-import { AddedToWorldEvent } from '../gameobjects/events/AddedToWorldEvent.js';
-import { RemovedFromWorldEvent } from '../gameobjects/events/RemovedFromWorldEvent.js';
-import { Emit } from '../events/Emit.js';
-
-function SetWorld(world, ...children) {
-    children.forEach(child => {
-        if (child.world) {
-            Emit(child.world, RemovedFromWorldEvent, child, child.world);
-            Emit(child, RemovedFromWorldEvent, child, child.world);
-        }
-        child.world = world;
-        Emit(world, AddedToWorldEvent, child, world);
-        Emit(child, AddedToWorldEvent, child, world);
-    });
-    return children;
+import {AddedToWorldEvent, RemovedFromWorldEvent} from "../gameobjects/events";
+import {Emit as Emit2} from "../events/Emit";
+export function SetWorld(world, ...children) {
+  children.forEach((child) => {
+    if (child.world) {
+      Emit2(child.world, RemovedFromWorldEvent, child, child.world);
+      Emit2(child, RemovedFromWorldEvent, child, child.world);
+    }
+    child.world = world;
+    Emit2(world, AddedToWorldEvent, child, world);
+    Emit2(child, AddedToWorldEvent, child, world);
+  });
+  return children;
 }
-
-export { SetWorld };

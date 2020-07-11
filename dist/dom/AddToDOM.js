@@ -1,9 +1,6 @@
-import { GetElement } from './GetElement.js';
-
-function AddToDOM(element, parent) {
-    const target = GetElement(parent);
-    target.appendChild(element);
-    return element;
+import {GetElement as GetElement2} from "./GetElement";
+export function AddToDOM(element, parent) {
+  const target = GetElement2(parent);
+  target.appendChild(element);
+  return element;
 }
-
-export { AddToDOM };

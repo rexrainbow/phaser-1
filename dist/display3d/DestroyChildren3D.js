@@ -1,10 +1,7 @@
-import { RemoveChildren3DBetween } from './RemoveChildren3DBetween.js';
-
-function DestroyChildren3D(parent, beginIndex = 0, endIndex) {
-    const removed = RemoveChildren3DBetween(parent, beginIndex, endIndex);
-    removed.forEach(child => {
-        child.destroy();
-    });
+import {RemoveChildren3DBetween as RemoveChildren3DBetween2} from "./RemoveChildren3DBetween";
+export function DestroyChildren3D(parent, beginIndex = 0, endIndex) {
+  const removed = RemoveChildren3DBetween2(parent, beginIndex, endIndex);
+  removed.forEach((child) => {
+    child.destroy();
+  });
 }
-
-export { DestroyChildren3D };

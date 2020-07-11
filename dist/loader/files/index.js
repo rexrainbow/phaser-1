@@ -1,27 +1,22 @@
-import '../../cache/Cache.js';
-import '../../renderer/webgl1/GL.js';
-import '../../renderer/webgl1/buffers/DeleteGLBuffer.js';
-import '../../renderer/webgl1/buffers/VertexBuffer.js';
-import '../../dom/ParseXML.js';
-import '../../textures/TextureManagerInstance.js';
-import '../../gameobjects3d/geometry/GetBufferFromVertexSet.js';
-import '../../gameobjects3d/geometry/Geometry.js';
-import '../../gameobjects3d/geometry/ParseObj.js';
-import '../../gameobjects3d/geometry/GetBufferFromObj.js';
-import '../../textures/parsers/AtlasParser.js';
-import '../File.js';
-import '../GetURL.js';
-import '../ImageTagLoader.js';
-export { ImageFile } from './ImageFile.js';
-import '../XHRLoader.js';
-export { JSONFile } from './JSONFile.js';
-export { AtlasFile } from './AtlasFile.js';
-import '../../textures/parsers/BitmapTextParser.js';
-export { XMLFile } from './XMLFile.js';
-export { BitmapTextFile } from './BitmapTextFile.js';
-export { CSVFile } from './CSVFile.js';
-export { JSONGeometryFile } from './JSONGeometryFile.js';
-export { OBJFile } from './OBJFile.js';
-export { OBJGeometryFile } from './OBJGeometryFile.js';
-import '../../textures/parsers/SpriteSheetParser.js';
-export { SpriteSheetFile } from './SpriteSheetFile.js';
+import {AtlasFile as AtlasFile2} from "./AtlasFile";
+import {BitmapTextFile as BitmapTextFile2} from "./BitmapTextFile";
+import {CSVFile as CSVFile2} from "./CSVFile";
+import {ImageFile as ImageFile2} from "./ImageFile";
+import {JSONFile as JSONFile2} from "./JSONFile";
+import {JSONGeometryFile as JSONGeometryFile2} from "./JSONGeometryFile";
+import {OBJFile as OBJFile2} from "./OBJFile";
+import {OBJGeometryFile as OBJGeometryFile2} from "./OBJGeometryFile";
+import {SpriteSheetFile as SpriteSheetFile2} from "./SpriteSheetFile";
+import {XMLFile as XMLFile2} from "./XMLFile";
+export {
+  AtlasFile2 as AtlasFile,
+  BitmapTextFile2 as BitmapTextFile,
+  CSVFile2 as CSVFile,
+  ImageFile2 as ImageFile,
+  JSONFile2 as JSONFile,
+  JSONGeometryFile2 as JSONGeometryFile,
+  OBJFile2 as OBJFile,
+  OBJGeometryFile2 as OBJGeometryFile,
+  SpriteSheetFile2 as SpriteSheetFile,
+  XMLFile2 as XMLFile
+};

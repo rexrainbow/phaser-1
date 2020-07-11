@@ -1,4 +1,4 @@
-const GORAUD_LAMBERT_VERT = `
+export const GORAUD_LAMBERT_VERT = `
 #define SHADER_NAME GORAUD_LAMBERT_VERT
 
 //  Goraud Shading + Lambert Reflection
@@ -57,5 +57,3 @@ void main(void)
     gl_Position = uProjectionMatrix * vertex;
 }
 `;
-
-export { GORAUD_LAMBERT_VERT };

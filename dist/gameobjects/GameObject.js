@@ -1,119 +1,92 @@
-import { GameInstance } from '../GameInstance.js';
-import '../utils/NOOP.js';
-import '../math/matrix2d/Matrix2D.js';
-import '../geom/rectangle/RectangleContains.js';
-import '../geom/rectangle/Rectangle.js';
-import '../math/vec2/Vec2.js';
-import '../math/vec2/Vec2Callback.js';
-import '../math/matrix2d/CopyFrom.js';
-import '../config/const.js';
-import '../config/ConfigStore.js';
-import '../config/defaultorigin/GetDefaultOriginX.js';
-import '../config/defaultorigin/GetDefaultOriginY.js';
-import '../display/DepthFirstSearch.js';
-import '../display/GetChildIndex.js';
-import '../display/RemoveChildAt.js';
-import '../display/RemoveChild.js';
-import './events/AddedToWorldEvent.js';
-import { DestroyEvent } from './events/DestroyEvent.js';
-import './events/RemovedFromWorldEvent.js';
-import { Emit } from '../events/Emit.js';
-import '../display/SetWorld.js';
-import '../display/SetParent.js';
-import { DIRTY_CONST } from './DIRTY_CONST.js';
-import '../display/RemoveChildrenBetween.js';
-import { DestroyChildren } from '../display/DestroyChildren.js';
-import { ReparentChildren } from '../display/ReparentChildren.js';
-import './components/transform/GetVertices.js';
-import { BoundsComponent } from './components/bounds/BoundsComponent.js';
-import { InputComponent } from './components/input/InputComponent.js';
-import './components/transform/UpdateLocalTransform.js';
-import './components/transform/UpdateWorldTransform.js';
-import { TransformComponent } from './components/transform/TransformComponent.js';
-
-class GameObject {
-    constructor(x = 0, y = 0) {
-        this.type = 'GameObject';
-        this.name = '';
-        this.willUpdate = true;
-        this.willUpdateChildren = true;
-        this.willRender = true;
-        this.willRenderChildren = true;
-        this.willCacheChildren = false;
-        this.dirty = 0;
-        this.dirtyFrame = 0;
-        this.visible = true;
-        this.children = [];
-        this.events = new Map();
-        this.transform = new TransformComponent(this, x, y);
-        this.bounds = new BoundsComponent(this);
-        this.input = new InputComponent(this);
-        this.dirty = DIRTY_CONST.DEFAULT;
-        this.transform.update();
+import {BoundsComponent as BoundsComponent2} from "./components/bounds/BoundsComponent";
+import {DIRTY_CONST as DIRTY_CONST2} from "./DIRTY_CONST";
+import {DestroyChildren as DestroyChildren2} from "../display/DestroyChildren";
+import {DestroyEvent as DestroyEvent2} from "./events/DestroyEvent";
+import {Emit} from "../events";
+import {GameInstance as GameInstance2} from "../GameInstance";
+import {InputComponent as InputComponent2} from "./components/input/InputComponent";
+import {ReparentChildren as ReparentChildren2} from "../display/ReparentChildren";
+import {TransformComponent as TransformComponent2} from "./components/transform/TransformComponent";
+export class GameObject {
+  constructor(x = 0, y = 0) {
+    this.type = "GameObject";
+    this.name = "";
+    this.willUpdate = true;
+    this.willUpdateChildren = true;
+    this.willRender = true;
+    this.willRenderChildren = true;
+    this.willCacheChildren = false;
+    this.dirty = 0;
+    this.dirtyFrame = 0;
+    this.visible = true;
+    this.children = [];
+    this.events = new Map();
+    this.transform = new TransformComponent2(this, x, y);
+    this.bounds = new BoundsComponent2(this);
+    this.input = new InputComponent2(this);
+    this.dirty = DIRTY_CONST2.DEFAULT;
+    this.transform.update();
+  }
+  isRenderable() {
+    return this.visible && this.willRender;
+  }
+  isDirty(flag) {
+    return (this.dirty & flag) !== 0;
+  }
+  clearDirty(flag) {
+    if (this.isDirty(flag)) {
+      this.dirty ^= flag;
     }
-    isRenderable() {
-        return (this.visible && this.willRender);
+    return this;
+  }
+  setDirty(flag, flag2) {
+    if (!this.isDirty(flag)) {
+      this.dirty ^= flag;
+      this.dirtyFrame = GameInstance2.getFrame();
     }
-    isDirty(flag) {
-        return (this.dirty & flag) !== 0;
+    if (!this.isDirty(flag2)) {
+      this.dirty ^= flag2;
     }
-    clearDirty(flag) {
-        if (this.isDirty(flag)) {
-            this.dirty ^= flag;
+    return this;
+  }
+  update(delta, time) {
+    if (this.willUpdateChildren) {
+      const children = this.children;
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        if (child && child.willUpdate) {
+          child.update(delta, time);
         }
-        return this;
+      }
     }
-    setDirty(flag, flag2) {
-        if (!this.isDirty(flag)) {
-            this.dirty ^= flag;
-            this.dirtyFrame = GameInstance.getFrame();
-        }
-        if (!this.isDirty(flag2)) {
-            this.dirty ^= flag2;
-        }
-        return this;
+    this.postUpdate(delta, time);
+  }
+  postUpdate(delta, time) {
+  }
+  renderGL(renderPass) {
+  }
+  renderCanvas(renderer) {
+  }
+  postRenderGL(renderPass) {
+  }
+  postRenderCanvas(renderer) {
+  }
+  get numChildren() {
+    return this.children.length;
+  }
+  destroy(reparentChildren) {
+    if (reparentChildren) {
+      ReparentChildren2(this, reparentChildren);
+    } else {
+      DestroyChildren2(this);
     }
-    update(delta, time) {
-        if (this.willUpdateChildren) {
-            const children = this.children;
-            for (let i = 0; i < children.length; i++) {
-                const child = children[i];
-                if (child && child.willUpdate) {
-                    child.update(delta, time);
-                }
-            }
-        }
-        this.postUpdate(delta, time);
-    }
-    postUpdate(delta, time) {
-    }
-    renderGL(renderPass) {
-    }
-    renderCanvas(renderer) {
-    }
-    postRenderGL(renderPass) {
-    }
-    postRenderCanvas(renderer) {
-    }
-    get numChildren() {
-        return this.children.length;
-    }
-    destroy(reparentChildren) {
-        if (reparentChildren) {
-            ReparentChildren(this, reparentChildren);
-        }
-        else {
-            DestroyChildren(this);
-        }
-        Emit(this, DestroyEvent, this);
-        this.transform.destroy();
-        this.bounds.destroy();
-        this.input.destroy();
-        this.events.clear();
-        this.world = null;
-        this.parent = null;
-        this.children = null;
-    }
+    Emit(this, DestroyEvent2, this);
+    this.transform.destroy();
+    this.bounds.destroy();
+    this.input.destroy();
+    this.events.clear();
+    this.world = null;
+    this.parent = null;
+    this.children = null;
+  }
 }
-
-export { GameObject };

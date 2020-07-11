@@ -1,8 +1,10 @@
-import { MATH_CONST } from '../../math/const.js';
-import { GetLineAngle } from './GetLineAngle.js';
-
-function GetLineNormalX(line) {
-    return Math.cos(GetLineAngle(line) - MATH_CONST.HALF_PI);
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+import {GetLineAngle as GetLineAngle2} from "./GetLineAngle";
+import {MATH_CONST} from "../../math/const";
+export function GetLineNormalX(line) {
+  return Math.cos(GetLineAngle2(line) - MATH_CONST.HALF_PI);
 }
-
-export { GetLineNormalX };

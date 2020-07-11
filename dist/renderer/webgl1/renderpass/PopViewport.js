@@ -1,13 +1,9 @@
-import '../GL.js';
-import { BindViewport } from './BindViewport.js';
-
-function PopViewport(renderPass) {
-    const stack = renderPass.viewportStack;
-    if (stack.length > 1) {
-        stack.pop();
-    }
-    renderPass.currentViewport = stack[stack.length - 1];
-    BindViewport(renderPass);
+import {BindViewport as BindViewport2} from "./BindViewport";
+export function PopViewport(renderPass) {
+  const stack = renderPass.viewportStack;
+  if (stack.length > 1) {
+    stack.pop();
+  }
+  renderPass.currentViewport = stack[stack.length - 1];
+  BindViewport2(renderPass);
 }
-
-export { PopViewport };

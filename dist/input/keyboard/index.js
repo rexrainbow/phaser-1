@@ -1,40 +1,12 @@
-import '../../events/Emit.js';
-import '../../events/EventEmitter.js';
-export { Key } from './Key.js';
-import './keys/AKey.js';
-import './keys/ArrowKeys.js';
-import './keys/BKey.js';
-import './keys/CKey.js';
-import './keys/DKey.js';
-import './keys/DownKey.js';
-import './keys/EKey.js';
-import './keys/FKey.js';
-import './keys/GKey.js';
-import './keys/HKey.js';
-import './keys/IKey.js';
-import './keys/JKey.js';
-import './keys/KKey.js';
-import './keys/LKey.js';
-import './keys/LeftKey.js';
-import './keys/MKey.js';
-import './keys/NKey.js';
-import './keys/OKey.js';
-import './keys/PKey.js';
-import './keys/QKey.js';
-import './keys/RKey.js';
-import './keys/RightKey.js';
-import './keys/SKey.js';
-import './keys/SpaceKey.js';
-import './keys/TKey.js';
-import './keys/UKey.js';
-import './keys/UpKey.js';
-import './keys/VKey.js';
-import './keys/WASDKeys.js';
-import './keys/WKey.js';
-import './keys/XKey.js';
-import './keys/YKey.js';
-import './keys/ZKey.js';
-export { i as Keys } from '../../index-157cb84a.js';
-export { GetKeyDownDuration } from './GetKeyDownDuration.js';
-export { Keyboard } from './Keyboard.js';
-export { SetKeyRepeatRate } from './SetKeyRepeatRate.js';
+import * as Keys from "./keys";
+import {GetKeyDownDuration as GetKeyDownDuration2} from "./GetKeyDownDuration";
+import {Key as Key2} from "./Key";
+import {Keyboard as Keyboard2} from "./Keyboard";
+import {SetKeyRepeatRate as SetKeyRepeatRate2} from "./SetKeyRepeatRate";
+export {
+  GetKeyDownDuration2 as GetKeyDownDuration,
+  Key2 as Key,
+  Keys,
+  Keyboard2 as Keyboard,
+  SetKeyRepeatRate2 as SetKeyRepeatRate
+};

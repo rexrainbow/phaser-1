@@ -1,23 +1,10 @@
-import '../../utils/NOOP.js';
-import '../../math/matrix2d/Matrix2D.js';
-import '../../geom/rectangle/RectangleContains.js';
-import '../../geom/rectangle/Rectangle.js';
-import '../../math/vec2/Vec2.js';
-import '../../math/vec2/Vec2Callback.js';
-import '../../math/matrix2d/CopyFrom.js';
-import '../../config/const.js';
-import '../../config/ConfigStore.js';
-import '../../config/defaultorigin/GetDefaultOriginX.js';
-import '../../config/defaultorigin/GetDefaultOriginY.js';
-import '../DIRTY_CONST.js';
-import './transform/GetVertices.js';
-import './bounds/BoundsComponent.js';
-import './input/InputComponent.js';
-import './transform/UpdateLocalTransform.js';
-import './transform/UpdateWorldTransform.js';
-import './transform/TransformComponent.js';
-import '../../renderer/webgl1/colors/PackColor.js';
-export { Vertex } from './Vertex.js';
-export { i as Bounds } from '../../index-55718145.js';
-export { i as Input } from '../../index-90d2e37b.js';
-export { i as Transform } from '../../index-87f3d285.js';
+import * as Bounds from "./bounds";
+import * as Input from "./input";
+import * as Transform from "./transform";
+import {Vertex as Vertex2} from "./Vertex";
+export {
+  Bounds,
+  Input,
+  Transform,
+  Vertex2 as Vertex
+};

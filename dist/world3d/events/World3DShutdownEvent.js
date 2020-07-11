@@ -1,3 +1,1 @@
-const World3DShutdownEvent = 'worldshutdown';
-
-export { World3DShutdownEvent };
+export const World3DShutdownEvent = "worldshutdown";

@@ -1,8 +1,5 @@
-import { Clamp } from '../Clamp.js';
-import { Vec4 } from './Vec4.js';
-
-function ClampScalar(a, min, max, out = new Vec4()) {
-    return out.set(Clamp(a.x, min, max), Clamp(a.y, min, max), Clamp(a.z, min, max), Clamp(a.w, min, max));
+import {Clamp as MathClamp} from "../Clamp";
+import {Vec4 as Vec42} from "./Vec4";
+export function ClampScalar(a, min, max, out = new Vec42()) {
+  return out.set(MathClamp(a.x, min, max), MathClamp(a.y, min, max), MathClamp(a.z, min, max), MathClamp(a.w, min, max));
 }
-
-export { ClampScalar };

@@ -1,11 +1,6 @@
-import '../const.js';
-import '../ConfigStore.js';
-import { SetDefaultOrigin } from './SetDefaultOrigin.js';
-
-function DefaultOrigin(x = 0.5, y = x) {
-    return () => {
-        SetDefaultOrigin(x, y);
-    };
+import {SetDefaultOrigin as SetDefaultOrigin2} from "./SetDefaultOrigin";
+export function DefaultOrigin(x = 0.5, y = x) {
+  return () => {
+    SetDefaultOrigin2(x, y);
+  };
 }
-
-export { DefaultOrigin };

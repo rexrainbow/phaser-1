@@ -1,12 +1,6 @@
-import '../const.js';
-import '../ConfigStore.js';
-import '../../dom/GetElement.js';
-import { SetParent } from './SetParent.js';
-
-function Parent(parentElement) {
-    return () => {
-        SetParent(parentElement);
-    };
+import {SetParent as SetParent2} from "./SetParent";
+export function Parent(parentElement) {
+  return () => {
+    SetParent2(parentElement);
+  };
 }
-
-export { Parent };

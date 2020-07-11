@@ -1,7 +1,4 @@
-import { Vec4 } from './Vec4.js';
-
-function Zero() {
-    return new Vec4(0, 0, 0, 0);
+import {Vec4 as Vec42} from "./Vec4";
+export function Zero() {
+  return new Vec42(0, 0, 0, 0);
 }
-
-export { Zero };

@@ -1,4 +1,4 @@
-const GORAUD_LAMBERT_FRAG = `#define SHADER_NAME GORAUD_LAMBERT_FRAG
+export const GORAUD_LAMBERT_FRAG = `#define SHADER_NAME GORAUD_LAMBERT_FRAG
 
 precision highp float;
 
@@ -13,5 +13,3 @@ void main (void)
 
     gl_FragColor = vec4(color.rgb * vTintColor, color.a);
 }`;
-
-export { GORAUD_LAMBERT_FRAG };

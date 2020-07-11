@@ -1,3 +1,1 @@
-const DestroyEvent = 'destroy';
-
-export { DestroyEvent };
+export const DestroyEvent = "destroy";

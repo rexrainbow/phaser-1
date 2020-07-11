@@ -1,62 +1,80 @@
-import '../../utils/base64/Base64ToArrayBuffer.js';
-import '../../utils/NOOP.js';
-import '../mat4/Matrix4.js';
-import '../vec3/Vec3.js';
-export { Quaternion } from './Quaternion.js';
-import '../mat4/Invert.js';
-import '../mat4/Multiply.js';
-import '../vec3/Backward.js';
-import '../vec3/Down.js';
-import '../vec3/Forward.js';
-import '../vec3/Left.js';
-import '../vec3/Right.js';
-import '../vec3/Up.js';
-import '../vec3/Zero.js';
-import '../vec3/const.js';
-import '../vec3/Dot.js';
-import '../vec3/Scale.js';
-import '../Clamp.js';
-import '../fuzzy/FuzzyEqual.js';
-import '../Hermite.js';
-import '../vec3/Normalize.js';
-import '../vec3/TransformMat4.js';
-import '../vec3/Project.js';
-import '../vec3/Unproject.js';
-export { Add } from './Add.js';
-export { AddScalar } from './AddScalar.js';
-export { Dot } from './Dot.js';
-export { AngleTo } from './AngleTo.js';
-export { AreClose } from './AreClose.js';
-export { Clone } from './Clone.js';
-export { Conjugate } from './Conjugate.js';
-export { CopyFrom } from './CopyFrom.js';
-export { Equals } from './Equals.js';
-export { RotationYawPitchRoll } from './RotationYawPitchRoll.js';
-export { FromEulerAngles } from './FromEulerAngles.js';
-export { FromEulerVector } from './FromEulerVector.js';
-export { FromRotationAxis } from './FromRotationAxis.js';
-export { FromRotationMatrix } from './FromRotationMatrix.js';
-export { FuzzyEquals } from './FuzzyEquals.js';
-export { GetAngle } from './GetAngle.js';
-export { GetAxisAngle } from './GetAxisAngle.js';
-export { Hermite } from './Hermite.js';
-export { Invert } from './Invert.js';
-export { Length } from './Length.js';
-export { LengthSquared } from './LengthSquared.js';
-export { Multiply } from './Multiply.js';
-export { MultiplyByFloats } from './MultiplyByFloats.js';
-export { Scale } from './Scale.js';
-export { Normalize } from './Normalize.js';
-export { Slerp } from './Slerp.js';
-export { RotateTowards } from './RotateTowards.js';
-export { RotateX } from './RotateX.js';
-export { RotateY } from './RotateY.js';
-export { RotateZ } from './RotateZ.js';
-export { RotationAlphaBetaGamma } from './RotationAlphaBetaGamma.js';
-export { ScaleAndAdd } from './ScaleAndAdd.js';
-export { SetAxisAngle } from './SetAxisAngle.js';
-export { SetFromUnitVectors } from './SetFromUnitVectors.js';
-export { Subtract } from './Subtract.js';
-export { SubtractScalar } from './SubtractScalar.js';
-export { ToEulerAngles } from './ToEulerAngles.js';
-export { Zero } from './Zero.js';
+import {Add as Add2} from "./Add";
+import {AddScalar as AddScalar2} from "./AddScalar";
+import {AngleTo as AngleTo2} from "./AngleTo";
+import {AreClose as AreClose2} from "./AreClose";
+import {Clone as Clone2} from "./Clone";
+import {Conjugate as Conjugate2} from "./Conjugate";
+import {CopyFrom as CopyFrom2} from "./CopyFrom";
+import {Dot as Dot2} from "./Dot";
+import {Equals as Equals2} from "./Equals";
+import {FromEulerAngles as FromEulerAngles2} from "./FromEulerAngles";
+import {FromEulerVector as FromEulerVector2} from "./FromEulerVector";
+import {FromRotationAxis as FromRotationAxis2} from "./FromRotationAxis";
+import {FromRotationMatrix as FromRotationMatrix2} from "./FromRotationMatrix";
+import {FuzzyEquals as FuzzyEquals2} from "./FuzzyEquals";
+import {GetAngle as GetAngle2} from "./GetAngle";
+import {GetAxisAngle as GetAxisAngle2} from "./GetAxisAngle";
+import {Hermite as Hermite2} from "./Hermite";
+import {Invert as Invert2} from "./Invert";
+import {Length as Length2} from "./Length";
+import {LengthSquared as LengthSquared2} from "./LengthSquared";
+import {Multiply as Multiply2} from "./Multiply";
+import {MultiplyByFloats as MultiplyByFloats2} from "./MultiplyByFloats";
+import {Normalize as Normalize2} from "./Normalize";
+import {Quaternion as Quaternion2} from "./Quaternion";
+import {RotateTowards as RotateTowards2} from "./RotateTowards";
+import {RotateX as RotateX2} from "./RotateX";
+import {RotateY as RotateY2} from "./RotateY";
+import {RotateZ as RotateZ2} from "./RotateZ";
+import {RotationAlphaBetaGamma as RotationAlphaBetaGamma2} from "./RotationAlphaBetaGamma";
+import {RotationYawPitchRoll as RotationYawPitchRoll2} from "./RotationYawPitchRoll";
+import {Scale as Scale2} from "./Scale";
+import {ScaleAndAdd as ScaleAndAdd2} from "./ScaleAndAdd";
+import {SetAxisAngle as SetAxisAngle2} from "./SetAxisAngle";
+import {SetFromUnitVectors as SetFromUnitVectors2} from "./SetFromUnitVectors";
+import {Slerp as Slerp2} from "./Slerp";
+import {Subtract as Subtract2} from "./Subtract";
+import {SubtractScalar as SubtractScalar2} from "./SubtractScalar";
+import {ToEulerAngles as ToEulerAngles2} from "./ToEulerAngles";
+import {Zero as Zero2} from "./Zero";
+export {
+  Add2 as Add,
+  AddScalar2 as AddScalar,
+  AngleTo2 as AngleTo,
+  AreClose2 as AreClose,
+  Clone2 as Clone,
+  Conjugate2 as Conjugate,
+  CopyFrom2 as CopyFrom,
+  Dot2 as Dot,
+  Equals2 as Equals,
+  FromEulerAngles2 as FromEulerAngles,
+  FromEulerVector2 as FromEulerVector,
+  FromRotationAxis2 as FromRotationAxis,
+  FromRotationMatrix2 as FromRotationMatrix,
+  FuzzyEquals2 as FuzzyEquals,
+  GetAngle2 as GetAngle,
+  GetAxisAngle2 as GetAxisAngle,
+  Hermite2 as Hermite,
+  Invert2 as Invert,
+  Length2 as Length,
+  LengthSquared2 as LengthSquared,
+  Multiply2 as Multiply,
+  MultiplyByFloats2 as MultiplyByFloats,
+  Normalize2 as Normalize,
+  Quaternion2 as Quaternion,
+  RotateTowards2 as RotateTowards,
+  RotateX2 as RotateX,
+  RotateY2 as RotateY,
+  RotateZ2 as RotateZ,
+  RotationAlphaBetaGamma2 as RotationAlphaBetaGamma,
+  RotationYawPitchRoll2 as RotationYawPitchRoll,
+  Scale2 as Scale,
+  ScaleAndAdd2 as ScaleAndAdd,
+  SetAxisAngle2 as SetAxisAngle,
+  SetFromUnitVectors2 as SetFromUnitVectors,
+  Slerp2 as Slerp,
+  Subtract2 as Subtract,
+  SubtractScalar2 as SubtractScalar,
+  ToEulerAngles2 as ToEulerAngles,
+  Zero2 as Zero
+};

@@ -1,30 +1,18 @@
-import './DepthFirstSearch.js';
-import { GetChildIndex } from './GetChildIndex.js';
-import './RemoveChildAt.js';
-import { RemoveChild } from './RemoveChild.js';
-import '../gameobjects/events/AddedToWorldEvent.js';
-import '../gameobjects/events/RemovedFromWorldEvent.js';
-import '../events/Emit.js';
-import './SetWorld.js';
-import './SetParent.js';
-import { AddChildAt } from './AddChildAt.js';
-import '../gameobjects/DIRTY_CONST.js';
-import { MoveChildTo } from './MoveChildTo.js';
-
-function ReplaceChild(target, source) {
-    const targetParent = target.parent;
-    const sourceParent = source.parent;
-    const targetIndex = GetChildIndex(targetParent, target);
-    if (targetParent === sourceParent) {
-        MoveChildTo(targetParent, source, targetIndex);
-        RemoveChild(targetParent, target);
-    }
-    else {
-        RemoveChild(targetParent, target);
-        RemoveChild(sourceParent, source);
-        AddChildAt(targetParent, targetIndex, source);
-    }
-    return target;
+import {AddChildAt as AddChildAt2} from "./AddChildAt";
+import {GetChildIndex as GetChildIndex2} from "./GetChildIndex";
+import {MoveChildTo as MoveChildTo2} from "./MoveChildTo";
+import {RemoveChild as RemoveChild2} from "./RemoveChild";
+export function ReplaceChild(target, source) {
+  const targetParent = target.parent;
+  const sourceParent = source.parent;
+  const targetIndex = GetChildIndex2(targetParent, target);
+  if (targetParent === sourceParent) {
+    MoveChildTo2(targetParent, source, targetIndex);
+    RemoveChild2(targetParent, target);
+  } else {
+    RemoveChild2(targetParent, target);
+    RemoveChild2(sourceParent, source);
+    AddChildAt2(targetParent, targetIndex, source);
+  }
+  return target;
 }
-
-export { ReplaceChild };

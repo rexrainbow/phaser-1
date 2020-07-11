@@ -1,9 +1,4 @@
-import '../../utils/base64/Base64ToArrayBuffer.js';
-import '../../utils/NOOP.js';
-import { Matrix4 } from './Matrix4.js';
-
-function Clone(src) {
-    return new Matrix4(src);
+import {Matrix4 as Matrix42} from "./Matrix4";
+export function Clone(src) {
+  return new Matrix42(src);
 }
-
-export { Clone };

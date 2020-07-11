@@ -1,3 +1,1 @@
-const UpdateEvent = 'update';
-
-export { UpdateEvent };
+export const UpdateEvent = "update";

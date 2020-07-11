@@ -1,5 +1,8 @@
-function ReverseColumns(matrix) {
-    return matrix.reverse();
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+export function ReverseColumns(matrix) {
+  return matrix.reverse();
 }
-
-export { ReverseColumns };

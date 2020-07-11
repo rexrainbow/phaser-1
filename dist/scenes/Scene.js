@@ -1,14 +1,9 @@
-import { GameInstance } from '../GameInstance.js';
-import './SceneManagerInstance.js';
-import './GetConfigValue.js';
-import { Install } from './Install.js';
-
-class Scene {
-    constructor(config) {
-        this.game = GameInstance.get();
-        this.events = new Map();
-        Install(this, config);
-    }
+import {GameInstance as GameInstance2} from "../GameInstance";
+import {Install as Install2} from "./Install";
+export class Scene {
+  constructor(config) {
+    this.game = GameInstance2.get();
+    this.events = new Map();
+    Install2(this, config);
+  }
 }
-
-export { Scene };

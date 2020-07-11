@@ -1,1 +1,3 @@
-export { a as Linear } from '../../Linear-8dd9e56a.js';
+export function Linear(v) {
+  return v;
+}

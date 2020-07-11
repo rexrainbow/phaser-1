@@ -1,5 +1,3 @@
-function GetEventNames(emitter) {
-    return [...emitter.events.keys()];
+export function GetEventNames(emitter) {
+  return [...emitter.events.keys()];
 }
-
-export { GetEventNames };

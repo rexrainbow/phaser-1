@@ -1,11 +1,6 @@
-import '../const.js';
-import '../ConfigStore.js';
-import { SetWebGLContext } from './SetWebGLContext.js';
-
-function WebGLContext(contextAttributes) {
-    return () => {
-        SetWebGLContext(contextAttributes);
-    };
+import {SetWebGLContext as SetWebGLContext2} from "./SetWebGLContext";
+export function WebGLContext(contextAttributes) {
+  return () => {
+    SetWebGLContext2(contextAttributes);
+  };
 }
-
-export { WebGLContext };

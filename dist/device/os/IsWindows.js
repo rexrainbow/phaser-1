@@ -1,5 +1,3 @@
-function IsWindows() {
-    return (navigator.userAgent.includes('Windows'));
+export function IsWindows() {
+  return navigator.userAgent.includes("Windows");
 }
-
-export { IsWindows };

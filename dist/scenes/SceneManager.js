@@ -1,45 +1,37 @@
-import { GameInstance } from '../GameInstance.js';
-import '../config/const.js';
-import '../config/ConfigStore.js';
-import { GetScenes } from '../config/scenes/GetScenes.js';
-import { Emit } from '../events/Emit.js';
-import '../events/EventInstance.js';
-import '../events/On.js';
-import { Once } from '../events/Once.js';
-import { CreateSceneRenderData } from './CreateSceneRenderData.js';
-import { ResetSceneRenderData } from './ResetSceneRenderData.js';
-import { SceneManagerInstance } from './SceneManagerInstance.js';
-
-class SceneManager {
-    constructor() {
-        this.scenes = new Map();
-        this.sceneIndex = 0;
-        this.flush = false;
-        this.renderResult = CreateSceneRenderData();
-        this.game = GameInstance.get();
-        SceneManagerInstance.set(this);
-        Once(this.game, 'boot', () => this.boot());
+import {Emit, Once} from "../events";
+import {CreateSceneRenderData as CreateSceneRenderData2} from "./CreateSceneRenderData";
+import {GameInstance as GameInstance2} from "../GameInstance";
+import {GetScenes} from "../config/scenes";
+import {ResetSceneRenderData as ResetSceneRenderData2} from "./ResetSceneRenderData";
+import {SceneManagerInstance as SceneManagerInstance2} from "./SceneManagerInstance";
+export class SceneManager {
+  constructor() {
+    this.scenes = new Map();
+    this.sceneIndex = 0;
+    this.flush = false;
+    this.renderResult = CreateSceneRenderData2();
+    this.game = GameInstance2.get();
+    SceneManagerInstance2.set(this);
+    Once(this.game, "boot", () => this.boot());
+  }
+  boot() {
+    GetScenes().forEach((scene) => new scene());
+  }
+  update(delta, time) {
+    for (const scene of this.scenes.values()) {
+      Emit(scene, "update", delta, time);
     }
-    boot() {
-        GetScenes().forEach(scene => new scene());
+  }
+  render(gameFrame) {
+    const results = this.renderResult;
+    ResetSceneRenderData2(results, gameFrame);
+    for (const scene of this.scenes.values()) {
+      Emit(scene, "render", results);
     }
-    update(delta, time) {
-        for (const scene of this.scenes.values()) {
-            Emit(scene, 'update', delta, time);
-        }
+    if (this.flush) {
+      results.numDirtyFrames++;
+      this.flush = false;
     }
-    render(gameFrame) {
-        const results = this.renderResult;
-        ResetSceneRenderData(results, gameFrame);
-        for (const scene of this.scenes.values()) {
-            Emit(scene, 'render', results);
-        }
-        if (this.flush) {
-            results.numDirtyFrames++;
-            this.flush = false;
-        }
-        return results;
-    }
+    return results;
+  }
 }
-
-export { SceneManager };

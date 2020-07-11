@@ -1,9 +1,9 @@
-import './CheckMatrix.js';
-import './TransposeMatrix.js';
-import { RotateMatrix } from './RotateMatrix.js';
-
-function Rotate180(matrix) {
-    return RotateMatrix(matrix, 180);
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+import {RotateMatrix as RotateMatrix2} from "./RotateMatrix";
+export function Rotate180(matrix) {
+  return RotateMatrix2(matrix, 180);
 }
-
-export { Rotate180 };

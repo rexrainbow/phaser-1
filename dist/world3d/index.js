@@ -1,114 +1,24 @@
-import '../GameInstance.js';
-import '../utils/base64/Base64ToArrayBuffer.js';
-import '../utils/NOOP.js';
-import '../math/mat4/Matrix4.js';
-import '../math/mat4/FromRotationTranslationScale.js';
-import '../math/mat4/FromRotationXYTranslation.js';
-import '../math/vec3/Vec3.js';
-import '../math/quaternion/Quaternion.js';
-import '../math/mat4/Invert.js';
-import '../math/mat4/Multiply.js';
-import '../math/mat4/Perspective.js';
-import '../math/mat4/Transpose.js';
-import '../geom/rectangle/RectangleContains.js';
-import '../geom/rectangle/Rectangle.js';
-import '../math/const.js';
-import '../math/vec3/Backward.js';
-import '../math/vec3/Down.js';
-import '../math/vec3/Forward.js';
-import '../math/vec3/Left.js';
-import '../math/vec3/Right.js';
-import '../math/vec3/Up.js';
-import '../math/vec3/Zero.js';
-import '../math/vec3/const.js';
-import '../math/vec3/Scale.js';
-import '../math/Clamp.js';
-import '../math/vec3/TransformMat4.js';
-import '../math/vec3/Project.js';
-import '../math/vec3/Vec3Callback.js';
-import '../math/vec3/RGBCallback.js';
-import '../math/vec3/ScaleAndAdd.js';
-import '../math/vec3/TransformMat4Zero.js';
-import '../math/vec3/Unproject.js';
-import '../math/quaternion/RotationYawPitchRoll.js';
-import '../math/quaternion/RotateX.js';
-import '../math/quaternion/RotateY.js';
-import '../math/quaternion/RotateZ.js';
-import '../math/pow2/IsSizePowerOfTwo.js';
-import '../math/DegToRad.js';
-import '../camera3d/NewCamera3D.js';
-import '../config/const.js';
-import '../config/ConfigStore.js';
-import '../config/size/GetHeight.js';
-import '../config/size/GetResolution.js';
-import '../config/size/GetWidth.js';
-import '../renderer/BindingQueue.js';
-import '../renderer/webgl1/renderpass/AddViewport.js';
-import '../renderer/webgl1/GL.js';
-import '../renderer/webgl1/renderpass/BindViewport.js';
-import '../renderer/webgl1/renderpass/SetViewport.js';
-import '../renderer/webgl1/renderpass/BindFramebuffer.js';
-import '../renderer/webgl1/renderpass/PopViewport.js';
-import '../renderer/webgl1/renderpass/PopFramebuffer.js';
-import '../renderer/webgl1/renderpass/AddFramebuffer.js';
-import '../renderer/webgl1/renderpass/SetFramebuffer.js';
-import '../renderer/webgl1/renderpass/Draw.js';
-import '../renderer/webgl1/renderpass/Flush.js';
-import '../renderer/webgl1/textures/CreateGLTexture.js';
-import '../renderer/webgl1/fbo/DeleteFramebuffer.js';
-import '../renderer/webgl1/textures/DeleteGLTexture.js';
-import '../renderer/webgl1/textures/SetGLTextureFilterMode.js';
-import '../renderer/webgl1/textures/UpdateGLTexture.js';
-import '../renderer/webgl1/textures/GLTextureBinding.js';
-import '../renderer/webgl1/shaders/CreateAttributes.js';
-import '../renderer/webgl1/shaders/DeleteShaders.js';
-import '../renderer/webgl1/shaders/CreateProgram.js';
-import '../renderer/webgl1/shaders/CreateShader.js';
-import '../renderer/webgl1/shaders/CreateUniformSetter.js';
-import '../renderer/webgl1/shaders/CreateUniforms.js';
-import '../renderer/webgl1/GL_CONST.js';
-import '../renderer/webgl1/shaders/DefaultQuadAttributes.js';
-import '../renderer/webgl1/shaders/DefaultQuadUniforms.js';
-import '../renderer/webgl1/fbo/CreateDepthBuffer.js';
-import '../renderer/webgl1/fbo/CreateFramebuffer.js';
-import '../renderer/webgl1/glsl/SINGLE_QUAD_FRAG.js';
-import '../renderer/webgl1/glsl/SINGLE_QUAD_VERT.js';
-import '../textures/Frame.js';
-import '../textures/Texture.js';
-import '../renderer/webgl1/shaders/Shader.js';
-import '../renderer/webgl1/renderpass/AddShader.js';
-import '../renderer/webgl1/renderpass/BindShader.js';
-import '../renderer/webgl1/renderpass/PopShader.js';
-import '../renderer/webgl1/renderpass/SetShader.js';
-import '../gameobjects/events/DestroyEvent.js';
-import '../gameobjects/events/PostUpdateEvent.js';
-import '../gameobjects/events/UpdateEvent.js';
-import '../events/Emit.js';
-import '../gameobjects/DIRTY_CONST.js';
-import '../display3d/GetChild3DIndex.js';
-import '../display3d/RemoveChild3DAt.js';
-import '../display3d/RemoveChild3D.js';
-import '../display3d/RemoveChildren3D.js';
-import '../events/EventInstance.js';
-import '../events/Off.js';
-import '../events/On.js';
-import '../events/Once.js';
-import '../gameobjects3d/components/transform3d/Transform3DComponent.js';
-import '../gameobjects3d/GameObject3D.js';
-import '../gameobjects3d/light/Light.js';
-import './events/World3DRenderEvent.js';
-import './events/World3DShutdownEvent.js';
-export { i as Events } from '../index-55bcac39.js';
-export { CalculateTotalRenderable } from './CalculateTotalRenderable.js';
-export { HasDirtyChildren } from './HasDirtyChildren.js';
-export { UpdateCachedLayers } from './UpdateCachedLayers.js';
-export { WorldDepthFirstSearch } from './WorldDepthFirstSearch.js';
-export { BuildRenderList } from './BuildRenderList.js';
-export { MergeRenderData } from './MergeRenderData.js';
-export { ResetWorld3DRenderData } from './ResetWorld3DRenderData.js';
-export { BaseWorld3D } from './BaseWorld3D.js';
-export { CreateWorld3DRenderData } from './CreateWorld3DRenderData.js';
-import '../renderer/webgl1/glsl/AMBIENT_LIGHT_FRAG.js';
-import '../renderer/webgl1/glsl/AMBIENT_LIGHT_VERT.js';
-import '../renderer/webgl1/shaders/AmbientLightShader.js';
-export { World3D } from './World3D.js';
+import * as Events from "./events";
+import {BaseWorld3D as BaseWorld3D2} from "./BaseWorld3D";
+import {BuildRenderList as BuildRenderList2} from "./BuildRenderList";
+import {CalculateTotalRenderable as CalculateTotalRenderable2} from "./CalculateTotalRenderable";
+import {CreateWorld3DRenderData as CreateWorld3DRenderData2} from "./CreateWorld3DRenderData";
+import {HasDirtyChildren as HasDirtyChildren2} from "./HasDirtyChildren";
+import {MergeRenderData as MergeRenderData2} from "./MergeRenderData";
+import {ResetWorld3DRenderData as ResetWorld3DRenderData2} from "./ResetWorld3DRenderData";
+import {UpdateCachedLayers as UpdateCachedLayers2} from "./UpdateCachedLayers";
+import {World3D as World3D2} from "./World3D";
+import {WorldDepthFirstSearch as WorldDepthFirstSearch2} from "./WorldDepthFirstSearch";
+export {
+  BaseWorld3D2 as BaseWorld3D,
+  BuildRenderList2 as BuildRenderList,
+  CalculateTotalRenderable2 as CalculateTotalRenderable,
+  CreateWorld3DRenderData2 as CreateWorld3DRenderData,
+  Events,
+  HasDirtyChildren2 as HasDirtyChildren,
+  MergeRenderData2 as MergeRenderData,
+  ResetWorld3DRenderData2 as ResetWorld3DRenderData,
+  UpdateCachedLayers2 as UpdateCachedLayers,
+  World3D2 as World3D,
+  WorldDepthFirstSearch2 as WorldDepthFirstSearch
+};

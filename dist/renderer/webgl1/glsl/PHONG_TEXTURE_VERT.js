@@ -1,4 +1,4 @@
-const PHONG_TEXTURE_VERT = `
+export const PHONG_TEXTURE_VERT = `
 #define SHADER_NAME phong_texture_vert
 
 precision highp float;
@@ -28,5 +28,3 @@ void main(void) {
     gl_Position = uProjectionMatrix * uCameraMatrix * vec4(aVertexPosition, 1.0);
 }
 `;
-
-export { PHONG_TEXTURE_VERT };

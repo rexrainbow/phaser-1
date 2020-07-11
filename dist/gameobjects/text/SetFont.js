@@ -1,8 +1,6 @@
-function SetFont(font, ...text) {
-    text.forEach(entity => {
-        entity.font = font;
-        entity.updateText();
-    });
+export function SetFont(font, ...text) {
+  text.forEach((entity) => {
+    entity.font = font;
+    entity.updateText();
+  });
 }
-
-export { SetFont };

@@ -1,64 +1,18 @@
-import '../../GameInstance.js';
-import '../../utils/NOOP.js';
-import '../../math/matrix2d/Matrix2D.js';
-import '../../geom/rectangle/RectangleContains.js';
-import '../../geom/rectangle/Rectangle.js';
-import '../../math/vec2/Vec2.js';
-import '../../math/vec2/Vec2Callback.js';
-import '../../math/matrix2d/CopyFrom.js';
-import '../../config/const.js';
-import '../../config/ConfigStore.js';
-import '../../renderer/BindingQueue.js';
-import '../../config/defaultorigin/GetDefaultOriginX.js';
-import '../../config/defaultorigin/GetDefaultOriginY.js';
-import '../../renderer/webgl1/renderpass/AddViewport.js';
-import '../../renderer/webgl1/GL.js';
-import '../../renderer/webgl1/renderpass/BindViewport.js';
-import '../../renderer/webgl1/renderpass/SetViewport.js';
-import '../../renderer/webgl1/renderpass/BindFramebuffer.js';
-import '../../renderer/webgl1/renderpass/PopViewport.js';
-import '../../renderer/webgl1/renderpass/PopFramebuffer.js';
-import '../../renderer/webgl1/renderpass/AddFramebuffer.js';
-import '../../renderer/webgl1/renderpass/SetFramebuffer.js';
-import '../../renderer/webgl1/renderpass/Draw.js';
-import '../../renderer/webgl1/renderpass/Flush.js';
-import '../../textures/Frame.js';
-import '../../textures/Texture.js';
-import '../../renderer/webgl1/renderpass/GetVertexBufferEntry.js';
-import '../../renderer/webgl1/renderpass/SetTexture.js';
-import '../../display/DepthFirstSearch.js';
-import '../../display/GetChildIndex.js';
-import '../../display/RemoveChildAt.js';
-import '../../display/RemoveChild.js';
-import '../events/AddedToWorldEvent.js';
-import '../events/DestroyEvent.js';
-import '../events/RemovedFromWorldEvent.js';
-import '../../events/Emit.js';
-import '../../display/SetWorld.js';
-import '../../display/SetParent.js';
-import '../DIRTY_CONST.js';
-import '../../display/RemoveChildrenBetween.js';
-import '../../display/DestroyChildren.js';
-import '../../display/ReparentChildren.js';
-import '../../textures/TextureManagerInstance.js';
-import '../../renderer/webgl1/draw/BatchTexturedQuad.js';
-import '../components/transform/GetVertices.js';
-import '../components/bounds/BoundsComponent.js';
-import '../components/input/InputComponent.js';
-import '../components/transform/UpdateLocalTransform.js';
-import '../components/transform/UpdateWorldTransform.js';
-import '../components/transform/TransformComponent.js';
-import '../GameObject.js';
-import '../container/Container.js';
-import '../../renderer/canvas/draw/DrawTexturedQuad.js';
-import '../../renderer/webgl1/colors/PackColors.js';
-export { SetFrame } from './SetFrame.js';
-export { SetTexture } from './SetTexture.js';
-export { UpdateVertices } from './UpdateVertices.js';
-import '../../renderer/webgl1/colors/PackColor.js';
-import '../components/Vertex.js';
-export { Sprite } from './Sprite.js';
-export { SetAlpha } from './SetAlpha.js';
-export { SetQuadAlpha } from './SetQuadAlpha.js';
-export { SetQuadTint } from './SetQuadTint.js';
-export { SetTint } from './SetTint.js';
+import {SetAlpha as SetAlpha2} from "./SetAlpha";
+import {SetFrame as SetFrame2} from "./SetFrame";
+import {SetQuadAlpha as SetQuadAlpha2} from "./SetQuadAlpha";
+import {SetQuadTint as SetQuadTint2} from "./SetQuadTint";
+import {SetTexture as SetTexture2} from "./SetTexture";
+import {SetTint as SetTint2} from "./SetTint";
+import {Sprite as Sprite2} from "./Sprite";
+import {UpdateVertices as UpdateVertices2} from "./UpdateVertices";
+export {
+  SetAlpha2 as SetAlpha,
+  SetFrame2 as SetFrame,
+  SetQuadAlpha2 as SetQuadAlpha,
+  SetQuadTint2 as SetQuadTint,
+  SetTexture2 as SetTexture,
+  SetTint2 as SetTint,
+  Sprite2 as Sprite,
+  UpdateVertices2 as UpdateVertices
+};

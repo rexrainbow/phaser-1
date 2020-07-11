@@ -1,11 +1,6 @@
-import '../const.js';
-import '../ConfigStore.js';
-import { SetBackgroundColor } from './SetBackgroundColor.js';
-
-function BackgroundColor(color) {
-    return () => {
-        SetBackgroundColor(color);
-    };
+import {SetBackgroundColor as SetBackgroundColor2} from "./SetBackgroundColor";
+export function BackgroundColor(color) {
+  return () => {
+    SetBackgroundColor2(color);
+  };
 }
-
-export { BackgroundColor };

@@ -1,7 +1,4 @@
-import { CanPlayAudioType } from './CanPlayAudioType.js';
-
-function CanPlayMP3(audioElement) {
-    return CanPlayAudioType('audio/mpeg; codecs="mp3"', audioElement);
+import {CanPlayAudioType as CanPlayAudioType2} from "./CanPlayAudioType";
+export function CanPlayMP3(audioElement) {
+  return CanPlayAudioType2('audio/mpeg; codecs="mp3"', audioElement);
 }
-
-export { CanPlayMP3 };

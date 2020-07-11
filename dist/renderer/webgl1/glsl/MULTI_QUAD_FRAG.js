@@ -1,4 +1,4 @@
-const MULTI_QUAD_FRAG = `#define SHADER_NAME MULTI_QUAD_FRAG
+export const MULTI_QUAD_FRAG = `#define SHADER_NAME MULTI_QUAD_FRAG
 
 precision highp float;
 
@@ -16,5 +16,3 @@ void main (void)
 
     gl_FragColor = color * vec4(vTintColor.bgr * vTintColor.a, vTintColor.a);
 }`;
-
-export { MULTI_QUAD_FRAG };

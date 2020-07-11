@@ -1,13 +1,18 @@
-import '../../utils/base64/Base64ToArrayBuffer.js';
-import '../../renderer/webgl1/GL.js';
-import '../../renderer/webgl1/buffers/DeleteGLBuffer.js';
-import '../../renderer/webgl1/buffers/VertexBuffer.js';
-import '../../renderer/webgl1/colors/PackColor.js';
-import '../../gameobjects/components/Vertex.js';
-export { CreateVertexSet } from './CreateVertexSet.js';
-export { GetBufferFromVertexSet } from './GetBufferFromVertexSet.js';
-export { Geometry } from './Geometry.js';
-export { FaceUVNormalTexture } from './FaceUVNormalTexture.js';
-export { ParseObj } from './ParseObj.js';
-export { GetBufferFromObj } from './GetBufferFromObj.js';
-export { GetFacesFromVertexSet } from './GetFacesFromVertexSet.js';
+import {CreateVertexSet as CreateVertexSet2} from "./CreateVertexSet";
+import {FaceUVNormalTexture as FaceUVNormalTexture2} from "./FaceUVNormalTexture";
+import {Geometry as Geometry2} from "./Geometry";
+import {GetBufferFromObj as GetBufferFromObj2} from "./GetBufferFromObj";
+import {GetBufferFromVertexSet as GetBufferFromVertexSet2} from "./GetBufferFromVertexSet";
+import {GetFacesFromVertexSet as GetFacesFromVertexSet2} from "./GetFacesFromVertexSet";
+import {ParseObj as ParseObj2} from "./ParseObj";
+import {VertexSet as VertexSet2} from "./VertexSet";
+export {
+  CreateVertexSet2 as CreateVertexSet,
+  FaceUVNormalTexture2 as FaceUVNormalTexture,
+  Geometry2 as Geometry,
+  GetBufferFromObj2 as GetBufferFromObj,
+  GetBufferFromVertexSet2 as GetBufferFromVertexSet,
+  GetFacesFromVertexSet2 as GetFacesFromVertexSet,
+  ParseObj2 as ParseObj,
+  VertexSet2 as VertexSet
+};

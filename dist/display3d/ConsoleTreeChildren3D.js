@@ -1,38 +1,32 @@
-import { DepthFirstSearchRecursiveNested3D } from './DepthFirstSearchRecursiveNested3D.js';
-
+import {DepthFirstSearchRecursiveNested3D as DepthFirstSearchRecursiveNested3D2} from "./DepthFirstSearchRecursiveNested3D";
 function GetInfo(entry) {
-    const legend = (entry.numChildren > 0) ? 'Parent' : 'Child';
-    return `${legend} [ type=${entry.type}, name=${entry.name} ]`;
+  const legend = entry.numChildren > 0 ? "Parent" : "Child";
+  return `${legend} [ type=${entry.type}, name=${entry.name} ]`;
 }
 function LogChildren(entry) {
-    console.group(GetInfo(entry.node));
-    entry.children.forEach(child => {
-        if (child.children.length > 0) {
-            LogChildren(child);
-        }
-        else {
-            console.log(GetInfo(child.node));
-        }
-    });
-    console.groupEnd();
-}
-function ConsoleTreeChildren3D(parent) {
-    const entries = DepthFirstSearchRecursiveNested3D(parent);
-    if (parent.world === parent) {
-        console.group('World');
+  console.group(GetInfo(entry.node));
+  entry.children.forEach((child) => {
+    if (child.children.length > 0) {
+      LogChildren(child);
+    } else {
+      console.log(GetInfo(child.node));
     }
-    else {
-        console.group(GetInfo(parent));
-    }
-    entries.forEach(entry => {
-        if (entry.children.length) {
-            LogChildren(entry);
-        }
-        else {
-            console.log(GetInfo(entry.node));
-        }
-    });
-    console.groupEnd();
+  });
+  console.groupEnd();
 }
-
-export { ConsoleTreeChildren3D };
+export function ConsoleTreeChildren3D(parent) {
+  const entries = DepthFirstSearchRecursiveNested3D2(parent);
+  if (parent.world === parent) {
+    console.group("World");
+  } else {
+    console.group(GetInfo(parent));
+  }
+  entries.forEach((entry) => {
+    if (entry.children.length) {
+      LogChildren(entry);
+    } else {
+      console.log(GetInfo(entry.node));
+    }
+  });
+  console.groupEnd();
+}

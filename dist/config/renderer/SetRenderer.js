@@ -1,8 +1,5 @@
-import { CONFIG_DEFAULTS } from '../const.js';
-import { ConfigStore } from '../ConfigStore.js';
-
-function SetRenderer(renderer) {
-    ConfigStore.set(CONFIG_DEFAULTS.RENDERER, renderer);
+import {CONFIG_DEFAULTS} from "../const";
+import {ConfigStore as ConfigStore2} from "../ConfigStore";
+export function SetRenderer(renderer) {
+  ConfigStore2.set(CONFIG_DEFAULTS.RENDERER, renderer);
 }
-
-export { SetRenderer };

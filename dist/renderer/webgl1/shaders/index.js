@@ -1,36 +1,28 @@
-import '../../../math/pow2/IsSizePowerOfTwo.js';
-import '../../../config/const.js';
-import '../../../config/ConfigStore.js';
-import '../../../config/size/GetHeight.js';
-import '../../../config/size/GetResolution.js';
-import '../../../config/size/GetWidth.js';
-import '../../BindingQueue.js';
-import '../GL.js';
-import '../textures/CreateGLTexture.js';
-import '../fbo/DeleteFramebuffer.js';
-import '../textures/DeleteGLTexture.js';
-import '../textures/SetGLTextureFilterMode.js';
-import '../textures/UpdateGLTexture.js';
-import '../textures/GLTextureBinding.js';
-import '../../../config/maxtextures/GetMaxTextures.js';
-export { CheckShaderMaxIfStatements } from './CheckShaderMaxIfStatements.js';
-export { CreateAttributes } from './CreateAttributes.js';
-export { DeleteShaders } from './DeleteShaders.js';
-export { CreateProgram } from './CreateProgram.js';
-export { CreateShader } from './CreateShader.js';
-export { CreateUniformSetter } from './CreateUniformSetter.js';
-export { CreateUniforms } from './CreateUniforms.js';
-import '../GL_CONST.js';
-export { DefaultQuadAttributes } from './DefaultQuadAttributes.js';
-export { DefaultQuadUniforms } from './DefaultQuadUniforms.js';
-import '../fbo/CreateDepthBuffer.js';
-import '../fbo/CreateFramebuffer.js';
-import '../glsl/SINGLE_QUAD_FRAG.js';
-import '../glsl/SINGLE_QUAD_VERT.js';
-import '../../../textures/Frame.js';
-import '../../../textures/Texture.js';
-export { Shader } from './Shader.js';
-export { QuadShader } from './QuadShader.js';
-export { FXShader } from './FXShader.js';
-import '../glsl/MULTI_QUAD_FRAG.js';
-export { MultiTextureQuadShader } from './MultiTextureQuadShader.js';
+import {CheckShaderMaxIfStatements as CheckShaderMaxIfStatements2} from "./CheckShaderMaxIfStatements";
+import {CreateAttributes as CreateAttributes2} from "./CreateAttributes";
+import {CreateProgram as CreateProgram2} from "./CreateProgram";
+import {CreateShader as CreateShader2} from "./CreateShader";
+import {CreateUniformSetter as CreateUniformSetter2} from "./CreateUniformSetter";
+import {CreateUniforms as CreateUniforms2} from "./CreateUniforms";
+import {DefaultQuadAttributes as DefaultQuadAttributes2} from "./DefaultQuadAttributes";
+import {DefaultQuadUniforms as DefaultQuadUniforms2} from "./DefaultQuadUniforms";
+import {DeleteShaders as DeleteShaders2} from "./DeleteShaders";
+import {FXShader as FXShader2} from "./FXShader";
+import {MultiTextureQuadShader as MultiTextureQuadShader2} from "./MultiTextureQuadShader";
+import {QuadShader as QuadShader2} from "./QuadShader";
+import {Shader as Shader2} from "./Shader";
+export {
+  CheckShaderMaxIfStatements2 as CheckShaderMaxIfStatements,
+  CreateAttributes2 as CreateAttributes,
+  CreateProgram2 as CreateProgram,
+  CreateShader2 as CreateShader,
+  CreateUniforms2 as CreateUniforms,
+  CreateUniformSetter2 as CreateUniformSetter,
+  DefaultQuadAttributes2 as DefaultQuadAttributes,
+  DefaultQuadUniforms2 as DefaultQuadUniforms,
+  DeleteShaders2 as DeleteShaders,
+  FXShader2 as FXShader,
+  MultiTextureQuadShader2 as MultiTextureQuadShader,
+  Shader2 as Shader,
+  QuadShader2 as QuadShader
+};

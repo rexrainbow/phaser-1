@@ -1,5 +1,3 @@
-function IsEjecta() {
-    return (window.hasOwnProperty('ejecta'));
+export function IsEjecta() {
+  return window.hasOwnProperty("ejecta");
 }
-
-export { IsEjecta };

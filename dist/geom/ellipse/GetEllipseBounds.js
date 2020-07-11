@@ -1,8 +1,9 @@
-import '../rectangle/RectangleContains.js';
-import { Rectangle } from '../rectangle/Rectangle.js';
-
-function GetEllipseBounds(ellipse, out = new Rectangle()) {
-    return out.set(ellipse.left, ellipse.top, ellipse.width, ellipse.height);
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+import {Rectangle as Rectangle2} from "../rectangle/Rectangle";
+export function GetEllipseBounds(ellipse, out = new Rectangle2()) {
+  return out.set(ellipse.left, ellipse.top, ellipse.width, ellipse.height);
 }
-
-export { GetEllipseBounds };

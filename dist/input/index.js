@@ -1,49 +1,8 @@
-import '../GameInstance.js';
-import '../math/matrix2d/Matrix2D.js';
-import '../math/vec2/Vec2.js';
-import '../math/matrix2d/Append.js';
-import '../math/matrix2d/GlobalToLocal.js';
-import '../events/Emit.js';
-import '../events/EventEmitter.js';
-import './keyboard/Key.js';
-import './keyboard/keys/AKey.js';
-import './keyboard/keys/ArrowKeys.js';
-import './keyboard/keys/BKey.js';
-import './keyboard/keys/CKey.js';
-import './keyboard/keys/DKey.js';
-import './keyboard/keys/DownKey.js';
-import './keyboard/keys/EKey.js';
-import './keyboard/keys/FKey.js';
-import './keyboard/keys/GKey.js';
-import './keyboard/keys/HKey.js';
-import './keyboard/keys/IKey.js';
-import './keyboard/keys/JKey.js';
-import './keyboard/keys/KKey.js';
-import './keyboard/keys/LKey.js';
-import './keyboard/keys/LeftKey.js';
-import './keyboard/keys/MKey.js';
-import './keyboard/keys/NKey.js';
-import './keyboard/keys/OKey.js';
-import './keyboard/keys/PKey.js';
-import './keyboard/keys/QKey.js';
-import './keyboard/keys/RKey.js';
-import './keyboard/keys/RightKey.js';
-import './keyboard/keys/SKey.js';
-import './keyboard/keys/SpaceKey.js';
-import './keyboard/keys/TKey.js';
-import './keyboard/keys/UKey.js';
-import './keyboard/keys/UpKey.js';
-import './keyboard/keys/VKey.js';
-import './keyboard/keys/WASDKeys.js';
-import './keyboard/keys/WKey.js';
-import './keyboard/keys/XKey.js';
-import './keyboard/keys/YKey.js';
-import './keyboard/keys/ZKey.js';
-import '../index-157cb84a.js';
-import './keyboard/GetKeyDownDuration.js';
-import './keyboard/Keyboard.js';
-import './keyboard/SetKeyRepeatRate.js';
-export { i as Keyboard } from '../index-1ef26683.js';
-import './mouse/Mouse.js';
-export { i as Mouse } from '../index-a84ac3fd.js';
-export { SetInteractive } from './SetInteractive.js';
+import * as Keyboard from "./keyboard";
+import * as Mouse from "./mouse";
+import {SetInteractive as SetInteractive2} from "./SetInteractive";
+export {
+  Keyboard,
+  Mouse,
+  SetInteractive2 as SetInteractive
+};

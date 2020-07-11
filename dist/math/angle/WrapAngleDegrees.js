@@ -1,7 +1,9 @@
-import { Wrap } from '../Wrap.js';
-
-function WrapAngleDegrees(angle) {
-    return Wrap(angle, -180, 180);
+/**
+ * @author       Richard Davey <rich@photonstorm.com>
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+import {Wrap as Wrap2} from "../Wrap";
+export function WrapAngleDegrees(angle) {
+  return Wrap2(angle, -180, 180);
 }
-
-export { WrapAngleDegrees };

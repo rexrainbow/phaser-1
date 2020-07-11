@@ -1,8 +1,5 @@
-import { Bezier as Bezier$1 } from '../Bezier.js';
-import { Vec4 } from './Vec4.js';
-
-function Bezier(a, b, c, d, t, out = new Vec4()) {
-    return out.set(Bezier$1(t, a.x, b.x, c.x, d.x), Bezier$1(t, a.y, b.y, c.y, d.y), Bezier$1(t, a.z, b.z, c.z, d.z), Bezier$1(t, a.w, b.w, c.w, d.w));
+import {Bezier as MathBezier} from "../Bezier";
+import {Vec4 as Vec42} from "./Vec4";
+export function Bezier(a, b, c, d, t, out = new Vec42()) {
+  return out.set(MathBezier(t, a.x, b.x, c.x, d.x), MathBezier(t, a.y, b.y, c.y, d.y), MathBezier(t, a.z, b.z, c.z, d.z), MathBezier(t, a.w, b.w, c.w, d.w));
 }
-
-export { Bezier };

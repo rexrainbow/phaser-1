@@ -1,8 +1,5 @@
-import { CONFIG_DEFAULTS } from '../const.js';
-import { ConfigStore } from '../ConfigStore.js';
-
-function GetWebGLContext() {
-    return ConfigStore.get(CONFIG_DEFAULTS.WEBGL_CONTEXT);
+import {CONFIG_DEFAULTS} from "../const";
+import {ConfigStore as ConfigStore2} from "../ConfigStore";
+export function GetWebGLContext() {
+  return ConfigStore2.get(CONFIG_DEFAULTS.WEBGL_CONTEXT);
 }
-
-export { GetWebGLContext };

@@ -1,75 +1,26 @@
-import '../GameInstance.js';
-import '../utils/base64/Base64ToArrayBuffer.js';
-import '../utils/NOOP.js';
-import '../math/mat4/Matrix4.js';
-import '../math/mat4/Identity.js';
-import '../math/matrix2d/Matrix2D.js';
-import '../geom/rectangle/RectangleContains.js';
-import '../geom/rectangle/Rectangle.js';
-import '../math/vec2/Vec2.js';
-import '../math/vec2/Vec2Callback.js';
-import '../math/Wrap.js';
-import '../math/angle/WrapAngle.js';
-import '../camera/Camera.js';
-import '../camera/StaticCamera.js';
-import '../math/matrix2d/CopyFrom.js';
-import '../math/matrix2d/ExactEquals.js';
-import '../config/const.js';
-import '../config/ConfigStore.js';
-import '../config/defaultorigin/GetDefaultOriginX.js';
-import '../config/defaultorigin/GetDefaultOriginY.js';
-import '../renderer/webgl1/renderpass/AddViewport.js';
-import '../renderer/webgl1/GL.js';
-import '../renderer/webgl1/renderpass/BindViewport.js';
-import '../renderer/webgl1/renderpass/SetViewport.js';
-import '../renderer/webgl1/renderpass/BindFramebuffer.js';
-import '../renderer/webgl1/renderpass/PopViewport.js';
-import '../renderer/webgl1/renderpass/PopFramebuffer.js';
-import '../renderer/webgl1/renderpass/AddFramebuffer.js';
-import '../renderer/webgl1/renderpass/SetFramebuffer.js';
-import '../renderer/webgl1/renderpass/Draw.js';
-import '../renderer/webgl1/renderpass/Flush.js';
-import '../renderer/webgl1/renderpass/BindShader.js';
-import '../renderer/webgl1/renderpass/Begin.js';
-import '../display/DepthFirstSearch.js';
-import '../display/GetChildIndex.js';
-import '../display/RemoveChildAt.js';
-import '../display/RemoveChild.js';
-import '../gameobjects/events/AddedToWorldEvent.js';
-import '../gameobjects/events/DestroyEvent.js';
-import '../gameobjects/events/PostUpdateEvent.js';
-import '../gameobjects/events/RemovedFromWorldEvent.js';
-import '../gameobjects/events/UpdateEvent.js';
-import '../events/Emit.js';
-import '../display/SetWorld.js';
-import '../display/SetParent.js';
-import '../gameobjects/DIRTY_CONST.js';
-import '../display/RemoveChildrenBetween.js';
-import '../display/DestroyChildren.js';
-import '../display/RemoveChildren.js';
-import '../display/ReparentChildren.js';
-import '../events/EventInstance.js';
-import '../events/Off.js';
-import '../events/On.js';
-import '../events/Once.js';
-import '../gameobjects/components/transform/GetVertices.js';
-import '../gameobjects/components/bounds/BoundsComponent.js';
-import '../gameobjects/components/input/InputComponent.js';
-import '../gameobjects/components/transform/UpdateLocalTransform.js';
-import '../gameobjects/components/transform/UpdateWorldTransform.js';
-import '../gameobjects/components/transform/TransformComponent.js';
-import '../gameobjects/GameObject.js';
-import './events/WorldRenderEvent.js';
-import './events/WorldShutdownEvent.js';
-export { i as Events } from '../index-664c5328.js';
-export { CalculateTotalRenderable } from './CalculateTotalRenderable.js';
-export { HasDirtyChildren } from './HasDirtyChildren.js';
-export { UpdateCachedLayers } from './UpdateCachedLayers.js';
-export { WorldDepthFirstSearch } from './WorldDepthFirstSearch.js';
-export { BuildRenderList } from './BuildRenderList.js';
-export { MergeRenderData } from './MergeRenderData.js';
-export { ResetWorldRenderData } from './ResetWorldRenderData.js';
-export { BaseWorld } from './BaseWorld.js';
-export { CreateWorldRenderData } from './CreateWorldRenderData.js';
-export { StaticWorld } from './StaticWorld.js';
-export { World } from './World.js';
+import * as Events from "./events";
+import {BaseWorld as BaseWorld2} from "./BaseWorld";
+import {BuildRenderList as BuildRenderList2} from "./BuildRenderList";
+import {CalculateTotalRenderable as CalculateTotalRenderable2} from "./CalculateTotalRenderable";
+import {CreateWorldRenderData as CreateWorldRenderData2} from "./CreateWorldRenderData";
+import {HasDirtyChildren as HasDirtyChildren2} from "./HasDirtyChildren";
+import {MergeRenderData as MergeRenderData2} from "./MergeRenderData";
+import {ResetWorldRenderData as ResetWorldRenderData2} from "./ResetWorldRenderData";
+import {StaticWorld as StaticWorld2} from "./StaticWorld";
+import {UpdateCachedLayers as UpdateCachedLayers2} from "./UpdateCachedLayers";
+import {World as World2} from "./World";
+import {WorldDepthFirstSearch as WorldDepthFirstSearch2} from "./WorldDepthFirstSearch";
+export {
+  BaseWorld2 as BaseWorld,
+  BuildRenderList2 as BuildRenderList,
+  CalculateTotalRenderable2 as CalculateTotalRenderable,
+  CreateWorldRenderData2 as CreateWorldRenderData,
+  Events,
+  HasDirtyChildren2 as HasDirtyChildren,
+  MergeRenderData2 as MergeRenderData,
+  ResetWorldRenderData2 as ResetWorldRenderData,
+  StaticWorld2 as StaticWorld,
+  UpdateCachedLayers2 as UpdateCachedLayers,
+  World2 as World,
+  WorldDepthFirstSearch2 as WorldDepthFirstSearch
+};

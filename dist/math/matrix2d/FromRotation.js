@@ -1,9 +1,6 @@
-import { Matrix2D } from './Matrix2D.js';
-import { Rotate } from './Rotate.js';
-
-function FromRotation(angle) {
-    const target = new Matrix2D();
-    return Rotate(target, angle, target);
+import {Matrix2D as Matrix2D2} from "../matrix2d/Matrix2D";
+import {Rotate as Rotate2} from "./Rotate";
+export function FromRotation(angle) {
+  const target = new Matrix2D2();
+  return Rotate2(target, angle, target);
 }
-
-export { FromRotation };

@@ -1,7 +1,4 @@
-import { IsNode } from './IsNode.js';
-
-function IsNodeWebkit() {
-    return (IsNode() && !!process.versions.hasOwnProperty('node-webkit'));
+import {IsNode as IsNode2} from "./IsNode";
+export function IsNodeWebkit() {
+  return IsNode2() && !!process.versions.hasOwnProperty("node-webkit");
 }
-
-export { IsNodeWebkit };

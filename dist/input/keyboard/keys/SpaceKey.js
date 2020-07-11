@@ -1,10 +1,6 @@
-import '../../../events/Emit.js';
-import { Key } from '../Key.js';
-
-class SpaceKey extends Key {
-    constructor() {
-        super(' ');
-    }
+import {Key as Key2} from "../Key";
+export class SpaceKey extends Key2 {
+  constructor() {
+    super(" ");
+  }
 }
-
-export { SpaceKey };

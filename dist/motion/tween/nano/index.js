@@ -1,9 +1,6 @@
-import '../../../GameInstance.js';
-import '../../../Linear-8dd9e56a.js';
-import '../../../gameobjects/events/UpdateEvent.js';
-import '../../../events/EventInstance.js';
-import '../../../events/Off.js';
-import '../../../events/On.js';
-import '../TweenProperty.js';
-export { NanoTween } from './NanoTween.js';
-export { AddTween } from './AddTween.js';
+import {AddTween as AddTween2} from "./AddTween";
+import {NanoTween as NanoTween2} from "./NanoTween";
+export {
+  AddTween2 as AddTween,
+  NanoTween2 as NanoTween
+};

@@ -1,10 +1,6 @@
-import '../../../events/Emit.js';
-import { Key } from '../Key.js';
-
-class DKey extends Key {
-    constructor() {
-        super('d');
-    }
+import {Key as Key2} from "../Key";
+export class DKey extends Key2 {
+  constructor() {
+    super("d");
+  }
 }
-
-export { DKey };

@@ -1,22 +1,18 @@
-import '../../math/vec2/Vec2.js';
-import '../line/Line.js';
-import './LineToLine.js';
-import { GetTriangleEdges } from '../triangle/GetTriangleEdges.js';
-import '../triangle/TriangleContains.js';
-import '../triangle/TriangleContainsPoints.js';
-import './TriangleToLine.js';
-import { GetTriangleToLine } from './GetTriangleToLine.js';
-import '../triangle/DecomposeTriangle.js';
-import { TriangleToTriangle } from './TriangleToTriangle.js';
-
-function GetTriangleToTriangle(triangleA, triangleB, out = []) {
-    if (TriangleToTriangle(triangleA, triangleB)) {
-        const [lineA, lineB, lineC] = GetTriangleEdges(triangleB);
-        GetTriangleToLine(triangleA, lineA, out);
-        GetTriangleToLine(triangleA, lineB, out);
-        GetTriangleToLine(triangleA, lineC, out);
-    }
-    return out;
+/**
+ * @author       Florian Vazelle
+ * @author       Geoffrey Glaive
+ * @copyright    2020 Photon Storm Ltd.
+ * @license      {@link https://opensource.org/licenses/MIT|MIT License}
+ */
+import {GetTriangleEdges as GetTriangleEdges2} from "../triangle/GetTriangleEdges";
+import {GetTriangleToLine as GetTriangleToLine2} from "./GetTriangleToLine";
+import {TriangleToTriangle as TriangleToTriangle2} from "./TriangleToTriangle";
+export function GetTriangleToTriangle(triangleA, triangleB, out = []) {
+  if (TriangleToTriangle2(triangleA, triangleB)) {
+    const [lineA, lineB, lineC] = GetTriangleEdges2(triangleB);
+    GetTriangleToLine2(triangleA, lineA, out);
+    GetTriangleToLine2(triangleA, lineB, out);
+    GetTriangleToLine2(triangleA, lineC, out);
+  }
+  return out;
 }
-
-export { GetTriangleToTriangle };

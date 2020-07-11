@@ -1,8 +1,5 @@
-import { Vec4 } from './Vec4.js';
-
-function DivideScalar(a, scalar, out = new Vec4()) {
-    const { x, y, z, w } = a;
-    return out.set(x / scalar, y / scalar, z / scalar, w / scalar);
+import {Vec4 as Vec42} from "./Vec4";
+export function DivideScalar(a, scalar, out = new Vec42()) {
+  const {x, y, z, w} = a;
+  return out.set(x / scalar, y / scalar, z / scalar, w / scalar);
 }
-
-export { DivideScalar };

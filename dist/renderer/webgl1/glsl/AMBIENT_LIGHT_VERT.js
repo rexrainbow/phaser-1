@@ -1,4 +1,4 @@
-const AMBIENT_LIGHT_VERT = `
+export const AMBIENT_LIGHT_VERT = `
 #define SHADER_NAME AMBIENT_LIGHT_VERT
 
 precision highp float;
@@ -26,5 +26,3 @@ void main(void)
     gl_Position = uViewProjectionMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);
 }
 `;
-
-export { AMBIENT_LIGHT_VERT };

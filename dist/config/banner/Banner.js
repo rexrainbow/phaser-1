@@ -1,11 +1,6 @@
-import '../const.js';
-import '../ConfigStore.js';
-import { SetBanner } from './SetBanner.js';
-
-function Banner(title, version, url, color, background) {
-    return () => {
-        SetBanner(title, version, url, color, background);
-    };
+import {SetBanner as SetBanner2} from "./SetBanner";
+export function Banner(title, version, url, color, background) {
+  return () => {
+    SetBanner2(title, version, url, color, background);
+  };
 }
-
-export { Banner };
