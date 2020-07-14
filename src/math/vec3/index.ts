@@ -1,8 +1,5 @@
 import { BACKWARD, DOWN, FORWARD, LEFT, RIGHT, UP, ZERO } from './const';
 
-import { Backward } from './Backward';
-import { Down } from './Down';
-import { Forward } from './Forward';
 import { GetVec3Angle } from './GetVec3Angle';
 import { GetVec3Distance } from './GetVec3Distance';
 import { GetVec3DistanceSquared } from './GetVec3DistanceSquared';
@@ -10,15 +7,12 @@ import { GetVec3Length } from './GetVec3Length';
 import { GetVec3LengthSquared } from './GetVec3LengthSquared';
 import { GetVec3ManhattanDistance } from './GetVec3ManhattanDistance';
 import { GetVec3ManhattanLength } from './GetVec3ManhattanLength';
-import { Left } from './Left';
-import { One } from './One';
 import { RGBCallback } from './RGBCallback';
-import { Right } from './Right';
-import { Up } from './Up';
 import { Vec3 } from './Vec3';
 import { Vec3Abs } from './Vec3Abs';
 import { Vec3Add } from './Vec3Add';
 import { Vec3AddScalar } from './Vec3AddScalar';
+import { Vec3Backward } from './Vec3Backward';
 import { Vec3Bezier } from './Vec3Bezier';
 import { Vec3Callback } from './Vec3Callback';
 import { Vec3CatmullRom } from './Vec3CatmullRom';
@@ -34,8 +28,10 @@ import { Vec3CrossNormalize } from './Vec3CrossNormalize';
 import { Vec3Divide } from './Vec3Divide';
 import { Vec3DivideScalar } from './Vec3DivideScalar';
 import { Vec3Dot } from './Vec3Dot';
+import { Vec3Down } from './Vec3Down';
 import { Vec3Equals } from './Vec3Equals';
 import { Vec3Floor } from './Vec3Floor';
+import { Vec3Forward } from './Vec3Forward';
 import { Vec3Fract } from './Vec3Fract';
 import { Vec3FromCylindricalCoords } from './Vec3FromCylindricalCoords';
 import { Vec3FromSphericalCoords } from './Vec3FromSphericalCoords';
@@ -43,6 +39,7 @@ import { Vec3FuzzyEquals } from './Vec3FuzzyEquals';
 import { Vec3Hermite } from './Vec3Hermite';
 import { Vec3Inverse } from './Vec3Inverse';
 import { Vec3IsNonUniform } from './Vec3IsNonUniform';
+import { Vec3Left } from './Vec3Left';
 import { Vec3Lerp } from './Vec3Lerp';
 import { Vec3Max } from './Vec3Max';
 import { Vec3Min } from './Vec3Min';
@@ -50,9 +47,11 @@ import { Vec3Multiply } from './Vec3Multiply';
 import { Vec3MultiplyByFloats } from './Vec3MultiplyByFloats';
 import { Vec3Negate } from './Vec3Negate';
 import { Vec3Normalize } from './Vec3Normalize';
+import { Vec3One } from './Vec3One';
 import { Vec3Project } from './Vec3Project';
 import { Vec3Random } from './Vec3Random';
 import { Vec3Reflect } from './Vec3Reflect';
+import { Vec3Right } from './Vec3Right';
 import { Vec3RotateX } from './Vec3RotateX';
 import { Vec3RotateY } from './Vec3RotateY';
 import { Vec3RotateZ } from './Vec3RotateZ';
@@ -67,12 +66,10 @@ import { Vec3TransformMat4 } from './Vec3TransformMat4';
 import { Vec3TransformMat4Zero } from './Vec3TransformMat4Zero';
 import { Vec3TransformQuat } from './Vec3TransformQuat';
 import { Vec3Unproject } from './Vec3Unproject';
-import { Zero } from './Zero';
+import { Vec3Up } from './Vec3Up';
+import { Vec3Zero } from './Vec3Zero';
 
 export {
-    Backward,
-    Down,
-    Forward,
     GetVec3Angle,
     GetVec3Distance,
     GetVec3DistanceSquared,
@@ -80,15 +77,12 @@ export {
     GetVec3LengthSquared,
     GetVec3ManhattanDistance,
     GetVec3ManhattanLength,
-    Left,
-    One,
     RGBCallback,
-    Right,
-    Up,
     Vec3,
     Vec3Abs,
     Vec3Add,
     Vec3AddScalar,
+    Vec3Backward,
     Vec3Bezier,
     Vec3Callback,
     Vec3CatmullRom,
@@ -104,8 +98,10 @@ export {
     Vec3Divide,
     Vec3DivideScalar,
     Vec3Dot,
+    Vec3Down,
     Vec3Equals,
     Vec3Floor,
+    Vec3Forward,
     Vec3Fract,
     Vec3FromCylindricalCoords,
     Vec3FromSphericalCoords,
@@ -113,6 +109,7 @@ export {
     Vec3Hermite,
     Vec3Inverse,
     Vec3IsNonUniform,
+    Vec3Left,
     Vec3Lerp,
     Vec3Max,
     Vec3Min,
@@ -120,9 +117,11 @@ export {
     Vec3MultiplyByFloats,
     Vec3Negate,
     Vec3Normalize,
+    Vec3One,
     Vec3Project,
     Vec3Random,
     Vec3Reflect,
+    Vec3Right,
     Vec3RotateX,
     Vec3RotateY,
     Vec3RotateZ,
@@ -137,7 +136,8 @@ export {
     Vec3TransformMat4Zero,
     Vec3TransformQuat,
     Vec3Unproject,
-    Zero,
+    Vec3Up,
+    Vec3Zero,
 
     BACKWARD,
     DOWN,
