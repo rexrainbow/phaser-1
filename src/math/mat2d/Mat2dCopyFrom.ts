@@ -3,7 +3,7 @@ import { Matrix2D } from './Matrix2D';
 
 //  Copy the values from the src Matrix to the target Matrix and return the target Matrix.
 
-export function CopyFrom (src: IMatrix2D, target: Matrix2D): Matrix2D
+export function Mat2dCopyFrom (src: IMatrix2D, target: Matrix2D): Matrix2D
 {
     const { a, b, c, d, tx, ty } = src;
 

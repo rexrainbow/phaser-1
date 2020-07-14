@@ -1,4 +1,4 @@
-import { IMatrix2D } from '../matrix2d/IMatrix2D';
+import { IMatrix2D } from '../mat2d/IMatrix2D';
 import { Vec2 } from './Vec2';
 
 export function Vec2TransformMat2d (v: Vec2, m: IMatrix2D, out: Vec2 = new Vec2()): Vec2

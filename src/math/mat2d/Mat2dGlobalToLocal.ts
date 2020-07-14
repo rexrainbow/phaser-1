@@ -1,7 +1,7 @@
 import { IMatrix2D } from './IMatrix2D';
 import { Vec2 } from '../vec2/Vec2';
 
-export function GlobalToLocal (mat: IMatrix2D, x: number, y: number, out: Vec2 = new Vec2()): Vec2
+export function Mat2dGlobalToLocal (mat: IMatrix2D, x: number, y: number, out: Vec2 = new Vec2()): Vec2
 {
     const { a, b, c, d, tx, ty } = mat;
 

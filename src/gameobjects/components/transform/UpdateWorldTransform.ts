@@ -1,5 +1,5 @@
-import { CopyFrom } from '../../../math/matrix2d/CopyFrom';
 import { IGameObject } from '../../IGameObject';
+import { Mat2dCopyFrom } from '../../../math/mat2d/Mat2dCopyFrom';
 
 export function UpdateWorldTransform (gameObject: IGameObject): void
 {
@@ -11,11 +11,11 @@ export function UpdateWorldTransform (gameObject: IGameObject): void
 
     if (!parent)
     {
-        CopyFrom(lt, wt);
+        Mat2dCopyFrom(lt, wt);
     }
     else if (transform.passthru)
     {
-        CopyFrom(parent.transform.world, wt);
+        Mat2dCopyFrom(parent.transform.world, wt);
     }
     else
     {

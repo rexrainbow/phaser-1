@@ -1,8 +1,8 @@
-import { IMatrix2D } from '../matrix2d/IMatrix2D';
+import { IMatrix2D } from './IMatrix2D';
 
 //  Compares the a and b matrix and returns if they are equal.
 
-export function ExactEquals (a: IMatrix2D, b: IMatrix2D): boolean
+export function Mat2dEquals (a: IMatrix2D, b: IMatrix2D): boolean
 {
     return (
         a.a === b.a &&

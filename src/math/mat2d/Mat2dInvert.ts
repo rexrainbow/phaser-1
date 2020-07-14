@@ -2,7 +2,7 @@ import { Matrix2D } from './Matrix2D';
 
 //  Inverts the target Matrix and then returns it
 
-export function Invert (target: Matrix2D, out: Matrix2D = new Matrix2D()): Matrix2D
+export function Mat2dInvert (target: Matrix2D, out: Matrix2D = new Matrix2D()): Matrix2D
 {
     const { a, b, c, d, tx, ty } = target;
 

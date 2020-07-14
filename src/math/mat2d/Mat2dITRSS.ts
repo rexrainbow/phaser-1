@@ -2,7 +2,7 @@ import { Matrix2D } from './Matrix2D';
 
 //  Apply the identity, translate, rotate, scale and skew operations on the target Matrix then returns it.
 
-export function ITRSS (target: Matrix2D, x: number, y: number, angle: number = 0, scaleX: number = 1, scaleY: number = 1, skewX: number = 0, skewY: number = 0): Matrix2D
+export function Mat2dITRSS (target: Matrix2D, x: number, y: number, angle: number = 0, scaleX: number = 1, scaleY: number = 1, skewX: number = 0, skewY: number = 0): Matrix2D
 {
     if (angle === 0)
     {
