@@ -59,15 +59,53 @@ dirTree('src', filterConfig, (item, path) =>
     // ESMInputBundle[entryPoint] = item.path;
 });
 
+const times = [];
+
+const startTimer = () => {
+
+    times.push(Date.now());
+
+}
+
+const logTime = (message) => {
+
+    const startTime = times[times.length - 1];
+    const duration = Date.now() - startTime;
+
+    console.log(`${message} (${duration} ms)`);
+
+    startTimer();
+
+}
+
+const endLog = (message) =>
+{
+    let total = 0;
+
+    for (let i = 1; i < times.length; i++)
+    {
+        const prev = times[ i - 1 ];
+        const now = times[ i ];
+
+        total += (now - prev);
+    }
+
+    total /= 1000;
+
+    console.log(`${message} in ${total} secs`);
+}
+
 //  Clear folder contents
 
-console.log('✔ Clearing target');
+startTimer();
 
 fs.emptyDirSync('./dist');
 
-//  Copy package.json version number to dist/package.json
+// const duration1 = Date.now() - start;
 
-console.log('✔ Copying dist files');
+logTime('✔ Cleared target folder');
+
+//  Copy package.json version number to dist/package.json
 
 const devPackage = fs.readJsonSync('./package.json');
 const distPackage = fs.readJsonSync('./dist.package.json');
@@ -81,7 +119,7 @@ fs.copySync('./LICENSE', './dist/LICENSE');
 fs.copySync('./logo.png', './dist/logo.png');
 fs.copySync('./README.dist.md', './dist/README.md');
 
-console.log('✔ Building Phaser 4');
+logTime('✔ Copied dist files');
 
 //  Run esbuild
 
@@ -96,18 +134,23 @@ build({
     return;
 });
 
+logTime(`✔ Built Phaser 4 v${distPackage.version} - ${ESMInputBundle.length} modules`);
+
 //  Run tsc
 
-console.log('✔ Building TypeScript defs');
-
 exec('tsc --build ./tsconfig.json', (error, stdout, stderr) => {
+
     if (error) {
         console.log(`❌ error: ${error.message}`);
         return;
     }
+
     if (stderr) {
         console.log(`❌ stderr: ${stderr}`);
         return;
     }
-    console.log('✔ Complete (๑˃̵ᴗ˂̵)و');
+
+    logTime('✔ TypeScript defs complete');
+
+    endLog('✔ Build complete');
 });
