@@ -2,12 +2,7 @@
     "compilerOptions": {
         "moduleResolution": "node",
         "target": "es5",
-        // "module": "es2015",
         "lib": [ "dom", "es5", "es6", "es7", "esnext" ],
-        // "outDir": "./dist",
-        // "declarationDir": "./dist",
-        // "emitDeclarationOnly": false,
-        // "noEmitOnError": false,
         "sourceMap": false,
         "declaration": false,
         "declarationMap": false,
