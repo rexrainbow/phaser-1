@@ -1,9 +1,9 @@
 import { Emit, EventEmitter } from '../../events';
 
 import { GameInstance } from '../../GameInstance';
-import { GlobalToLocal } from '../../math/mat2d/Mat2dGlobalToLocal';
 import { IGameObject } from '../../gameobjects/IGameObject';
 import { Mat2dAppend } from '../../math/mat2d/Mat2dAppend';
+import { Mat2dGlobalToLocal } from '../../math/mat2d/Mat2dGlobalToLocal';
 import { Vec2 } from '../../math/vec2/Vec2';
 
 export class Mouse extends EventEmitter
@@ -171,7 +171,7 @@ export class Mouse extends EventEmitter
 
             const mat = Mat2dAppend(entity.world.camera.worldTransform, entity.transform.world);
 
-            GlobalToLocal(mat, localX, localY, point);
+            Mat2dGlobalToLocal(mat, localX, localY, point);
 
             if (this.checkHitArea(entity, point.x, point.y))
             {

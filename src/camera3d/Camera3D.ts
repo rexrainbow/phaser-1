@@ -1,6 +1,6 @@
-import { Left, UP, Up, Vec3, Vec3Add, Vec3Callback, Vec3CrossNormalize, Vec3Normalize, Vec3Subtract, Vec3TransformQuat } from '../math/vec3';
-import { LookAt, Matrix4, Perspective, TranslateFromFloats } from '../math/mat4';
-import { Quaternion, SetAxisAngle } from '../math/quaternion';
+import { Mat4LookAt, Mat4Perspective, Mat4TranslateFromFloats, Matrix4 } from '../math/mat4';
+import { QuatSetAxisAngle, Quaternion } from '../math/quaternion';
+import { UP, Vec3, Vec3Add, Vec3Callback, Vec3CrossNormalize, Vec3Left, Vec3Normalize, Vec3Subtract, Vec3TransformQuat, Vec3Up } from '../math/vec3';
 
 import { DegToRad } from '../math';
 import { GameInstance } from '../GameInstance';
@@ -51,8 +51,8 @@ export class Camera3D
         this._lookAtView = new Matrix4();
         this._axis = new Quaternion();
 
-        this.up = Up();
-        this.left = Left();
+        this.up = Vec3Up();
+        this.left = Vec3Left();
 
         this._fov = fov;
         this._near = near;
@@ -60,14 +60,14 @@ export class Camera3D
         this.aspectRatio = this.renderer.width / this.renderer.height;
 
         this.viewMatrix = new Matrix4();
-        this.projectionMatrix = Perspective(DegToRad(fov), this.aspectRatio, near, far);
+        this.projectionMatrix = Mat4Perspective(DegToRad(fov), this.aspectRatio, near, far);
 
         this.lookAt(new Vec3());
     }
 
     updateProjectionMatrix (): this
     {
-        Perspective(DegToRad(this._fov), this.aspectRatio, this._near, this._far, this.projectionMatrix);
+        Mat4Perspective(DegToRad(this._fov), this.aspectRatio, this._near, this._far, this.projectionMatrix);
 
         return this;
     }
@@ -94,7 +94,7 @@ export class Camera3D
         const left = this.left;
         const up = this.up;
 
-        const q = SetAxisAngle(axisVec, angle, this._axis);
+        const q = QuatSetAxisAngle(axisVec, angle, this._axis);
 
         Vec3TransformQuat(dir, q, dir);
         Vec3TransformQuat(left, q, left);
@@ -146,9 +146,9 @@ export class Camera3D
 
         Vec3Add(pos, this.direction, lookPosition);
 
-        LookAt(pos, lookPosition, this.up, lookView);
+        Mat4LookAt(pos, lookPosition, this.up, lookView);
 
-        TranslateFromFloats(lookView, -pos.x, -pos.y, -pos.z, this.viewMatrix);
+        Mat4TranslateFromFloats(lookView, -pos.x, -pos.y, -pos.z, this.viewMatrix);
 
         return this;
     }

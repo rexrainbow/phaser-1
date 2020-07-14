@@ -1,6 +1,6 @@
-import { Forward, Right, Up, Vec3, Vec3Callback } from '../../../math/vec3';
-import { FromRotationTranslationScale, Invert, Matrix4, Transpose } from '../../../math/mat4';
-import { Quaternion, RotateX, RotateY, RotateZ } from '../../../math/quaternion';
+import { Mat4FromRotationTranslationScale, Mat4Invert, Mat4Transpose, Matrix4 } from '../../../math/mat4';
+import { QuatRotateX, QuatRotateY, QuatRotateZ, Quaternion } from '../../../math/quaternion';
+import { Vec3, Vec3Callback, Vec3Forward, Vec3Right, Vec3Up } from '../../../math/vec3';
 
 import { DIRTY_CONST } from '../../../gameobjects/DIRTY_CONST';
 import { IGameObject3D } from '../../IGameObject3D';
@@ -39,26 +39,26 @@ export class Transform3DComponent
 
         this.rotation.onChange = () => this.update();
 
-        this.forward = Forward();
-        this.up = Up();
-        this.right = Right();
+        this.forward = Vec3Forward();
+        this.up = Vec3Up();
+        this.right = Vec3Right();
 
         this.update();
     }
 
     rotateX (angle: number): void
     {
-        RotateX(this.rotation, angle, this.rotation);
+        QuatRotateX(this.rotation, angle, this.rotation);
     }
 
     rotateY (angle: number): void
     {
-        RotateY(this.rotation, angle, this.rotation);
+        QuatRotateY(this.rotation, angle, this.rotation);
     }
 
     rotateZ (angle: number): void
     {
-        RotateZ(this.rotation, angle, this.rotation);
+        QuatRotateZ(this.rotation, angle, this.rotation);
     }
 
     update (): void
@@ -66,10 +66,10 @@ export class Transform3DComponent
         const model = this.local;
         const normal = this.normal;
 
-        FromRotationTranslationScale(this.rotation, this.position, this.scale, model);
+        Mat4FromRotationTranslationScale(this.rotation, this.position, this.scale, model);
 
-        Invert(model, normal);
-        Transpose(normal, normal);
+        Mat4Invert(model, normal);
+        Mat4Transpose(normal, normal);
     }
 
     updateLocal (): void
