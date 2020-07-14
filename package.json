@@ -4,15 +4,13 @@
     "description": "Phaser 4 Genesis",
     "scripts": {
         "prepublishOnly": "echo \"Error: Don't run 'npm publish' in root. Use 'npm run dist' instead.\" && exit 1",
-        "oldbuild": "rollup -c rollup.config.js",
-        "oldwatch": "rollup -c rollup.debug.config.js --watch",
+        "umdbuild": "rollup -c rollup.config.js",
         "testdist": "npm version patch --no-git-tag-version && npm run build",
         "dist": "npm version patch && npm run build && cd dist && npm publish --ignore-scripts",
         "distminor": "npm version minor && npm run build && cd dist && npm publish --ignore-scripts",
         "distmajor": "npm version major && npm run build && cd dist && npm publish --ignore-scripts",
         "dev": "esbuild --bundle dev/index.ts --outdir=dev/dist --sourcemap",
         "build": "node build.js",
-        "doozer": "node doozer.js",
         "ts": "tsc --build tsconfig.json",
         "lint": "eslint ./src --fix --ext .ts"
     },
