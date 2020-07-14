@@ -2,7 +2,7 @@ import { GameInstance } from '../GameInstance';
 import { ICamera } from './ICamera';
 import { IRenderer } from '../renderer/IRenderer';
 import { IWorld } from '../world/IWorld';
-import { Identity } from '../math/mat4';
+import { Mat4Identity } from '../math/mat4';
 import { Matrix2D } from '../math/mat2d/Matrix2D';
 import { Matrix4 } from '../math/mat4/Matrix4';
 import { Rectangle } from '../geom/rectangle/Rectangle';
@@ -39,7 +39,7 @@ export class Camera implements ICamera
 
         this.renderer = game.renderer;
 
-        this.matrix = Identity();
+        this.matrix = Mat4Identity();
 
         this.bounds = new Rectangle();
 
