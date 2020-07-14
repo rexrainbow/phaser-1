@@ -6,9 +6,9 @@ import { IShader } from '../shaders/IShader';
 import { IVertexBuffer } from '../buffers/IVertexBuffer';
 import { IWebGLRenderer } from '../IWebGLRenderer';
 import { IndexedVertexBuffer } from '../buffers/IndexedVertexBuffer';
+import { Mat4Ortho } from '../../../math/mat4/Mat4Ortho';
 import { Matrix4 } from '../../../math/mat4/Matrix4';
 import { MultiTextureQuadShader } from '../shaders';
-import { Ortho } from '../../../math/mat4/Ortho';
 import { QuadShader } from '../shaders/QuadShader';
 import { Rectangle } from '../../../geom/rectangle/Rectangle';
 import { SetDefaultBlendMode } from './SetDefaultBlendMode';
@@ -123,7 +123,7 @@ export class RenderPass implements IRenderPass
     resize (width: number, height: number): void
     {
         //  TODO - -1 to 1?
-        Ortho(0, width, height, 0, -1000, 1000, this.projectionMatrix);
+        Mat4Ortho(0, width, height, 0, -1000, 1000, this.projectionMatrix);
 
         this.quadCamera.reset();
 

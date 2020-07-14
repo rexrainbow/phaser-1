@@ -1,6 +1,6 @@
 import { IRectangle } from '../../geom/rectangle/IRectangle';
+import { Mat4Multiply } from '../mat4/Mat4Multiply';
 import { Matrix4 } from '../mat4/Matrix4';
-import { Multiply } from '../mat4/Multiply';
 import { Vec3 } from './Vec3';
 import { Vec3TransformMat4 } from './Vec3TransformMat4';
 
@@ -18,8 +18,8 @@ export function Vec3Project (v: Vec3, world: Matrix4, transform: Matrix4, viewpo
         x + width / 2, height / 2 + y, 0.5, 1
     );
 
-    Multiply(world, transform, tempMatrix2);
-    Multiply(tempMatrix2, tempMatrix1, tempMatrix2);
+    Mat4Multiply(world, transform, tempMatrix2);
+    Mat4Multiply(tempMatrix2, tempMatrix1, tempMatrix2);
 
     return Vec3TransformMat4(v, tempMatrix2, out);
 }

@@ -1,6 +1,6 @@
-import { Invert } from '../mat4/Invert';
+import { Mat4Invert } from '../mat4/Mat4Invert';
+import { Mat4Multiply } from '../mat4/Mat4Multiply';
 import { Matrix4 } from '../mat4/Matrix4';
-import { Multiply } from '../mat4/Multiply';
 import { Vec3 } from './Vec3';
 import { Vec3Scale } from './Vec3Scale';
 import { Vec3TransformMat4 } from './Vec3TransformMat4';
@@ -10,9 +10,9 @@ const screenSource = new Vec3();
 
 export function Vec3Unproject (v: Vec3, viewportWidth: number, viewportHeight: number, world: Matrix4, view: Matrix4, projection: Matrix4, out: Vec3 = new Vec3()): Vec3
 {
-    Multiply(world, view, matrix);
-    Multiply(matrix, projection, matrix);
-    Invert(matrix, matrix);
+    Mat4Multiply(world, view, matrix);
+    Mat4Multiply(matrix, projection, matrix);
+    Mat4Invert(matrix, matrix);
 
     const { x, y, z } = v;
 
