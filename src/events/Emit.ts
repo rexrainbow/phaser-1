@@ -9,6 +9,8 @@ export function Emit (emitter: IEventEmitter, event: string, ...args: unknown[])
 
     const listeners = emitter.events.get(event);
 
+    let counter = listeners.size;
+
     for (const ee of listeners)
     {
         ee.callback.apply(ee.context, args);
@@ -16,6 +18,13 @@ export function Emit (emitter: IEventEmitter, event: string, ...args: unknown[])
         if (ee.once)
         {
             listeners.delete(ee);
+        }
+
+        counter--;
+        
+        if (counter === 0) 
+        {
+            break;
         }
     }
 
